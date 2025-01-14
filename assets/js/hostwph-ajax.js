@@ -101,7 +101,7 @@
 
       var hostwph_btn = $(this);
       var hostwph_ajax_type = hostwph_btn.attr('data-hostwph-ajax-type');
-      var accomodation_id = hostwph_btn.closest('.hostwph-list-element').attr('data-hostwph-element-id');
+      var accommodation_id = hostwph_btn.closest('.hostwph-list-element').attr('data-hostwph-element-id');
       var part_id = hostwph_btn.closest('.hostwph-list-element').attr('data-hostwph-element-id');
       var guest_id = hostwph_btn.closest('.hostwph-list-element').attr('data-hostwph-element-id');
       var popup_element = $('#' + hostwph_btn.attr('data-hostwph-popup-id'));
@@ -113,7 +113,7 @@
           var data = {
             action: 'hostwph_ajax',
             hostwph_ajax_type: hostwph_ajax_type,
-            accomodation_id: accomodation_id,
+            accommodation_id: accommodation_id,
             part_id: part_id,
             guest_id: guest_id,
           };
@@ -188,19 +188,19 @@
       });
     });
 
-    $(document).on('click', '.hostwph-accomodation-duplicate', function(e) {
+    $(document).on('click', '.hostwph-accommodation-duplicate', function(e) {
       e.preventDefault();
-      $('.hostwph-accomodations').fadeOut('fast');
+      $('.hostwph-accommodations').fadeOut('fast');
 
       var hostwph_btn = $(this);
-      var accomodation_id = hostwph_btn.closest('.hostwph-list-element').attr('data-hostwph-element-id');
+      var accommodation_id = hostwph_btn.closest('.hostwph-list-element').attr('data-hostwph-element-id');
 
       var ajax_url = hostwph_ajax.ajax_url;
       var data = {
         action: 'hostwph_ajax',
-        hostwph_ajax_type: 'hostwph_accomodation_duplicate',
+        hostwph_ajax_type: 'hostwph_accommodation_duplicate',
         hostwph_duplicate: guest_id,
-        accomodation_id: accomodation_id,
+        accommodation_id: accommodation_id,
       };
 
       $.post(ajax_url, data, function(response) {
@@ -208,25 +208,25 @@
         if ($.parseJSON(response)['error_key'] != '') {
           hostwph_get_main_message($.parseJSON(response)['error']);
         }else{
-          $('.hostwph-accomodations').html($.parseJSON(response)['html']);
+          $('.hostwph-accommodations').html($.parseJSON(response)['html']);
         }
         
-        $('.hostwph-accomodations').fadeIn('slow');
+        $('.hostwph-accommodations').fadeIn('slow');
         $('.hostwph-menu-more-overlay').fadeOut('fast');
       });
     });
 
-    $(document).on('click', '.hostwph-accomodation-remove', function(e) {
+    $(document).on('click', '.hostwph-accommodation-remove', function(e) {
       e.preventDefault();
 
-      $('.hostwph-accomodations').fadeOut('fast');
-      var accomodation_id = $('.hostwph-menu-more.hostwph-active').closest('.hostwph-list-element').attr('data-hostwph-element-id');
+      $('.hostwph-accommodations').fadeOut('fast');
+      var accommodation_id = $('.hostwph-menu-more.hostwph-active').closest('.hostwph-list-element').attr('data-hostwph-element-id');
 
       var ajax_url = hostwph_ajax.ajax_url;
       var data = {
         action: 'hostwph_ajax',
-        hostwph_ajax_type: 'hostwph_accomodation_remove',
-        accomodation_id: accomodation_id,
+        hostwph_ajax_type: 'hostwph_accommodation_remove',
+        accommodation_id: accommodation_id,
       };
 
       $.post(ajax_url, data, function(response) {
@@ -234,12 +234,40 @@
         if ($.parseJSON(response)['error_key'] != '') {
           hostwph_get_main_message($.parseJSON(response)['error']);
         }else{
-          $('.hostwph-accomodations').html($.parseJSON(response)['html']);
+          $('.hostwph-accommodations').html($.parseJSON(response)['html']);
         }
         
-        $('.hostwph-accomodations').fadeIn('slow');
+        $('.hostwph-accommodations').fadeIn('slow');
         $('.hostwph-menu-more-overlay').fadeOut('fast');
         $.fancybox.close();
+      });
+    });
+
+    $(document).on('click', '.hostwph-part-download', function(e) {
+      e.preventDefault();
+      $('.hostwph-parts').fadeOut('fast');
+
+      var hostwph_btn = $(this);
+      var part_id = hostwph_btn.closest('.hostwph-list-element').attr('data-hostwph-element-id');
+
+      var ajax_url = hostwph_ajax.ajax_url;
+      var data = {
+        action: 'hostwph_ajax',
+        hostwph_ajax_type: 'hostwph_part_download',
+        part_id: part_id,
+      };
+
+      $.post(ajax_url, data, function(response) {
+        console.log('data');console.log(data);
+        console.log('response');console.log(response);
+        if ($.parseJSON(response)['error_key'] != '') {
+          hostwph_get_main_message($.parseJSON(response)['error']);
+        }else{
+          $('.hostwph-parts').html($.parseJSON(response)['html']);
+        }
+        
+        $('.hostwph-parts').fadeIn('slow');
+        $('.hostwph-menu-more-overlay').fadeOut('fast');
       });
     });
 

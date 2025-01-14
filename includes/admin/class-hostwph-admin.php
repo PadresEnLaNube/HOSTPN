@@ -4,11 +4,11 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to enqueue the admin-specific stylesheet and JavaScript.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/admin
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Admin {
 

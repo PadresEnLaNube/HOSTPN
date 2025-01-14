@@ -4,11 +4,11 @@
  *
  * Loads and defines the attachments management files for this plugin so that it is ready for attachment creation, edition or removal.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Functions_Attachment {
 	/**

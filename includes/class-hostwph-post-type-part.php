@@ -4,11 +4,11 @@
  *
  * This class defines Part of traveler options, menus and templates.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Post_Type_Part {
   public function get_fields($part_id = 0) {
@@ -35,14 +35,14 @@ class HOSTWPH_Post_Type_Part {
   }
 
   public function get_fields_meta() {
-    $accomodation_id = !empty($_GET['hostwph_accomodation_id']) ? HOSTWPH_Forms::sanitizer($_GET['hostwph_accomodation_id']) : '';
+    $accommodation_id = !empty($_GET['hostwph_accommodation_id']) ? HOSTWPH_Forms::sanitizer($_GET['hostwph_accommodation_id']) : '';
     $hostwph_fields_meta = [];
 
     $hostwph_fields_meta = [];
       $posts_atts = [
         'fields' => 'ids',
         'numberposts' => -1,
-        'post_type' => 'hostwph_accomodation',
+        'post_type' => 'hostwph_accomm',
         'post_status' => 'any', 
       ];
       
@@ -50,66 +50,64 @@ class HOSTWPH_Post_Type_Part {
         $posts_atts['lang'] = pll_current_language('slug');
       }
 
-      $accomodations = get_posts($posts_atts);
+      $accommodations = get_posts($posts_atts);
       
       if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
-        $hostwph_accomodation_options = [];
+        $hostwph_accommodation_options = [];
         
-        foreach ($accomodations as $accomodation_id) {
-          $hostwph_accomodation_options[$accomodation_id] = esc_html(get_the_title($accomodation_id));
+        foreach ($accommodations as $accommodation_id) {
+          $hostwph_accommodation_options[$accommodation_id] = esc_html(get_the_title($accommodation_id));
         }
 
-        $hostwph_fields_meta['hostwph_accomodation_id'] = [
-          'id' => 'hostwph_accomodation_id',
+        $hostwph_fields_meta['hostwph_accommodation_id'] = [
+          'id' => 'hostwph_accommodation_id',
           'class' => 'hostwph-select hostwph-width-100-percent',
           'input' => 'select',
-          'options' => $hostwph_accomodation_options,
+          'options' => $hostwph_accommodation_options,
           'required' => true,
-          'label' => __('Accomodation', 'hostwph'),
-          'placeholder' => __('Accomodation', 'hostwph'),
+          'label' => __('Accommodation', 'hostwph'),
+          'placeholder' => __('Accommodation', 'hostwph'),
         ];
 
-        $hostwph_page_accomodation = !empty(get_option('hostwph_pages_accomodation')) ? get_option('hostwph_pages_accomodation') : url_to_postid(home_url());
+        $hostwph_page_accommodation = !empty(get_option('hostwph_pages_accommodation')) ? get_option('hostwph_pages_accommodation') : url_to_postid(home_url());
 
-        $hostwph_fields_meta['hostwph_accomodation_add'] = [
-          'id' => 'hostwph_accomodation_add',
+        $hostwph_fields_meta['hostwph_accommodation_add'] = [
+          'id' => 'hostwph_accommodation_add',
           'input' => 'html',
-          'html_content' => '<div class="hostwph-width-100-percent hostwph-mb-20"><a class="hostwph-font-size-small" href="' . esc_url(get_permalink($hostwph_page_accomodation)) . '"><i class="material-icons-outlined hostwph-vertical-align-middle">add</i>' . esc_html(__('Add accomodation', 'hostwph')) . '</a></div>',
+          'html_content' => '<div class="hostwph-width-100-percent hostwph-mb-20"><a class="hostwph-font-size-small" href="' . esc_url(get_permalink($hostwph_page_accommodation)) . '"><i class="material-icons-outlined hostwph-vertical-align-middle">add</i>' . esc_html(__('Add accommodation', 'hostwph')) . '</a></div>',
         ];
       }else{
-        $current_accomodation_id = !empty($accomodation_id) ? $accomodation_id : $accomodations[0];
+        $current_accommodation_id = !empty($accommodation_id) ? $accommodation_id : $accommodations[0];
 
-        $hostwph_fields_meta['hostwph_accomodation_id'] = [
-          'id' => 'hostwph_accomodation_id',
+        $hostwph_fields_meta['hostwph_accommodation_id'] = [
+          'id' => 'hostwph_accommodation_id',
           'class' => 'hostwph-input hostwph-width-100-percent',
           'input' => 'input',
           'type' => 'hidden',
-          'value' => $current_accomodation_id,
+          'value' => $current_accommodation_id,
         ];
       }
 
       $hostwph_people_options = [];
       if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
-        $users_atts = [
+        $posts_atts = [
           'fields' => 'ids',
-          'number' => -1,
-          'orderby' => 'display_name', 
-          'order' => 'ASC',
+          'numberposts' => -1,
+          'post_type' => 'hostwph_guest',
+          'post_status' => 'any', 
         ];
       }else{
-        $users_atts = [
+        $posts_atts = [
           'fields' => 'ids',
-          'number' => -1,
-          'meta_key' => 'hostwph_contract_holder', 
-          'meta_value' => get_current_user_id(),
-          'meta_compare' => '=',
-          'orderby' => 'display_name', 
-          'order' => 'ASC',
+          'numberposts' => -1,
+          'post_type' => 'hostwph_guest',
+          'post_status' => 'any',
+          'post_author' => get_current_user_id(),
         ];
       }
 
-      foreach (get_users($users_atts) as $user_id) {
-        $hostwph_people_options[$user_id] = HOSTWPH_Functions_User::get_user_name($user_id);
+      foreach (get_posts($posts_atts) as $guest_id) {
+        $hostwph_people_options[$guest_id] = get_post_meta($guest_id, 'hostwph_name', true) . ' ' . get_post_meta($guest_id, 'hostwph_surname', true) . ' ' . get_post_meta($guest_id, 'hostwph_surname_alt', true);
       }
 
       $hostwph_fields_meta['hostwph_people'] = [
@@ -125,12 +123,12 @@ class HOSTWPH_Post_Type_Part {
       ];
 
       if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
-        $hostwph_page_host = !empty(get_option('hostwph_pages_host')) ? get_option('hostwph_pages_host') : url_to_postid(home_url());
+        $hostwph_page_guest = !empty(get_option('hostwph_pages_guest')) ? get_option('hostwph_pages_guest') : url_to_postid(home_url());
 
         $hostwph_fields_meta['hostwph_people_add'] = [
           'id' => 'hostwph_people_add',
           'input' => 'html',
-          'html_content' => '<div class="hostwph-width-100-percent hostwph-mb-20"><a class="hostwph-font-size-small" href="' . esc_url(get_permalink($hostwph_page_host)) . '"><i class="material-icons-outlined hostwph-vertical-align-middle">add</i>' . esc_html(__('Add part', 'hostwph')) . '</a></div>',
+          'html_content' => '<div class="hostwph-width-100-percent hostwph-mb-20"><a class="hostwph-font-size-small" href="' . esc_url(get_permalink($hostwph_page_guest) . '?hostwph_action=btn&hostwph_btn_id=hostwph-popup-guest-add-btn') . '"><i class="material-icons-outlined hostwph-vertical-align-middle">add</i>' . esc_html(__('Add guest', 'hostwph')) . '</a></div>',
         ];
       }
 
@@ -159,7 +157,6 @@ class HOSTWPH_Post_Type_Part {
         'id' => 'hostwph_time',
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
-        'type' => 'time',
         'required' => true,
         'label' => __('Contract time', 'hostwph'),
         'placeholder' => __('Contract time', 'hostwph'),
@@ -179,7 +176,6 @@ class HOSTWPH_Post_Type_Part {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'time',
-        'required' => true,
         'label' => __('Check-in time', 'hostwph'),
         'placeholder' => __('Check-in time', 'hostwph'),
       ];
@@ -198,7 +194,6 @@ class HOSTWPH_Post_Type_Part {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'time',
-        'required' => true,
         'label' => __('Check-out time', 'hostwph'),
         'placeholder' => __('Check-out time', 'hostwph'),
       ];
@@ -209,8 +204,8 @@ class HOSTWPH_Post_Type_Part {
         'type' => 'number',
         'required' => true,
         'xml' => 'numPersonas',
-        'label' => __('People', 'hostwph'),
-        'placeholder' => __('People', 'hostwph'),
+        'label' => __('Number of people', 'hostwph'),
+        'placeholder' => __('Number of people', 'hostwph'),
       ];
       $hostwph_fields_meta['hostwph_rooms'] = [
         'id' => 'hostwph_rooms',
@@ -479,71 +474,73 @@ class HOSTWPH_Post_Type_Part {
       echo wp_json_encode(['error_key' => 'hostwph_nonce_error', ]);exit();
     }
 
-    foreach (self::get_fields() as $wph_field) {
-      $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
+    if (!array_key_exists('hostwph_duplicate', $_POST)) {
+      foreach (self::get_fields() as $wph_field) {
+        $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
 
-      if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
-        $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTWPH_Forms::sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
+        if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
+          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTWPH_Forms::sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
 
-        if (!empty($wph_input)) {
-          switch ($wph_input) {
-            case 'input':
-              if (array_key_exists('type', $wph_field) && $wph_field['type'] == 'checkbox') {
-                if (isset($_POST[$wph_field['id']])) {
-                  update_post_meta($post_id, $wph_field['id'], $wph_value);
+          if (!empty($wph_input)) {
+            switch ($wph_input) {
+              case 'input':
+                if (array_key_exists('type', $wph_field) && $wph_field['type'] == 'checkbox') {
+                  if (isset($_POST[$wph_field['id']])) {
+                    update_post_meta($post_id, $wph_field['id'], $wph_value);
+                  }else{
+                    update_post_meta($post_id, $wph_field['id'], '');
+                  }
                 }else{
-                  update_post_meta($post_id, $wph_field['id'], '');
-                }
-              }else{
-                update_post_meta($post_id, $wph_field['id'], $wph_value);
-              }
-
-              break;
-            case 'select':
-              if (array_key_exists('multiple', $wph_field) && $wph_field['multiple']) {
-                $multi_array = [];
-                $empty = true;
-
-                foreach ($_POST[$wph_field['id']] as $multi_value) {
-                  $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                  update_post_meta($post_id, $wph_field['id'], $wph_value);
                 }
 
-                update_post_meta($post_id, $wph_field['id'], $multi_array);
-              }else{
-                update_post_meta($post_id, $wph_field['id'], $wph_value);
-              }
-              
-              break;
-            case 'html_multi':
-              foreach ($wph_field['html_multi_fields'] as $wph_multi_field) {
-                if (array_key_exists($wph_multi_field['id'], $_POST)) {
+                break;
+              case 'select':
+                if (array_key_exists('multiple', $wph_field) && $wph_field['multiple']) {
                   $multi_array = [];
                   $empty = true;
 
-                  foreach ($_POST[$wph_multi_field['id']] as $multi_value) {
-                    if (!empty($multi_value)) {
-                      $empty = false;
+                  foreach ($_POST[$wph_field['id']] as $multi_value) {
+                    $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                  }
+
+                  update_post_meta($post_id, $wph_field['id'], $multi_array);
+                }else{
+                  update_post_meta($post_id, $wph_field['id'], $wph_value);
+                }
+                
+                break;
+              case 'html_multi':
+                foreach ($wph_field['html_multi_fields'] as $wph_multi_field) {
+                  if (array_key_exists($wph_multi_field['id'], $_POST)) {
+                    $multi_array = [];
+                    $empty = true;
+
+                    foreach ($_POST[$wph_multi_field['id']] as $multi_value) {
+                      if (!empty($multi_value)) {
+                        $empty = false;
+                      }
+
+                      $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
                     }
 
-                    $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
-                  }
-
-                  if (!$empty) {
-                    update_post_meta($post_id, $wph_multi_field['id'], $multi_array);
-                  }else{
-                    update_post_meta($post_id, $wph_multi_field['id'], '');
+                    if (!$empty) {
+                      update_post_meta($post_id, $wph_multi_field['id'], $multi_array);
+                    }else{
+                      update_post_meta($post_id, $wph_multi_field['id'], '');
+                    }
                   }
                 }
-              }
 
-              break;
-            default:
-              update_post_meta($post_id, $wph_field['id'], $wph_value);
-              break;
+                break;
+              default:
+                update_post_meta($post_id, $wph_field['id'], $wph_value);
+                break;
+            }
           }
+        }else{
+          update_post_meta($post_id, $wph_field['id'], '');
         }
-      }else{
-        update_post_meta($post_id, $wph_field['id'], '');
       }
     }
   }
@@ -613,6 +610,10 @@ class HOSTWPH_Post_Type_Part {
   }
 
   public function list_wrapper() {
+    $part_id = 218;
+    $plugin_post_type_xml = new HOSTWPH_XML();
+    $plugin_post_type_xml->part_download($part_id);
+
     ob_start();
     ?>
     <div class="hostwph-list-wrapper hostwph-mt-50 hostwph-mb-150" data-hostwph-post-type="hostwph_part">
@@ -632,7 +633,7 @@ class HOSTWPH_Post_Type_Part {
                 <a href="#" class="hostwph-order-posts hostwph-text-decoration-none">
                   <div class="wph-display-table hostwph-width-100-percent">
                     <div class="hostwph-display-inline-table hostwph-width-70-percent">
-                      <p><?php esc_html_e('Order hosts', 'hostwph'); ?></p>
+                      <p><?php esc_html_e('Order parts', 'hostwph'); ?></p>
                     </div>
                     <div class="hostwph-display-inline-table hostwph-width-20-percent  hostwph-text-align-right">
                       <i class="material-icons-outlined hostwph-vertical-align-middle hostwph-font-size-30 hostwph-ml-30">low_priority</i>
@@ -735,6 +736,18 @@ class HOSTWPH_Post_Type_Part {
                         </a>
                       </li>
                       <li>
+                        <a href="#" class="hostwph-part-download hostwph-text-decoration-none">
+                          <div class="wph-display-table hostwph-width-100-percent">
+                            <div class="hostwph-display-inline-table hostwph-width-70-percent">
+                              <p><?php esc_html_e('Download XML file', 'hostwph'); ?></p>
+                            </div>
+                            <div class="hostwph-display-inline-table hostwph-width-20-percent hostwph-text-align-right">
+                              <i class="material-icons-outlined hostwph-vertical-align-middle hostwph-font-size-30 hostwph-ml-30">file_download</i>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
                         <a href="#" class="hostwph-part-duplicate hostwph-text-decoration-none">
                           <div class="wph-display-table hostwph-width-100-percent">
                             <div class="hostwph-display-inline-table hostwph-width-70-percent">
@@ -767,13 +780,13 @@ class HOSTWPH_Post_Type_Part {
         <?php endif ?>
 
         <li class="hostwph-mt-50 hostwph-part hostwph-list-element" data-hostwph-element-id="0">
-          <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-part-add" data-hostwph-ajax-type="hostwph_part_new">
+          <a href="#" id="hostwph-popup-part-add-btn" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-part-add" data-hostwph-ajax-type="hostwph_part_new">
             <div class="hostwph-display-table hostwph-width-100-percent">
               <div class="hostwph-display-inline-table hostwph-width-20-percent hostwph-text-align-center">
                 <i class="material-icons-outlined hostwph-cursor-pointer hostwph-vertical-align-middle hostwph-font-size-30 hostwph-width-25">add_host</i>
               </div>
               <div class="hostwph-display-inline-table hostwph-width-80-percent">
-                <?php esc_html_e('Add part', 'hostwph'); ?>
+                <?php esc_html_e('Add part of travelers', 'hostwph'); ?>
               </div>
             </div>
           </a>

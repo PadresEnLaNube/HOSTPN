@@ -3,7 +3,7 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  *
  * @package    HOSTWPH
@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Deactivator {
 
@@ -34,6 +34,7 @@ class HOSTWPH_Deactivator {
 		
 		if (get_option('hostwph_options_remove') == 'on') {
       remove_role('hostwph_role_manager');
+      remove_role('hostwph_role_guest');
 
       $hostwph_basecpt = get_posts(['fields' => 'ids', 'numberposts' => -1, 'post_type' => 'hostwph_basecpt', 'post_status' => 'any', ]);
 

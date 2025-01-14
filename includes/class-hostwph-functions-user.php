@@ -4,11 +4,11 @@
  *
  * Loads and defines the users management files for this plugin so that it is ready for user creation, edition or removal.
  *  
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    hostwph
  * @subpackage hostwph/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Functions_User {
   public static function is_user_admin($user_id) {
@@ -55,8 +55,8 @@ class HOSTWPH_Functions_User {
     return false;
   }
 
-  public function hostwph_insert_user($hostwph_user_login, $hostwph_user_password, $hostwph_user_email = '', $hostwph_first_name = '', $hostwph_last_name = '', $hostwph_display_name = '', $hostwph_user_nicename = '', $hostwph_user_nickname = '', $hostwph_user_description = '', $hostwph_user_role = [], $hostwph_array_usermeta = [/*['hostwph_key' => 'hostwph_value'], */]) {
-    /* $this->hostwph_insert_user($hostwph_user_login, $hostwph_user_password, $hostwph_user_email = '', $hostwph_first_name = '', $hostwph_last_name = '', $hostwph_display_name = '', $hostwph_user_nicename = '', $hostwph_user_nickname = '', $hostwph_user_description = '', $hostwph_user_role = [], $hostwph_array_usermeta = [['hostwph_key' => 'hostwph_value'], ],); */
+  public static function insert_user($hostwph_user_login, $hostwph_user_password, $hostwph_user_email = '', $hostwph_first_name = '', $hostwph_last_name = '', $hostwph_display_name = '', $hostwph_user_nicename = '', $hostwph_user_nickname = '', $hostwph_user_description = '', $hostwph_user_role = [], $hostwph_array_usermeta = [/*['hostwph_key' => 'hostwph_value'], */]) {
+    /* $this->insert_user($hostwph_user_login, $hostwph_user_password, $hostwph_user_email = '', $hostwph_first_name = '', $hostwph_last_name = '', $hostwph_display_name = '', $hostwph_user_nicename = '', $hostwph_user_nickname = '', $hostwph_user_description = '', $hostwph_user_role = [], $hostwph_array_usermeta = [['hostwph_key' => 'hostwph_value'], ],); */
 
     $hostwph_user_array = [
       'first_name' => $hostwph_first_name,
@@ -132,7 +132,7 @@ class HOSTWPH_Functions_User {
     $post_id = $post->ID ?? 0;
     $hostwph_pages = get_option('hostwph_pages') ?? [];
 
-    if (in_array($post_id, $hostwph_pages)) {
+    if ((in_array($post_id, $hostwph_pages) || is_admin()) && !(current_user_can('administrator') || current_user_can('hostwph_role_manager'))) {
       $relationships = HOSTWPH_Data::relationships();
 
       $register_fields['hostwph_surname_alt'] = [
@@ -150,6 +150,7 @@ class HOSTWPH_Functions_User {
         'input' => 'select',
         'parent' => 'this',
         'options' => ['nif' => esc_html(__('NIF', 'hostwph')), 'nie' => esc_html(__('NIE', 'hostwph')), 'pas' => esc_html(__('PAS', 'hostwph')), 'cif' => esc_html(__('CIF', 'hostwph')), 'otro' => esc_html(__('OTRO', 'hostwph'))],
+        'required' => true,
         'xml' => 'tipoDocumento',
         'label' => esc_html(__('Document type', 'hostwph')),
         'placeholder' => esc_html(__('Document type', 'hostwph')),
@@ -159,6 +160,7 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'text',
+        'required' => true,
         'xml' => 'numeroDocumento',
         'label' => esc_html(__('Document number', 'hostwph')),
         'placeholder' => esc_html(__('Document number', 'hostwph')),
@@ -177,6 +179,7 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'date',
+        'required' => true,
         'xml' => 'fechaNacimiento',
         'label' => esc_html(__('Birthdate', 'hostwph')),
         'placeholder' => esc_html(__('Birthdate', 'hostwph')),
@@ -186,7 +189,8 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-select hostwph-width-100-percent',
         'input' => 'select',
         'options' => HOSTWPH_Data::countries(),
-        'xml' => 'fechaNacimiento',
+        'required' => true,
+        'xml' => 'nacionalidad',
         'label' => esc_html(__('Nationality', 'hostwph')),
         'placeholder' => esc_html(__('Nationality', 'hostwph')),
       ];
@@ -195,6 +199,7 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-select hostwph-width-100-percent',
         'input' => 'select',
         'options' => ['h' => esc_html(__('Male', 'hostwph')), 'm' => esc_html(__('Female', 'hostwph')), 'o' => esc_html(__('Other', 'hostwph'))],
+        'required' => true,
         'xml' => 'sexo',
         'label' => esc_html(__('Gender', 'hostwph')),
         'placeholder' => esc_html(__('Gender', 'hostwph')),
@@ -204,6 +209,7 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'text',
+        'required' => true,
         'xml' => 'direccion',
         'label' => esc_html(__('Address', 'hostwph')),
         'placeholder' => esc_html(__('Address', 'hostwph')),
@@ -223,6 +229,7 @@ class HOSTWPH_Functions_User {
         'input' => 'select',
         'options' => HOSTWPH_Data::countries(),
         'parent' => 'this',
+        'required' => true,
         'xml' => 'pais',
         'label' => esc_html(__('Country', 'hostwph')),
         'placeholder' => esc_html(__('Country', 'hostwph')),
@@ -243,6 +250,7 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'text',
+        'required' => true,
         'xml' => 'nombreMunicipio',
         'label' => esc_html(__('City', 'hostwph')),
         'placeholder' => esc_html(__('City', 'hostwph')),
@@ -252,6 +260,7 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'text',
+        'required' => true,
         'xml' => 'telefono',
         'label' => esc_html(__('Phone', 'hostwph')),
         'placeholder' => esc_html(__('Phone', 'hostwph')),
@@ -270,21 +279,104 @@ class HOSTWPH_Functions_User {
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'email',
+        'required' => true,
         'xml' => 'correo',
         'label' => esc_html(__('Email', 'hostwph')),
         'placeholder' => esc_html(__('Email', 'hostwph')),
       ];
-      $register_fields['hostwph_relationship'] = [
-        'id' => 'hostwph_relationship',
-        'class' => 'hostwph-select hostwph-width-100-percent',
-        'input' => 'select',
-        'options' => $relationships,
-        'xml' => 'parentesco',
-        'label' => esc_html(__('Relationship', 'hostwph')),
-        'placeholder' => esc_html(__('Relationship', 'hostwph')),
+      $register_fields['hostwph_contract_holder_check'] = [
+        'id' => 'hostwph_contract_holder_check',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'checkbox',
+        'parent' => 'this',
+        'label' => esc_html(__('I´m not the holder of the contract', 'hostwph')),
+        'placeholder' => esc_html(__('I´m not the holder of the contract', 'hostwph')),
       ];
+        $register_fields['hostwph_relationship'] = [
+          'id' => 'hostwph_relationship',
+          'class' => 'hostwph-select hostwph-width-100-percent',
+          'input' => 'select',
+          'options' => $relationships,
+          'parent' => 'hostwph_contract_holder_check',
+          'parent_option' => 'on',
+          'xml' => 'parentesco',
+          'label' => esc_html(__('Relationship', 'hostwph')),
+          'placeholder' => esc_html(__('Relationship', 'hostwph')),
+        ];
     }
     
     return $register_fields;
+  }
+
+  public function hostwph_user_register($user_id) {
+    $user = new WP_User($user_id);
+    $user->add_role('hostwph_role_guest');
+
+    $post_functions = new HOSTWPH_Functions_Post();
+    $hostwph_title = gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
+    $hostwph_post_content = __('Special needs, allergies, important situations to highlight...', 'hostwph');
+    update_user_meta($user_id, 'hostwph_user_to_guest', current_time('timestamp'));
+
+    $hostwph_id = $post_functions->insert_post(esc_html($hostwph_title), $hostwph_post_content, '', sanitize_title(esc_html($hostwph_title)), 'hostwph_guest', 'publish', $user_id);
+  }
+
+  public function hostwph_user_to_guest() {
+    $user = new WP_User(get_current_user_id());
+    $user->add_role('hostwph_role_guest');
+
+    $users_atts = [
+      'fields' => 'ids',
+      'number' => -1,
+      'role' => 'subscriber',
+      'meta_key' => 'hostwph_user_to_guest', 
+      'meta_compare' => 'exist',
+    ];
+    
+    $users = get_users($users_atts);
+
+    if (!empty($users)) {
+      foreach ($users as $user_id) {
+        $posts_atts = [
+          'fields' => 'ids',
+          'numberposts' => -1,
+          'post_type' => 'hostwph_guest',
+          'post_status' => 'publish', 
+          'author' => $user_id, 
+        ];
+        
+        $posts = get_posts($posts_atts);
+
+        if (!empty($posts)) {
+          $hostwph_id = $posts[0];
+
+          $user_meta = get_user_meta($user_id);
+          if (!empty($user_meta)) {
+            foreach ($user_meta as $user_meta_key => $user_meta_value) {
+              if (strpos($user_meta_key, 'hostwph_') !== false && !empty($user_meta_value[0])) {
+                update_post_meta($hostwph_id, $user_meta_key, $user_meta_value[0]);
+              }
+            }
+          }
+
+          $first_name = get_user_meta($user_id, 'first_name', true);
+          if (!empty($first_name)) {
+            update_post_meta($hostwph_id, 'hostwph_name', $first_name);
+          }
+
+          $last_name = get_user_meta($user_id, 'last_name', true);
+          if (!empty($last_name)) {
+            update_post_meta($hostwph_id, 'hostwph_surname', $last_name);
+          }
+
+          $hostwph_surname_alt = get_user_meta($user_id, 'hostwph_surname_alt', true);
+
+          update_post_meta($hostwph_id, 'hostwph_title', $first_name . ' ' . $last_name . ' ' . $hostwph_surname_alt);
+          update_post_meta($hostwph_id, 'hostwph_description', __('Special needs, allergies, important situations to highlight...', 'hostwph'));
+
+          delete_user_meta($user_id, 'hostwph_user_to_guest');
+        }
+      }
+    }
   }
 }

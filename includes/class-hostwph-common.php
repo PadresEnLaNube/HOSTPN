@@ -4,11 +4,11 @@
  *
  * Defines the plugin name, version, and two examples hooks for how to enqueue the-global stylesheet and JavaScript.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Common {
 
@@ -123,6 +123,19 @@ class HOSTWPH_Common {
 			'media' => HOSTWPH_URL . 'assets/media/',
 		]);
 
+		// https://seasuite.es/?hostwph_action=popup_open&hostwph_popup=userswph-profile-popup&hostwph_tab=userswph-tab-register
+		$hostwph_action = !empty($_GET['hostwph_action']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_GET['hostwph_action'])) : '';
+		$hostwph_btn_id = !empty($_GET['hostwph_btn_id']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_GET['hostwph_btn_id'])) : '';
+		$hostwph_popup = !empty($_GET['hostwph_popup']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_GET['hostwph_popup'])) : '';
+		$hostwph_tab = !empty($_GET['hostwph_tab']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_GET['hostwph_tab'])) : '';
+		
+		wp_localize_script($this->plugin_name, 'hostwph_action', [
+			'action' => $hostwph_action,
+			'btn_id' => $hostwph_btn_id,
+			'popup' => $hostwph_popup,
+			'tab' => $hostwph_tab,
+		]);
+
 		wp_localize_script($this->plugin_name, 'hostwph_trumbowyg', [
 			'path' => HOSTWPH_URL . 'assets/media/trumbowyg-icons.svg',
 		]);
@@ -148,6 +161,7 @@ class HOSTWPH_Common {
 			'select_file' => esc_html(__('Select file', 'hostwph')),
 			'select_files' => esc_html(__('Select files', 'hostwph')),
 			'ordered_element' => esc_html(__('Ordered element', 'hostwph')),
+			'copied' => esc_html(__('Copied to clipboard', 'hostwph')),
 		]);
 	}
 

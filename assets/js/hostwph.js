@@ -351,5 +351,37 @@
         }
       });
     }
+
+    if (hostwph_action.action != '') {
+      if (hostwph_action.btn_id != '') {
+        $(window).on('load', function(e) {
+          $('#' + hostwph_action.btn_id).click();
+        });
+      }
+
+      if (hostwph_action.popup != '') {
+        $(window).on('load', function(e) {
+          $.fancybox.open($('#' + hostwph_action.popup), {touch: false});
+
+          if (typeof hostwph_action.tab != '') {
+            $('.userswph-tab-links[data-userswph-id="userswph-tab-' + hostwph_action.tab + '"]').click();
+            $('#userswph-' + hostwph_action.tab + ' input#userswph_email').focus();
+          }else{
+            $('.userswph-tab-links[data-userswph-id="userswph-tab-login"]').click();
+            $('#userswph-login input#user_login').focus();
+          }
+        });
+      }
+    }
+
+    $(document).on('click', '.hostwph-btn-copy', function(e) {
+      e.preventDefault();
+      var hostwph_temp = $('<textarea>');
+      $('body').append(hostwph_temp);
+      hostwph_temp.val($($(this).attr('data-hostwph-copy-content')).text()).select();
+      document.execCommand('copy');
+      hostwph_temp.remove();
+      hostwph_get_main_message(hostwph_i18n.copied);
+    });
   });
 })(jQuery);

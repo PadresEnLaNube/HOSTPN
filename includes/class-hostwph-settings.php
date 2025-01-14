@@ -4,11 +4,11 @@
  *
  * This class defines plugin settings, both in dashboard or in front-end.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Settings {
   public function get_options() {

@@ -214,11 +214,11 @@ msgid "hours"
 msgstr "horas"
 
 #. Author URI of the plugin
-msgid "https://wordpress-heroes.com/"
-msgstr "https://wordpress-heroes.com/"
+msgid "https://padresenlanube.com/"
+msgstr "https://padresenlanube.com/"
 
 #. URI of the plugin
-msgid "https://wordpress-heroes.com/plugins/hostwph/"
+msgid "https://padresenlanube.com/plugins/hostwph/"
 msgstr ""
 
 #: includes/class-hostwph-menus.php:33
@@ -514,8 +514,8 @@ msgid "View Recipe"
 msgstr "Ver receta CPT"
 
 #. Author of the plugin
-msgid "Wordpress-Heroes"
-msgstr "Wordpress-Heroes"
+msgid "Padres en la Nube"
+msgstr "Padres en la Nube"
 
 #: includes/class-hostwph-menus.php:53
 msgid "WPH Options"

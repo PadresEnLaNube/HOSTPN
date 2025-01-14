@@ -4,11 +4,11 @@
  *
  * This class defines Guest taxonomies.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Taxonomies_Host { 
 	/**
@@ -19,8 +19,8 @@ class HOSTWPH_Taxonomies_Host {
 	public static function register_taxonomies() {
 		$taxonomies = [
 			'hostwph_guest_category' => [
-				'name'               	=> _x('Host categories', 'Taxonomy general name', 'hostwph'),
-				'singular_name'      	=> _x('Host category', 'Taxonomy singular name', 'hostwph'),
+				'name'               	=> _x('Guest categories', 'Taxonomy general name', 'hostwph'),
+				'singular_name'      	=> _x('Guest category', 'Taxonomy singular name', 'hostwph'),
 				'search_items'      	=> esc_html(__('Search Guest categories', 'hostwph')),
         'all_items'         	=> esc_html(__('All Guest categories', 'hostwph')),
         'parent_item'       	=> esc_html(__('Parent Guest category', 'hostwph')),
@@ -29,7 +29,7 @@ class HOSTWPH_Taxonomies_Host {
         'update_item'       	=> esc_html(__('Update Guest category', 'hostwph')),
         'add_new_item'      	=> esc_html(__('Add New Guest category', 'hostwph')),
         'new_item_name'     	=> esc_html(__('New Guest category', 'hostwph')),
-        'menu_name'         	=> esc_html(__('Host categories', 'hostwph')),
+        'menu_name'         	=> esc_html(__('Guest categories', 'hostwph')),
 				'manage_terms'      	=> 'manage_hostwph_guest_category',
 	      'edit_terms'        	=> 'edit_hostwph_guest_category',
 	      'delete_terms'      	=> 'delete_hostwph_guest_category',

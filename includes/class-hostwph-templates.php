@@ -4,11 +4,11 @@
  *
  * Loads the plugin template files getting them from the templates folders inside common, public or admin, depending on access requirements.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Templates {
 	/**

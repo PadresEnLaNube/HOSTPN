@@ -8,10 +8,10 @@
  * - $this->loader = new HOSTWPH_Loader();
  * - $this->loader->add_action('init', $plugin_i18n, 'load_plugin_textdomain');
  * 
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Loader {
 	/**

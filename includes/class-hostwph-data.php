@@ -4,11 +4,11 @@
  *
  * Loads and defines the internationalization files for this plugin so that it is ready for translation.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Data {
 	/**
@@ -73,18 +73,18 @@ class HOSTWPH_Data {
 	}
 
   /**
-	 * Load accomodation types.
+	 * Load accommodation types.
 	 *
 	 * @since    1.0.0
 	 */
 
-	public static function accomodation_types() {
-		// HOSTWPH_Data::accomodation_types();
+	public static function accommodation_types() {
+		// HOSTWPH_Data::accommodation_types();
 		return ['agroturism' => esc_html(__('Agrotourism', 'hostwph')), 'albergue' => esc_html(__('Hostel', 'hostwph')), 'apart' => esc_html(__('Apartment', 'hostwph')), 'aparthotel' => esc_html(__('Aparthotel', 'hostwph')), 'ap_rural' => esc_html(__('Rural apartment', 'hostwph')), 'balneario' => esc_html(__('Spa', 'hostwph')), 'bungalow' => esc_html(__('Bungalow', 'hostwph')), 'camping' => esc_html(__('Camping', 'hostwph')), 'casa' => esc_html(__('House or private home', 'hostwph')), 'casa_huesp' => esc_html(__('Guest house', 'hostwph')), 'casa_rural' => esc_html(__('Rural house', 'hostwph')), 'chalet' => esc_html(__('Detached or semi-detached chalet', 'hostwph')), 'glamping' => esc_html(__('Glamping', 'hostwph')), 'habitacion' => esc_html(__('Room/s in a house', 'hostwph')), 'hostal' => esc_html(__('Hostel', 'hostwph')), 'hotel' => esc_html(__( 'Hotel', 'hostwph')), 'h_rural' => esc_html(__('Rural hotel', 'hostwph')), 'motel' => esc_html(__('Motel', 'hostwph')), 'ofic_vehic' => esc_html(__('Vehicle rental office', 'hostwph')), 'parador' => esc_html(__('Parador de tourism', 'hostwph')), 'pension' => esc_html(__('Pension', 'hostwph')), 'refugio' => esc_html(__('Refuge', 'hostwph')), 'residencia' => esc_html(__('Residence', 'hostwph')), 'vft' => esc_html(__('Housing for tourism purposes', 'hostwph')), 'villa' => esc_html(__('Villa', 'hostwph')), 'vut' => esc_html(__('Tourist accommodation', 'hostwph')), 'otros' => esc_html(__('Other', 'hostwph')),];
 	}
 
 	public static function relationships() {
 		// HOSTWPH_Data::relationships();
-	 return ['ab' => esc_html(__('Grandfather/Grandmother', 'hostwph')), 'ba' => esc_html(__('Great-Grandfather/Grandmother', 'hostwph')), 'bn' => esc_html(__('Great-Grandson/Granddaughter', 'hostwph')), 'cd' => esc_html(__('Brother/Sister-in-Law', 'hostwph')), 'cy' => esc_html(__('Spouse', 'hostwph')), 'hj' => esc_html(__('Son/Sister-in-Law', 'hostwph')), 'hr' => esc_html(__('Brother/Sister-in-Law', 'hostwph')), 'ni' => esc_html(__('Grandson/Granddaughter', 'hostwph')), 'pm' => esc_html(__('Father or Mother', 'hostwph')), 'sb' => esc_html(__('Nephew/Nephew', 'hostwph')), 'sg' => esc_html(__('Father-in-Law', 'hostwph')), 'ti' => esc_html(__('Uncle/Uncle', 'hostwph')), 'yn' => esc_html(__('Son-in-Law or Daughter-in-Law', 'hostwph')), 'tu' => esc_html(__('Guardian', 'hostwph')), 'ot' => esc_html(__('Other', 'hostwph')),];
+	 return ['ab' => esc_html(__('Grandfather / Grandmother', 'hostwph')), 'ba' => esc_html(__('Great-Grandfather / Great-Grandmother', 'hostwph')), 'bn' => esc_html(__('Great-Grandson / Great-Granddaughter', 'hostwph')), 'cd' => esc_html(__('Brother', 'hostwph')), 'cy' => esc_html(__('Spouse', 'hostwph')), 'hj' => esc_html(__('Son', 'hostwph')), 'hr' => esc_html(__('Brother', 'hostwph')), 'ni' => esc_html(__('Grandson / Granddaughter', 'hostwph')), 'pm' => esc_html(__('Father / Mother', 'hostwph')), 'sb' => esc_html(__('Nephew', 'hostwph')), 'sg' => esc_html(__('Father-in-Law', 'hostwph')), 'ti' => esc_html(__('Uncle', 'hostwph')), 'yn' => esc_html(__('Son-in-Law / Daughter-in-Law', 'hostwph')), 'tu' => esc_html(__('Guardian', 'hostwph')), 'ot' => esc_html(__('Other', 'hostwph')),];
 	}
 }

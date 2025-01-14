@@ -5,17 +5,17 @@
  *
  * This file is read by WordPress to generate the plugin information in the plugin admin area. This file also includes all of the dependencies used by the plugin, registers the activation and deactivation functions, and defines a function that starts the plugin.
  *
- * @link              wordpress-heroes.com/
+ * @link              padresenlanube.com/
  * @since             1.0.0
  * @package           HOSTWPH
  *
  * @wordpress-plugin
  * Plugin Name:       Hospedajes España - WPH
- * Plugin URI:        https://wordpress-heroes.com/plugins/hostwph/
+ * Plugin URI:        https://padresenlanube.com/plugins/hostwph/
  * Description:       Allow you to require, save and send the information required by spanish Royal Decree 933/2021, of October 26.
  * Version:           1.0.0
- * Author:            Wordpress-Heroes
- * Author URI:        https://wordpress-heroes.com/
+ * Author:            Padres en la Nube
+ * Author URI:        https://padresenlanube.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       hostwph
@@ -32,7 +32,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('HOSTWPH_VERSION', '1.0.56');
+define('HOSTWPH_VERSION', '1.0.75');
 
 /**
  * The code that runs during plugin activation.

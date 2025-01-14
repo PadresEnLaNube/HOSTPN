@@ -6,11 +6,11 @@
  *
  * Also maintains the unique identifier of this plugin as well as the current version of the plugin.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 
 class HOSTWPH {
@@ -52,7 +52,7 @@ class HOSTWPH {
 		if (defined('HOSTWPH_VERSION')) {
 			$this->version = HOSTWPH_VERSION;
 		} else {
-			$this->version = '1.0.56';
+			$this->version = '1.0.75';
 		}
 
 		$this->plugin_name = 'hostwph';
@@ -98,7 +98,7 @@ class HOSTWPH {
 	 * - HOSTWPH_Admin. Defines all hooks for the admin area.
 	 * - HOSTWPH_Public. Defines all hooks for the public side of the site.
 	 * - HOSTWPH_Post_Type_Guest. Defines Guest custom post type.
-	 * - HOSTWPH_Post_Type_Accomodation. Defines Accomodation custom post type.
+	 * - HOSTWPH_Post_Type_Accommodation. Defines Accommodation custom post type.
 	 * - HOSTWPH_Post_Type_Part. Defines Part custom post type.
 	 * - HOSTWPH_Taxonomies_Host. Defines Guest taxonomies.
 	 * - HOSTWPH_Templates. Load plugin templates.
@@ -144,14 +144,14 @@ class HOSTWPH {
 		require_once HOSTWPH_DIR . 'includes/public/class-hostwph-public.php';
 
 		/**
-		 * The class responsible for create the Accomodation custom post type.
+		 * The class responsible for create the Accommodation custom post type.
 		 */
-		require_once HOSTWPH_DIR . 'includes/class-hostwph-post-type-accomodation.php';
+		require_once HOSTWPH_DIR . 'includes/class-hostwph-post-type-accommodation.php';
 
 		/**
-		 * The class responsible for create the Accomodation custom taxonomies.
+		 * The class responsible for create the Accommodation custom taxonomies.
 		 */
-		require_once HOSTWPH_DIR . 'includes/class-hostwph-taxonomies-accomodation.php';
+		require_once HOSTWPH_DIR . 'includes/class-hostwph-taxonomies-accommodation.php';
 
 		/**
 		 * The class responsible for create the Part of traveler custom post type.
@@ -209,6 +209,11 @@ class HOSTWPH {
 		require_once HOSTWPH_DIR . 'includes/class-hostwph-forms.php';
 
 		/**
+		 * The class defining XML management.
+		 */
+		require_once HOSTWPH_DIR . 'includes/class-hostwph-xml.php';
+
+		/**
 		 * The class defining ajax functions.
 		 */
 		require_once HOSTWPH_DIR . 'includes/class-hostwph-ajax.php';
@@ -257,8 +262,8 @@ class HOSTWPH {
 		$this->loader->add_action('admin_enqueue_scripts', $plugin_common, 'enqueue_scripts');
 		$this->loader->add_filter('body_class', $plugin_common, 'hostwph_body_classes');
 
-		$plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-		$this->loader->add_action('hostwph_form_save', $plugin_post_type_accomodation, 'hostwph_form_save', 5, 999);
+		$plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+		$this->loader->add_action('hostwph_form_save', $plugin_post_type_accommodation, 'hostwph_form_save', 5, 999);
 
 		$plugin_post_type_part = new HOSTWPH_Post_Type_Part();
 		$this->loader->add_action('hostwph_form_save', $plugin_post_type_part, 'hostwph_form_save', 5, 999);
@@ -268,6 +273,7 @@ class HOSTWPH {
 
 		$plugin_user = new HOSTWPH_Functions_User();
 		$this->loader->add_filter('userswph_register_fields', $plugin_user, 'userswph_wph_register_fields', 10, 2);
+		$this->loader->add_action('user_register', $plugin_user, 'hostwph_user_register', 11, 1);
 	}
 
 	/**
@@ -310,11 +316,11 @@ class HOSTWPH {
 		$this->loader->add_action('save_post_hostwph_part', $plugin_post_type_part, 'save_post', 10, 3);
 		$this->loader->add_shortcode('hostwph-part-list', $plugin_post_type_part, 'list_wrapper');
 	
-		$plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-		$this->loader->add_action('init', $plugin_post_type_accomodation, 'register_post_type');
-		$this->loader->add_action('admin_init', $plugin_post_type_accomodation, 'add_meta_box');
-		$this->loader->add_action('save_post_hostwph_accomodation', $plugin_post_type_accomodation, 'save_post', 10, 3);
-		$this->loader->add_shortcode('hostwph-accomodation-list', $plugin_post_type_accomodation, 'list_wrapper');
+		$plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+		$this->loader->add_action('init', $plugin_post_type_accommodation, 'register_post_type');
+		$this->loader->add_action('admin_init', $plugin_post_type_accommodation, 'add_meta_box');
+		$this->loader->add_action('save_post_hostwph_accommodation', $plugin_post_type_accommodation, 'save_post', 10, 3);
+		$this->loader->add_shortcode('hostwph-accommodation-list', $plugin_post_type_accommodation, 'list_wrapper');
 
 		$plugin_post_type_guest = new HOSTWPH_Post_Type_Guest();
 		$this->loader->add_action('init', $plugin_post_type_guest, 'register_post_type');
@@ -351,6 +357,10 @@ class HOSTWPH {
 
 		$this->loader->add_action('wp_footer', $plugin_data, 'flush_rewrite_rules');
 		$this->loader->add_action('admin_footer', $plugin_data, 'flush_rewrite_rules');
+		
+		$plugin_user = new HOSTWPH_Functions_User();
+		$this->loader->add_action('wp_footer', $plugin_user, 'hostwph_user_to_guest');
+		$this->loader->add_action('admin_footer', $plugin_user, 'hostwph_user_to_guest');
 	}
 
 	/**
@@ -411,9 +421,6 @@ class HOSTWPH {
 	 */
 	private function load_shortcodes() {
 		$plugin_shortcodes = new HOSTWPH_Shortcodes();
-		$this->loader->add_shortcode('hostwph-accomodation', $plugin_shortcodes, 'hostwph_accomodation');
-		$this->loader->add_shortcode('hostwph-part', $plugin_shortcodes, 'hostwph_part');
-		$this->loader->add_shortcode('hostwph-guest', $plugin_shortcodes, 'hostwph_guest');
 		$this->loader->add_shortcode('hostwph-navigation', $plugin_shortcodes, 'hostwph_navigation');
 		$this->loader->add_shortcode('hostwph-call-to-action', $plugin_shortcodes, 'hostwph_call_to_action');
 	}

@@ -4,395 +4,228 @@
  *
  * This class defines Guest options, menus and templates.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Post_Type_Guest {
-  public function get_fields($guest_id = 0) {
+  public function get_fields($guest_id = 0) {    
     $hostwph_fields = [];
+      $hostwph_fields['hostwph_name'] = [
+        'id' => 'hostwph_name',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'required' => true,
+        'label' => __('Guest name', 'hostwph'),
+        'placeholder' => __('Guest name', 'hostwph'),
+      ];
+      $hostwph_fields['hostwph_surname'] = [
+        'id' => 'hostwph_surname',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'required' => true,
+        'label' => __('Guest surname', 'hostwph'),
+        'placeholder' => __('Guest surname', 'hostwph'),
+      ];
+      $hostwph_fields['hostwph_surname_alt'] = [
+        'id' => 'hostwph_surname_alt',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'xml' => 'apellido2',
+        'label' => esc_html(__('Guest second surname', 'hostwph')),
+        'placeholder' => esc_html(__('Guest second surname', 'hostwph')),
+      ];
       $hostwph_fields['hostwph_title'] = [
         'id' => 'hostwph_title',
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
-        'type' => 'text',
-        'required' => true,
-        'value' => !empty($guest_id) ? get_the_title($guest_id) : gmdate('Y-m-d H:i:s', current_time('timestamp')),
-        'label' => __('Part title', 'hostwph'),
-        'placeholder' => __('Part title', 'hostwph'),
-        'description' => __('This title will help you to remind and find this host in the future', 'hostwph'),
+        'type' => 'hidden',
+        'value' => gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4)),
       ];
       $hostwph_fields['hostwph_description'] = [
         'id' => 'hostwph_description',
         'class' => 'hostwph-input hostwph-width-100-percent',
-        'value' => !empty($guest_id) ? (str_replace(']]>', ']]&gt;', apply_filters('the_content', get_post($guest_id)->post_content))) : '',
         'input' => 'textarea',
-        'label' => __('Part description', 'hostwph'),
+        'required' => true,
+        'value' => __('Special needs, allergies, important situations to highlight...', 'hostwph'),
+        'label' => __('Guest description', 'hostwph'),
+        'placeholder' => __('Guest description', 'hostwph'),
+        'description' => __('You can share relevant information related to this guest. Special needs, allergies, important situations to highlight...', 'hostwph'),
       ];
     return $hostwph_fields;
   }
 
-  public function get_fields_meta_OLD() {
-    $accomodation_id = !empty($_GET['hostwph_accomodation_id']) ? HOSTWPH_Forms::sanitizer($_GET['hostwph_accomodation_id']) : '';
+  public function get_fields_meta($guest_id = 0) {
+    $relationships = HOSTWPH_Data::relationships();
+    
     $hostwph_fields_meta = [];
-
-    $hostwph_fields_meta = [];
-      $posts_atts = [
-        'fields' => 'ids',
-        'numberposts' => -1,
-        'post_type' => 'hostwph_accomodation',
-        'post_status' => 'any', 
-      ];
-      
-      if (class_exists('Polylang')) {
-        $posts_atts['lang'] = pll_current_language('slug');
-      }
-
-      $accomodations = get_posts($posts_atts);
-      
-      if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
-        $hostwph_accomodation_options = [];
-        
-        foreach ($accomodations as $accomodation_id) {
-          $hostwph_accomodation_options[$accomodation_id] = esc_html(get_the_title($accomodation_id));
-        }
-
-        $hostwph_fields_meta['hostwph_accomodation_id'] = [
-          'id' => 'hostwph_accomodation_id',
-          'class' => 'hostwph-select hostwph-width-100-percent',
-          'input' => 'select',
-          'options' => $hostwph_accomodation_options,
-          'required' => true,
-          'label' => __('Accomodation', 'hostwph'),
-          'placeholder' => __('Accomodation', 'hostwph'),
-        ];
-
-        $hostwph_page_accomodation = !empty(get_option('hostwph_pages_accomodation')) ? get_option('hostwph_pages_accomodation')[0] : url_to_postid(home_url());
-
-        $hostwph_fields_meta['hostwph_accomodation_add'] = [
-          'id' => 'hostwph_accomodation_add',
-          'input' => 'html',
-          'html_content' => '<div class="hostwph-width-100-percent hostwph-text-align-right hostwph-mb-20"><a class="hostwph-font-size-small" href="' . esc_url(get_permalink($hostwph_page_accomodation)) . '"><i class="material-icons-outlined hostwph-vertical-align-middle">add</i>' . esc_html(__('Add accomodation', 'hostwph')) . '</a></div>',
-        ];
-      }else{
-        $current_accomodation_id = !empty($accomodation_id) ? $accomodation_id : $accomodations[0];
-
-        $hostwph_fields_meta['hostwph_accomodation_id'] = [
-          'id' => 'hostwph_accomodation_id',
-          'class' => 'hostwph-input hostwph-width-100-percent',
-          'input' => 'input',
-          'type' => 'hidden',
-          'value' => $current_accomodation_id,
-        ];
-      }
-
-
-      $hostwph_people_options = [];
-      if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
-        $users_atts = [
-          'fields' => 'ids',
-          'number' => -1,
-          'orderby' => 'display_name', 
-          'order' => 'ASC',
-        ];
-      }else{
-        $users_atts = [
-          'fields' => 'ids',
-          'number' => -1,
-          'meta_key' => 'hostwph_contract_holder', 
-          'meta_value' => get_current_user_id(),
-          'meta_compare' => '=',
-          'orderby' => 'display_name', 
-          'order' => 'ASC',
-        ];
-      }
-
-      foreach (get_users($users_atts) as $user_id) {
-        $hostwph_people_options[$user_id] = HOSTWPH_Functions_User::get_user_name($user_id);
-      }
-
-      $hostwph_fields_meta['hostwph_people'] = [
-        'id' => 'hostwph_people',
+      $hostwph_fields_meta['hostwph_identity'] = [
+        'id' => 'hostwph_identity',
         'class' => 'hostwph-select hostwph-width-100-percent',
         'input' => 'select',
-        'options' => $hostwph_people_options,
-        'multiple' => true,
+        'parent' => 'this',
         'required' => true,
-        'xml' => 'persona',
-        'label' => __('People hosted', 'hostwph'),
-        'placeholder' => __('People hosted', 'hostwph'),
+        'options' => ['nif' => esc_html(__('NIF', 'hostwph')), 'nie' => esc_html(__('NIE', 'hostwph')), 'pas' => esc_html(__('PAS', 'hostwph')), 'cif' => esc_html(__('CIF', 'hostwph')), 'otro' => esc_html(__('OTRO', 'hostwph'))],
+        'xml' => 'tipoDocumento',
+        'label' => esc_html(__('Document type', 'hostwph')),
+        'placeholder' => esc_html(__('Document type', 'hostwph')),
       ];
-
-      $hostwph_fields_meta['hostwph_people_add'] = [
-        'id' => 'hostwph_people_add',
-        'input' => 'html',
-        'html_content' => '<div class="hostwph-width-100-percent hostwph-text-align-right hostwph-mb-20"><a class="hostwph-font-size-small" href="' . esc_url(get_permalink($hostwph_page_accomodation)) . '"><i class="material-icons-outlined hostwph-vertical-align-middle">add</i>' . esc_html(__('Add guest', 'hostwph')) . '</a></div>',
+      $hostwph_fields_meta['hostwph_identity_number'] = [
+        'id' => 'hostwph_identity_number',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'required' => true,
+        'xml' => 'numeroDocumento',
+        'label' => esc_html(__('Document number', 'hostwph')),
+        'placeholder' => esc_html(__('Document number', 'hostwph')),
       ];
-
-      $hostwph_fields_meta['hostwph_contract_holder'] = [
-        'id' => 'hostwph_contract_holder',
+      $hostwph_fields_meta['hostwph_identity_support_number'] = [
+        'id' => 'hostwph_identity_support_number',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'xml' => 'soporteDocumento',
+        'label' => esc_html(__('Document support number', 'hostwph')),
+        'placeholder' => esc_html(__('Document support number', 'hostwph')),
+      ];
+      $hostwph_fields_meta['hostwph_birthdate'] = [
+        'id' => 'hostwph_birthdate',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'date',
+        'required' => true,
+        'xml' => 'fechaNacimiento',
+        'label' => esc_html(__('Birthdate', 'hostwph')),
+        'placeholder' => esc_html(__('Birthdate', 'hostwph')),
+      ];
+      $hostwph_fields_meta['hostwph_nationality'] = [
+        'id' => 'hostwph_nationality',
         'class' => 'hostwph-select hostwph-width-100-percent',
         'input' => 'select',
-        'options' => $hostwph_people_options,
+        'options' => HOSTWPH_Data::countries(),
         'required' => true,
-        'xml' => 'rol',
-        'label' => __('Contract holder', 'hostwph'),
-        'placeholder' => __('Contract holder', 'hostwph'),
+        'xml' => 'fechaNacimiento',
+        'label' => esc_html(__('Nationality', 'hostwph')),
+        'placeholder' => esc_html(__('Nationality', 'hostwph')),
       ];
-
-      $hostwph_fields_meta['hostwph_date'] = [
-        'id' => 'hostwph_date',
+      $hostwph_fields_meta['hostwph_gender'] = [
+        'id' => 'hostwph_gender',
+        'class' => 'hostwph-select hostwph-width-100-percent',
+        'input' => 'select',
+        'options' => ['h' => esc_html(__('Male', 'hostwph')), 'm' => esc_html(__('Female', 'hostwph')), 'o' => esc_html(__('Other', 'hostwph'))],
+        'required' => true,
+        'xml' => 'sexo',
+        'label' => esc_html(__('Gender', 'hostwph')),
+        'placeholder' => esc_html(__('Gender', 'hostwph')),
+      ];
+      $hostwph_fields_meta['hostwph_address'] = [
+        'id' => 'hostwph_address',
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
-        'type' => 'date',
+        'type' => 'text',
         'required' => true,
-        'xml' => 'fechaContrato',
-        'label' => __('Contract date', 'hostwph'),
-        'placeholder' => __('Contract date', 'hostwph'),
+        'xml' => 'direccion',
+        'label' => esc_html(__('Address', 'hostwph')),
+        'placeholder' => esc_html(__('Address', 'hostwph')),
       ];
-      $hostwph_fields_meta['hostwph_time'] = [
-        'id' => 'hostwph_time',
+      $hostwph_fields_meta['hostwph_address_alt'] = [
+        'id' => 'hostwph_address_alt',
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
-        'type' => 'time',
-        'required' => true,
-        'label' => __('Contract time', 'hostwph'),
-        'placeholder' => __('Contract time', 'hostwph'),
+        'type' => 'text',
+        'xml' => 'direccionComplementaria',
+        'label' => esc_html(__('Address complementary information', 'hostwph')),
+        'placeholder' => esc_html(__('Address complementary information', 'hostwph')),
       ];
-      $hostwph_fields_meta['hostwph_check_in_date'] = [
-        'id' => 'hostwph_check_in_date',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
+      $hostwph_fields_meta['hostwph_country'] = [
+        'id' => 'hostwph_country',
+        'class' => 'hostwph-select hostwph-width-100-percent',
+        'input' => 'select',
+        'options' => HOSTWPH_Data::countries(),
+        'parent' => 'this',
         'required' => true,
-        'xml' => 'fechaEntrada',
-        'label' => __('Check-in date', 'hostwph'),
-        'placeholder' => __('Check-in date', 'hostwph'),
+        'xml' => 'pais',
+        'label' => esc_html(__('Country', 'hostwph')),
+        'placeholder' => esc_html(__('Country', 'hostwph')),
       ];
-      $hostwph_fields_meta['hostwph_check_in_time'] = [
-        'id' => 'hostwph_check_in_time',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'time',
-        'required' => true,
-        'label' => __('Check-in time', 'hostwph'),
-        'placeholder' => __('Check-in time', 'hostwph'),
-      ];
-      $hostwph_fields_meta['hostwph_check_out_date'] = [
-        'id' => 'hostwph_check_out_date',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
-        'required' => true,
-        'xml' => 'fechaSalida',
-        'label' => __('Check-out date', 'hostwph'),
-        'placeholder' => __('Check-out date', 'hostwph'),
-      ];
-      $hostwph_fields_meta['hostwph_check_out_time'] = [
-        'id' => 'hostwph_check_out_time',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'time',
-        'required' => true,
-        'label' => __('Check-out time', 'hostwph'),
-        'placeholder' => __('Check-out time', 'hostwph'),
-      ];
-      $hostwph_fields_meta['hostwph_people_number'] = [
-        'id' => 'hostwph_people_number',
+      $hostwph_fields_meta['hostwph_postal_code'] = [
+        'id' => 'hostwph_postal_code',
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'number',
-        'required' => true,
-        'xml' => 'numPersonas',
-        'label' => __('People', 'hostwph'),
-        'placeholder' => __('People', 'hostwph'),
+        'parent' => 'hostwph_country',
+        'parent_option' => 'es',
+        'xml' => 'codigoMunicipio',
+        'label' => esc_html(__('Postal code', 'hostwph')),
+        'placeholder' => esc_html(__('Postal code', 'hostwph')),
       ];
-      $hostwph_fields_meta['hostwph_rooms'] = [
-        'id' => 'hostwph_rooms',
+      $hostwph_fields_meta['hostwph_city'] = [
+        'id' => 'hostwph_city',
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
-        'type' => 'number',
+        'type' => 'text',
         'required' => true,
-        'xml' => 'numHabitaciones',
-        'label' => __('Number of rooms', 'hostwph'),
-        'placeholder' => __('Number of rooms', 'hostwph'),
+        'xml' => 'nombreMunicipio',
+        'label' => esc_html(__('City', 'hostwph')),
+        'placeholder' => esc_html(__('City', 'hostwph')),
       ];
-      $hostwph_fields_meta['hostwph_internet'] = [
-        'id' => 'hostwph_internet',
+      $hostwph_fields_meta['hostwph_phone'] = [
+        'id' => 'hostwph_phone',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'required' => true,
+        'xml' => 'telefono',
+        'label' => esc_html(__('Phone', 'hostwph')),
+        'placeholder' => esc_html(__('Phone', 'hostwph')),
+      ];
+      $hostwph_fields_meta['hostwph_phone_alt'] = [
+        'id' => 'hostwph_phone_alt',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'xml' => 'telefono2',
+        'label' => esc_html(__('Alternative phone', 'hostwph')),
+        'placeholder' => esc_html(__('Alternative phone', 'hostwph')),
+      ];
+      $hostwph_fields_meta['hostwph_email'] = [
+        'id' => 'hostwph_email',
+        'class' => 'hostwph-input hostwph-width-100-percent',
+        'input' => 'input',
+        'type' => 'email',
+        'required' => true,
+        'xml' => 'correo',
+        'label' => esc_html(__('Email', 'hostwph')),
+        'placeholder' => esc_html(__('Email', 'hostwph')),
+      ];
+      $hostwph_fields_meta['hostwph_contract_holder_check'] = [
+        'id' => 'hostwph_contract_holder_check',
         'class' => 'hostwph-input hostwph-width-100-percent',
         'input' => 'input',
         'type' => 'checkbox',
-        'xml' => 'internet',
-        'label' => __('Internet available', 'hostwph'),
-        'placeholder' => __('Internet available', 'hostwph'),
-      ];
-
-      $payment_type_options = ['EFECT' => esc_html(__('Cash', 'hostwph')), 'TARJT' => esc_html(__('Credit card', 'hostwph')), 'PLATF' => esc_html(__('Payment platform', 'hostwph')), 'TRANS' => esc_html(__('Transfer', 'hostwph')), 'MOVIL' => esc_html(__('Mobile payment', 'hostwph')), 'TREG' => esc_html(__('Gift card', 'hostwph')), 'DESTI' => esc_html(__('Payment at destination', 'hostwph')), 'OTRO' => esc_html(__('Other payment methods', 'hostwph')), ];
-
-      $hostwph_fields_meta['hostwph_payment_type'] = [
-        'id' => 'hostwph_payment_type',
-        'class' => 'hostwph-select hostwph-width-100-percent',
-        'input' => 'select',
-        'options' => $payment_type_options,
         'parent' => 'this',
-        'xml' => 'tipoPago',
-        'label' => __('Payment type', 'hostwph'),
-        'placeholder' => __('Payment type', 'hostwph'),
+        'label' => esc_html(__('I´m not the holder of the contract', 'hostwph')),
+        'placeholder' => esc_html(__('I´m not the holder of the contract', 'hostwph')),
       ];
-      $hostwph_fields_meta['hostwph_payment_expiration'] = [
-        'id' => 'hostwph_payment_expiration',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'parent' => 'hostwph_payment_type',
-        'parent_option' => 'TARJT',
-        'type' => 'month',
-        'xml' => 'caducidadTarjeta',
-        'label' => __('Card expiration date', 'hostwph'),
-        'placeholder' => __('Card expiration date', 'hostwph'),
-        'description' => __('Expiration date of the card.', 'hostwph'),
-      ];
-      $hostwph_fields_meta['hostwph_payment_date'] = [
-        'id' => 'hostwph_payment_date',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
-        'xml' => 'fechaPago',
-        'label' => __('Payment date', 'hostwph'),
-        'placeholder' => __('Payment date', 'hostwph'),
-      ];
-      $hostwph_fields_meta['hostwph_payment_method'] = [
-        'id' => 'hostwph_payment_method',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'text',
-        'xml' => 'medioPago',
-        'label' => __('Payment method', 'hostwph'),
-        'placeholder' => __('Payment method', 'hostwph'),
-        'description' => __('Payment method identification: card type and number, bank account IBAN, mobile number, etc.', 'hostwph'),
-      ];
-      $hostwph_fields_meta['hostwph_payment_holder'] = [
-        'id' => 'hostwph_payment_holder',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'text',
-        'required' => true,
-        'xml' => 'titular',
-        'label' => __('Payment holder', 'hostwph'),
-        'placeholder' => __('Payment holder', 'hostwph'),
-        'description' => __('Name and surname of the holder of the payment.', 'hostwph'),
-      ];
-
-      $hostwph_fields_meta['hostwph_nonce'] = [
-        'id' => 'hostwph_nonce',
-        'input' => 'input',
-        'type' => 'nonce',
-        'xml' => '',
-      ];
-    return $hostwph_fields_meta;
-  }
-
-  public function get_fields_meta() {
-    $hostwph_fields_meta = [];
-
-    $hostwph_fields_meta = [];
-      $hostwph_fields_meta['hostwph_test'] = [
-        'id' => 'hostwph_test',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'text',
-        'label' => __('test hosted', 'hostwph'),
-        'placeholder' => __('test hosted', 'hostwph'),
-      ];
-
-
-      $hostwph_fields_meta['hostwph_nonce'] = [
-        'id' => 'hostwph_nonce',
-        'input' => 'input',
-        'type' => 'nonce',
-        'xml' => '',
-      ];
-    return $hostwph_fields_meta;
-  }
-
-  public function get_fields_check($guest_id) {
-    $hostwph_fields_check = [];
-      $hostwph_fields_check['hostwph_accomplish_date'] = [
-        'id' => 'hostwph_accomplish_date',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
-        'value' => date('Y-m-d', strtotime('now')),
-        'required' => 'true',
-        'label' => __('Host accomplish date', 'hostwph'),
-        'placeholder' => __('Host accomplish date', 'hostwph'),
-      ];
-      $hostwph_fields_check['hostwph_accomplish_time'] = [
-        'id' => 'hostwph_accomplish_time',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'time',
-        'value' => date('H:i', strtotime('now')),
-        'label' => __('Host accomplish time', 'hostwph'),
-        'placeholder' => __('Host accomplish time', 'hostwph'),
-      ];
-
-      $hostwph_owners_checkbox = get_post_meta($guest_id, 'hostwph_owners_checkbox', true);
-      $hostwph_timed_expected = get_post_meta($guest_id, 'hostwph_timed_expected', true);
-      $hostwph_timed_checkbox = get_post_meta($guest_id, 'hostwph_timed_checkbox', true);
-      $hostwph_comments_checkbox = get_post_meta($guest_id, 'hostwph_comments_checkbox', true);
-
-      if ($hostwph_owners_checkbox == 'on') {
-        $hostwph_guest_responsible_options = [];
-        $hostwph_guest_owners = get_post_meta($guest_id, 'hostwph_owners', true);
-        if (!empty($hostwph_guest_owners)) {
-          foreach ($hostwph_guest_owners as $owner_id) {
-            $hostwph_guest_responsible_options[$owner_id] = HOSTWPH_Functions_User::get_user_name($owner_id);
-          }
-        }
-
-        $hostwph_fields_check['hostwph_responsible'] = [
-          'id' => 'hostwph_responsible',
+        $hostwph_fields_meta['hostwph_relationship'] = [
+          'id' => 'hostwph_relationship',
           'class' => 'hostwph-select hostwph-width-100-percent',
           'input' => 'select',
-          'options' => $hostwph_guest_responsible_options,
-          'label' => __('Host accomplished by', 'hostwph'),
-          'placeholder' => __('Select contact', 'hostwph'),
+          'options' => $relationships,
+          'parent' => 'hostwph_contract_holder_check',
+          'parent_option' => 'on',
+          'xml' => 'parentesco',
+          'label' => esc_html(__('Relationship', 'hostwph')),
+          'placeholder' => esc_html(__('Relationship', 'hostwph')),
         ];
-      }
 
-      if ($hostwph_timed_checkbox == 'on') {
-        $hostwph_fields_check['hostwph_time_spent'] = [
-          'id' => 'hostwph_time_spent',
-          'class' => 'hostwph-input hostwph-width-100-percent',
-          'input' => 'input',
-          'type' => 'time',
-          'label' => __('Time spent (Hours:Minutes)', 'hostwph'),
-          'description' => (!empty($hostwph_timed_expected)) ? __('The estimated time was', 'hostwph') . ' ' . $hostwph_timed_expected : esc_html(__('This Guest was not timed.', 'hostwph')),
-          'placeholder' => __('Time spent (Hours:Minutes)', 'hostwph'),
-        ];
-      }
-
-      if ($hostwph_comments_checkbox == 'on') {
-        $hostwph_fields_check['hostwph_comments'] = [
-          'id' => 'hostwph_comments',
-          'class' => 'hostwph-input hostwph-width-100-percent',
-          'input' => 'textarea',
-          'label' => __('Host comments', 'hostwph'),
-          'placeholder' => __('Host comments', 'hostwph'),
-        ];
-      }
-
-      $hostwph_fields_check['hostwph_user_id'] = [
-        'id' => 'hostwph_user_id',
-        'class' => 'hostwph-input hostwph-width-100-percent',
-        'input' => 'input',
-        'type' => 'hidden',
-        'value' => get_current_user_id(),
-      ];
-
-    return $hostwph_fields_check;
+    return $hostwph_fields_meta;
   }
 
   /**
@@ -402,8 +235,8 @@ class HOSTWPH_Post_Type_Guest {
    */
   public function register_post_type() {
     $labels = [
-      'name'                => _x('Host', 'Post Type general name', 'hostwph'),
-      'singular_name'       => _x('Host', 'Post Type singular name', 'hostwph'),
+      'name'                => _x('Guest', 'Post Type general name', 'hostwph'),
+      'singular_name'       => _x('Guest', 'Post Type singular name', 'hostwph'),
       'menu_name'           => esc_html(__('Guests', 'hostwph')),
       'parent_item_colon'   => esc_html(__('Parent Guest', 'hostwph')),
       'all_items'           => esc_html(__('All Guests', 'hostwph')),
@@ -420,8 +253,8 @@ class HOSTWPH_Post_Type_Guest {
     $args = [
       'labels'              => $labels,
       'rewrite'             => ['slug' => (!empty(get_option('hostwph')) ? get_option('hostwph') : 'hostwph'), 'with_front' => false],
-      'label'               => esc_html(__('Host', 'hostwph')),
-      'description'         => esc_html(__('Host description', 'hostwph')),
+      'label'               => esc_html(__('Guest', 'hostwph')),
+      'description'         => esc_html(__('Guest description', 'hostwph')),
       'supports'            => ['title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'page-attributes', ],
       'hierarchical'        => true,
       'public'              => false,
@@ -450,7 +283,7 @@ class HOSTWPH_Post_Type_Guest {
    * @since    1.0.0
    */
   public function add_meta_box() {
-    add_meta_box('hostwph_meta_box', esc_html(__('Host details', 'hostwph')), [$this, 'hostwph_meta_box_function'], 'hostwph_guest', 'normal', 'high', ['__block_editor_compatible_meta_box' => true,]);
+    add_meta_box('hostwph_meta_box', esc_html(__('Guest details', 'hostwph')), [$this, 'hostwph_meta_box_function'], 'hostwph_guest', 'normal', 'high', ['__block_editor_compatible_meta_box' => true,]);
   }
 
   /**
@@ -462,36 +295,10 @@ class HOSTWPH_Post_Type_Guest {
     foreach (self::get_fields() as $hostwph_field) {
       HOSTWPH_Forms::input_wrapper_builder($hostwph_field, 'post', $post->ID);
     }
-  }
 
-  /**
-   * Defines single template for Guest.
-   *
-   * @since    1.0.0
-   */
-  public function single_template($single) {
-    if (get_post_type() == 'hostwph_guest') {
-      if (file_exists(HOSTWPH_DIR . 'templates/public/single-hostwph_guest.php')) {
-        return HOSTWPH_DIR . 'templates/public/single-hostwph_guest.php';
-      }
+    foreach (self::get_fields_meta() as $hostwph_field_meta) {
+      HOSTWPH_Forms::input_wrapper_builder($hostwph_field_meta, 'post', $post->ID);
     }
-
-    return $single;
-  }
-
-  /**
-   * Defines archive template for Guest.
-   *
-   * @since    1.0.0
-   */
-  public function archive_template($archive) {
-    if (get_post_type() == 'hostwph_guest') {
-      if (file_exists(HOSTWPH_DIR . 'templates/public/archive-hostwph_guest.php')) {
-        return HOSTWPH_DIR . 'templates/public/archive-hostwph_guest.php';
-      }
-    }
-
-    return $archive;
   }
 
   public function save_post($post_id, $cpt, $update) {
@@ -499,71 +306,73 @@ class HOSTWPH_Post_Type_Guest {
       echo wp_json_encode(['error_key' => 'hostwph_nonce_error', ]);exit();
     }
 
-    foreach (self::get_fields() as $wph_field) {
-      $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
+    if (!array_key_exists('hostwph_duplicate', $_POST)) {
+      foreach (self::get_fields() as $wph_field) {
+        $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
 
-      if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
-        $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTWPH_Forms::sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
+        if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
+          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTWPH_Forms::sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
 
-        if (!empty($wph_input)) {
-          switch ($wph_input) {
-            case 'input':
-              if (array_key_exists('type', $wph_field) && $wph_field['type'] == 'checkbox') {
-                if (isset($_POST[$wph_field['id']])) {
-                  update_post_meta($post_id, $wph_field['id'], $wph_value);
+          if (!empty($wph_input)) {
+            switch ($wph_input) {
+              case 'input':
+                if (array_key_exists('type', $wph_field) && $wph_field['type'] == 'checkbox') {
+                  if (isset($_POST[$wph_field['id']])) {
+                    update_post_meta($post_id, $wph_field['id'], $wph_value);
+                  }else{
+                    update_post_meta($post_id, $wph_field['id'], '');
+                  }
                 }else{
-                  update_post_meta($post_id, $wph_field['id'], '');
-                }
-              }else{
-                update_post_meta($post_id, $wph_field['id'], $wph_value);
-              }
-
-              break;
-            case 'select':
-              if (array_key_exists('multiple', $wph_field) && $wph_field['multiple']) {
-                $multi_array = [];
-                $empty = true;
-
-                foreach ($_POST[$wph_field['id']] as $multi_value) {
-                  $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                  update_post_meta($post_id, $wph_field['id'], $wph_value);
                 }
 
-                update_post_meta($post_id, $wph_field['id'], $multi_array);
-              }else{
-                update_post_meta($post_id, $wph_field['id'], $wph_value);
-              }
-              
-              break;
-            case 'html_multi':
-              foreach ($wph_field['html_multi_fields'] as $wph_multi_field) {
-                if (array_key_exists($wph_multi_field['id'], $_POST)) {
+                break;
+              case 'select':
+                if (array_key_exists('multiple', $wph_field) && $wph_field['multiple']) {
                   $multi_array = [];
                   $empty = true;
 
-                  foreach ($_POST[$wph_multi_field['id']] as $multi_value) {
-                    if (!empty($multi_value)) {
-                      $empty = false;
+                  foreach ($_POST[$wph_field['id']] as $multi_value) {
+                    $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                  }
+
+                  update_post_meta($post_id, $wph_field['id'], $multi_array);
+                }else{
+                  update_post_meta($post_id, $wph_field['id'], $wph_value);
+                }
+                
+                break;
+              case 'html_multi':
+                foreach ($wph_field['html_multi_fields'] as $wph_multi_field) {
+                  if (array_key_exists($wph_multi_field['id'], $_POST)) {
+                    $multi_array = [];
+                    $empty = true;
+
+                    foreach ($_POST[$wph_multi_field['id']] as $multi_value) {
+                      if (!empty($multi_value)) {
+                        $empty = false;
+                      }
+
+                      $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
                     }
 
-                    $multi_array[] = HOSTWPH_Forms::sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
-                  }
-
-                  if (!$empty) {
-                    update_post_meta($post_id, $wph_multi_field['id'], $multi_array);
-                  }else{
-                    update_post_meta($post_id, $wph_multi_field['id'], '');
+                    if (!$empty) {
+                      update_post_meta($post_id, $wph_multi_field['id'], $multi_array);
+                    }else{
+                      update_post_meta($post_id, $wph_multi_field['id'], '');
+                    }
                   }
                 }
-              }
 
-              break;
-            default:
-              update_post_meta($post_id, $wph_field['id'], $wph_value);
-              break;
+                break;
+              default:
+                update_post_meta($post_id, $wph_field['id'], $wph_value);
+                break;
+            }
           }
+        }else{
+          update_post_meta($post_id, $wph_field['id'], '');
         }
-      }else{
-        update_post_meta($post_id, $wph_field['id'], '');
       }
     }
   }
@@ -628,100 +437,114 @@ class HOSTWPH_Post_Type_Guest {
 
               break;
           }
+        case 'user':
+          switch ($hostwph_form_subtype) {
+            case 'user_alt_new':
+              $user_password = bin2hex(openssl_random_pseudo_bytes(16));
+              $user_email = !empty($_POST['user_email']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_POST['user_email'])) : '';
+
+              $user_alt_id = HOSTWPH_Functions_User::insert_user($user_email, $user_password, $user_email);
+
+              if (!empty($user_alt_id) && !empty($key_value)) {
+                foreach ($key_value as $key => $value) {
+                  update_user_meta($user_alt_id, $key, $value);
+                }
+              }
+
+              update_user_meta($user_alt_id, 'hostwph_host_parent', get_current_user_id());
+
+              break;
+          }
+          break;
       }
     }
   }
 
   public function list_wrapper() {
     ob_start();
-    ?>
-    <div class="hostwph-list-wrapper hostwph-mt-50 hostwph-mb-150" data-hostwph-post-type="hostwph_guest">
-      <div class="hostwph-menu-more-overlay hostwph-z-index-9"></div>
+    
+    if (is_user_logged_in()) {
+      if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id()) || current_user_can('hostwph_role_guest')) {
+        ?>
+          <div class="hostwph-list-wrapper hostwph-mt-50 hostwph-mb-150" data-hostwph-post-type="hostwph_guest">
+            <div class="hostwph-menu-more-overlay hostwph-z-index-9"></div>
 
-      <div class="hostwph-display-table hostwph-width-100-percent hostwph-max-width-500 hostwph-margin-auto hostwph-position-relative">
-        <div class="hostwph-display-inline-table hostwph-width-90-percent">
-          <h4 class="hostwph-mb-30"><?php esc_html_e('Guests', 'hostwph'); ?></h4>
-        </div>
+            <div class="hostwph-display-table hostwph-width-100-percent hostwph-max-width-500 hostwph-margin-auto hostwph-position-relative">
+              <div class="hostwph-display-inline-table hostwph-width-90-percent">
+                <h4 class="hostwph-mb-30"><?php esc_html_e('Guests', 'hostwph'); ?></h4>
+              </div>
 
-        <div class="hostwph-display-inline-table hostwph-width-10-percent hostwph-text-align-right">
-          <i class="material-icons-outlined hostwph-list-more-btn hostwph-cursor-pointer hostwph-vertical-align-middle hostwph-font-size-30">more_vert</i>
+              <div class="hostwph-display-inline-table hostwph-width-10-percent hostwph-text-align-right">
+                <i class="material-icons-outlined hostwph-list-more-btn hostwph-cursor-pointer hostwph-vertical-align-middle hostwph-font-size-30">more_vert</i>
 
-          <div class="hostwph-list-more hostwph-z-index-99 hostwph-display-none-soft">
-            <ul class="hostwph-list-style-none">
-              <li>
-                <a href="#" class="hostwph-order-posts hostwph-text-decoration-none">
-                  <div class="wph-display-table hostwph-width-100-percent">
-                    <div class="hostwph-display-inline-table hostwph-width-70-percent">
-                      <p><?php esc_html_e('Order hosts', 'hostwph'); ?></p>
-                    </div>
-                    <div class="hostwph-display-inline-table hostwph-width-20-percent  hostwph-text-align-right">
-                      <i class="material-icons-outlined hostwph-vertical-align-middle hostwph-font-size-30 hostwph-ml-30">low_priority</i>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            </ul>
+                <div class="hostwph-list-more hostwph-z-index-99 hostwph-display-none-soft">
+                  <ul class="hostwph-list-style-none">
+                    <li>
+                      <a href="#" class="hostwph-order-posts hostwph-text-decoration-none">
+                        <div class="wph-display-table hostwph-width-100-percent">
+                          <div class="hostwph-display-inline-table hostwph-width-70-percent">
+                            <p><?php esc_html_e('Order guests', 'hostwph'); ?></p>
+                          </div>
+                          <div class="hostwph-display-inline-table hostwph-width-20-percent  hostwph-text-align-right">
+                            <i class="material-icons-outlined hostwph-vertical-align-middle hostwph-font-size-30 hostwph-ml-30">low_priority</i>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <?php echo self::list(); ?>
           </div>
-        </div>
-      </div>
+        <?php
+      }else{
+        echo do_shortcode('[hostwph-call-to-action hostwph_call_to_action_icon="workspace_premium" hostwph_call_to_action_title="' . __('Capabilities', 'hostwph') . '" hostwph_call_to_action_content="' . __('Capabilities needed', 'hostwph') . '"]');
+      }
+    }else{
+      echo do_shortcode('[hostwph-call-to-action hostwph_call_to_action_icon="account_circle" hostwph_call_to_action_title="' . __('Account needed', 'hostwph') . '" hostwph_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostwph') . ' ' . '<a href=\'#\' class=\'userswph-profile-popup-btn\'>' . __('login', 'hostwph') . '</a>' . ' ' . __('or', 'hostwph') . ' ' . '<a href=\'#\' class=\'userswph-profile-popup-btn\' data-userswph-action=\'register\'>' . __('register', 'hostwph') . '</a>' . ' ' . __('to go ahead', 'hostwph') . '" hostwph_call_to_action_button_link="#" hostwph_call_to_action_button_text="' . __('Login', 'hostwph') . '" hostwph_call_to_action_button_class="userswph-profile-popup-btn" hostwph_call_to_action_class="hostwph-mb-100"]');
+    }
 
-      <?php echo self::list(); ?>
-    </div>
-    <?php
     $hostwph_return_string = ob_get_contents(); 
     ob_end_clean(); 
     return $hostwph_return_string;
   }
 
   public function list() {
-    $hosts_atts = [
-      'fields' => 'ids',
-      'numberposts' => -1,
-      'post_type' => 'hostwph_guest',
-      'post_status' => 'any', 
-      'orderby' => 'menu_order', 
-      'order' => 'ASC', 
-    ];
-    
-    if (class_exists('Polylang')) {
-      $hosts_atts['lang'] = pll_current_language('slug');
+    if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
+      $guests_atts = [
+        'fields' => 'ids',
+        'numberposts' => -1,
+        'post_type' => 'hostwph_guest',
+        'post_status' => 'any', 
+        'orderby' => 'menu_order', 
+        'order' => 'ASC', 
+      ];
+    }else{
+      $guests_atts = [
+        'fields' => 'ids',
+        'numberposts' => -1,
+        'post_type' => 'hostwph_guest',
+        'post_status' => 'any', 
+        'author' => get_current_user_id(), 
+        'orderby' => 'menu_order', 
+        'order' => 'ASC', 
+      ];
     }
 
-    $hosts = get_posts($hosts_atts);
+    $guests = get_posts($guests_atts);
 
     ob_start();
     ?>
-      <ul class="hostwph-list hostwph-guestwph_guest-list hostwph-list-host hostwph-guests hostwph-list-style-none hostwph-max-width-500 hostwph-margin-auto">
-        <?php if (!empty($hosts)): ?>
-          <?php foreach ($hosts as $guest_id): ?>
-            <?php
-              $hostwph_period = get_post_meta($guest_id, 'hostwph_period', true);
-              $hostwph_owners_checkbox = get_post_meta($guest_id, 'hostwph_owners_checkbox', true);
-              $hostwph_timed_checkbox = get_post_meta($guest_id, 'hostwph_timed_checkbox', true);
-              $hostwph_comments_checkbox = get_post_meta($guest_id, 'hostwph_comments_checkbox', true);
-              $hostwph_accomplish_date = get_post_meta($guest_id, 'hostwph_accomplish_date', true);
-              $hostwph_checkmark = empty($hostwph_accomplish_date) ? 'radio_button_unchecked' : 'host_alt';
-            ?>
-
+      <ul class="hostwph-list hostwph-hostwph_guest-list hostwph-list-host hostwph-guests hostwph-list-style-none hostwph-max-width-500 hostwph-margin-auto">
+        <?php if (!empty($guests)): ?>
+          <?php foreach ($guests as $guest_id): ?>
             <li class="hostwph-list-element hostwph-mb-10" data-hostwph-element-id="<?php echo $guest_id; ?>">
               <div class="hostwph-display-table hostwph-width-100-percent">
-                <div class="hostwph-display-inline-table hostwph-check-wrapper hostwph-width-20-percent hostwph-text-align-center">
-                  <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-host-check" data-hostwph-ajax-type="hostwph_guest_check">
-                    <i class="material-icons-outlined hostwph-cursor-pointer hostwph-vertical-align-middle hostwph-font-size-30 hostwph-width-25"><?php echo $hostwph_checkmark; ?></i>
-                  </a>
-                </div>
-
-                <div class="hostwph-display-inline-table hostwph-width-60-percent">
-                  <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-host-view" data-hostwph-ajax-type="hostwph_guest_view">
-                    <span><?php echo esc_html(get_the_title($guest_id)); ?></span>
-                      
-                    <?php if ($hostwph_timed_checkbox == 'on'): ?>
-                      <i class="material-icons-outlined hostwph-timed hostwph-cursor-pointer hostwph-vertical-align-super hostwph-p-5 hostwph-font-size-15 hostwph-tooltip" title="<?php esc_html_e('This host is timed', 'hostwph'); ?>">access_time</i>
-                    <?php endif ?>
-
-                    <?php if ($hostwph_period == 'on'): ?>
-                      <i class="material-icons-outlined hostwph-timed hostwph-cursor-pointer hostwph-vertical-align-super hostwph-p-5 hostwph-font-size-15 hostwph-tooltip" title="<?php esc_html_e('This host is periodic', 'hostwph'); ?>">replay</i>
-                    <?php endif ?>
+                <div class="hostwph-display-inline-table hostwph-width-80-percent">
+                  <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-guest-view" data-hostwph-ajax-type="hostwph_guest_view">
+                    <span><?php echo esc_html(self::guest_name($guest_id)); ?></span>
                   </a>
                 </div>
 
@@ -731,7 +554,7 @@ class HOSTWPH_Post_Type_Guest {
                   <div class="hostwph-menu-more hostwph-z-index-99 hostwph-display-none-soft">
                     <ul class="hostwph-list-style-none">
                       <li>
-                        <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-host-view" data-hostwph-ajax-type="hostwph_guest_view">
+                        <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-guest-view" data-hostwph-ajax-type="hostwph_guest_view">
                           <div class="wph-display-table hostwph-width-100-percent">
                             <div class="hostwph-display-inline-table hostwph-width-70-percent">
                               <p><?php esc_html_e('View guest', 'hostwph'); ?></p>
@@ -743,7 +566,7 @@ class HOSTWPH_Post_Type_Guest {
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-host-edit" data-hostwph-ajax-type="hostwph_guest_edit">
+                        <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-guest-edit" data-hostwph-ajax-type="hostwph_guest_edit">
                           <div class="wph-display-table hostwph-width-100-percent">
                             <div class="hostwph-display-inline-table hostwph-width-70-percent">
                               <p><?php esc_html_e('Edit guest', 'hostwph'); ?></p>
@@ -767,7 +590,7 @@ class HOSTWPH_Post_Type_Guest {
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostwph-popup-open hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-host-remove">
+                        <a href="#" class="hostwph-popup-open hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-guest-remove">
                           <div class="wph-display-table hostwph-width-100-percent">
                             <div class="hostwph-display-inline-table hostwph-width-70-percent">
                               <p><?php esc_html_e('Remove guest', 'hostwph'); ?></p>
@@ -787,7 +610,7 @@ class HOSTWPH_Post_Type_Guest {
         <?php endif ?>
 
         <li class="hostwph-mt-50 hostwph-guest hostwph-list-element" data-hostwph-element-id="0">
-          <a href="#" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-host-add" data-hostwph-ajax-type="hostwph_guest_new">
+          <a href="#" id="hostwph-popup-guest-add-btn" class="hostwph-popup-open-ajax hostwph-text-decoration-none" data-hostwph-popup-id="hostwph-popup-guest-add" data-hostwph-ajax-type="hostwph_guest_new">
             <div class="hostwph-display-table hostwph-width-100-percent">
               <div class="hostwph-display-inline-table hostwph-width-20-percent hostwph-text-align-center">
                 <i class="material-icons-outlined hostwph-cursor-pointer hostwph-vertical-align-middle hostwph-font-size-30 hostwph-width-25">add_host</i>
@@ -811,20 +634,20 @@ class HOSTWPH_Post_Type_Guest {
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-aux.js'); ?>"></script>
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-forms.js'); ?>"></script>
 
-      <div class="host-view">
-        <h4 class="hostwph-text-align-center"><?php echo get_the_title($guest_id); ?></h4>
+      <div class="guest-view">
+        <h4 class="hostwph-text-align-center"><?php echo self::guest_name($guest_id); ?></h4>
         
         <div class="hostwph-word-wrap-break-word">
           <p><?php echo str_replace(']]>', ']]&gt;', apply_filters('the_content', get_post($guest_id)->post_content)); ?></p>
         </div>
 
-        <div class="host-view">
-          <?php foreach ($this->get_fields_meta() as $hostwph_field): ?>
+        <div class="guest-view">
+          <?php foreach (self::get_fields_meta() as $hostwph_field): ?>
             <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field, 'post', $guest_id, 1); ?>
           <?php endforeach ?>
 
           <div class="hostwph-text-align-right hostwph-guest hostwph-list-element" data-hostwph-element-id="<?php echo $guest_id; ?>">
-            <a href="#" class="hostwph-btn hostwph-btn-mini hostwph-popup-open-ajax" data-hostwph-popup-id="hostwph-popup-host-edit" data-hostwph-ajax-type="hostwph_guest_edit"><?php esc_html_e('Edit guest', 'hostwph'); ?></a>
+            <a href="#" class="hostwph-btn hostwph-btn-mini hostwph-popup-open-ajax" data-hostwph-popup-id="hostwph-popup-guest-edit" data-hostwph-ajax-type="hostwph_guest_edit"><?php esc_html_e('Edit guest', 'hostwph'); ?></a>
           </div>
         </div>
       </div>
@@ -840,16 +663,16 @@ class HOSTWPH_Post_Type_Guest {
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-aux.js'); ?>"></script>
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-forms.js'); ?>"></script>
 
-      <div class="host-new">
+      <div class="guest-new">
         <h4 class="hostwph-mb-30"><?php esc_html_e('Add guest', 'hostwph'); ?></h4>
 
         <form action="" method="post" id="hostwph-form" class="hostwph-form" data-hostwph-post-type="hostwph_guest">      
-          <?php foreach ($this->get_fields() as $hostwph_field): ?>
+          <?php foreach (self::get_fields() as $hostwph_field): ?>
             <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field, 'post'); ?>
           <?php endforeach ?>
 
-          <?php foreach ($this->get_fields_meta() as $hostwph_field_meta): ?>
-            <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field_meta, 'post'); ?>
+          <?php foreach (self::get_fields_meta() as $hostwph_field_meta): ?>
+            <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field_meta, 'post', $guest_id); ?>
           <?php endforeach ?>
 
           <div class="hostwph-text-align-right">
@@ -869,16 +692,16 @@ class HOSTWPH_Post_Type_Guest {
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-aux.js'); ?>"></script>
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-forms.js'); ?>"></script>
 
-      <div class="host-edit">
+      <div class="guest-edit">
         <p class="hostwph-text-align-center hostwph-mb-0"><?php esc_html_e('Editing', 'hostwph'); ?></p>
-        <h4 class="hostwph-text-align-center hostwph-mb-30"><?php echo get_the_title($guest_id); ?></h4>
+        <h4 class="hostwph-text-align-center hostwph-mb-30"><?php echo self::guest_name($guest_id); ?></h4>
 
         <form action="" method="post" id="hostwph-form" class="hostwph-form" data-hostwph-post-type="hostwph_guest">
-          <?php foreach ($this->get_fields($guest_id) as $hostwph_field): ?>
+          <?php foreach (self::get_fields($guest_id) as $hostwph_field): ?>
             <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field, 'post', $guest_id); ?>
           <?php endforeach ?>
 
-          <?php foreach ($this->get_fields_meta() as $hostwph_field_meta): ?>
+          <?php foreach (self::get_fields_meta() as $hostwph_field_meta): ?>
             <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field_meta, 'post', $guest_id); ?>
           <?php endforeach ?>
 
@@ -899,13 +722,13 @@ class HOSTWPH_Post_Type_Guest {
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-aux.js'); ?>"></script>
       <script src="<?php echo esc_url(HOSTWPH_URL . 'assets/js/hostwph-forms.js'); ?>"></script>
 
-      <div class="host-check">
+      <div class="guest-check">
         <?php if (!empty(get_post_meta($guest_id, 'hostwph_accomplish_date', true))): ?>
           <p class="hostwph-text-align-center hostwph-mb-0"><?php esc_html_e('Marking as not completed', 'hostwph'); ?></p>
-          <h4 class="hostwph-text-align-center hostwph-mb-30"><?php echo get_the_title($guest_id); ?></h4>
+          <h4 class="hostwph-text-align-center hostwph-mb-30"><?php echo self::guest_name($guest_id); ?></h4>
 
           <form action="" method="post" id="hostwph-form" class="hostwph-form" data-hostwph-post-type="hostwph_guest">
-            <?php foreach ($this->get_fields_check($guest_id) as $hostwph_field_check): ?>
+            <?php foreach (self::get_fields_check($guest_id) as $hostwph_field_check): ?>
               <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field_check, 'post', $guest_id, 1); ?>
             <?php endforeach ?>
 
@@ -915,10 +738,10 @@ class HOSTWPH_Post_Type_Guest {
           </form>
         <?php else: ?>
           <p class="hostwph-text-align-center hostwph-mb-0"><?php esc_html_e('Marking as completed', 'hostwph'); ?></p>
-          <h4 class="hostwph-text-align-center"><?php echo get_the_title($guest_id); ?></h4>
+          <h4 class="hostwph-text-align-center"><?php echo self::guest_name($guest_id); ?></h4>
 
           <form action="" method="post" id="hostwph-form" class="hostwph-form" data-hostwph-post-type="hostwph_guest">
-            <?php foreach ($this->get_fields_check($guest_id) as $hostwph_field_check): ?>
+            <?php foreach (self::get_fields_check($guest_id) as $hostwph_field_check): ?>
               <?php echo HOSTWPH_Forms::input_wrapper_builder($hostwph_field_check, 'post', $guest_id); ?>
             <?php endforeach ?>
 
@@ -986,4 +809,8 @@ class HOSTWPH_Post_Type_Guest {
 
     return array_unique($hostwph_owners_array);
   }
+
+    public function guest_name($guest_id) {
+      return get_post_meta($guest_id, 'hostwph_name', true) . ' ' . get_post_meta($guest_id, 'hostwph_surname', true) . ' ' . get_post_meta($guest_id, 'hostwph_surname_alt', true);
+    }
 }

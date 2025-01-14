@@ -4,11 +4,11 @@
  *
  * Load the plugin no private Ajax functions to be executed in background.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Ajax_Nopriv {
 	/**
@@ -50,16 +50,16 @@ class HOSTWPH_Ajax_Nopriv {
 
       switch ($hostwph_ajax_nopriv_type) {
         case 'hostwph_form_save':
-          $hostwph_form_type = $_POST['hostwph_form_type'];
+          $hostwph_form_type = !empty($_POST['hostwph_form_type']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_POST['hostwph_form_type'])) : '';
 
           if (!empty($key_value) && !empty($hostwph_form_type)) {
-            $hostwph_form_id = $_POST['hostwph_form_id'];
-            $hostwph_form_subtype = $_POST['hostwph_form_subtype'];
-            $user_id = $_POST['hostwph_form_user_id'];
-            $post_id = $_POST['hostwph_form_post_id'];
-            $post_type = $_POST['hostwph_form_post_type'];
+            $hostwph_form_id = !empty($_POST['hostwph_form_id']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_POST['hostwph_form_id'])) : 0;
+            $hostwph_form_subtype = !empty($_POST['hostwph_form_subtype']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_POST['hostwph_form_subtype'])) : '';
+            $user_id = !empty($_POST['hostwph_form_user_id']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_POST['hostwph_form_user_id'])) : 0;
+            $post_id = !empty($_POST['hostwph_form_post_id']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_POST['hostwph_form_post_id'])) : 0;
+            $post_type = !empty($_POST['hostwph_form_post_type']) ? HOSTWPH_Forms::sanitizer(wp_unslash($_POST['hostwph_form_post_type'])) : '';
 
-            if (($hostwph_form_type == 'user' && empty($user_id)) || ($hostwph_form_type == 'post' && (empty($post_id) && !(!empty($hostwph_form_subtype) && in_array($hostwph_form_subtype, ['post_new', 'post_edit'])))) || ($hostwph_form_type == 'option' && !is_user_logged_in())) {
+            if (($hostwph_form_type == 'user' && empty($user_id) && !in_array($hostwph_form_subtype, ['user_alt_new'])) || ($hostwph_form_type == 'post' && (empty($post_id) && !(!empty($hostwph_form_subtype) && in_array($hostwph_form_subtype, ['post_new', 'post_edit'])))) || ($hostwph_form_type == 'option' && !is_user_logged_in())) {
               session_start();
 
               $_SESSION['wph_form'] = [];
@@ -75,37 +75,43 @@ class HOSTWPH_Ajax_Nopriv {
             }else{
               switch ($hostwph_form_type) {
                 case 'user':
-                  if (empty($user_id)) {
-                    if (hostwph_Functions_User::is_user_admin(get_current_user_id())) {
-                      $user_login = $_POST['user_login'];
-                      $user_password = $_POST['user_password'];
-                      $user_email = $_POST['user_email'];
+                  if (!in_array($hostwph_form_subtype, ['user_alt_new'])) {
+                    if (empty($user_id)) {
+                      if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
+                        $user_login = $_POST['user_login'];
+                        $user_password = $_POST['user_password'];
+                        $user_email = $_POST['user_email'];
 
-                      $user_id = hostwph_Functions_Post::insert_user($user_login, $user_password, $user_email);
+                        $user_id = HOSTWPH_Functions_User::insert_user($user_login, $user_password, $user_email);
+                      }
                     }
-                  }
 
-                  foreach ($key_value as $key => $value) {
-                    update_user_meta($user_id, $key, $value);
+                    if (!empty($user_id)) {
+                      foreach ($key_value as $key => $value) {
+                        update_user_meta($user_id, $key, $value);
+                      }
+                    }
                   }
 
                   break;
                 case 'post':
                   if (empty($hostwph_form_subtype) || !in_array($hostwph_form_subtype, ['post_new', 'post_edit'])) {
                     if (empty($post_id)) {
-                      if (hostwph_Functions_User::is_user_admin(get_current_user_id())) {
-                        $post_id = hostwph_Functions_Post::insert_post($title, '', '', sanitize_title($title), $post_type, 'publish', get_current_user_id());
+                      if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
+                        $post_id = HOSTWPH_Functions_Post::insert_post($title, '', '', sanitize_title($title), $post_type, 'publish', get_current_user_id());
                       }
                     }
 
-                    foreach ($key_value as $key => $value) {
-                      update_post_meta($post_id, $key, $value);
+                    if (!empty($post_id)) {
+                      foreach ($key_value as $key => $value) {
+                        update_post_meta($post_id, $key, $value);
+                      }
                     }
                   }
 
                   break;
                 case 'option':
-                  if (hostwph_Functions_User::is_user_admin(get_current_user_id())) {
+                  if (HOSTWPH_Functions_User::is_user_admin(get_current_user_id())) {
                     foreach ($key_value as $key => $value) {
                       update_option($key, $value);
                     }
@@ -130,14 +136,14 @@ class HOSTWPH_Ajax_Nopriv {
                   break;
               }
 
-              $popup_close = in_array($hostwph_form_subtype, ['post_new', 'post_edit']) ? true : '';
-              $update_list = in_array($hostwph_form_subtype, ['post_new', 'post_edit']) ? true : '';
+              $popup_close = in_array($hostwph_form_subtype, ['post_new', 'post_edit', 'user_alt_new']) ? true : '';
+              $update_list = in_array($hostwph_form_subtype, ['post_new', 'post_edit', 'user_alt_new']) ? true : '';
 
-              if ($update_list) {
+              if ($update_list && !empty($post_type)) {
                 switch ($post_type) {
-                  case 'hostwph_accomodation':
-                    $plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-                    $update_html = $plugin_post_type_accomodation->list();
+                  case 'hostwph_accomm':
+                    $plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+                    $update_html = $plugin_post_type_accommodation->list();
                     break;
                   case 'hostwph_part':
                     $plugin_post_type_part = new HOSTWPH_Post_Type_Part();

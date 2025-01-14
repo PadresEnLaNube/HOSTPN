@@ -1,6 +1,6 @@
 === Hospedajes España - WPH ===
 Contributors: felixmartinez, hamlet237
-Donate link: https://wordpress-heroes.com/
+Donate link: https://padresenlanube.com/
 Tags: hospedajes España, Spain, hosting, check-in, host register
 Requires at least: 3.0.1
 Tested up to: 6.6
@@ -101,7 +101,7 @@ To optimize your recipes for SEO, ensure that you use relevant keywords in your 
 
 = How do I get support for the Hospedajes España - WPH plugin? =
 
-For support, you can visit the plugin's support forum on the WordPress.org website or contact the plugin author directly through our contact information info@wordpress-heroes.com.
+For support, you can visit the plugin's support forum on the WordPress.org website or contact the plugin author directly through our contact information info@padresenlanube.com.
 
 = Is the plugin compatible with the latest version of WordPress? =
 

@@ -1,14 +1,14 @@
 <?php
 /**
- * Part of traveler taxonomies creator.
+ * Part of travelers taxonomies creator.
  *
- * This class defines Part of traveler taxonomies.
+ * This class defines Part of travelers taxonomies.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Taxonomies_Part { 
 	/**
@@ -19,17 +19,17 @@ class HOSTWPH_Taxonomies_Part {
 	public static function register_taxonomies() {
 		$taxonomies = [
 			'hostwph_part_category' => [
-				'name'               	=> _x('Part of traveler categories', 'Taxonomy general name', 'hostwph'),
-				'singular_name'      	=> _x('Part of traveler category', 'Taxonomy singular name', 'hostwph'),
-				'search_items'      	=> esc_html(__('Search Part of traveler categories', 'hostwph')),
-        'all_items'         	=> esc_html(__('All Part of traveler categories', 'hostwph')),
-        'parent_item'       	=> esc_html(__('Parent Part of traveler category', 'hostwph')),
-        'parent_item_colon' 	=> esc_html(__('Parent Part of traveler category:', 'hostwph')),
-        'edit_item'         	=> esc_html(__('Edit Part of traveler category', 'hostwph')),
-        'update_item'       	=> esc_html(__('Update Part of traveler category', 'hostwph')),
-        'add_new_item'      	=> esc_html(__('Add New Part of traveler category', 'hostwph')),
-        'new_item_name'     	=> esc_html(__('New Part of traveler category', 'hostwph')),
-        'menu_name'         	=> esc_html(__('Part of traveler categories', 'hostwph')),
+				'name'               	=> _x('Part of travelers categories', 'Taxonomy general name', 'hostwph'),
+				'singular_name'      	=> _x('Part of travelers category', 'Taxonomy singular name', 'hostwph'),
+				'search_items'      	=> esc_html(__('Search Part of travelers categories', 'hostwph')),
+        'all_items'         	=> esc_html(__('All Part of travelers categories', 'hostwph')),
+        'parent_item'       	=> esc_html(__('Parent Part of travelers category', 'hostwph')),
+        'parent_item_colon' 	=> esc_html(__('Parent Part of travelers category:', 'hostwph')),
+        'edit_item'         	=> esc_html(__('Edit Part of travelers category', 'hostwph')),
+        'update_item'       	=> esc_html(__('Update Part of travelers category', 'hostwph')),
+        'add_new_item'      	=> esc_html(__('Add New Part of travelers category', 'hostwph')),
+        'new_item_name'     	=> esc_html(__('New Part of travelers category', 'hostwph')),
+        'menu_name'         	=> esc_html(__('Part of travelers categories', 'hostwph')),
 				'manage_terms'      	=> 'manage_hostwph_part_category',
 	      'edit_terms'        	=> 'edit_hostwph_part_category',
 	      'delete_terms'      	=> 'delete_hostwph_part_category',

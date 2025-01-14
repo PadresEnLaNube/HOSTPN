@@ -4,11 +4,11 @@
  *
  * Load the plugin Ajax functions to be executed in background.
  *
- * @link       wordpress-heroes.com/
+ * @link       padresenlanube.com/
  * @since      1.0.0
  * @package    HOSTWPH
  * @subpackage HOSTWPH/includes
- * @author     wordpress-heroes <info@wordpress-heroes.com>
+ * @author     wordpress-heroes <info@padresenlanube.com>
  */
 class HOSTWPH_Ajax {
 	/**
@@ -25,7 +25,7 @@ class HOSTWPH_Ajax {
   		$hostwph_ajax_type = HOSTWPH_Forms::sanitizer($_POST['hostwph_ajax_type']);
       $ajax_keys = !empty($_POST['ajax_keys']) ? wp_unslash($_POST['ajax_keys']) : [];
       $guest_id = !empty($_POST['guest_id']) ? USERSWPH_Forms::sanitizer(wp_unslash($_POST['guest_id'])) : 0;
-      $accomodation_id = !empty($_POST['accomodation_id']) ? USERSWPH_Forms::sanitizer(wp_unslash($_POST['accomodation_id'])) : 0;
+      $accommodation_id = !empty($_POST['accommodation_id']) ? USERSWPH_Forms::sanitizer(wp_unslash($_POST['accommodation_id'])) : 0;
       $part_id = !empty($_POST['part_id']) ? USERSWPH_Forms::sanitizer(wp_unslash($_POST['part_id'])) : 0;
       $key_value = [];
 
@@ -114,44 +114,52 @@ class HOSTWPH_Ajax {
             echo wp_json_encode(['error_key' => 'hostwph_guest_remove_error', 'error_' => esc_html(__('An error occurred while removing the guest.', 'hostwph')), ]);exit();
           }
           break;
-        case 'hostwph_accomodation_new':
-            $plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accomodation->new(), ]);exit();
+        case 'hostwph_accommodation_new':
+            $plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accommodation->new(), ]);exit();
           break;
-        case 'hostwph_accomodation_view':
-          if (!empty($accomodation_id)) {
-            $plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accomodation->view($accomodation_id), ]);exit();
+        case 'hostwph_accommodation_view':
+          if (!empty($accommodation_id)) {
+            $plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accommodation->view($accommodation_id), ]);exit();
           }else{
-            echo wp_json_encode(['error_key' => 'hostwph_accomodation_view_error', 'error_' => esc_html(__('An error occurred while showing the accomodation.', 'hostwph')), ]);exit();
+            echo wp_json_encode(['error_key' => 'hostwph_accommodation_view_error', 'error_' => esc_html(__('An error occurred while showing the accommodation.', 'hostwph')), ]);exit();
           }
           break;
-        case 'hostwph_accomodation_edit':
-          if (!empty($accomodation_id)) {
-            $plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accomodation->edit($accomodation_id), ]);exit();
+        case 'hostwph_accommodation_edit':
+          if (!empty($accommodation_id)) {
+            $plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accommodation->edit($accommodation_id), ]);exit();
           }else{
-            echo wp_json_encode(['error_key' => 'hostwph_accomodation_edit_error', 'error_' => esc_html(__('An error occurred while showing the accomodation.', 'hostwph')), ]);exit();
+            echo wp_json_encode(['error_key' => 'hostwph_accommodation_edit_error', 'error_' => esc_html(__('An error occurred while showing the accommodation.', 'hostwph')), ]);exit();
           }
           break;
-        case 'hostwph_accomodation_duplicate':
-          if (!empty($accomodation_id)) {
+        case 'hostwph_accommodation_share':
+          if (!empty($accommodation_id)) {
+            $plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accommodation->share($accommodation_id), ]);exit();
+          }else{
+            echo wp_json_encode(['error_key' => 'hostwph_accommodation_share_error', 'error_' => esc_html(__('An error occurred while sharing the accommodation.', 'hostwph')), ]);exit();
+          }
+          break;
+        case 'hostwph_accommodation_duplicate':
+          if (!empty($accommodation_id)) {
             $plugin_post_type_post = new HOSTWPH_Functions_Post();
-            $plugin_post_type_post->duplicate_post($accomodation_id, 'publish');
+            $plugin_post_type_post->duplicate_post($accommodation_id, 'publish');
             
-            $plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accomodation->list(), ]);exit();
+            $plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accommodation->list(), ]);exit();
           }else{
-            echo wp_json_encode(['error_key' => 'hostwph_accomodation_duplicate_error', 'error_' => esc_html(__('An error occurred while duplicating the accomodation.', 'hostwph')), ]);exit();
+            echo wp_json_encode(['error_key' => 'hostwph_accommodation_duplicate_error', 'error_' => esc_html(__('An error occurred while duplicating the accommodation.', 'hostwph')), ]);exit();
           }
           break;
-        case 'hostwph_accomodation_remove':
-          if (!empty($accomodation_id)) {
-            wp_delete_post($accomodation_id, true);
-            $plugin_post_type_accomodation = new HOSTWPH_Post_Type_Accomodation();
-            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accomodation->list(), ]);exit();
+        case 'hostwph_accommodation_remove':
+          if (!empty($accommodation_id)) {
+            wp_delete_post($accommodation_id, true);
+            $plugin_post_type_accommodation = new HOSTWPH_Post_Type_Accommodation();
+            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_accommodation->list(), ]);exit();
           }else{
-            echo wp_json_encode(['error_key' => 'hostwph_accomodation_remove_error', 'error_' => esc_html(__('An error occurred while removing the accomodation.', 'hostwph')), ]);exit();
+            echo wp_json_encode(['error_key' => 'hostwph_accommodation_remove_error', 'error_' => esc_html(__('An error occurred while removing the accommodation.', 'hostwph')), ]);exit();
           }
           break;
         case 'hostwph_part_new':
@@ -172,6 +180,17 @@ class HOSTWPH_Ajax {
             echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_part->edit($part_id), ]);exit();
           }else{
             echo wp_json_encode(['error_key' => 'hostwph_part_edit_error', 'error_' => esc_html(__('An error occurred while showing the part.', 'hostwph')), ]);exit();
+          }
+          break;
+          case 'hostwph_part_download':
+          if (!empty($part_id)) {
+            $plugin_post_type_xml = new HOSTWPH_XML();
+            $plugin_post_type_xml->part_download($part_id);
+
+            $plugin_post_type_part = new HOSTWPH_Post_Type_Part();
+            echo wp_json_encode(['error_key' => '', 'html' => $plugin_post_type_part->list(), ]);exit();
+          }else{
+            echo wp_json_encode(['error_key' => 'hostwph_part_download_error', 'error_' => esc_html(__('An error occurred while duplicating the part.', 'hostwph')), ]);exit();
           }
           break;
         case 'hostwph_part_duplicate':
