@@ -54,14 +54,14 @@ https://github.com/Alex-D/Trumbowyg/blob/develop/src/trumbowyg.js
 
 == Installation ==
 
-1. Upload `hostwph.php` to the `/wp-content/plugins/` directory
+1. Upload `hostpn.php` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
 
 = How do I install the Hospedajes España - WPH plugin? =
 
-To install the Hospedajes España - WPH plugin, you can either upload the plugin files to the /wp-content/plugins/hostwph directory, or install the plugin through the WordPress plugins screen directly. After uploading, activate the plugin through the 'Plugins' screen in WordPress.
+To install the Hospedajes España - WPH plugin, you can either upload the plugin files to the /wp-content/plugins/hostpn directory, or install the plugin through the WordPress plugins screen directly. After uploading, activate the plugin through the 'Plugins' screen in WordPress.
 
 = Can I customize the look and feel of my recipe listings? =
 

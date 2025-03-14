@@ -22,7 +22,7 @@
  * @link       padresenlanube.com/
  * @since      1.0.0
  *
- * @package    HOSTWPH
+ * @package    HOSTPN
  */
 
 // If uninstall not called from WordPress, then exit.
