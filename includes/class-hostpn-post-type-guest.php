@@ -568,8 +568,8 @@ class HOSTPN_Post_Type_Guest {
         'numberposts' => -1,
         'post_type' => 'hostpn_guest',
         'post_status' => 'any', 
-        'orderby' => 'menu_order', 
-        'order' => 'ASC', 
+        'orderby' => 'post_date', 
+        'order' => 'DESC',  
       ];
     }else{
       $guests_atts = [
@@ -578,8 +578,8 @@ class HOSTPN_Post_Type_Guest {
         'post_type' => 'hostpn_guest',
         'post_status' => 'any', 
         'author' => get_current_user_id(), 
-        'orderby' => 'menu_order', 
-        'order' => 'ASC', 
+        'orderby' => 'post_date', 
+        'order' => 'DESC', 
       ];
     }
 

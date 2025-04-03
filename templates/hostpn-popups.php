@@ -1,8 +1,8 @@
 <?php
 /**
- * Provide a common footer area view for the plugin
+ * Provide common popups for the plugin
  *
- * This file is used to markup the common footer facing aspects of the plugin.
+ * This file is used to markup the common popups of the plugin.
  *
  * @link       padresenlanube.com/
  * @since      1.0.0
@@ -13,7 +13,7 @@
 
   if (!defined('ABSPATH')) exit; // Exit if accessed directly
 ?>
-<!-- PART OF TRAVELER -->
+<!-- GUEST -->
 <div id="hostpn-popup-guest-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
   <div class="hostpn-popup-content">
     <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
@@ -52,7 +52,7 @@
   </div>
 </div>
 
-<!-- ACcommodation -->
+<!-- ACCOMODATION -->
 <div id="hostpn-popup-accommodation-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
   <div class="hostpn-popup-content">
     <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
@@ -103,7 +103,7 @@
   </div>
 </div>
 
-<!-- HOST -->
+<!-- PART OF TRAVELER -->
 <div id="hostpn-popup-part-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
   <div class="hostpn-popup-content">
     <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>

@@ -663,8 +663,8 @@ class HOSTPN_Post_Type_Part {
       'numberposts' => -1,
       'post_type' => 'hostpn_part',
       'post_status' => 'any', 
-      'orderby' => 'menu_order', 
-      'order' => 'ASC', 
+      'orderby' => 'post_date', 
+      'order' => 'DESC', 
     ];
     
     if (class_exists('Polylang')) {
