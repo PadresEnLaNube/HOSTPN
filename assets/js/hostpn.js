@@ -364,11 +364,11 @@
           $.fancybox.open($('#' + hostpn_action.popup), {touch: false});
 
           if (typeof hostpn_action.tab != '') {
-            $('.userswph-tab-links[data-userswph-id="userswph-tab-' + hostpn_action.tab + '"]').click();
-            $('#userswph-' + hostpn_action.tab + ' input#userswph_email').focus();
+            $('.userspn-tab-links[data-userspn-id="userspn-tab-' + hostpn_action.tab + '"]').click();
+            $('#userspn-' + hostpn_action.tab + ' input#userspn_email').focus();
           }else{
-            $('.userswph-tab-links[data-userswph-id="userswph-tab-login"]').click();
-            $('#userswph-login input#user_login').focus();
+            $('.userspn-tab-links[data-userspn-id="userspn-tab-login"]').click();
+            $('#userspn-login input#user_login').focus();
           }
         });
       }

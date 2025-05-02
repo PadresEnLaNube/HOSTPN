@@ -268,7 +268,7 @@ class HOSTPN {
 		$this->loader->add_action('hostpn_form_save', $plugin_post_type_guest, 'hostpn_form_save', 5, 999);
 
 		$plugin_user = new HOSTPN_Functions_User();
-		$this->loader->add_filter('userswph_register_fields', $plugin_user, 'userswph_wph_register_fields', 10, 2);
+		$this->loader->add_filter('userspn_register_fields', $plugin_user, 'userspn_wph_register_fields', 10, 2);
 		$this->loader->add_action('user_register', $plugin_user, 'hostpn_user_register', 11, 1);
 	}
 

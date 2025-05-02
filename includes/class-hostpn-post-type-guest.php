@@ -98,6 +98,7 @@ class HOSTPN_Post_Type_Guest {
         'input' => 'input',
         'type' => 'date',
         'required' => true,
+        'max' => date('Y-m-d'),
         'xml' => 'fechaNacimiento',
         'label' => esc_html(__('Birthdate', 'hostpn')),
         'placeholder' => esc_html(__('Birthdate', 'hostpn')),
@@ -553,7 +554,7 @@ class HOSTPN_Post_Type_Guest {
         echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="workspace_premium" hostpn_call_to_action_title="' . __('Capabilities', 'hostpn') . '" hostpn_call_to_action_content="' . __('Capabilities needed', 'hostpn') . '"]');
       }
     }else{
-      echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userswph-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userswph-profile-popup-btn\' data-userswph-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userswph-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]');
+      echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\' data-userspn-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userspn-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]');
     }
 
     $hostpn_return_string = ob_get_contents(); 

@@ -124,10 +124,10 @@ class HOSTPN_Functions_User {
       update_user_meta($user_id, 'hostpn_last_login', current_time('timestamp'));
     }
 
-    update_user_meta($user_id, 'users_wph_newsletter_active', true);
+    update_user_meta($user_id, 'userspn_newsletter_active', true);
   }
 
-  public function userswph_wph_register_fields($register_fields) {
+  public function userspn_wph_register_fields($register_fields) {
     global $post;
     $post_id = $post->ID ?? 0;
     $hostpn_pages = get_option('hostpn_pages') ?? [];
@@ -187,6 +187,7 @@ class HOSTPN_Functions_User {
         'input' => 'input',
         'type' => 'date',
         'required' => true,
+        'max' => date('Y-m-d'),
         'xml' => 'fechaNacimiento',
         'label' => esc_html(__('Birthdate', 'hostpn')),
         'placeholder' => esc_html(__('Birthdate', 'hostpn')),

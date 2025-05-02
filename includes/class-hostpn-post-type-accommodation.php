@@ -346,7 +346,7 @@ class HOSTPN_Post_Type_Accommodation {
           <?php echo self::list(); ?>
         </div>
       <?php else: ?>
-        <?php echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userswph-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userswph-profile-popup-btn\' data-userswph-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userswph-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]'); ?>
+        <?php echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\' data-userspn-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userspn-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]'); ?>
       <?php endif ?>
     <?php
     $hostpn_return_string = ob_get_contents(); 
@@ -573,10 +573,10 @@ class HOSTPN_Post_Type_Accommodation {
       <h3 class="hostpn-text-align-center"><?php esc_html_e('Accommodation share link', 'hostpn'); ?></h3>
       <p class="hostpn-text-align-center"><?php esc_html_e('You can share accommodation link to allow companions to fill out their guests forms directly in the platform.', 'hostpn'); ?></p>
 
-      <?php if (class_exists('USERSWPH')): ?>
+      <?php if (class_exists('USERSPN')): ?>
         <div class="hostpn-display-table hostpn-width-100-percent">
           <div class="hostpn-display-inline-table hostpn-width-90-percent">
-            <code id="hostpn-share-url"><?php echo esc_url(home_url('guests') . '?hostpn_action=popup_open&hostpn_popup=userswph-profile-popup&hostpn_tab=register'); ?></code>
+            <code id="hostpn-share-url"><?php echo esc_url(home_url('guests') . '?hostpn_action=popup_open&hostpn_popup=userspn-profile-popup&hostpn_tab=register'); ?></code>
           </div>
           <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-center hostpn-copy-disabled">
             <i class="material-icons-outlined hostpn-btn-copy hostpn-vertical-align-middle hostpn-cursor-pointer hostpn-tooltip" title="<?php esc_html_e('Copy url', 'hostpn'); ?>" data-hostpn-copy-content="#hostpn-share-url">content_copy</i>
@@ -596,6 +596,6 @@ class HOSTPN_Post_Type_Accommodation {
   }
       
   public function share_link() {
-    return esc_url(admin_url('/plugin-install.php?s=userswph&tab=search&type=term'));
+    return esc_url(admin_url('/plugin-install.php?s=userspn&tab=search&type=term'));
   }
 }

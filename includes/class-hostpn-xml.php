@@ -68,7 +68,7 @@ class HOSTPN_XML {
           $surname_alt = get_post_meta($guest_id, 'hostpn_surname_alt', true);
           $identity = strtoupper(get_post_meta($guest_id, 'hostpn_identity', true));
           $identity_number = get_post_meta($guest_id, 'hostpn_identity_number', true);
-          $identity_support = get_post_meta($guest_id, 'hostpn_identity_support', true);
+          $identity_support = get_post_meta($guest_id, 'hostpn_identity_support_number', true);
           $birthdate = self::timestamp_to_iso8601(get_post_meta($guest_id, 'hostpn_birthdate', true), true);
           $nationality = strtoupper(get_post_meta($guest_id, 'hostpn_nationality', true));
           $gender = strtoupper(get_post_meta($guest_id, 'hostpn_gender', true));
@@ -91,7 +91,7 @@ class HOSTPN_XML {
             $persona->appendChild($dom->createElement('tipoDocumento', $identity));
             $persona->appendChild($dom->createElement('numeroDocumento', $identity_number));
 
-            if ($identity == 'NIF') {
+            if (in_array($identity, ['NIF', 'NIE'])) {
               $persona->appendChild($dom->createElement('soporteDocumento', $identity_support));
             }
 
@@ -103,10 +103,10 @@ class HOSTPN_XML {
               $direccion->appendChild($dom->createElement('direccionComplementaria', $address_alt));
 
               if ($country == 'ESP') {
-                $direccion->appendChild($dom->createElement('codigoMunicipio', $postal_code));
+                $direccion->appendChild($dom->createElement('codigoMunicipio', $city_code));
               }
 
-              $direccion->appendChild($dom->createElement('nombreMunicipio', $city));
+              $direccion->appendChild($dom->createElement('nombreMunicipio', value: $city));
               $direccion->appendChild($dom->createElement('codigoPostal', $postal_code));
               $direccion->appendChild($dom->createElement('pais', $country));
             $persona->appendChild($dom->createElement('telefono', $phone));

@@ -24,9 +24,9 @@ class HOSTPN_Ajax {
 
   		$hostpn_ajax_type = HOSTPN_Forms::sanitizer($_POST['hostpn_ajax_type']);
       $ajax_keys = !empty($_POST['ajax_keys']) ? wp_unslash($_POST['ajax_keys']) : [];
-      $guest_id = !empty($_POST['guest_id']) ? USERSWPH_Forms::sanitizer(wp_unslash($_POST['guest_id'])) : 0;
-      $accommodation_id = !empty($_POST['accommodation_id']) ? USERSWPH_Forms::sanitizer(wp_unslash($_POST['accommodation_id'])) : 0;
-      $part_id = !empty($_POST['part_id']) ? USERSWPH_Forms::sanitizer(wp_unslash($_POST['part_id'])) : 0;
+      $guest_id = !empty($_POST['guest_id']) ? USERSPN_Forms::sanitizer(wp_unslash($_POST['guest_id'])) : 0;
+      $accommodation_id = !empty($_POST['accommodation_id']) ? USERSPN_Forms::sanitizer(wp_unslash($_POST['accommodation_id'])) : 0;
+      $part_id = !empty($_POST['part_id']) ? USERSPN_Forms::sanitizer(wp_unslash($_POST['part_id'])) : 0;
       $key_value = [];
 
       if (!empty($ajax_keys)) {

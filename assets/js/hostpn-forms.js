@@ -3,19 +3,21 @@
 
   window.hostpn_select_country = function () {
     if ($('#hostpn_country').val() == 'esp') {
-      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city').addClass('hostpn-display-none userswph-display-none').find('#hostpn_city').prop('required', false);
-      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code').removeClass('hostpn-display-none userswph-display-none').find('#hostpn_city_code');
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city').addClass('hostpn-display-none userspn-display-none').find('#hostpn_city').prop('required', false);
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code').removeClass('hostpn-display-none userspn-display-none').find('#hostpn_city_code');
     }else{
-      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city').removeClass('hostpn-display-none userswph-display-none').find('#hostpn_city').prop('required', true);
-      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code').addClass('hostpn-display-none userswph-display-none').find('#hostpn_city_code');
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city').removeClass('hostpn-display-none userspn-display-none').find('#hostpn_city').prop('required', true);
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code').addClass('hostpn-display-none userspn-display-none').find('#hostpn_city_code');
     }
   }
   
   window.hostpn_select_identity = function () {
     if ($('#hostpn_identity').val() == 'nif' || $('#hostpn_identity').val() == 'nie') {
-      $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').removeClass('hostpn-display-none userswph-display-none');
+      $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').removeClass('hostpn-display-none userspn-display-none');
+      $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_surname_alt').find('#hostpn_surname_alt').prop('required', true);
     }else{
-      $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').addClass('hostpn-display-none userswph-display-none');
+      $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').addClass('hostpn-display-none userspn-display-none');
+      $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_surname_alt').find('#hostpn_surname_alt').prop('required', false);
     }
   }
 

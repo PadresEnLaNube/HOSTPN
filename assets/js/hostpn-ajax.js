@@ -57,12 +57,12 @@
         if ($.parseJSON(response)['error_key'] == 'hostpn_form_save_error_unlogged') {
           hostpn_get_main_message(hostpn_i18n.user_unlogged);
 
-          if (!$('.users-wph-profile-wrapper .user-unlogged').length) {
-            $('.users-wph-profile-wrapper').prepend('<div class="users-wph-alert users-wph-alert-warning user-unlogged">' + hostpn_i18n.user_unlogged + '</div>');
+          if (!$('.userspn-profile-wrapper .user-unlogged').length) {
+            $('.userspn-profile-wrapper').prepend('<div class="userspn-alert userspn-alert-warning user-unlogged">' + hostpn_i18n.user_unlogged + '</div>');
           }
 
-          $.fancybox.open($('#users-wph-profile-popup'), {touch: false});
-          $('#users-wph-login input#user_login').focus();
+          $.fancybox.open($('#userspn-profile-popup'), {touch: false});
+          $('#userspn-login input#user_login').focus();
         }else if ($.parseJSON(response)['error_key'] == 'hostpn_form_save_error') {
           hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
         }else {

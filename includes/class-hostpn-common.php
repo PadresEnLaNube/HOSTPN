@@ -123,7 +123,7 @@ class HOSTPN_Common {
 			'media' => HOSTPN_URL . 'assets/media/',
 		]);
 
-		// https://seasuite.es/?hostpn_action=popup_open&hostpn_popup=userswph-profile-popup&hostpn_tab=userswph-tab-register
+		// https://seasuite.es/?hostpn_action=popup_open&hostpn_popup=userspn-profile-popup&hostpn_tab=userspn-tab-register
 		$hostpn_action = !empty($_GET['hostpn_action']) ? HOSTPN_Forms::sanitizer(wp_unslash($_GET['hostpn_action'])) : '';
 		$hostpn_btn_id = !empty($_GET['hostpn_btn_id']) ? HOSTPN_Forms::sanitizer(wp_unslash($_GET['hostpn_btn_id'])) : '';
 		$hostpn_popup = !empty($_GET['hostpn_popup']) ? HOSTPN_Forms::sanitizer(wp_unslash($_GET['hostpn_popup'])) : '';
