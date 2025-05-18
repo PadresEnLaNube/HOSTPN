@@ -56,11 +56,11 @@ class HOSTPN_Taxonomies_Host {
 				'labels'            => $labels,
 				'hierarchical'      => true,
 				'public'            => false,
-				'show_ui' 					=> false,
+				'show_ui' 			=> false,
 				'query_var'         => false,
 				'rewrite'           => false,
-				'show_in_rest'      => true,
-	    	'capabilities'      => $capabilities,
+				'show_in_rest'      => false,
+	    		'capabilities'      => $capabilities,
 			];
 
 			if ($options['archive']) {

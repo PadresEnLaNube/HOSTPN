@@ -8,10 +8,16 @@
 
     if ($('.hostpn-select').length) {
       $('.hostpn-select').each(function(index) {
-        if ($(this).children('option').length < 7) {
-          $(this).select2({minimumResultsForSearch: -1, allowClear: true});
+        if ($(this).attr('multiple') == 'true') {
+          // For a multiple select
+          $(this).HOSTPN_Selector({
+            multiple: true,
+            searchable: true,
+            placeholder: hostpn_i18n.select_options,
+          });
         }else{
-          $(this).select2({allowClear: true});
+          // For a single select
+          $(this).HOSTPN_Selector();
         }
       });
     }
@@ -20,7 +26,5 @@
     $('.hostpn-wysiwyg').each(function(index, element) {
       $(this).trumbowyg();
     });
-
-    $.fancybox.defaults.touch = false;
   });
 })(jQuery);

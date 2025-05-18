@@ -1,29 +1,22 @@
-=== Hospedajes España - WPH ===
+=== Hospedajes España - HOSTPN ===
 Contributors: felixmartinez, hamlet237
 Donate link: https://padresenlanube.com/
 Tags: hospedajes España, Spain, hosting, check-in, host register
 Requires at least: 3.0.1
-Tested up to: 6.6
+Tested up to: 6.8
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Allow you to require, save and send the information required by spanish Royal Decree 933/2021, of October 26.
+Allow you to ask for, save and send the information required by spanish Royal Decree 933/2021, of October 26.
 
 == Description ==
 
-The Hospedajes España - WPH application has been created to allow the sending of the information required by Royal Decree 933/2021, of October 26, which establishes the documentary and information registration obligations of natural or legal persons who carry out lodging and motor vehicle rental activities.
+The Hospedajes España - HOSTPN application has been created to allow the sending of the information required by Royal Decree 933/2021, of October 26, which establishes the documentary and information registration obligations of natural or legal persons who carry out lodging and motor vehicle rental activities.
 
 
 == Credits ==
 This plugin stands on the shoulders of giants
-
-FancyBox v3.5.7
-Licensed GPLv3 for open source use or fancyBox Commercial License for commercial use
-Copyright 2019 fancyApps
-http://fancyapps.com/fancybox/
-https://github.com/fancyapps/fancybox/blob/master/dist/jquery.fancybox.js
-https://github.com/fancyapps/fancybox/blob/master/dist/jquery.fancybox.css
 
 Tooltipster v4.2.8 - A rockin' custom tooltip jQuery plugin
 Developed by Caleb Jacob and Louis Ameline
@@ -37,12 +30,6 @@ Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob
 Copyright 2013-2018 David Deutsch
 https://owlcarousel2.github.io/OwlCarousel2/
 https://github.com/OwlCarousel2/OwlCarousel2/blob/develop/dist/owl.carousel.js
-
-Select2 4.0.13
-License MIT - https://github.com/select2/select2/blob/master/LICENSE.md
-https://github.com/select2/select2/tree/master
-https://github.com/select2/select2/blob/master/dist/js/select2.js
-https://github.com/select2/select2/blob/master/dist/css/select2.css
 
 Trumbowyg v2.27.3 - A lightweight WYSIWYG editor
 alex-d.github.io/Trumbowyg/
@@ -59,9 +46,9 @@ https://github.com/Alex-D/Trumbowyg/blob/develop/src/trumbowyg.js
 
 == Frequently Asked Questions ==
 
-= How do I install the Hospedajes España - WPH plugin? =
+= How do I install the Hospedajes España - HOSTPN plugin? =
 
-To install the Hospedajes España - WPH plugin, you can either upload the plugin files to the /wp-content/plugins/hostpn directory, or install the plugin through the WordPress plugins screen directly. After uploading, activate the plugin through the 'Plugins' screen in WordPress.
+To install the Hospedajes España - HOSTPN plugin, you can either upload the plugin files to the /wp-content/plugins/hostpn directory, or install the plugin through the WordPress plugins screen directly. After uploading, activate the plugin through the 'Plugins' screen in WordPress.
 
 = Can I customize the look and feel of my recipe listings? =
 
@@ -77,11 +64,11 @@ To add a new recipe, go to the 'Host' section in the WordPress dashboard and cli
 
 = Can I use this plugin with any WordPress theme? =
 
-Yes, the Hospedajes España - WPH plugin is designed to be compatible with any WordPress theme. However, some themes may require additional customization to ensure the plugin's styles integrate seamlessly.
+Yes, the Hospedajes España - HOSTPN plugin is designed to be compatible with any WordPress theme. However, some themes may require additional customization to ensure the plugin's styles integrate seamlessly.
 
 = Is the plugin translation-ready? =
 
-Yes, the Hospedajes España - WPH plugin is fully translation-ready. You can use translation plugins such as Loco Translate to translate the plugin into your desired language.
+Yes, the Hospedajes España - HOSTPN plugin is fully translation-ready. You can use translation plugins such as Loco Translate to translate the plugin into your desired language.
 
 = How do I update the plugin? =
 
@@ -99,30 +86,21 @@ The plugin don't include a built-in ratings and reviews system yet. You can inte
 
 To optimize your recipes for SEO, ensure that you use relevant keywords in your recipe titles, descriptions, and content. You can also use SEO plugins like Yoast SEO to further enhance your recipe posts' search engine visibility.
 
-= How do I get support for the Hospedajes España - WPH plugin? =
+= How do I get support for the Hospedajes España - HOSTPN plugin? =
 
 For support, you can visit the plugin's support forum on the WordPress.org website or contact the plugin author directly through our contact information info@padresenlanube.com.
 
 = Is the plugin compatible with the latest version of WordPress? =
 
-The Hospedajes España - WPH plugin is tested with the latest version of WordPress. However, it is always a good practice to check for any compatibility issues before updating WordPress or the plugin.
+The Hospedajes España - HOSTPN plugin is tested with the latest version of WordPress. However, it is always a good practice to check for any compatibility issues before updating WordPress or the plugin.
 
 = How do I uninstall the plugin? =
 
-To uninstall the plugin, go to the 'Plugins' screen in WordPress, find the Hospedajes España - WPH plugin, and click 'Deactivate'. After deactivating, you can click 'Delete' to remove the plugin and its files from your site. Note that this will not delete your recipes, but you should back up your data before uninstalling any plugin.
-
-
-== Screenshots ==
-
-1. Grid Guest portfolio front-end view.
-2. Recipe details front-end page. It includes the ingredients list view, steps and suggestions.
-3. Interactive view of the recipe steps with time ticking.
-4. Dashboard recipes list view.
-5. Dashboard recipe edition page including meta fields.
+To uninstall the plugin, go to the 'Plugins' screen in WordPress, find the Hospedajes España - HOSTPN plugin, and click 'Deactivate'. After deactivating, you can click 'Delete' to remove the plugin and its files from your site. Note that this will not delete your recipes, but you should back up your data before uninstalling any plugin.
 
 
 == Changelog ==
 
 = 1.0.0 =
 
-Hello world!
+Hello hostings world!

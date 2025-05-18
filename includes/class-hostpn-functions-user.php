@@ -42,8 +42,8 @@ class HOSTPN_Functions_User {
     if (!empty($timestamp) && is_string($timestamp)) {
       $timestamp = strtotime($timestamp);
 
-      $year = date('Y', $timestamp);
-      $age = date('Y') - $year;
+      $year = gmdate('Y', $timestamp);
+      $age = gmdate('Y') - $year;
 
       if(strtotime('+' . $age . ' years', $timestamp) > time()) {
         $age--;
@@ -127,13 +127,13 @@ class HOSTPN_Functions_User {
     update_user_meta($user_id, 'userspn_newsletter_active', true);
   }
 
-  public function userspn_wph_register_fields($register_fields) {
+  public function hostpn_user_register_fields($register_fields) {
     global $post;
     $post_id = $post->ID ?? 0;
     $hostpn_pages = get_option('hostpn_pages') ?? [];
 
     if ((in_array($post_id, $hostpn_pages) || is_admin()) && !(current_user_can('administrator') || current_user_can('hostpn_role_manager'))) {
-      $relationships = HOSTPN_Data::relationships();
+      $relationships = HOSTPN_Data::hostpn_relationships();
 
       $register_fields['hostpn_surname_alt'] = [
         'id' => 'hostpn_surname_alt',
@@ -187,7 +187,7 @@ class HOSTPN_Functions_User {
         'input' => 'input',
         'type' => 'date',
         'required' => true,
-        'max' => date('Y-m-d'),
+        'max' => gmdate('Y-m-d'),
         'xml' => 'fechaNacimiento',
         'label' => esc_html(__('Birthdate', 'hostpn')),
         'placeholder' => esc_html(__('Birthdate', 'hostpn')),
@@ -196,7 +196,7 @@ class HOSTPN_Functions_User {
         'id' => 'hostpn_nationality',
         'class' => 'hostpn-select hostpn-width-100-percent',
         'input' => 'select',
-        'options' => HOSTPN_Data::countries(),
+        'options' => HOSTPN_Data::hostpn_countries(),
         'required' => true,
         'xml' => 'nacionalidad',
         'label' => esc_html(__('Nationality', 'hostpn')),
@@ -235,7 +235,7 @@ class HOSTPN_Functions_User {
         'id' => 'hostpn_country',
         'class' => 'hostpn-select hostpn-width-100-percent',
         'input' => 'select',
-        'options' => HOSTPN_Data::countries(),
+        'options' => HOSTPN_Data::hostpn_countries(),
         'parent' => 'this',
         'required' => true,
         'xml' => 'pais',
@@ -246,7 +246,7 @@ class HOSTPN_Functions_User {
         'id' => 'hostpn_city_code',
         'class' => 'hostpn-select hostpn-width-100-percent',
         'input' => 'select',
-        'options' => HOSTPN_Data::spanish_cities(),
+        'options' => HOSTPN_Data::hostpn_spanish_cities(),
         'parent' => 'hostpn_country',
         'parent_option' => 'esp',
         'xml' => 'codigoMunicipio',
@@ -309,7 +309,7 @@ class HOSTPN_Functions_User {
         'type' => 'checkbox',
         'parent' => 'this',
         'label' => esc_html(__('Not the holder of the contract', 'hostpn')),
-        'description' => esc_html(__('Check this box if you are not the one who has booked the accomodation. Then you will need to set your relationship with this person.', 'hostpn')),
+        'description' => esc_html(__('Check this box if you are not the one who has booked the accommodation. Then you will need to set your relationship with this person.', 'hostpn')),
       ];
         $register_fields['hostpn_relationship'] = [
           'id' => 'hostpn_relationship',
@@ -337,9 +337,9 @@ class HOSTPN_Functions_User {
     $hostpn_post_content = __('Special needs, allergies, important situations to highlight...', 'hostpn');
     update_user_meta($user_id, 'hostpn_user_to_guest', current_time('timestamp'));
 
-    $hostpn_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'hostpn_guest', 'publish', $user_id);
+    $hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'hostpn_guest', 'publish', $user_id);
 
-    if ($hostpn_id && class_exists('MAILWPH')) {
+    if ($hostpn_id && class_exists('MAILPN')) {
       $email_contents = [];
 
       ob_start();
@@ -348,14 +348,14 @@ class HOSTPN_Functions_User {
         <p><?php esc_html_e('We have successfully received your registration and application.', 'hostpn'); ?></p>
         <p><?php esc_html_e('You can now add more guests by yourself or share the link to other companions to allow them fulfill their own form.', 'hostpn'); ?></p>
         
-        <div class="mailwph-text-align-center mailwph-mt-30 mailwph-mb-50">
-          <a href="<?php echo esc_url(home_url('guests')); ?>" class="mailwph-btn"><?php esc_html_e('Guests page', 'hostpn'); ?></a>
+        <div class="hostpn-text-align-center hostpn-mt-30 hostpn-mb-50">
+          <a href="<?php echo esc_url(home_url('guests')); ?>" class="hostpn-btn"><?php esc_html_e('Guests page', 'hostpn'); ?></a>
         </div>
       <?php
       $mail_content = ob_get_contents(); 
       ob_end_clean(); 
 
-      do_shortcode('[mailwph-sender mailwph_user_to="' . $user_id . '" mailwph_subject="' . esc_html(__('Application received', 'hostpn')) . '"]' . $mail_content . '[/mailwph-sender]');
+      do_shortcode('[mailpn-sender mailpn_user_to="' . $user_id . '" mailpn_subject="' . esc_html(__('Application received', 'hostpn')) . '"]' . $mail_content . '[/mailpn-sender]');
     }
   }
 

@@ -16,20 +16,20 @@ class HOSTPN_XML {
 	 *
 	 * @since    1.0.0
 	 */
-	public function part_download($part_id) {
+	public function hostpn_part_download($part_id) {
     $accommodation_id = get_post_meta($part_id, 'hostpn_accommodation_id', true);
     $accommodation_code = get_post_meta($accommodation_id, 'hostpn_accommodation_code', true);
 
     $part_reference = get_post_meta($part_id, 'hostpn_reference', true);
 
-    $part_date = self::timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_date', true), true);
-    $check_in_date = self::timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_check_in_date', true) . ' ' . get_post_meta($part_id, 'hostpn_check_in_time', true));
-    $check_out_date = self::timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_check_out_date', true) . ' ' . get_post_meta($part_id, 'hostpn_check_out_time', true));
+    $part_date = self::hostpn_timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_date', true), true);
+    $check_in_date = self::hostpn_timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_check_in_date', true) . ' ' . get_post_meta($part_id, 'hostpn_check_in_time', true));
+    $check_out_date = self::hostpn_timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_check_out_date', true) . ' ' . get_post_meta($part_id, 'hostpn_check_out_time', true));
     $part_people_number = get_post_meta($part_id, 'hostpn_people_number', true);
     $part_rooms = get_post_meta($part_id, 'hostpn_rooms', true);
     $part_internet = (get_post_meta($part_id, 'hostpn_internet', true) == 'on') ? 1 : 0;
     $payment_type = strtoupper(get_post_meta($part_id, 'hostpn_payment_type', true));
-    $payment_date = self::timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_payment_date', true), true);
+    $payment_date = self::hostpn_timestamp_to_iso8601(get_post_meta($part_id, 'hostpn_payment_date', true), true);
     $payment_method = strtoupper(get_post_meta($part_id, 'hostpn_payment_method', true));
     $payment_holder = get_post_meta($part_id, 'hostpn_payment_holder', true);
     $payment_expiration = get_post_meta($part_id, 'hostpn_payment_expiration', true);
@@ -69,7 +69,7 @@ class HOSTPN_XML {
           $identity = strtoupper(get_post_meta($guest_id, 'hostpn_identity', true));
           $identity_number = get_post_meta($guest_id, 'hostpn_identity_number', true);
           $identity_support = get_post_meta($guest_id, 'hostpn_identity_support_number', true);
-          $birthdate = self::timestamp_to_iso8601(get_post_meta($guest_id, 'hostpn_birthdate', true), true);
+          $birthdate = self::hostpn_timestamp_to_iso8601(get_post_meta($guest_id, 'hostpn_birthdate', true), true);
           $nationality = strtoupper(get_post_meta($guest_id, 'hostpn_nationality', true));
           $gender = strtoupper(get_post_meta($guest_id, 'hostpn_gender', true));
           $address = get_post_meta($guest_id, 'hostpn_address', true);
@@ -118,14 +118,12 @@ class HOSTPN_XML {
     $dom->preserveWhiteSpace = false;
 		$dom->formatOutput = true;
 
-    // header_remove();
     echo $dom->saveXML();
     exit();
 	}
 
-  public function timestamp_to_iso8601($timestamp, $date_only = false) {
-    date_default_timezone_set('Europe/Madrid');
-    $date_time = new DateTime($timestamp);
+  public function hostpn_timestamp_to_iso8601($timestamp, $date_only = false) {
+    $date_time = new DateTime($timestamp, new DateTimeZone(wp_timezone_string()));
 
     if ($date_only) {
       return $date_time->format('Y-m-d');

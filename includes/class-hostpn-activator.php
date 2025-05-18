@@ -18,8 +18,11 @@ class HOSTPN_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-    add_role('hostpn_role_manager', esc_html(__('Host - WPH', 'hostpn')));
+	public static function hostpn_activate() {
+    require_once HOSTPN_DIR . 'includes/class-hostpn-functions-post.php';
+    require_once HOSTPN_DIR . 'includes/class-hostpn-functions-attachment.php';
+
+    add_role('hostpn_role_manager', esc_html(__('Host - HOSTPN', 'hostpn')));
 
     $role_admin = get_role('administrator');
     $hostpn_role_manager = get_role('hostpn_role_manager');
@@ -31,7 +34,7 @@ class HOSTPN_Activator {
       $hostpn_role_manager->add_cap($cap_value); 
     }
 
-    add_role('hostpn_role_guest', esc_html(__('Guest - WPH', 'hostpn')));
+    add_role('hostpn_role_guest', esc_html(__('Guest - HOSTPN', 'hostpn')));
     $role_subscriber = get_role('subscriber');
     $hostpn_role_guest = get_role('hostpn_role_guest');
     foreach (HOSTPN_ROLE_CAPABILITIES as $cap_key => $cap_value) {
@@ -43,7 +46,7 @@ class HOSTPN_Activator {
       if (empty(get_option('hostpn_pages_accommodation'))) {
         $hostpn_title = __('Accommodations', 'hostpn');
         $hostpn_post_content = '<!-- wp:shortcode -->[hostpn-accommodation-list]<!-- /wp:shortcode -->';
-        $hostpn_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
+        $hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
 
         $hostpn_meta_value = $hostpn_id;
         if(empty(get_option('hostpn_pages'))) {
@@ -55,7 +58,12 @@ class HOSTPN_Activator {
         }
         
         update_option('hostpn_pages_accommodation', $hostpn_id);
-        update_option('hostpn_url_main', get_permalink($hostpn_id));
+        $accommodation_url = get_permalink($hostpn_id);
+        update_option('hostpn_url_main', $accommodation_url);
+
+        if (!get_transient('hostpn_just_activated')) {
+          set_transient('hostpn_just_activated', true, 30);
+        }
 
         if (class_exists('Polylang') && function_exists('pll_default_language')) {
           $language = pll_default_language();
@@ -67,7 +75,7 @@ class HOSTPN_Activator {
               if ($locale != $language) {
                 $hostpn_title = __('Accommodations', 'hostpn') . ' ' . $locale;
                 $hostpn_post_content = '<!-- wp:shortcode -->[hostpn-accommodation-list]<!-- /wp:shortcode -->';
-                $translated_hostpn_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
+                $translated_hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
 
                 pll_set_post_language($translated_hostpn_id, $locale);
 
@@ -93,7 +101,7 @@ class HOSTPN_Activator {
       if (empty(get_option('hostpn_pages_guest'))) {
         $hostpn_title = __('Guests', 'hostpn');
         $hostpn_post_content = '<!-- wp:shortcode -->[hostpn-guest-list]<!-- /wp:shortcode -->';
-        $hostpn_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
+        $hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
 
         $hostpn_meta_value = $hostpn_id;
         if(empty(get_option('hostpn_pages'))) {
@@ -116,7 +124,7 @@ class HOSTPN_Activator {
               if ($locale != $language) {
                 $hostpn_title = __('Guests', 'hostpn') . ' ' . $locale;
                 $hostpn_post_content = '<!-- wp:shortcode -->[hostpn-guest-list]<!-- /wp:shortcode -->';
-                $translated_hostpn_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
+                $translated_hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
 
                 pll_set_post_language($translated_hostpn_id, $locale);
 
@@ -142,7 +150,7 @@ class HOSTPN_Activator {
       if (empty(get_option('hostpn_pages_part'))) {
         $hostpn_title = __('Parts of travelers', 'hostpn');
         $hostpn_post_content = '<!-- wp:shortcode -->[hostpn-part-list]<!-- /wp:shortcode -->';
-        $hostpn_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
+        $hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
 
         $hostpn_meta_value = $hostpn_id;
         if(empty(get_option('hostpn_pages'))) {
@@ -165,7 +173,7 @@ class HOSTPN_Activator {
               if ($locale != $language) {
                 $hostpn_title = __('Parts of travelers', 'hostpn') . ' ' . $locale;
                 $hostpn_post_content = '<!-- wp:shortcode -->[hostpn-part-list]<!-- /wp:shortcode -->';
-                $translated_hostpn_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
+                $translated_hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'page', 'publish', 1);
 
                 pll_set_post_language($translated_hostpn_id, $locale);
 

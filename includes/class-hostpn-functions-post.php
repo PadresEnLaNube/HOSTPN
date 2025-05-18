@@ -29,7 +29,7 @@ class HOSTPN_Functions_Post {
 	 * 
 	 * @since    1.0.0
 	 */
-	public function insert_post($title, $content, $excerpt, $name, $type, $status, $author = 1, $parent = 0, $cats = [], $tags = [], $postmeta = [], $overwrite_id = true) {
+	public function hostpn_insert_post($title, $content, $excerpt, $name, $type, $status, $author = 1, $parent = 0, $cats = [], $tags = [], $postmeta = [], $overwrite_id = true) {
     $post_values = [
       'post_title' => trim($title),
       'post_content' => $content,
@@ -85,44 +85,89 @@ class HOSTPN_Functions_Post {
     return $post_id;
   }
 
-  public function duplicate_post($post_id, $post_status = 'draft') {
-    $old_post = get_post($post_id);
-
-    if (!$old_post) {
+  /**
+   * Duplicates a post and all its associated data
+   * 
+   * @param int $post_id The ID of the post to duplicate
+   * @param string $post_status The status for the new post (default: 'draft')
+   * @param string $suffix Optional suffix to add to the title (default: ' (copy)')
+   * @return int|false The new post ID on success, false on failure
+   */
+  public function hostpn_duplicate_post($post_id, $post_status = 'draft', $suffix = ' (copy)') {
+    // Get the original post
+    $post = get_post($post_id);
+    if (!$post) {
       return false;
     }
 
-    $title = $old_post->post_title . ' cloned';
-
-    $new_post = [
-      'post_title'     => $title,
-      'post_name'      => sanitize_title($title),
-      'post_type'      => $old_post->post_type,
+    // Prepare the new post data
+    $new_post = array(
+      'post_title'     => $post->post_title . $suffix,
+      'post_name'      => wp_unique_post_slug(sanitize_title($post->post_title . $suffix), 0, $post_status, $post->post_type, 0),
+      'post_content'   => $post->post_content,
+      'post_excerpt'   => $post->post_excerpt,
       'post_status'    => $post_status,
-      'post_content'   => $old_post->post_content,
-      'post_excerpt'   => $old_post->post_excerpt,
-      'post_parent'    => $old_post->post_parent,
-      'post_password'  => $old_post->post_password,
-      'post_type'      => $old_post->post_type,
-      'menu_order'     => $old_post->menu_order,
-      'to_ping'        => $old_post->to_ping,
-      'comment_status' => $old_post->comment_status,
-    ];
+      'post_type'      => $post->post_type,
+      'post_parent'    => $post->post_parent,
+      'post_password'  => $post->post_password,
+      'menu_order'     => $post->menu_order,
+      'to_ping'        => $post->to_ping,
+      'pinged'         => $post->pinged,
+      'comment_status' => $post->comment_status,
+      'ping_status'    => $post->ping_status,
+      'post_author'    => get_current_user_id(),
+    );
 
-    $new_post_id = wp_insert_post($new_post);
+    // Insert the new post
+    $new_post_id = wp_insert_post($new_post, true);
 
-    $post_meta = get_post_custom($post_id);
-    foreach ($post_meta as $key => $values) {
-      foreach ($values as $value) {
-        add_post_meta($new_post_id, $key, maybe_unserialize($value));
+    // Check for errors
+    if (is_wp_error($new_post_id)) {
+      return false;
+    }
+
+    // Copy all post meta
+    $meta_keys = get_post_custom_keys($post_id);
+    if (!empty($meta_keys)) {
+      foreach ($meta_keys as $meta_key) {
+        // Skip internal WordPress meta keys
+        if (strpos($meta_key, '_') === 0) {
+          continue;
+        }
+        
+        $meta_values = get_post_custom_values($meta_key, $post_id);
+        foreach ($meta_values as $meta_value) {
+          $meta_value = maybe_unserialize($meta_value);
+          update_post_meta($new_post_id, $meta_key, $meta_value);
+        }
       }
     }
 
-    $taxonomies = get_post_taxonomies($post_id);
-    foreach ($taxonomies as $taxonomy) {
-        $term_ids = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
-        wp_set_object_terms($new_post_id, $term_ids, $taxonomy);
+    // Copy all taxonomies
+    $taxonomies = get_object_taxonomies($post->post_type);
+    if (!empty($taxonomies)) {
+      foreach ($taxonomies as $taxonomy) {
+        $terms = wp_get_object_terms($post_id, $taxonomy, array('fields' => 'ids'));
+        if (!is_wp_error($terms)) {
+          wp_set_object_terms($new_post_id, $terms, $taxonomy);
+        }
+      }
     }
+
+    // Copy featured image if exists
+    $thumbnail_id = get_post_thumbnail_id($post_id);
+    if ($thumbnail_id) {
+      set_post_thumbnail($new_post_id, $thumbnail_id);
+    }
+
+    // Copy post format if exists
+    $post_format = get_post_format($post_id);
+    if ($post_format) {
+      set_post_format($new_post_id, $post_format);
+    }
+
+    // Allow other plugins to hook into the duplication process
+    do_action('hostpn_after_post_duplication', $new_post_id, $post_id);
 
     return $new_post_id;
   }

@@ -5,12 +5,12 @@
     $(document).on('submit', '.hostpn-form', function(e){
       var hostpn_form = $(this);
       var hostpn_btn = hostpn_form.find('input[type="submit"]');
-      hostpn_btn.addClass('hostpn-link-disabled').siblings('.hostpn-waiting').removeClass('hostpn-display-none-soft');
+      hostpn_btn.addClass('hostpn-link-disabled').siblings('.hostpn-waiting').removeClass('hostpn-display-none');
 
       var ajax_url = hostpn_ajax.ajax_url;
       var data = {
         action: 'hostpn_ajax_nopriv',
-        ajax_nonce: hostpn_ajax.ajax_nonce,
+        hostpn_ajax_nopriv_nonce: hostpn_ajax.hostpn_ajax_nonce,
         hostpn_ajax_nopriv_type: 'hostpn_form_save',
         hostpn_form_id: hostpn_form.attr('id'),
         hostpn_form_type: hostpn_btn.attr('data-hostpn-type'),
@@ -18,7 +18,7 @@
         hostpn_form_user_id: hostpn_btn.attr('data-hostpn-user-id'),
         hostpn_form_post_id: hostpn_btn.attr('data-hostpn-post-id'),
         hostpn_form_post_type: hostpn_btn.attr('data-hostpn-post-type'),
-        ajax_keys: [],
+        hostpn_ajax_keys: [],
       };
 
       if (!(typeof window['hostpn_window_vars'] !== 'undefined')) {
@@ -27,68 +27,77 @@
 
       $(hostpn_form.find('input:not([type="submit"]), select, textarea')).each(function(index, element) {
         if ($(this).parents('.hostpn-html-multi-group').length) {
-          if (!(typeof window['hostpn_window_vars']['form_field_' + element.id] !== 'undefined')) {
-            window['hostpn_window_vars']['form_field_' + element.id] = [];
+          if (!(typeof window['hostpn_window_vars']['form_field_' + element.name] !== 'undefined')) {
+            window['hostpn_window_vars']['form_field_' + element.name] = [];
           }
 
-          window['hostpn_window_vars']['form_field_' + element.id].push($(element).val());
+          window['hostpn_window_vars']['form_field_' + element.name].push($(element).val());
 
-          data[element.id] = window['hostpn_window_vars']['form_field_' + element.id];
+          data[element.name] = window['hostpn_window_vars']['form_field_' + element.name];
         }else{
-          if ($(this).is(':checkbox') || $(this).is(':radio')) {
+          if ($(this).is(':checkbox')) {
             if ($(this).is(':checked')) {
-              data[element.id] = $(element).val();
+              data[element.name] = $(element).val();
             }else{
-              data[element.id] = '';
+              data[element.name] = '';
+            }
+          }else if ($(this).is(':radio')) {
+            if ($(this).is(':checked')) {
+              data[element.name] = $(element).val();
             }
           }else{
-            data[element.id] = $(element).val();
+            data[element.name] = $(element).val();
           }
         }
 
-        data.ajax_keys.push({
-          id: element.id,
+        data.hostpn_ajax_keys.push({
+          id: element.name,
           node: element.nodeName,
           type: element.type,
         });
       });
 
       $.post(ajax_url, data, function(response) {
-        if ($.parseJSON(response)['error_key'] == 'hostpn_form_save_error_unlogged') {
+        console.log('data');console.log(data);
+        console.log('response');console.log(response);
+
+        var response_json = $.parseJSON(response);
+
+        if (response_json['error_key'] == 'hostpn_form_save_error_unlogged') {
           hostpn_get_main_message(hostpn_i18n.user_unlogged);
 
           if (!$('.userspn-profile-wrapper .user-unlogged').length) {
             $('.userspn-profile-wrapper').prepend('<div class="userspn-alert userspn-alert-warning user-unlogged">' + hostpn_i18n.user_unlogged + '</div>');
           }
 
-          $.fancybox.open($('#userspn-profile-popup'), {touch: false});
+          HOSTPN_Popups.open($('#userspn-profile-popup'));
           $('#userspn-login input#user_login').focus();
-        }else if ($.parseJSON(response)['error_key'] == 'hostpn_form_save_error') {
+        }else if (response_json['error_key'] != '') {
           hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
         }else {
           hostpn_get_main_message(hostpn_i18n.saved_successfully);
         }
 
-        if ($.parseJSON(response)['update_list']) {
-          $('.hostpn-' + data.hostpn_form_post_type + '-list').html($.parseJSON(response)['update_html']);
+        if (response_json['update_list']) {
+          $('.hostpn-' + data.hostpn_form_post_type + '-list').html(response_json['update_html']);
         }
 
-        if ($.parseJSON(response)['popup_close']) {
-          $.fancybox.close(true);
+        if (response_json['popup_close']) {
+          HOSTPN_Popups.close();
           $('.hostpn-menu-more-overlay').fadeOut('fast');
         }
 
-        if ($.parseJSON(response)['check'] == 'post_check') {
-          $.fancybox.close(true);
+        if (response_json['check'] == 'post_check') {
+          HOSTPN_Popups.close();
           $('.hostpn-menu-more-overlay').fadeOut('fast');
-          $('.hostpn-list-element[data-hostpn-element-id="' + data.hostpn_form_post_id + '"] .hostpn-check-wrapper i').text('host_alt');
-        }else if ($.parseJSON(response)['check'] == 'post_uncheck') {
-          $.fancybox.close(true);
+          $('.hostpn-' + data.hostpn_form_post_type + '-list-item[data-' + data.hostpn_form_post_type + '-id="' + data.hostpn_form_post_id + '"] .hostpn-check-wrapper i').text('task_alt');
+        }else if (response_json['check'] == 'post_uncheck') {
+          HOSTPN_Popups.close();
           $('.hostpn-menu-more-overlay').fadeOut('fast');
-          $('.hostpn-list-element[data-hostpn-element-id="' + data.hostpn_form_post_id + '"] .hostpn-check-wrapper i').text('radio_button_unchecked');
+          $('.hostpn-' + data.hostpn_form_post_type + '-list-item[data-' + data.hostpn_form_post_type + '-id="' + data.hostpn_form_post_id + '"] .hostpn-check-wrapper i').text('radio_button_unchecked');
         }
 
-        hostpn_btn.removeClass('hostpn-link-disabled').siblings('.hostpn-waiting').addClass('hostpn-display-none-soft')
+        hostpn_btn.removeClass('hostpn-link-disabled').siblings('.hostpn-waiting').addClass('hostpn-display-none')
       });
 
       delete window['hostpn_window_vars'];
@@ -100,114 +109,108 @@
 
       var hostpn_btn = $(this);
       var hostpn_ajax_type = hostpn_btn.attr('data-hostpn-ajax-type');
-      var accommodation_id = hostpn_btn.closest('.hostpn-list-element').attr('data-hostpn-element-id');
-      var part_id = hostpn_btn.closest('.hostpn-list-element').attr('data-hostpn-element-id');
-      var guest_id = hostpn_btn.closest('.hostpn-list-element').attr('data-hostpn-element-id');
-      var popup_element = $('#' + hostpn_btn.attr('data-hostpn-popup-id'));
+      var hostpn_accommodation_id = hostpn_btn.closest('.hostpn-accommodation').attr('data-hostpn_accommodation-id');
+      var hostpn_part_id = hostpn_btn.closest('.hostpn-part').attr('data-hostpn_part-id');
+      var hostpn_guest_id = hostpn_btn.closest('.hostpn-guest').attr('data-hostpn_guest-id');
+      var hostpn_popup_element = $('#' + hostpn_btn.attr('data-hostpn-popup-id'));
 
-      $.fancybox.open(popup_element, {
-        touch: false,
-        beforeShow: function(instance, current, e) {
+      HOSTPN_Popups.open(hostpn_popup_element, {
+        beforeShow: function(instance, popup) {
           var ajax_url = hostpn_ajax.ajax_url;
           var data = {
             action: 'hostpn_ajax',
             hostpn_ajax_type: hostpn_ajax_type,
-            accommodation_id: accommodation_id,
-            part_id: part_id,
-            guest_id: guest_id,
+            hostpn_accommodation_id: hostpn_accommodation_id ? hostpn_accommodation_id : '',
+            hostpn_part_id: hostpn_part_id ? hostpn_part_id : '',
+            hostpn_guest_id: hostpn_guest_id ? hostpn_guest_id : '',
+            hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce
           };
 
-          $.post(ajax_url, data, function(response) {
-            if ($.parseJSON(response)['error_key'] != '') {
-              hostpn_get_main_message($.parseJSON(response)['error']);
-            }else{
-              popup_element.find('.hostpn-popup-content').html($.parseJSON(response)['html']);
+          // Log the data being sent
+          console.log('HOSTPN AJAX - Sending request with data:', data);
+
+          $.ajax({
+            url: ajax_url,
+            type: 'POST',
+            data: data,
+            success: function(response) {
+              try {
+                // First try to parse the response as JSON
+                var response_json = typeof response === 'string' ? JSON.parse(response) : response;
+                
+                // Check for error key in response
+                if (response_json.error_key) {
+                  hostpn_get_main_message('HOSTPN AJAX - Server returned error:', response_json.error_key);
+                  // Display the error message if available, otherwise show generic error
+                  var errorMessage = response_json.error_ || hostpn_i18n.an_error_has_occurred;
+                  hostpn_get_main_message(errorMessage);
+                  return;
+                }
+
+                // Check for HTML content
+                if (response_json.html) {
+                  console.log('HOSTPN AJAX - HTML content received');
+                  console.log(response_json);
+                  hostpn_popup_element.find('.hostpn-popup-content').html(response_json.html);
+                  
+                  // Initialize media uploaders if function exists
+                  if (typeof initMediaUpload === 'function') {
+                    $('.hostpn-image-upload-wrapper').each(function() {
+                      initMediaUpload($(this), 'image');
+                    });
+                    $('.hostpn-audio-upload-wrapper').each(function() {
+                      initMediaUpload($(this), 'audio');
+                    });
+                    $('.hostpn-video-upload-wrapper').each(function() {
+                      initMediaUpload($(this), 'video');
+                    });
+                  }
+                } else {
+                  console.log('HOSTPN AJAX - Response missing HTML content');
+                  console.log(hostpn_i18n.an_error_has_occurred);
+                }
+              } catch (e) {
+                console.log('HOSTPN AJAX - Failed to parse response:', e);
+                console.log('Raw response:', response);
+                console.log(hostpn_i18n.an_error_has_occurred);
+              }
+            },
+            error: function(xhr, status, error) {
+              console.log('HOSTPN AJAX - Request failed:', status, error);
+              console.log('Response:', xhr.responseText);
+              console.log(hostpn_i18n.an_error_has_occurred);
             }
           });
         },
-        afterShow: function(instance, current, e) {
-          hostpn_select_country();
-          hostpn_select_identity();
+        afterClose: function() {
+          hostpn_popup_element.find('.hostpn-popup-content').html('<div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>');
         },
-        afterClose: function(instance, current, e) {
-          popup_element.find('.hostpn-popup-content').html('<div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>');
-        },
-      },);
-    });
-
-    $(document).on('click', '.hostpn-guest-duplicate', function(e) {
-      e.preventDefault();
-      $('.hostpn-guests').fadeOut('fast');
-
-      var hostpn_btn = $(this);
-      var guest_id = hostpn_btn.closest('.hostpn-list-element').attr('data-hostpn-element-id');
-
-      var ajax_url = hostpn_ajax.ajax_url;
-      var data = {
-        action: 'hostpn_ajax',
-        hostpn_ajax_type: 'hostpn_guest_duplicate',
-        hostpn_duplicate: guest_id,
-        guest_id: guest_id,
-      };
-
-      $.post(ajax_url, data, function(response) {
-        if ($.parseJSON(response)['error_key'] != '') {
-          hostpn_get_main_message($.parseJSON(response)['error']);
-        }else{
-          $('.hostpn-guests').html($.parseJSON(response)['html']);
-        }
-        
-        $('.hostpn-guests').fadeIn('slow');
-        $('.hostpn-menu-more-overlay').fadeOut('fast');
       });
     });
 
-    $(document).on('click', '.hostpn-guest-remove', function(e) {
+    $(document).on('click', '.hostpn-accommodation-duplicate-post', function(e) {
       e.preventDefault();
 
-      $('.hostpn-guests').fadeOut('fast');
-      var guest_id = $('.hostpn-menu-more.hostpn-active').closest('.hostpn-list-element').attr('data-hostpn-element-id');
-
-      var ajax_url = hostpn_ajax.ajax_url;
-      var data = {
-        action: 'hostpn_ajax',
-        hostpn_ajax_type: 'hostpn_guest_remove',
-        guest_id: guest_id,
-      };
-
-      $.post(ajax_url, data, function(response) {
-        if ($.parseJSON(response)['error_key'] != '') {
-          hostpn_get_main_message($.parseJSON(response)['error']);
-        }else{
-          $('.hostpn-guests').html($.parseJSON(response)['html']);
-        }
-        
-        $('.hostpn-guests').fadeIn('slow');
-        $('.hostpn-menu-more-overlay').fadeOut('fast');
-        $.fancybox.close();
-      });
-    });
-
-    $(document).on('click', '.hostpn-accommodation-duplicate', function(e) {
-      e.preventDefault();
       $('.hostpn-accommodations').fadeOut('fast');
-
       var hostpn_btn = $(this);
-      var accommodation_id = hostpn_btn.closest('.hostpn-list-element').attr('data-hostpn-element-id');
+      var hostpn_accommodation_id = hostpn_btn.closest('.hostpn-accommodation').attr('data-hostpn_accommodation-id');
 
       var ajax_url = hostpn_ajax.ajax_url;
       var data = {
         action: 'hostpn_ajax',
         hostpn_ajax_type: 'hostpn_accommodation_duplicate',
-        hostpn_duplicate: guest_id,
-        accommodation_id: accommodation_id,
+        hostpn_accommodation_id: hostpn_accommodation_id,
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
       };
 
       $.post(ajax_url, data, function(response) {
-        if ($.parseJSON(response)['error_key'] != '') {
-          hostpn_get_main_message($.parseJSON(response)['error']);
+        console.log('data');console.log(data);console.log('response');console.log(response);
+        var response_json = $.parseJSON(response);
+
+        if (response_json['error_key'] != '') {
+          hostpn_get_main_message(response_json['error_content']);
         }else{
-          $('.hostpn-accommodations').html($.parseJSON(response)['html']);
+          $('.hostpn-accommodations').html(response_json['html']);
         }
         
         $('.hostpn-accommodations').fadeIn('slow');
@@ -219,76 +222,121 @@
       e.preventDefault();
 
       $('.hostpn-accommodations').fadeOut('fast');
-      var accommodation_id = $('.hostpn-menu-more.hostpn-active').closest('.hostpn-list-element').attr('data-hostpn-element-id');
+      var hostpn_accommodation_id = $('.hostpn-menu-more.hostpn-active').closest('.hostpn-accommodation').attr('data-hostpn_accommodation-id');
 
       var ajax_url = hostpn_ajax.ajax_url;
       var data = {
         action: 'hostpn_ajax',
         hostpn_ajax_type: 'hostpn_accommodation_remove',
-        accommodation_id: accommodation_id,
+        hostpn_accommodation_id: hostpn_accommodation_id,
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
       };
 
       $.post(ajax_url, data, function(response) {
-        if ($.parseJSON(response)['error_key'] != '') {
-          hostpn_get_main_message($.parseJSON(response)['error']);
+        console.log('data');console.log(data);console.log('response');console.log(response);
+        var response_json = $.parseJSON(response);
+       
+        if (response_json['error_key'] != '') {
+          hostpn_get_main_message(response_json['error_content']);
         }else{
-          $('.hostpn-accommodations').html($.parseJSON(response)['html']);
+          $('.hostpn-accommodations').html(response_json['html']);
+          hostpn_get_main_message(hostpn_i18n.removed_successfully);
         }
         
         $('.hostpn-accommodations').fadeIn('slow');
         $('.hostpn-menu-more-overlay').fadeOut('fast');
-        $.fancybox.close();
+
+        HOSTPN_Popups.close();
       });
     });
 
-    $(document).on('click', '.hostpn-part-download', function(e) {
+    $(document).on('click', '.hostpn-guest-duplicate-post', function(e) {
       e.preventDefault();
 
+      $('.hostpn-guests').fadeOut('fast');
       var hostpn_btn = $(this);
-      var part_id = hostpn_btn.closest('.hostpn-list-element').attr('data-hostpn-element-id');
+      var hostpn_guest_id = hostpn_btn.closest('.hostpn-guest').attr('data-hostpn_guest-id');
 
       var ajax_url = hostpn_ajax.ajax_url;
       var data = {
         action: 'hostpn_ajax',
-        hostpn_ajax_type: 'hostpn_part_download',
-        part_id: part_id,
+        hostpn_ajax_type: 'hostpn_guest_duplicate',
+        hostpn_guest_id: hostpn_guest_id,
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
       };
 
       $.post(ajax_url, data, function(response) {
-        var filename = 'part-of-traveler-' + part_id + '.xml';
-        var pom = document.createElement('a');
-        var bb = new Blob([response], {type: 'text/plain'});
+        console.log('data');console.log(data);console.log('response');console.log(response);
+        var response_json = $.parseJSON(response);
 
-        pom.setAttribute('href', window.URL.createObjectURL(bb));
-        pom.setAttribute('download', filename);
-
-        pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
-        pom.draggable = true; 
-        pom.classList.add('dragout');
-        pom.click();
+        if (response_json['error_key'] != '') {
+          hostpn_get_main_message(response_json['error_content']);
+        }else{
+          $('.hostpn-guests').html(response_json['html']);
+        }
+        
+        $('.hostpn-guests').fadeIn('slow');
+        $('.hostpn-menu-more-overlay').fadeOut('fast');
       });
     });
 
-    $(document).on('click', '.hostpn-part-duplicate', function(e) {
+    $(document).on('click', '.hostpn-guest-remove', function(e) {
       e.preventDefault();
-      $('.hostpn-parts').fadeOut('fast');
 
+      $('.hostpn-guests').fadeOut('fast');
+      var hostpn_guest_id = $('.hostpn-menu-more.hostpn-active').closest('.hostpn-guest').attr('data-hostpn_guest-id');
+
+      var ajax_url = hostpn_ajax.ajax_url;
+      var data = {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_guest_remove',
+        hostpn_guest_id: hostpn_guest_id,
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
+      };
+
+      $.post(ajax_url, data, function(response) {
+        console.log('data');console.log(data);console.log('response');console.log(response);
+        var response_json = $.parseJSON(response);
+       
+        if (response_json['error_key'] != '') {
+          hostpn_get_main_message(response_json['error_content']);
+        }else{
+          $('.hostpn-guests').html(response_json['html']);
+          hostpn_get_main_message(hostpn_i18n.removed_successfully);
+        }
+        
+        $('.hostpn-guests').fadeIn('slow');
+        $('.hostpn-menu-more-overlay').fadeOut('fast');
+
+        HOSTPN_Popups.close();
+      });
+    });
+
+    
+
+    $(document).on('click', '.hostpn-part-duplicate-post', function(e) {
+      e.preventDefault();
+
+      $('.hostpn-parts').fadeOut('fast');
       var hostpn_btn = $(this);
-      var part_id = hostpn_btn.closest('.hostpn-list-element').attr('data-hostpn-element-id');
+      var hostpn_part_id = hostpn_btn.closest('.hostpn-part').attr('data-hostpn_part-id');
 
       var ajax_url = hostpn_ajax.ajax_url;
       var data = {
         action: 'hostpn_ajax',
         hostpn_ajax_type: 'hostpn_part_duplicate',
-        hostpn_duplicate: part_id,
-        part_id: part_id,
+        hostpn_part_id: hostpn_part_id,
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
       };
 
       $.post(ajax_url, data, function(response) {
-        if ($.parseJSON(response)['error_key'] != '') {
-          hostpn_get_main_message($.parseJSON(response)['error']);
+        console.log('data');console.log(data);console.log('response');console.log(response);
+        var response_json = $.parseJSON(response);
+
+        if (response_json['error_key'] != '') {
+          hostpn_get_main_message(response_json['error_content']);
         }else{
-          $('.hostpn-parts').html($.parseJSON(response)['html']);
+          $('.hostpn-parts').html(response_json['html']);
         }
         
         $('.hostpn-parts').fadeIn('slow');
@@ -300,25 +348,60 @@
       e.preventDefault();
 
       $('.hostpn-parts').fadeOut('fast');
-      var part_id = $('.hostpn-menu-more.hostpn-active').closest('.hostpn-list-element').attr('data-hostpn-element-id');
+      var hostpn_part_id = $('.hostpn-menu-more.hostpn-active').closest('.hostpn-part').attr('data-hostpn_part-id');
 
       var ajax_url = hostpn_ajax.ajax_url;
       var data = {
         action: 'hostpn_ajax',
         hostpn_ajax_type: 'hostpn_part_remove',
-        part_id: part_id,
+        hostpn_part_id: hostpn_part_id,
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
       };
 
       $.post(ajax_url, data, function(response) {
-        if ($.parseJSON(response)['error_key'] != '') {
-          hostpn_get_main_message($.parseJSON(response)['error']);
+        console.log('data');console.log(data);console.log('response');console.log(response);
+        var response_json = $.parseJSON(response);
+       
+        if (response_json['error_key'] != '') {
+          hostpn_get_main_message(response_json['error_content']);
         }else{
-          $('.hostpn-parts').html($.parseJSON(response)['html']);
+          $('.hostpn-parts').html(response_json['html']);
+          hostpn_get_main_message(hostpn_i18n.removed_successfully);
         }
         
         $('.hostpn-parts').fadeIn('slow');
         $('.hostpn-menu-more-overlay').fadeOut('fast');
-        $.fancybox.close();
+
+        HOSTPN_Popups.close();
+      });
+    });
+
+    $(document).on('click', '.hostpn-part-download', function(e) {
+      e.preventDefault();
+
+      var hostpn_btn = $(this);
+      var hostpn_part_id = hostpn_btn.closest('.hostpn-part').attr('data-hostpn_part-id');
+
+      var ajax_url = hostpn_ajax.ajax_url;
+      var data = {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_part_download',
+        hostpn_part_id: hostpn_part_id,
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
+      };
+
+      $.post(ajax_url, data, function(response) {
+        var filename = 'part-of-traveler-' + hostpn_part_id + '.xml';
+        var pom = document.createElement('a');
+        var bb = new Blob([response], {type: 'text/plain'});
+
+        pom.setAttribute('href', window.URL.createObjectURL(bb));
+        pom.setAttribute('download', filename);
+
+        pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
+        pom.draggable = true; 
+        pom.classList.add('dragout');
+        pom.click();
       });
     });
   });

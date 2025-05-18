@@ -11,7 +11,7 @@
  * @author     Padres en la Nube <info@padresenlanube.com>
  */
 class HOSTPN_Post_Type_Guest {
-  public function get_fields($guest_id = 0) {    
+  public function hostpn_guest_get_fields($guest_id = 0) {    
     $hostpn_fields = [];
       $hostpn_fields['hostpn_name'] = [
         'id' => 'hostpn_name',
@@ -57,8 +57,8 @@ class HOSTPN_Post_Type_Guest {
     return $hostpn_fields;
   }
 
-  public function get_fields_meta($guest_id = 0) {
-    $relationships = HOSTPN_Data::relationships();
+  public function hostpn_guest_get_fields_meta($guest_id = 0) {
+    $relationships = HOSTPN_Data::hostpn_relationships();
     
     $hostpn_fields_meta = [];
       $hostpn_fields_meta['hostpn_identity'] = [
@@ -98,7 +98,7 @@ class HOSTPN_Post_Type_Guest {
         'input' => 'input',
         'type' => 'date',
         'required' => true,
-        'max' => date('Y-m-d'),
+        'max' => gmdate('Y-m-d'),
         'xml' => 'fechaNacimiento',
         'label' => esc_html(__('Birthdate', 'hostpn')),
         'placeholder' => esc_html(__('Birthdate', 'hostpn')),
@@ -107,7 +107,7 @@ class HOSTPN_Post_Type_Guest {
         'id' => 'hostpn_nationality',
         'class' => 'hostpn-select hostpn-width-100-percent',
         'input' => 'select',
-        'options' => HOSTPN_Data::countries(),
+        'options' => HOSTPN_Data::hostpn_countries(),
         'required' => true,
         'xml' => 'fechaNacimiento',
         'label' => esc_html(__('Nationality', 'hostpn')),
@@ -146,7 +146,7 @@ class HOSTPN_Post_Type_Guest {
         'id' => 'hostpn_country',
         'class' => 'hostpn-select hostpn-width-100-percent',
         'input' => 'select',
-        'options' => HOSTPN_Data::countries(),
+        'options' => HOSTPN_Data::hostpn_countries(),
         'required' => true,
         'xml' => 'pais',
         'label' => esc_html(__('Country', 'hostpn')),
@@ -166,7 +166,7 @@ class HOSTPN_Post_Type_Guest {
         'id' => 'hostpn_city_code',
         'class' => 'hostpn-select hostpn-width-100-percent',
         'input' => 'select',
-        'options' => HOSTPN_Data::spanish_cities(),
+        'options' => HOSTPN_Data::hostpn_spanish_cities(),
         'required' => true,
         'xml' => 'codigoMunicipio',
         'label' => esc_html(__('City', 'hostpn')),
@@ -218,7 +218,7 @@ class HOSTPN_Post_Type_Guest {
         'type' => 'checkbox',
         'parent' => 'this',
         'label' => esc_html(__('I´m not the holder of the contract', 'hostpn')),
-        'description' => esc_html(__('Check this box if you are not the one who has booked the accomodation. Then you will need to set your relationship with this person.', 'hostpn')),
+        'description' => esc_html(__('Check this box if you are not the one who has booked the accommodation. Then you will need to set your relationship with this person.', 'hostpn')),
       ];
         $hostpn_fields_meta['hostpn_relationship'] = [
           'id' => 'hostpn_relationship',
@@ -240,7 +240,7 @@ class HOSTPN_Post_Type_Guest {
    *
    * @since    1.0.0
    */
-  public function register_post_type() {
+  public function hostpn_guest_register_post_type() {
     $labels = [
       'name'                => _x('Guest', 'Post Type general name', 'hostpn'),
       'singular_name'       => _x('Guest', 'Post Type singular name', 'hostpn'),
@@ -270,7 +270,7 @@ class HOSTPN_Post_Type_Guest {
       'show_in_nav_menus'   => true,
       'show_in_admin_bar'   => true,
       'menu_position'       => 5,
-      'menu_icon'           => esc_url(HOSTPN_URL . 'assets/media/hostpn-menu-icon.svg'),
+      'menu_icon'           => esc_url(HOSTPN_URL . 'assets/media/hostpn-guest-menu-icon.svg'),
       'can_export'          => false,
       'has_archive'         => false,
       'exclude_from_search' => true,
@@ -289,8 +289,8 @@ class HOSTPN_Post_Type_Guest {
    *
    * @since    1.0.0
    */
-  public function add_meta_box() {
-    add_meta_box('hostpn_meta_box', esc_html(__('Guest details', 'hostpn')), [$this, 'hostpn_meta_box_function'], 'hostpn_guest', 'normal', 'high', ['__block_editor_compatible_meta_box' => true,]);
+  public function hostpn_guest_add_meta_box() {
+    add_meta_box('hostpn_meta_box', esc_html(__('Guest details', 'hostpn')), [$this, 'hostpn_guest_meta_box_function'], 'hostpn_guest', 'normal', 'high', ['__block_editor_compatible_meta_box' => true,]);
   }
 
   /**
@@ -298,27 +298,27 @@ class HOSTPN_Post_Type_Guest {
    *
    * @since    1.0.0
    */
-  public function hostpn_meta_box_function($post) {
-    foreach (self::get_fields() as $hostpn_field) {
-      HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post', $post->ID);
+  public function hostpn_guest_meta_box_function($post) {
+    foreach (self::hostpn_guest_get_fields() as $hostpn_field) {
+      HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $post->ID);
     }
 
-    foreach (self::get_fields_meta() as $hostpn_field_meta) {
-      HOSTPN_Forms::input_wrapper_builder($hostpn_field_meta, 'post', $post->ID);
+    foreach (self::hostpn_guest_get_fields_meta() as $hostpn_field_meta) {
+      HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_meta, 'post', $post->ID);
     }
   }
 
-  public function save_post($post_id, $cpt, $update) {
+  public function hostpn_guest_save_post($post_id, $cpt, $update) {
     if (array_key_exists('hostpn_nonce', $_POST) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_nonce'])), 'hostpn-nonce')) {
       echo wp_json_encode(['error_key' => 'hostpn_nonce_error', ]);exit();
     }
 
     if (!array_key_exists('hostpn_duplicate', $_POST)) {
-      foreach (self::get_fields() as $wph_field) {
+      foreach (self::hostpn_guest_get_fields() as $wph_field) {
         $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
 
         if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
-          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTPN_Forms::sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
+          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
 
           if (!empty($wph_input)) {
             switch ($wph_input) {
@@ -354,7 +354,7 @@ class HOSTPN_Post_Type_Guest {
                   $empty = true;
 
                   foreach ($_POST[$wph_field['id']] as $multi_value) {
-                    $multi_array[] = HOSTPN_Forms::sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                    $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
                   }
 
                   update_post_meta($post_id, $wph_field['id'], $multi_array);
@@ -374,7 +374,7 @@ class HOSTPN_Post_Type_Guest {
                         $empty = false;
                       }
 
-                      $multi_array[] = HOSTPN_Forms::sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
+                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
                     }
 
                     if (!$empty) {
@@ -398,7 +398,7 @@ class HOSTPN_Post_Type_Guest {
     }
   }
 
-  public function hostpn_form_save($element_id, $key_value, $hostpn_form_type, $hostpn_form_subtype, $post_type) {
+  public function hostpn_guest_form_save($element_id, $key_value, $hostpn_form_type, $hostpn_form_subtype, $post_type) {
     if ($post_type == 'hostpn_guest') {
       switch ($hostpn_form_type) {
         case 'post':
@@ -414,7 +414,7 @@ class HOSTPN_Post_Type_Guest {
               }
 
               $post_functions = new HOSTPN_Functions_Post();
-              $guest_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', get_current_user_id());
+              $guest_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', get_current_user_id());
 
               if ($guest_id) {
                 $email_contents = [];
@@ -425,30 +425,30 @@ class HOSTPN_Post_Type_Guest {
                   }
                 }
 
-                if (class_exists('MAILWPH')) {
+                if (class_exists('MAILPN')) {
                   ob_start();
                   ?>
-                    <h2><?php esc_html_e('Dear guest', 'mailwph'); ?></h2>
+                    <h2><?php esc_html_e('Dear guest', 'hostpn'); ?></h2>
                     <p><?php esc_html_e('We have received your application successfully.', 'hostpn'); ?></p>
                     <p><?php esc_html_e('Please check the information fulfilled in the form:', 'hostpn'); ?></p>
 
                     <ul>
-                      <?php foreach (self::get_fields_meta() as $hostpn_field_meta): ?>
+                      <?php foreach (self::hostpn_guest_get_fields_meta() as $hostpn_field_meta): ?>
                         <?php if (!empty($email_contents[$hostpn_field_meta['id']])): ?>
-                          <li><?php echo $hostpn_field_meta['label']; ?>: <?php echo $email_contents[$hostpn_field_meta['id']]; ?></li>
+                          <li><?php echo esc_html($hostpn_field_meta['label']); ?>: <?php echo esc_html($email_contents[$hostpn_field_meta['id']]); ?></li>
                         <?php endif ?>
                       <?php endforeach ?>
                     </ul>
 
                     <p><?php esc_html_e('You can now add more guests or share the link to other companions to allow them fulfill their own form.', 'hostpn'); ?></p>
-                    <div class="mailwph-text-align-center mailwph-mt-30 mailwph-mb-50">
-                      <a href="<?php echo esc_url(home_url('guests')); ?>" class="mailwph-btn"><?php esc_html_e('Guests page', 'mailwph'); ?></a>
+                    <div class="hostpn-text-align-center hostpn-mt-30 hostpn-mb-50">
+                      <a href="<?php echo esc_url(home_url('guests')); ?>" class="hostpn-btn"><?php esc_html_e('Guests page', 'hostpn'); ?></a>
                     </div>
                   <?php
                   $mail_content = ob_get_contents(); 
                   ob_end_clean(); 
 
-                  do_shortcode('[mailwph-sender mailwph_user_to="' . get_current_user_id() . '" mailwph_subject="' . esc_html(__('New guest application received', 'mailwph')) . '"]' . $mail_content . '[/mailwph-sender]');
+                  do_shortcode('[mailpn-sender mailpn_user_to="' . get_current_user_id() . '" mailpn_subject="' . esc_html(__('New guest application received', 'hostpn')) . '"]' . $mail_content . '[/mailpn-sender]');
                 }
               }
 
@@ -473,26 +473,12 @@ class HOSTPN_Post_Type_Guest {
               }
 
               break;
-            case 'post_check':
-              self::hostpn_history_add($element_id);
-              break;
-            case 'post_uncheck':
-              if (!empty($key_value)) {
-                foreach ($key_value as $key => $value) {
-                  if (strpos($key, 'hostpn_') !== false) {
-                    ${$key} = $value;
-                    delete_post_meta($element_id, $key);
-                  }
-                }
-              }
-
-              break;
           }
         case 'user':
           switch ($hostpn_form_subtype) {
             case 'user_alt_new':
               $user_password = bin2hex(openssl_random_pseudo_bytes(16));
-              $user_email = !empty($_POST['user_email']) ? HOSTPN_Forms::sanitizer(wp_unslash($_POST['user_email'])) : '';
+              $user_email = !empty($_POST['user_email']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['user_email'])) : '';
 
               $user_alt_id = HOSTPN_Functions_User::insert_user($user_email, $user_password, $user_email);
 
@@ -511,91 +497,70 @@ class HOSTPN_Post_Type_Guest {
     }
   }
 
-  public function list_wrapper() {
+  public function hostpn_enqueue_guest_scripts() {
+    wp_enqueue_script('hostpn-aux');
+    wp_enqueue_script('hostpn-forms');
+  }
+
+  public function hostpn_guest_list_wrapper() {
     ob_start();
-    
-    if (is_user_logged_in()) {
-      if (HOSTPN_Functions_User::is_user_admin(get_current_user_id()) || current_user_can('hostpn_role_guest')) {
-        ?>
-          <div class="hostpn-list-wrapper hostpn-mt-50 hostpn-mb-150" data-hostpn-post-type="hostpn_guest">
-            <div class="hostpn-menu-more-overlay hostpn-z-index-9"></div>
 
-            <div class="hostpn-display-table hostpn-width-100-percent hostpn-max-width-500 hostpn-margin-auto hostpn-position-relative">
-              <div class="hostpn-display-inline-table hostpn-width-90-percent">
-                <h4 class="hostpn-mb-30"><?php esc_html_e('Guests', 'hostpn'); ?></h4>
-              </div>
-
-              <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
-                <i class="material-icons-outlined hostpn-list-more-btn hostpn-cursor-pointer hostpn-vertical-align-middle hostpn-font-size-30">more_vert</i>
-
-                <div class="hostpn-list-more hostpn-z-index-99 hostpn-display-none-soft">
-                  <ul class="hostpn-list-style-none">
-                    <li>
-                      <a href="#" class="hostpn-order-posts hostpn-text-decoration-none">
-                        <div class="wph-display-table hostpn-width-100-percent">
-                          <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                            <p><?php esc_html_e('Order guests', 'hostpn'); ?></p>
-                          </div>
-                          <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
-                            <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">low_priority</i>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <?php echo self::list(); ?>
+    if(HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
+      ?>
+        <div class="hostpn-hostpn_guest-list hostpn-mb-50">
+          <div class="hostpn-hostpn_guest-list-wrapper">
+            <?php echo wp_kses(self::hostpn_guest_list(), HOSTPN_KSES); ?>
           </div>
-        <?php
-      }else{
-        echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="workspace_premium" hostpn_call_to_action_title="' . __('Capabilities', 'hostpn') . '" hostpn_call_to_action_content="' . __('Capabilities needed', 'hostpn') . '"]');
-      }
+        </div>
+      <?php
     }else{
       echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\' data-userspn-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userspn-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]');
     }
-
+    
     $hostpn_return_string = ob_get_contents(); 
     ob_end_clean(); 
     return $hostpn_return_string;
   }
 
-  public function list() {
-    if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
-      $guests_atts = [
-        'fields' => 'ids',
-        'numberposts' => -1,
-        'post_type' => 'hostpn_guest',
-        'post_status' => 'any', 
-        'orderby' => 'post_date', 
-        'order' => 'DESC',  
-      ];
-    }else{
-      $guests_atts = [
-        'fields' => 'ids',
-        'numberposts' => -1,
-        'post_type' => 'hostpn_guest',
-        'post_status' => 'any', 
-        'author' => get_current_user_id(), 
-        'orderby' => 'post_date', 
-        'order' => 'DESC', 
-      ];
+  public function hostpn_guest_list() {
+    $guest_atts = [
+      'fields' => 'ids',
+      'numberposts' => -1,
+      'post_type' => 'hostpn_guest',
+      'post_status' => 'any', 
+      'orderby' => 'menu_order', 
+      'order' => 'ASC', 
+    ];
+    
+    if (class_exists('Polylang')) {
+      $guest_atts['lang'] = pll_current_language('slug');
     }
 
-    $guests = get_posts($guests_atts);
+    $guest = get_posts($guest_atts);
 
     ob_start();
     ?>
-      <ul class="hostpn-list hostpn-hostpn_guest-list hostpn-list-host hostpn-guests hostpn-list-style-none hostpn-max-width-500 hostpn-margin-auto">
-        <?php if (!empty($guests)): ?>
-          <?php foreach ($guests as $guest_id): ?>
-            <li class="hostpn-list-element hostpn-mb-10" data-hostpn-element-id="<?php echo $guest_id; ?>">
+      <ul class="hostpn-guests hostpn-list-style-none hostpn-margin-auto">
+        <?php if (!empty($guest)): ?>
+          <?php foreach ($guest as $guest_id): ?>
+            <?php
+              $hostpn_guest_period = get_post_meta($guest_id, 'hostpn_guest_period', true);
+              $hostpn_guest_timed_checkbox = get_post_meta($guest_id, 'hostpn_guest_timed_checkbox', true);
+            ?>
+
+            <li class="hostpn-guest hostpn-mb-10" data-hostpn_guest-id="<?php echo esc_attr($guest_id); ?>">
               <div class="hostpn-display-table hostpn-width-100-percent">
-                <div class="hostpn-display-inline-table hostpn-width-80-percent">
+                <div class="hostpn-display-inline-table hostpn-width-60-percent">
                   <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-view" data-hostpn-ajax-type="hostpn_guest_view">
-                    <span><?php echo esc_html(self::guest_name($guest_id)); ?></span>
+                    <span><?php echo esc_html(get_the_title($guest_id)); ?></span>
+                      
+                    <?php if ($hostpn_guest_timed_checkbox == 'on'): ?>
+                      <i class="material-icons-outlined hostpn-timed hostpn-cursor-pointer hostpn-vertical-align-super hostpn-p-5 hostpn-font-size-15 hostpn-tooltip" title="<?php esc_html_e('This Guest is timed', 'hostpn'); ?>">access_time</i>
+                    <?php endif ?>
+
+                    <?php if ($hostpn_guest_period == 'on'): ?>
+                      <i class="material-icons-outlined hostpn-timed hostpn-cursor-pointer hostpn-vertical-align-super hostpn-p-5 hostpn-font-size-15 hostpn-tooltip" title="<?php esc_html_e('This Guest is periodic', 'hostpn'); ?>">replay</i>
+                    <?php endif ?>
                   </a>
                 </div>
 
@@ -606,9 +571,9 @@ class HOSTPN_Post_Type_Guest {
                     <ul class="hostpn-list-style-none">
                       <li>
                         <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-view" data-hostpn-ajax-type="hostpn_guest_view">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('View guest', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('View Guest', 'hostpn'); ?></p>
                             </div>
                             <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">visibility</i>
@@ -617,10 +582,10 @@ class HOSTPN_Post_Type_Guest {
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-edit" data-hostpn-ajax-type="hostpn_guest_edit">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                        <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-edit" data-hostpn-ajax-type="hostpn_guest_edit"> 
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('Edit guest', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('Edit Guest', 'hostpn'); ?></p>
                             </div>
                             <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">edit</i>
@@ -629,10 +594,10 @@ class HOSTPN_Post_Type_Guest {
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostpn-guest-duplicate hostpn-text-decoration-none">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                        <a href="#" class="hostpn-guest-duplicate-post">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('Duplicate guest', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('Duplicate Guest', 'hostpn'); ?></p>
                             </div>
                             <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">copy</i>
@@ -641,10 +606,10 @@ class HOSTPN_Post_Type_Guest {
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostpn-popup-open hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-remove">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                        <a href="#" class="hostpn-popup-open" data-hostpn-popup-id="hostpn-popup-guest-remove">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('Remove guest', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('Remove Guest', 'hostpn'); ?></p>
                             </div>
                             <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">delete</i>
@@ -660,29 +625,14 @@ class HOSTPN_Post_Type_Guest {
           <?php endforeach ?>
         <?php endif ?>
 
-        <li class="hostpn-mt-50 hostpn-guest hostpn-list-element" data-hostpn-element-id="0">
-          <a href="#" id="hostpn-popup-guest-add-btn" class="hostpn-popup-open-ajax hostpn-text-decoration-none hostpn-mb-10" data-hostpn-popup-id="hostpn-popup-guest-add" data-hostpn-ajax-type="hostpn_guest_new">
+        <li class="hostpn-mt-50 hostpn-guest" data-hostpn_guest-id="0">
+          <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-add" data-hostpn-ajax-type="hostpn_guest_new">
             <div class="hostpn-display-table hostpn-width-100-percent">
-              <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-center">
+              <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-text-align-center">
                 <i class="material-icons-outlined hostpn-cursor-pointer hostpn-vertical-align-middle hostpn-font-size-30 hostpn-width-25">add</i>
               </div>
-              <div class="hostpn-display-inline-table hostpn-width-80-percent">
-                <?php if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())): ?>
-                  <?php esc_html_e('Add guest', 'hostpn'); ?>
-                <?php else: ?>
-                  <?php esc_html_e('Add companion', 'hostpn'); ?>
-                <?php endif ?>
-              </div>
-            </div>
-          </a>
-          
-          <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-accommodation-share" data-hostpn-ajax-type="hostpn_accommodation_share">
-            <div class="hostpn-display-table hostpn-width-100-percent">
-              <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-center">
-                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-vertical-align-middle hostpn-width-25 hostpn-font-size-20">share</i>
-              </div>
-              <div class="hostpn-display-inline-table hostpn-width-80-percent">
-                <?php esc_html_e('Share link to other guests', 'hostpn'); ?>
+              <div class="hostpn-display-inline-table hostpn-width-80-percent hostpn-tablet-display-block hostpn-tablet-width-100-percent">
+                <?php esc_html_e('Add new Guest', 'hostpn'); ?>
               </div>
             </div>
           </a>
@@ -694,23 +644,25 @@ class HOSTPN_Post_Type_Guest {
     return $hostpn_return_string;
   }
 
-  public function view($guest_id) {  
+  public function hostpn_guest_view($guest_id) {  
     ob_start();
+    self::hostpn_enqueue_guest_scripts();
     ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
-
-      <div class="guest-view">
-        <h4 class="hostpn-text-align-center"><?php echo self::guest_name($guest_id); ?></h4>
+      <div class="guest-view hostpn-p-30" data-hostpn_guest-id="<?php echo esc_attr($guest_id); ?>">
+        <h4 class="hostpn-text-align-center"><?php echo esc_html(get_the_title($guest_id)); ?></h4>
         
         <div class="hostpn-word-wrap-break-word">
-          <p><?php echo str_replace(']]>', ']]&gt;', apply_filters('the_content', get_post($guest_id)->post_content)); ?></p>
+          <p><?php echo wp_kses(str_replace(']]>', ']]&gt;', apply_filters('the_content', get_post($guest_id)->post_content)), HOSTPN_KSES); ?></p>
         </div>
 
-        <div class="guest-view">
-          <?php foreach (self::get_fields_meta() as $hostpn_field): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post', $guest_id, 1); ?>
+        <div class="guest-view hostpn-mt-30">
+          <?php foreach (self::hostpn_guest_get_fields_meta() as $hostpn_field): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $guest_id, 1), HOSTPN_KSES); ?>
           <?php endforeach ?>
+
+          <div class="hostpn-text-align-right hostpn-guest" data-hostpn_guest-id="<?php echo esc_attr($guest_id); ?>">
+            <a href="#" class="hostpn-btn hostpn-btn-mini hostpn-popup-open-ajax" data-hostpn-popup-id="hostpn-popup-guest-edit" data-hostpn-ajax-type="hostpn_guest_edit"><?php esc_html_e('Edit Guest', 'hostpn'); ?></a>
+          </div>
         </div>
       </div>
     <?php
@@ -719,26 +671,24 @@ class HOSTPN_Post_Type_Guest {
     return $hostpn_return_string;
   }
 
-  public function new() {
+  public function hostpn_guest_new() {
     ob_start();
+    self::hostpn_enqueue_guest_scripts();
     ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
+      <div class="guest-new hostpn-p-30">
+        <h4 class="hostpn-mb-30"><?php esc_html_e('Add new Guest', 'hostpn'); ?></h4>
 
-      <div class="guest-new">
-        <h4 class="hostpn-mb-30"><?php esc_html_e('Add guest', 'hostpn'); ?></h4>
-
-        <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_guest">      
-          <?php foreach (self::get_fields() as $hostpn_field): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post'); ?>
+        <form action="" method="post" id="hostpn-form" class="hostpn-form">      
+          <?php foreach (self::hostpn_guest_get_fields() as $hostpn_field): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post'), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
-          <?php foreach (self::get_fields_meta() as $hostpn_field_meta): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_meta, 'post', $guest_id); ?>
+          <?php foreach (self::hostpn_guest_get_fields_meta() as $hostpn_field_meta): ?>
+            <?php echo wp_kses (HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_meta, 'post'), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
           <div class="hostpn-text-align-right">
-            <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-post-type="hostpn_guest" data-hostpn-subtype="post_new" type="submit" value="<?php _e('Create guest', 'hostpn'); ?>"/>
+            <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_new" data-hostpn-post-type="hostpn_guest" type="submit" value="<?php esc_attr_e('Create Guest', 'hostpn'); ?>"/>
           </div>
         </form> 
       </div>
@@ -748,27 +698,25 @@ class HOSTPN_Post_Type_Guest {
     return $hostpn_return_string;
   }
 
-  public function edit($guest_id) {
+  public function hostpn_guest_edit($guest_id) {
     ob_start();
+    self::hostpn_enqueue_guest_scripts();
     ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
-
-      <div class="guest-edit">
+      <div class="guest-edit hostpn-p-30">
         <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Editing', 'hostpn'); ?></p>
-        <h4 class="hostpn-text-align-center hostpn-mb-30"><?php echo self::guest_name($guest_id); ?></h4>
+        <h4 class="hostpn-text-align-center hostpn-mb-30"><?php echo esc_html(get_the_title($guest_id)); ?></h4>
 
-        <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_guest">
-          <?php foreach (self::get_fields($guest_id) as $hostpn_field): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post', $guest_id); ?>
+        <form action="" method="post" id="hostpn-form" class="hostpn-form">      
+          <?php foreach (self::hostpn_guest_get_fields($guest_id) as $hostpn_field): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $guest_id), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
-          <?php foreach (self::get_fields_meta() as $hostpn_field_meta): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_meta, 'post', $guest_id); ?>
+          <?php foreach (self::hostpn_guest_get_fields_meta() as $hostpn_field_meta): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_meta, 'post', $guest_id), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
           <div class="hostpn-text-align-right">
-            <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_edit" type="submit" data-hostpn-post-type="hostpn_guest" data-hostpn-post-id="<?php echo esc_attr($guest_id); ?>" value="<?php _e('Save guest', 'hostpn'); ?>"/>
+            <input class="hostpn-btn" type="submit" data-hostpn-type="post" data-hostpn-subtype="post_edit" data-hostpn-post-type="hostpn_guest" data-hostpn-post-id="<?php echo esc_attr($guest_id); ?>" value="<?php esc_attr_e('Save Guest', 'hostpn'); ?>"/>
           </div>
         </form> 
       </div>
@@ -778,101 +726,7 @@ class HOSTPN_Post_Type_Guest {
     return $hostpn_return_string;
   }
 
-  public function check($guest_id) {
-    ob_start();
-    ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
-
-      <div class="guest-check">
-        <?php if (!empty(get_post_meta($guest_id, 'hostpn_accomplish_date', true))): ?>
-          <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Marking as not completed', 'hostpn'); ?></p>
-          <h4 class="hostpn-text-align-center hostpn-mb-30"><?php echo self::guest_name($guest_id); ?></h4>
-
-          <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_guest">
-            <?php foreach (self::get_fields_check($guest_id) as $hostpn_field_check): ?>
-              <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_check, 'post', $guest_id, 1); ?>
-            <?php endforeach ?>
-
-            <div class="hostpn-text-align-right">
-              <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_uncheck" type="submit" data-hostpn-post-id="<?php echo esc_attr($guest_id); ?>" value="<?php _e('Not completed', 'hostpn'); ?>"/>
-            </div>
-          </form>
-        <?php else: ?>
-          <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Marking as completed', 'hostpn'); ?></p>
-          <h4 class="hostpn-text-align-center"><?php echo self::guest_name($guest_id); ?></h4>
-
-          <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_guest">
-            <?php foreach (self::get_fields_check($guest_id) as $hostpn_field_check): ?>
-              <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_check, 'post', $guest_id); ?>
-            <?php endforeach ?>
-
-            <div class="hostpn-text-align-right">
-              <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_check" type="submit" data-hostpn-post-id="<?php echo esc_attr($guest_id); ?>" value="<?php _e('Completed', 'hostpn'); ?>"/>
-            </div>
-          </form>
-        <?php endif ?>
-      </form>
-      </div>
-    <?php
-    $hostpn_return_string = ob_get_contents(); 
-    ob_end_clean(); 
-    return $hostpn_return_string;
+  public function hostpn_guest_name($guest_id) {
+    return get_post_meta($guest_id, 'hostpn_name', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname_alt', true);
   }
-
-  public function history_add($guest_id) {  
-    $host_meta = get_post_meta($guest_id);
-    $host_meta_array = [];
-
-    if (!empty($host_meta)) {
-      foreach ($host_meta as $host_meta_key => $host_meta_value) {
-        if (strpos($host_meta_key, 'hostpn_') !== false && !empty($host_meta_value[0])) {
-          $host_meta_array[$host_meta_key] = $host_meta_value[0];
-        }
-      }
-    }
-    
-    if(empty(get_post_meta($guest_id, 'hostpn_guest_history', true))) {
-      update_post_meta($guest_id, 'hostpn_guest_history', [strtotime('now') => $host_meta_array]);
-    }else{
-      $wph_post_meta_new = get_post_meta($guest_id, 'hostpn_guest_history', true);
-      $wph_post_meta_new[strtotime('now')] = $host_meta_array;
-      update_post_meta($guest_id, 'hostpn_guest_history', $wph_post_meta_new);
-    }
-  }
-
-  public function next($guest_id) {
-    $hostpn_periodicity = get_post_meta($guest_id, 'hostpn_periodicity', true);
-    $hostpn_date = get_post_meta($guest_id, 'hostpn_date', true);
-    $hostpn_time = get_post_meta($guest_id, 'hostpn_time', true);
-
-    $host_timestamp = strtotime($hostpn_date . ' ' . $hostpn_time);
-
-    if (!empty($hostpn_periodicity) && !empty($host_timestamp)) {
-      $now = strtotime('now');
-
-      while ($host_timestamp < $now) {
-        $host_timestamp = strtotime('+' . str_replace('_', ' ', $hostpn_periodicity), $host_timestamp);
-      }
-
-      return $host_timestamp;
-    }
-  }
-
-  public function owners($guest_id) {
-    $hostpn_owners = get_post_meta($guest_id, 'hostpn_owners', true);
-    $hostpn_owners_array = [get_post($guest_id)->post_author];
-
-    if (!empty($hostpn_owners)) {
-      foreach ($hostpn_owners as $owner_id) {
-        $hostpn_owners_array[] = $owner_id;
-      }
-    }
-
-    return array_unique($hostpn_owners_array);
-  }
-
-    public function guest_name($guest_id) {
-      return get_post_meta($guest_id, 'hostpn_name', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname_alt', true);
-    }
 }

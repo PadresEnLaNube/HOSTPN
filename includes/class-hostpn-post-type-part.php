@@ -6,12 +6,12 @@
  *
  * @link       padresenlanube.com/
  * @since      1.0.0
- * @package    HOSTPN
+ * @package   HOSTPN
  * @subpackage HOSTPN/includes
  * @author     Padres en la Nube <info@padresenlanube.com>
  */
 class HOSTPN_Post_Type_Part {
-  public function get_fields($part_id = 0) {
+  public function hostpn_part_get_fields($part_id = 0) {
     $hostpn_fields = [];
       $hostpn_fields['hostpn_title'] = [
         'id' => 'hostpn_title',
@@ -22,7 +22,7 @@ class HOSTPN_Post_Type_Part {
         'value' => !empty($part_id) ? get_the_title($part_id) : gmdate('Y-m-d H:i:s', current_time('timestamp')),
         'label' => __('Part title', 'hostpn'),
         'placeholder' => __('Part title', 'hostpn'),
-        'description' => __('This title will help you to remind and find this part in the future', 'hostpn'),
+        'description' => __('This title will help you to remind and find this Part in the future', 'hostpn'),
       ];
       $hostpn_fields['hostpn_description'] = [
         'id' => 'hostpn_description',
@@ -34,15 +34,15 @@ class HOSTPN_Post_Type_Part {
     return $hostpn_fields;
   }
 
-  public function get_fields_meta() {
-    $accommodation_id = !empty($_GET['hostpn_accommodation_id']) ? HOSTPN_Forms::sanitizer($_GET['hostpn_accommodation_id']) : '';
+  public function hostpn_part_get_fields_meta() {
+    $accommodation_id = !empty($_GET['hostpn_accommodation_id']) ? HOSTPN_Forms::hostpn_sanitizer($_GET['hostpn_accommodation_id']) : '';
     $hostpn_fields_meta = [];
 
     $hostpn_fields_meta = [];
       $posts_atts = [
         'fields' => 'ids',
         'numberposts' => -1,
-        'post_type' => 'hostpn_accomm',
+        'post_type' => 'hostpn_accommodation',
         'post_status' => 'any', 
       ];
       
@@ -294,14 +294,14 @@ class HOSTPN_Post_Type_Part {
     return $hostpn_fields_meta;
   }
 
-  public function get_fields_check($part_id) {
+  public function hostpn_part_get_fields_check($part_id) {
     $hostpn_fields_check = [];
       $hostpn_fields_check['hostpn_accomplish_date'] = [
         'id' => 'hostpn_accomplish_date',
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'date',
-        'value' => date('Y-m-d', strtotime('now')),
+        'value' => gmdate('Y-m-d', strtotime('now')),
         'required' => 'true',
         'label' => __('Part of traveler accomplish date', 'hostpn'),
         'placeholder' => __('Part of traveler accomplish date', 'hostpn'),
@@ -311,7 +311,7 @@ class HOSTPN_Post_Type_Part {
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'time',
-        'value' => date('H:i', strtotime('now')),
+        'value' => gmdate('H:i', strtotime('now')),
         'label' => __('Part of traveler accomplish time', 'hostpn'),
         'placeholder' => __('Part of traveler accomplish time', 'hostpn'),
       ];
@@ -326,7 +326,7 @@ class HOSTPN_Post_Type_Part {
         $hostpn_part_owners = get_post_meta($part_id, 'hostpn_owners', true);
         if (!empty($hostpn_part_owners)) {
           foreach ($hostpn_part_owners as $owner_id) {
-            $hostpn_part_responsible_options[$owner_id] = HOSTPN_Functions_User::get_user_name($owner_id);
+            $hostpn_part_responsible_options[$owner_id] = HOSTPN_Functions_User::hostpn_part_get_user_name($owner_id);
           }
         }
 
@@ -378,7 +378,7 @@ class HOSTPN_Post_Type_Part {
    *
    * @since    1.0.0
    */
-  public function register_post_type() {
+  public function hostpn_part_register_post_type() {
     $labels = [
       'name'                => _x('Part of traveler', 'Post Type general name', 'hostpn'),
       'singular_name'       => _x('Part of traveler', 'Post Type singular name', 'hostpn'),
@@ -408,7 +408,7 @@ class HOSTPN_Post_Type_Part {
       'show_in_nav_menus'   => true,
       'show_in_admin_bar'   => true,
       'menu_position'       => 5,
-      'menu_icon'           => esc_url(HOSTPN_URL . 'assets/media/hostpn-menu-icon.svg'),
+      'menu_icon'           => esc_url(HOSTPN_URL . 'assets/media/hostpn-part-menu-icon.svg'),
       'can_export'          => false,
       'has_archive'         => false,
       'exclude_from_search' => true,
@@ -427,8 +427,8 @@ class HOSTPN_Post_Type_Part {
    *
    * @since    1.0.0
    */
-  public function add_meta_box() {
-    add_meta_box('hostpn_meta_box', esc_html(__('Part of traveler details', 'hostpn')), [$this, 'hostpn_meta_box_function'], 'hostpn_part', 'normal', 'high', ['__block_editor_compatible_meta_box' => true,]);
+  public function hostpn_part_add_meta_box() {
+    add_meta_box('hostpn_meta_box', esc_html(__('Part of traveler details', 'hostpn')), [$this, 'hostpn_part_meta_box_function'], 'hostpn_part', 'normal', 'high', ['__block_editor_compatible_meta_box' => true,]);
   }
 
   /**
@@ -436,9 +436,9 @@ class HOSTPN_Post_Type_Part {
    *
    * @since    1.0.0
    */
-  public function hostpn_meta_box_function($post) {
-    foreach (self::get_fields() as $hostpn_field) {
-      HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post', $post->ID);
+  public function hostpn_part_meta_box_function($post) {
+    foreach (self::hostpn_part_get_fields() as $hostpn_field) {
+     HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $post->ID);
     }
   }
 
@@ -447,7 +447,7 @@ class HOSTPN_Post_Type_Part {
    *
    * @since    1.0.0
    */
-  public function single_template($single) {
+  public function hostpn_part_single_template($single) {
     if (get_post_type() == 'hostpn_part') {
       if (file_exists(HOSTPN_DIR . 'templates/public/single-hostpn_part.php')) {
         return HOSTPN_DIR . 'templates/public/single-hostpn_part.php';
@@ -462,7 +462,7 @@ class HOSTPN_Post_Type_Part {
    *
    * @since    1.0.0
    */
-  public function archive_template($archive) {
+  public function hostpn_part_archive_template($archive) {
     if (get_post_type() == 'hostpn_part') {
       if (file_exists(HOSTPN_DIR . 'templates/public/archive-hostpn_part.php')) {
         return HOSTPN_DIR . 'templates/public/archive-hostpn_part.php';
@@ -472,17 +472,17 @@ class HOSTPN_Post_Type_Part {
     return $archive;
   }
 
-  public function save_post($post_id, $cpt, $update) {
+  public function hostpn_part_save_post($post_id, $cpt, $update) {
     if (array_key_exists('hostpn_nonce', $_POST) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_nonce'])), 'hostpn-nonce')) {
       echo wp_json_encode(['error_key' => 'hostpn_nonce_error', ]);exit();
     }
 
     if (!array_key_exists('hostpn_duplicate', $_POST)) {
-      foreach (self::get_fields() as $wph_field) {
+      foreach (self::hostpn_part_get_fields() as $wph_field) {
         $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
 
         if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
-          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTPN_Forms::sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
+          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
 
           if (!empty($wph_input)) {
             switch ($wph_input) {
@@ -504,7 +504,7 @@ class HOSTPN_Post_Type_Part {
                   $empty = true;
 
                   foreach ($_POST[$wph_field['id']] as $multi_value) {
-                    $multi_array[] = HOSTPN_Forms::sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                    $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
                   }
 
                   update_post_meta($post_id, $wph_field['id'], $multi_array);
@@ -524,7 +524,7 @@ class HOSTPN_Post_Type_Part {
                         $empty = false;
                       }
 
-                      $multi_array[] = HOSTPN_Forms::sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
+                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
                     }
 
                     if (!$empty) {
@@ -548,7 +548,7 @@ class HOSTPN_Post_Type_Part {
     }
   }
 
-  public function hostpn_form_save($element_id, $key_value, $hostpn_form_type, $hostpn_form_subtype, $post_type) {
+  public function hostpn_part_form_save($element_id, $key_value, $hostpn_form_type, $hostpn_form_subtype, $post_type) {
     if ($post_type == 'hostpn_part') {
       switch ($hostpn_form_type) {
         case 'post':
@@ -564,7 +564,7 @@ class HOSTPN_Post_Type_Part {
               }
 
               $post_functions = new HOSTPN_Functions_Post();
-              $part_id = $post_functions->insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', get_current_user_id());
+              $part_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', get_current_user_id());
 
               if (!empty($key_value)) {
                 foreach ($key_value as $key => $value) {
@@ -594,17 +594,12 @@ class HOSTPN_Post_Type_Part {
 
               break;
             case 'post_check':
-              self::hostpn_history_add($element_id);
+              update_post_meta($element_id, 'hostpn_part_accomplish_date', strtotime('now'));
+              self::hostpn_part_history_add($element_id);
+
               break;
             case 'post_uncheck':
-              if (!empty($key_value)) {
-                foreach ($key_value as $key => $value) {
-                  if (strpos($key, 'hostpn_') !== false) {
-                    ${$key} = $value;
-                    delete_post_meta($element_id, $key);
-                  }
-                }
-              }
+              delete_post_meta($element_id, 'hostpn_part_accomplish_date');
 
               break;
           }
@@ -612,86 +607,65 @@ class HOSTPN_Post_Type_Part {
     }
   }
 
-  public function list_wrapper() {
+  public function hostpn_enqueue_part_scripts() {
+    wp_enqueue_script('hostpn-aux');
+    wp_enqueue_script('hostpn-forms');
+  }
+  public function hostpn_part_list_wrapper() {
     ob_start();
+
+    if(HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
       ?>
-        <?php if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())): ?>
-          <div class="hostpn-list-wrapper hostpn-mt-50 hostpn-mb-150" data-hostpn-post-type="hostpn_part">
-            <div class="hostpn-menu-more-overlay hostpn-z-index-9"></div>
-
-            <div class="hostpn-display-table hostpn-width-100-percent hostpn-max-width-500 hostpn-margin-auto hostpn-position-relative">
-              <div class="hostpn-display-inline-table hostpn-width-90-percent">
-                <h4 class="hostpn-mb-30"><?php esc_html_e('Parts', 'hostpn'); ?></h4>
-              </div>
-
-              <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
-                <i class="material-icons-outlined hostpn-list-more-btn hostpn-cursor-pointer hostpn-vertical-align-middle hostpn-font-size-30">more_vert</i>
-
-                <div class="hostpn-list-more hostpn-z-index-99 hostpn-display-none-soft">
-                  <ul class="hostpn-list-style-none">
-                    <li>
-                      <a href="#" class="hostpn-order-posts hostpn-text-decoration-none">
-                        <div class="wph-display-table hostpn-width-100-percent">
-                          <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                            <p><?php esc_html_e('Order parts', 'hostpn'); ?></p>
-                          </div>
-                          <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
-                            <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">low_priority</i>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <?php echo self::list(); ?>
+        <div class="hostpn-hostpn_part-list hostpn-mb-50">
+          <div class="hostpn-hostpn_part-list-wrapper">
+            <?php echo wp_kses(self::hostpn_part_list(), HOSTPN_KSES); ?>
           </div>
-        <?php else: ?>
-          <?php echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\' data-userspn-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userspn-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]'); ?>
-        <?php endif ?>
+        </div>
       <?php
+    }else{
+      echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\' data-userspn-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userspn-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]');
+    }
+    
     $hostpn_return_string = ob_get_contents(); 
     ob_end_clean(); 
     return $hostpn_return_string;
   }
 
-  public function list() {
-    $hosts_atts = [
+  public function hostpn_part_list() {
+    $part_atts = [
       'fields' => 'ids',
       'numberposts' => -1,
       'post_type' => 'hostpn_part',
       'post_status' => 'any', 
-      'orderby' => 'post_date', 
-      'order' => 'DESC', 
+      'orderby' => 'menu_order', 
+      'order' => 'ASC', 
     ];
     
     if (class_exists('Polylang')) {
-      $hosts_atts['lang'] = pll_current_language('slug');
+      $part_atts['lang'] = pll_current_language('slug');
     }
 
-    $hosts = get_posts($hosts_atts);
+    $part = get_posts($part_atts);
 
     ob_start();
     ?>
-      <ul class="hostpn-list hostpn-guestwph_part-list hostpn-list-host hostpn-parts hostpn-list-style-none hostpn-max-width-500 hostpn-margin-auto">
-        <?php if (!empty($hosts)): ?>
-          <?php foreach ($hosts as $part_id): ?>
+      <ul class="hostpn-parts hostpn-list-style-none hostpn-p-0 hostpn-margin-auto">
+        <?php if (!empty($part)): ?>
+          <?php foreach ($part as $part_id): ?>
             <?php
-              $hostpn_period = get_post_meta($part_id, 'hostpn_period', true);
+              $hostpn_part_period = get_post_meta($part_id, 'hostpn_part_period', true);
               $hostpn_owners_checkbox = get_post_meta($part_id, 'hostpn_owners_checkbox', true);
-              $hostpn_timed_checkbox = get_post_meta($part_id, 'hostpn_timed_checkbox', true);
+              $hostpn_part_timed_checkbox = get_post_meta($part_id, 'hostpn_part_timed_checkbox', true);
               $hostpn_comments_checkbox = get_post_meta($part_id, 'hostpn_comments_checkbox', true);
-              $hostpn_accomplish_date = get_post_meta($part_id, 'hostpn_accomplish_date', true);
-              $hostpn_checkmark = empty($hostpn_accomplish_date) ? 'radio_button_unchecked' : 'host_alt';
+              $hostpn_part_accomplish_date = get_post_meta($part_id, 'hostpn_part_accomplish_date', true);
+              $hostpn_part_checkmark = empty($hostpn_part_accomplish_date) ? 'radio_button_unchecked' : 'task_alt';
             ?>
 
-            <li class="hostpn-list-element hostpn-mb-10" data-hostpn-element-id="<?php echo $part_id; ?>">
+            <li class="hostpn-part hostpn-hostpn_part-list-item hostpn-mb-10" data-hostpn_part-id="<?php echo esc_attr($part_id); ?>">
               <div class="hostpn-display-table hostpn-width-100-percent">
                 <div class="hostpn-display-inline-table hostpn-check-wrapper hostpn-width-20-percent hostpn-text-align-center">
                   <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-check" data-hostpn-ajax-type="hostpn_part_check">
-                    <i class="material-icons-outlined hostpn-cursor-pointer hostpn-vertical-align-middle hostpn-font-size-30 hostpn-width-25"><?php echo $hostpn_checkmark; ?></i>
+                    <i class="material-icons-outlined hostpn-cursor-pointer hostpn-vertical-align-middle hostpn-font-size-30 hostpn-width-25"><?php echo esc_html($hostpn_part_checkmark); ?></i>
                   </a>
                 </div>
 
@@ -699,12 +673,12 @@ class HOSTPN_Post_Type_Part {
                   <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-view" data-hostpn-ajax-type="hostpn_part_view">
                     <span><?php echo esc_html(get_the_title($part_id)); ?></span>
                       
-                    <?php if ($hostpn_timed_checkbox == 'on'): ?>
-                      <i class="material-icons-outlined hostpn-timed hostpn-cursor-pointer hostpn-vertical-align-super hostpn-p-5 hostpn-font-size-15 hostpn-tooltip" title="<?php esc_html_e('This part is timed', 'hostpn'); ?>">access_time</i>
+                    <?php if ($hostpn_part_timed_checkbox == 'on'): ?>
+                      <i class="material-icons-outlined hostpn-timed hostpn-cursor-pointer hostpn-vertical-align-super hostpn-p-5 hostpn-font-size-15 hostpn-tooltip" title="<?php esc_html_e('This Part is timed', 'hostpn'); ?>">access_time</i>
                     <?php endif ?>
 
-                    <?php if ($hostpn_period == 'on'): ?>
-                      <i class="material-icons-outlined hostpn-timed hostpn-cursor-pointer hostpn-vertical-align-super hostpn-p-5 hostpn-font-size-15 hostpn-tooltip" title="<?php esc_html_e('This part is periodic', 'hostpn'); ?>">replay</i>
+                    <?php if ($hostpn_part_period == 'on'): ?>
+                      <i class="material-icons-outlined hostpn-timed hostpn-cursor-pointer hostpn-vertical-align-super hostpn-p-5 hostpn-font-size-15 hostpn-tooltip" title="<?php esc_html_e('This Part is periodic', 'hostpn'); ?>">replay</i>
                     <?php endif ?>
                   </a>
                 </div>
@@ -720,33 +694,45 @@ class HOSTPN_Post_Type_Part {
                     <ul class="hostpn-list-style-none">
                       <li>
                         <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-view" data-hostpn-ajax-type="hostpn_part_view">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('View part', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('View Part', 'hostpn'); ?></p>
                             </div>
-                            <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
+                            <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">visibility</i>
                             </div>
                           </div>
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-edit" data-hostpn-ajax-type="hostpn_part_edit">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                        <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-edit" data-hostpn-ajax-type="hostpn_part_edit"> 
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('Edit part', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('Edit Part', 'hostpn'); ?></p>
                             </div>
-                            <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
+                            <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">edit</i>
                             </div>
                           </div>
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostpn-part-duplicate hostpn-text-decoration-none">
+                        <a href="#" class="hostpn-part-download hostpn-text-decoration-none">
                           <div class="wph-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('Duplicate part', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('Download XML file', 'hostpn'); ?></p>
+                            </div>
+                            <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right">
+                              <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">file_download</i>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" class="hostpn-part-duplicate-post">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
+                            <div class="hostpn-display-inline-table hostpn-width-70-percent">
+                              <p><?php esc_html_e('Duplicate Part', 'hostpn'); ?></p>
                             </div>
                             <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">copy</i>
@@ -755,12 +741,12 @@ class HOSTPN_Post_Type_Part {
                         </a>
                       </li>
                       <li>
-                        <a href="#" class="hostpn-popup-open hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-remove">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                        <a href="#" class="hostpn-popup-open" data-hostpn-popup-id="hostpn-popup-part-remove">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
-                              <p><?php esc_html_e('Remove part', 'hostpn'); ?></p>
+                              <p><?php esc_html_e('Remove Part', 'hostpn'); ?></p>
                             </div>
-                            <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
+                            <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right">
                               <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">delete</i>
                             </div>
                           </div>
@@ -774,14 +760,14 @@ class HOSTPN_Post_Type_Part {
           <?php endforeach ?>
         <?php endif ?>
 
-        <li class="hostpn-mt-50 hostpn-part hostpn-list-element" data-hostpn-element-id="0">
-          <a href="#" id="hostpn-popup-part-add-btn" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-add" data-hostpn-ajax-type="hostpn_part_new">
+        <li class="hostpn-mt-50 hostpn-part" data-hostpn_part-id="0">
+          <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-add" data-hostpn-ajax-type="hostpn_part_new">
             <div class="hostpn-display-table hostpn-width-100-percent">
-              <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-center">
+              <div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-text-align-center">
                 <i class="material-icons-outlined hostpn-cursor-pointer hostpn-vertical-align-middle hostpn-font-size-30 hostpn-width-25">add</i>
               </div>
-              <div class="hostpn-display-inline-table hostpn-width-80-percent">
-                <?php esc_html_e('Add part of travelers', 'hostpn'); ?>
+              <div class="hostpn-display-inline-table hostpn-width-80-percent hostpn-tablet-display-block hostpn-tablet-width-100-percent">
+                <?php esc_html_e('Add new Part', 'hostpn'); ?>
               </div>
             </div>
           </a>
@@ -793,26 +779,24 @@ class HOSTPN_Post_Type_Part {
     return $hostpn_return_string;
   }
 
-  public function view($part_id) {  
+  public function hostpn_part_view($part_id) {  
     ob_start();
+    self::hostpn_enqueue_part_scripts();
     ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
-
-      <div class="part-view">
-        <h4 class="hostpn-text-align-center"><?php echo get_the_title($part_id); ?></h4>
+      <div class="part-view hostpn-p-30" data-hostpn_part-id="<?php echo esc_attr($part_id); ?>">
+        <h4 class="hostpn-text-align-center"><?php echo esc_html(get_the_title($part_id)); ?></h4>
         
         <div class="hostpn-word-wrap-break-word">
-          <p><?php echo str_replace(']]>', ']]&gt;', apply_filters('the_content', get_post($part_id)->post_content)); ?></p>
+          <p><?php echo wp_kses(str_replace(']]>', ']]&gt;', apply_filters('the_content', get_post($part_id)->post_content)), HOSTPN_KSES); ?></p>
         </div>
 
         <div class="part-view">
-          <?php foreach ($this->get_fields_meta() as $hostpn_field): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post', $part_id, 1); ?>
+          <?php foreach (self::hostpn_part_get_fields_meta() as $hostpn_field): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $part_id, 1), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
-          <div class="hostpn-text-align-right hostpn-part hostpn-list-element" data-hostpn-element-id="<?php echo $part_id; ?>">
-            <a href="#" class="hostpn-btn hostpn-btn-mini hostpn-popup-open-ajax" data-hostpn-popup-id="hostpn-popup-part-edit" data-hostpn-ajax-type="hostpn_part_edit"><?php esc_html_e('Edit part', 'hostpn'); ?></a>
+          <div class="hostpn-text-align-right hostpn-part" data-hostpn_part-id="<?php echo esc_attr($part_id); ?>">
+            <a href="#" class="hostpn-btn hostpn-btn-mini hostpn-popup-open-ajax" data-hostpn-popup-id="hostpn-popup-part-edit" data-hostpn-ajax-type="hostpn_part_edit"><?php esc_html_e('Edit Part', 'hostpn'); ?></a>
           </div>
         </div>
       </div>
@@ -822,26 +806,24 @@ class HOSTPN_Post_Type_Part {
     return $hostpn_return_string;
   }
 
-  public function new() {
+  public function hostpn_part_new() {
     ob_start();
+    self::hostpn_enqueue_part_scripts();
     ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
+      <div class="part-new hostpn-p-30">
+        <h4 class="hostpn-mb-30"><?php esc_html_e('Add new Part', 'hostpn'); ?></h4>
 
-      <div class="part-new">
-        <h4 class="hostpn-mb-30"><?php esc_html_e('Add part', 'hostpn'); ?></h4>
-
-        <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_part">      
-          <?php foreach ($this->get_fields() as $hostpn_field): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post'); ?>
+        <form action="" method="post" id="hostpn-form" class="hostpn-form">      
+          <?php foreach (self::hostpn_part_get_fields() as $hostpn_field): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post'), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
-          <?php foreach ($this->get_fields_meta() as $hostpn_field_meta): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_meta, 'post'); ?>
+          <?php foreach (self::hostpn_part_get_fields_meta() as $hostpn_field_meta): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_meta, 'post'), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
           <div class="hostpn-text-align-right">
-            <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-post-type="hostpn_part" data-hostpn-subtype="post_new" type="submit" value="<?php _e('Create part', 'hostpn'); ?>"/>
+            <input class="hostpn-btn" type="submit" data-hostpn-type="post" data-hostpn-post-type="hostpn_part" data-hostpn-subtype="post_new" value="<?php esc_attr_e('Create Part', 'hostpn'); ?>"/>
           </div>
         </form> 
       </div>
@@ -851,27 +833,25 @@ class HOSTPN_Post_Type_Part {
     return $hostpn_return_string;
   }
 
-  public function edit($part_id) {
+  public function hostpn_part_edit($part_id) {
     ob_start();
+    self::hostpn_enqueue_part_scripts();
     ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
-
-      <div class="part-edit">
+      <div class="part-edit hostpn-p-30">
         <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Editing', 'hostpn'); ?></p>
-        <h4 class="hostpn-text-align-center hostpn-mb-30"><?php echo get_the_title($part_id); ?></h4>
+        <h4 class="hostpn-text-align-center hostpn-mb-30"><?php echo esc_html(get_the_title($part_id)); ?></h4>
 
-        <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_part">
-          <?php foreach ($this->get_fields($part_id) as $hostpn_field): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field, 'post', $part_id); ?>
+        <form action="" method="post" id="hostpn-form" class="hostpn-form">      
+          <?php foreach (self::hostpn_part_get_fields($part_id) as $hostpn_field): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $part_id), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
-          <?php foreach ($this->get_fields_meta() as $hostpn_field_meta): ?>
-            <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_meta, 'post', $part_id); ?>
+          <?php foreach (self::hostpn_part_get_fields_meta() as $hostpn_field_meta): ?>
+            <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_meta, 'post', $part_id), HOSTPN_KSES); ?>
           <?php endforeach ?>
 
           <div class="hostpn-text-align-right">
-            <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_edit" type="submit" data-hostpn-post-type="hostpn_part" data-hostpn-post-id="<?php echo esc_attr($part_id); ?>" value="<?php _e('Save part', 'hostpn'); ?>"/>
+            <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_edit" data-hostpn-post-type="hostpn_part" type="submit" data-hostpn-post-id="<?php echo esc_attr($part_id); ?>" value="<?php esc_attr_e('Save Part', 'hostpn'); ?>"/>
           </div>
         </form> 
       </div>
@@ -881,37 +861,35 @@ class HOSTPN_Post_Type_Part {
     return $hostpn_return_string;
   }
 
-  public function check($part_id) {
+  public function hostpn_part_check($part_id) {
     ob_start();
+    self::hostpn_enqueue_part_scripts();
     ?>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-aux.js'); ?>"></script>
-      <script src="<?php echo esc_url(HOSTPN_URL . 'assets/js/hostpn-forms.js'); ?>"></script>
-
-      <div class="part-check">
-        <?php if (!empty(get_post_meta($part_id, 'hostpn_accomplish_date', true))): ?>
+      <div class="part-check hostpn-p-30">
+        <?php if (!empty(get_post_meta($part_id, 'hostpn_part_accomplish_date', true))): ?>
           <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Marking as not completed', 'hostpn'); ?></p>
-          <h4 class="hostpn-text-align-center hostpn-mb-30"><?php echo get_the_title($part_id); ?></h4>
+          <h4 class="hostpn-text-align-center hostpn-mb-30"><?php echo esc_html(get_the_title($part_id)); ?></h4>
 
-          <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_part">
-            <?php foreach ($this->get_fields_check($part_id) as $hostpn_field_check): ?>
-              <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_check, 'post', $part_id, 1); ?>
+          <form action="" method="post" id="hostpn-form" class="hostpn-form">
+            <?php foreach (self::hostpn_part_get_fields_check($part_id) as $hostpn_field_check): ?>
+              <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_check, 'post', $part_id, 1), HOSTPN_KSES); ?>
             <?php endforeach ?>
 
             <div class="hostpn-text-align-right">
-              <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_uncheck" type="submit" data-hostpn-post-id="<?php echo esc_attr($part_id); ?>" value="<?php _e('Not completed', 'hostpn'); ?>"/>
+              <input class="hostpn-btn" type="submit" data-hostpn-type="post" data-hostpn-subtype="post_uncheck" data-hostpn-post-type="hostpn_part" data-hostpn-post-id="<?php echo esc_attr($part_id); ?>" value="<?php esc_attr_e('Not completed', 'hostpn'); ?>"/>
             </div>
           </form>
         <?php else: ?>
           <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Marking as completed', 'hostpn'); ?></p>
-          <h4 class="hostpn-text-align-center"><?php echo get_the_title($part_id); ?></h4>
+          <h4 class="hostpn-text-align-center"><?php echo esc_html(get_the_title($part_id)); ?></h4>
 
-          <form action="" method="post" id="hostpn-form" class="hostpn-form" data-hostpn-post-type="hostpn_part">
-            <?php foreach ($this->get_fields_check($part_id) as $hostpn_field_check): ?>
-              <?php echo HOSTPN_Forms::input_wrapper_builder($hostpn_field_check, 'post', $part_id); ?>
+          <form action="" method="post" id="hostpn-form" class="hostpn-form">
+            <?php foreach (self::hostpn_part_get_fields_check($part_id) as $hostpn_field_check): ?>
+              <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_check, 'post', $part_id), HOSTPN_KSES); ?>
             <?php endforeach ?>
 
             <div class="hostpn-text-align-right">
-              <input class="hostpn-btn" data-hostpn-type="post" data-hostpn-subtype="post_check" type="submit" data-hostpn-post-id="<?php echo esc_attr($part_id); ?>" value="<?php _e('Completed', 'hostpn'); ?>"/>
+              <input class="hostpn-btn" type="submit" data-hostpn-type="post" data-hostpn-subtype="post_check" data-hostpn-post-type="hostpn_part" data-hostpn-post-id="<?php echo esc_attr($part_id); ?>" value="<?php esc_attr_e('Completed', 'hostpn'); ?>"/>
             </div>
           </form>
         <?php endif ?>
@@ -923,7 +901,7 @@ class HOSTPN_Post_Type_Part {
     return $hostpn_return_string;
   }
 
-  public function history_add($part_id) {  
+  public function hostpn_part_history_add($part_id) {  
     $host_meta = get_post_meta($part_id);
     $host_meta_array = [];
 
@@ -943,8 +921,7 @@ class HOSTPN_Post_Type_Part {
       update_post_meta($part_id, 'hostpn_part_history', $wph_post_meta_new);
     }
   }
-
-  public function next($part_id) {
+  public function hostpn_part_next($part_id) {
     $hostpn_periodicity = get_post_meta($part_id, 'hostpn_periodicity', true);
     $hostpn_date = get_post_meta($part_id, 'hostpn_date', true);
     $hostpn_time = get_post_meta($part_id, 'hostpn_time', true);
@@ -962,7 +939,7 @@ class HOSTPN_Post_Type_Part {
     }
   }
 
-  public function owners($part_id) {
+  public function hostpn_part_owners($part_id) {
     $hostpn_owners = get_post_meta($part_id, 'hostpn_owners', true);
     $hostpn_owners_array = [get_post($part_id)->post_author];
 

@@ -57,35 +57,19 @@ class HOSTPN {
 
 		$this->plugin_name = 'hostpn';
 
-		$this->define_constants();
-		$this->load_dependencies();
-		$this->set_i18n();
-		$this->define_common_hooks();
-		$this->define_admin_hooks();
-		$this->define_public_hooks();
-		$this->define_post_types();
-		$this->define_taxonomies();
-		$this->load_ajax();
-		$this->load_ajax_nopriv();
-		$this->load_data();
-		$this->load_templates();
-		$this->load_settings();
-		$this->load_shortcodes();
-	}
-
-	/**
-	 * Define the plugin main constants.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_constants() {
-		define('HOSTPN_DIR', plugin_dir_path(dirname(__FILE__)));
-		define('HOSTPN_URL', plugin_dir_url(dirname(__FILE__)));
-		
-		define('HOSTPN_ROLE_CAPABILITIES', ['edit_post' => 'edit_wph_host', 'edit_posts' => 'edit_hostpn', 'edit_private_posts' => 'edit_private_hostpn', 'edit_published_posts' => 'edit_published_hostpn', 'edit_others_posts' => 'edit_other_hostpn', 'publish_posts' => 'publish_hostpn', 'read_post' => 'read_wph_host', 'read_private_posts' => 'read_private_hostpn', 'delete_post' => 'delete_wph_host', 'delete_posts' => 'delete_hostpn', 'delete_private_posts' => 'delete_private_hostpn', 'delete_published_posts' => 'delete_published_hostpn', 'delete_others_posts' => 'delete_others_hostpn', 'upload_files' => 'upload_files', 'manage_terms' => 'manage_hostpn_category', 'edit_terms' => 'edit_hostpn_category', 'delete_terms' => 'delete_hostpn_category', 'assign_terms' => 'assign_hostpn_category', 'manage_options' => 'manage_hostpn_options', ]);
-
-		define('HOSTPN_KSES', ['div' => ['id' => [], 'class' => [], 'data-hostpn-section-id' => [], ], 'span' => ['id' => [], 'class' => [], ], 'p' => ['id' => [], 'class' => [], ], 'ul' => ['id' => [], 'class' => [], ], 'ol' => ['id' => [], 'class' => [], ], 'li' => ['id' => [], 'class' => [], ], 'small' => ['id' => [], 'class' => [], ], 'a' => ['id' => [], 'class' => [], 'href' => [], 'title' => [], 'target' => [], ], 'form' => ['id' => [], 'class' => [], 'action' => [], 'method' => [], ], 'input' => ['name' => [], 'id' => [], 'class' => [], 'type' => [], 'checked' => [], 'multiple' => [], 'disabled' => [], 'value' => [], 'placeholder' => [], 'data-hostpn-parent' => [], 'data-hostpn-parent-option' => [], 'data-hostpn-parent-option' => [], 'data-hostpn-type' => [], 'data-hostpn-subtype' => [], 'data-hostpn-user-id' => [], 'data-hostpn-post-id' => [],], 'select' => ['name' => [], 'id' => [], 'class' => [], 'type' => [], 'checked' => [], 'multiple' => [], 'disabled' => [], 'value' => [], 'placeholder' => [], 'data-placeholder' => [], 'data-hostpn-parent' => [], 'data-hostpn-parent-option' => [], ], 'option' => ['name' => [], 'id' => [], 'class' => [], 'disabled' => [], 'selected' => [], 'value' => [], 'placeholder' => [], ], 'textarea' => ['name' => [], 'id' => [], 'class' => [], 'type' => [], 'multiple' => [], 'disabled' => [], 'value' => [], 'placeholder' => [], 'data-hostpn-parent' => [], 'data-hostpn-parent-option' => [], ], 'label' => ['id' => [], 'class' => [], 'for' => [], ], 'i' => ['id' => [], 'class' => [], 'title' => [], ], 'br' => [], 'em' => [], 'strong' => [], 'h1' => ['id' => [], 'class' => [], ], 'h2' => ['id' => [], 'class' => [], ], 'h3' => ['id' => [], 'class' => [], ], 'h4' => ['id' => [], 'class' => [], ], 'h5' => ['id' => [], 'class' => [], ], 'h6' => ['id' => [], 'class' => [], ], 'img' => ['id' => [], 'class' => [], 'src' => [], 'alt' => [], 'title' => [], ], ]);
+		$this->hostpn_load_dependencies();
+		$this->hostpn_load_i18n();
+		$this->hostpn_define_common_hooks();
+		$this->hostpn_define_admin_hooks();
+		$this->hostpn_define_public_hooks();
+		$this->hostpn_define_post_types();
+		$this->hostpn_define_taxonomies();
+		$this->hostpn_load_ajax();
+		$this->hostpn_load_ajax_nopriv();
+		$this->hostpn_load_data();
+		$this->hostpn_load_templates();
+		$this->hostpn_load_settings();
+		$this->hostpn_load_shortcodes();
 	}
 			
 	/**
@@ -117,7 +101,7 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_dependencies() {
+	private function hostpn_load_dependencies() {
 		/**
 		 * The class responsible for orchestrating the actions and filters of the core plugin.
 		 */
@@ -228,6 +212,16 @@ class HOSTPN {
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-shortcodes.php';
 
+		/**
+		 * The class defining popups.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-popups.php';
+
+		/**
+		 * The class defining selectors.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-selector.php';
+
 		$this->loader = new HOSTPN_Loader();
 	}
 
@@ -239,9 +233,13 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function set_i18n() {
+	private function hostpn_load_i18n() {
 		$plugin_i18n = new HOSTPN_i18n();
-		$this->loader->add_action('plugins_loaded', $plugin_i18n, 'load_plugin_textdomain');
+		$this->loader->hostpn_add_action('after_setup_theme', $plugin_i18n, 'hostpn_load_plugin_textdomain');
+
+		if (class_exists('Polylang')) {
+			$this->loader->hostpn_add_filter('pll_get_post_types', $plugin_i18n, 'hostpn_pll_get_post_types', 10, 2);
+		}
 	}
 
 	/**
@@ -250,26 +248,26 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_common_hooks() {
-		$plugin_common = new HOSTPN_Common($this->get_plugin_name(), $this->get_version());
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_common, 'enqueue_styles');
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_common, 'enqueue_scripts');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_common, 'enqueue_styles');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_common, 'enqueue_scripts');
-		$this->loader->add_filter('body_class', $plugin_common, 'hostpn_body_classes');
+	private function hostpn_define_common_hooks() {
+		$plugin_common = new HOSTPN_Common($this->hostpn_get_plugin_name(), $this->hostpn_get_version());
+		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_common, 'hostpn_enqueue_styles');
+		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_common, 'hostpn_enqueue_scripts');
+		$this->loader->hostpn_add_action('admin_enqueue_scripts', $plugin_common, 'hostpn_enqueue_styles');
+		$this->loader->hostpn_add_action('admin_enqueue_scripts', $plugin_common, 'hostpn_enqueue_scripts');
+		$this->loader->hostpn_add_filter('body_class', $plugin_common, 'hostpn_body_classes');
 
 		$plugin_post_type_accommodation = new HOSTPN_Post_Type_Accommodation();
-		$this->loader->add_action('hostpn_form_save', $plugin_post_type_accommodation, 'hostpn_form_save', 5, 999);
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_accommodation, 'hostpn_accommodation_form_save',  999, 5);
 
 		$plugin_post_type_part = new HOSTPN_Post_Type_Part();
-		$this->loader->add_action('hostpn_form_save', $plugin_post_type_part, 'hostpn_form_save', 5, 999);
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_part, 'hostpn_part_form_save',  999, 5);
 
 		$plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
-		$this->loader->add_action('hostpn_form_save', $plugin_post_type_guest, 'hostpn_form_save', 5, 999);
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_guest, 'hostpn_guest_form_save',  999, 5);
 
 		$plugin_user = new HOSTPN_Functions_User();
-		$this->loader->add_filter('userspn_register_fields', $plugin_user, 'userspn_wph_register_fields', 10, 2);
-		$this->loader->add_action('user_register', $plugin_user, 'hostpn_user_register', 11, 1);
+		$this->loader->hostpn_add_filter('userspn_register_fields', $plugin_user, 'hostpn_user_register_fields', 10, 2);
+		$this->loader->hostpn_add_action('user_register', $plugin_user, 'hostpn_user_register', 11, 1);
 	}
 
 	/**
@@ -278,10 +276,10 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
-		$plugin_admin = new HOSTPN_Admin($this->get_plugin_name(), $this->get_version());
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
-		$this->loader->add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
+	private function hostpn_define_admin_hooks() {
+		$plugin_admin = new HOSTPN_Admin($this->hostpn_get_plugin_name(), $this->hostpn_get_version());
+		$this->loader->hostpn_add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
+		$this->loader->hostpn_add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
 	}
 
 	/**
@@ -290,13 +288,13 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
-		$plugin_public = new HOSTPN_Public($this->get_plugin_name(), $this->get_version());
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
-		$this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
+	private function hostpn_define_public_hooks() {
+		$plugin_public = new HOSTPN_Public($this->hostpn_get_plugin_name(), $this->hostpn_get_version());
+		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
+		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
 
 		$plugin_user = new HOSTPN_Functions_User();
-		$this->loader->add_action('wp_login', $plugin_user, 'hostpn_wp_login');
+		$this->loader->hostpn_add_action('wp_login', $plugin_user, 'hostpn_wp_login');
 	}
 
 	/**
@@ -305,24 +303,24 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_post_types() {
+	private function hostpn_define_post_types() {
 		$plugin_post_type_part = new HOSTPN_Post_Type_Part();
-		$this->loader->add_action('init', $plugin_post_type_part, 'register_post_type');
-		$this->loader->add_action('admin_init', $plugin_post_type_part, 'add_meta_box');
-		$this->loader->add_action('save_post_hostpn_part', $plugin_post_type_part, 'save_post', 10, 3);
-		$this->loader->add_shortcode('hostpn-part-list', $plugin_post_type_part, 'list_wrapper');
+		$this->loader->hostpn_add_action('init', $plugin_post_type_part, 'hostpn_part_register_post_type');
+		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_part, 'hostpn_part_add_meta_box');
+		$this->loader->hostpn_add_action('save_post_hostpn_part', $plugin_post_type_part, 'hostpn_part_save_post', 10, 3);
+		$this->loader->hostpn_add_shortcode('hostpn-part-list', $plugin_post_type_part, 'hostpn_part_list_wrapper');
 	
 		$plugin_post_type_accommodation = new HOSTPN_Post_Type_Accommodation();
-		$this->loader->add_action('init', $plugin_post_type_accommodation, 'register_post_type');
-		$this->loader->add_action('admin_init', $plugin_post_type_accommodation, 'add_meta_box');
-		$this->loader->add_action('save_post_hostpn_accommodation', $plugin_post_type_accommodation, 'save_post', 10, 3);
-		$this->loader->add_shortcode('hostpn-accommodation-list', $plugin_post_type_accommodation, 'list_wrapper');
+		$this->loader->hostpn_add_action('init', $plugin_post_type_accommodation, 'hostpn_accommodation_register_post_type');
+		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_accommodation, 'hostpn_accommodation_add_meta_box');
+		$this->loader->hostpn_add_action('save_post_hostpn_accommodation', $plugin_post_type_accommodation, 'hostpn_accommodation_save_post', 10, 3);
+		$this->loader->hostpn_add_shortcode('hostpn-accommodation-list', $plugin_post_type_accommodation, 'hostpn_accommodation_list_wrapper');
 
 		$plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
-		$this->loader->add_action('init', $plugin_post_type_guest, 'register_post_type');
-		$this->loader->add_action('admin_init', $plugin_post_type_guest, 'add_meta_box');
-		$this->loader->add_action('save_post_hostpn_guest', $plugin_post_type_guest, 'save_post', 10, 3);
-		$this->loader->add_shortcode('hostpn-guest-list', $plugin_post_type_guest, 'list_wrapper');
+		$this->loader->hostpn_add_action('init', $plugin_post_type_guest, 'hostpn_guest_register_post_type');
+		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_guest, 'hostpn_guest_add_meta_box');
+		$this->loader->hostpn_add_action('save_post_hostpn_guest', $plugin_post_type_guest, 'hostpn_guest_save_post', 10, 3);
+		$this->loader->hostpn_add_shortcode('hostpn-guest-list', $plugin_post_type_guest, 'hostpn_guest_list_wrapper');
 	}
 
 	/**
@@ -331,9 +329,9 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_taxonomies() {
+	private function hostpn_define_taxonomies() {
 		$plugin_taxonomies_host = new HOSTPN_Taxonomies_Host();
-		$this->loader->add_action('init', $plugin_taxonomies_host, 'register_taxonomies');
+		$this->loader->hostpn_add_action('init', $plugin_taxonomies_host, 'register_taxonomies');
 	}
 
 	/**
@@ -342,21 +340,21 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_data() {
+	private function hostpn_load_data() {
 		$plugin_data = new HOSTPN_Data();
 
 		if (is_admin()) {
-			$this->loader->add_action('init', $plugin_data, 'load_plugin_data');
+			$this->loader->hostpn_add_action('init', $plugin_data, 'hostpn_load_plugin_data');
 		}else{
-			$this->loader->add_action('wp_footer', $plugin_data, 'load_plugin_data');
+			$this->loader->hostpn_add_action('wp_footer', $plugin_data, 'hostpn_load_plugin_data');
 		}
 
-		$this->loader->add_action('wp_footer', $plugin_data, 'flush_rewrite_rules');
-		$this->loader->add_action('admin_footer', $plugin_data, 'flush_rewrite_rules');
+		$this->loader->hostpn_add_action('wp_footer', $plugin_data, 'hostpn_flush_rewrite_rules');
+		$this->loader->hostpn_add_action('admin_footer', $plugin_data, 'hostpn_flush_rewrite_rules');
 		
 		$plugin_user = new HOSTPN_Functions_User();
-		$this->loader->add_action('wp_footer', $plugin_user, 'hostpn_user_to_guest');
-		$this->loader->add_action('admin_footer', $plugin_user, 'hostpn_user_to_guest');
+		$this->loader->hostpn_add_action('wp_footer', $plugin_user, 'hostpn_user_to_guest');
+		$this->loader->hostpn_add_action('admin_footer', $plugin_user, 'hostpn_user_to_guest');
 	}
 
 	/**
@@ -365,11 +363,11 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_templates() {
+	private function hostpn_load_templates() {
 		if (!defined('DOING_AJAX')) {
 			$plugin_templates = new HOSTPN_Templates();
-			$this->loader->add_action('wp_footer', $plugin_templates, 'load_plugin_templates');
-			$this->loader->add_action('admin_footer', $plugin_templates, 'load_plugin_templates');
+			$this->loader->hostpn_add_action('wp_footer', $plugin_templates, 'load_plugin_templates');
+			$this->loader->hostpn_add_action('admin_footer', $plugin_templates, 'load_plugin_templates');
 		}
 	}
 
@@ -379,11 +377,12 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_settings() {
+	private function hostpn_load_settings() {
 		$plugin_settings = new HOSTPN_Settings();
-		$this->loader->add_action('admin_menu', $plugin_settings, 'hostpn_admin_menu');
-		$this->loader->add_filter('display_post_states', $plugin_settings, 'hostpn_display_post_state', 10, 2);
-		$this->loader->add_action('activated_plugin', $plugin_settings, 'activated_plugin');
+		$this->loader->hostpn_add_action('admin_menu', $plugin_settings, 'hostpn_admin_menu');
+		$this->loader->hostpn_add_filter('display_post_states', $plugin_settings, 'hostpn_display_post_state', 10, 2);
+		$this->loader->hostpn_add_action('activated_plugin', $plugin_settings, 'hostpn_activated_plugin');
+		$this->loader->hostpn_add_action('admin_init', $plugin_settings, 'hostpn_check_activation');
 	}
 
 	/**
@@ -392,9 +391,9 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_ajax() {
+	private function hostpn_load_ajax() {
 		$plugin_ajax = new HOSTPN_Ajax();
-		$this->loader->add_action('wp_ajax_hostpn_ajax', $plugin_ajax, 'hostpn_ajax_server');
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_ajax', $plugin_ajax, 'hostpn_ajax_server');
 	}
 
 	/**
@@ -403,10 +402,10 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_ajax_nopriv() {
+	private function hostpn_load_ajax_nopriv() {
 		$plugin_ajax_nopriv = new HOSTPN_Ajax_Nopriv();
-		$this->loader->add_action('wp_ajax_hostpn_ajax_nopriv', $plugin_ajax_nopriv, 'hostpn_ajax_nopriv_server');
-		$this->loader->add_action('wp_ajax_nopriv_hostpn_ajax_nopriv', $plugin_ajax_nopriv, 'hostpn_ajax_nopriv_server');
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_ajax_nopriv', $plugin_ajax_nopriv, 'hostpn_ajax_nopriv_server');
+		$this->loader->hostpn_add_action('wp_ajax_nopriv_hostpn_ajax_nopriv', $plugin_ajax_nopriv, 'hostpn_ajax_nopriv_server');
 	}
 
 	/**
@@ -415,11 +414,11 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function load_shortcodes() {
+	private function hostpn_load_shortcodes() {
 		$plugin_shortcodes = new HOSTPN_Shortcodes();
-		$this->loader->add_shortcode('hostpn-test', $plugin_shortcodes, 'hostpn_test');
-		$this->loader->add_shortcode('hostpn-navigation', $plugin_shortcodes, 'hostpn_navigation');
-		$this->loader->add_shortcode('hostpn-call-to-action', $plugin_shortcodes, 'hostpn_call_to_action');
+		$this->loader->hostpn_add_shortcode('hostpn-test', $plugin_shortcodes, 'hostpn_test');
+		$this->loader->hostpn_add_shortcode('hostpn-navigation', $plugin_shortcodes, 'hostpn_navigation');
+		$this->loader->hostpn_add_shortcode('hostpn-call-to-action', $plugin_shortcodes, 'hostpn_call_to_action');
 	}
 
 	/**
@@ -427,8 +426,8 @@ class HOSTPN {
 	 *
 	 * @since    1.0.0
 	 */
-	public function run() {
-		$this->loader->run();
+	public function hostpn_run() {
+		$this->loader->hostpn_run();
 	}
 
 	/**
@@ -437,7 +436,7 @@ class HOSTPN {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_plugin_name() {
+	public function hostpn_get_plugin_name() {
 		return $this->plugin_name;
 	}
 
@@ -447,7 +446,7 @@ class HOSTPN {
 	 * @since     1.0.0
 	 * @return    HOSTPN_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function get_loader() {
+	public function hostpn_get_loader() {
 		return $this->loader;
 	}
 
@@ -457,7 +456,7 @@ class HOSTPN {
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function get_version() {
+	public function hostpn_get_version() {
 		return $this->version;
 	}
 }

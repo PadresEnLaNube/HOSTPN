@@ -17,7 +17,8 @@ class HOSTPN_Forms {
 	 * @since    1.0.0
 	 */
 
-  public static function input_builder($hostpn_input, $hostpn_type, $hostpn_id = 0, $disabled = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0) {
+  public static function hostpn_input_builder($hostpn_input, $hostpn_type, $hostpn_id = 0, $disabled = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0) {
+    // HOSTPN_Forms::input_builder($hostpn_input, $hostpn_type, $hostpn_id = 0, $disabled = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0)
     if ($hostpn_meta_array) {
       switch ($hostpn_type) {
         case 'user':
@@ -111,13 +112,11 @@ class HOSTPN_Forms {
         switch ($hostpn_input['type']) {
           case 'file':
             ?>
-              <input type="<?php echo $hostpn_input['type']; ?>" id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 'multiple' : ''); ?> class="hostpn-field <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" type="<?php echo esc_attr($hostpn_input['type']); ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?> <?php echo wp_kses_post($hostpn_parent_block); ?>/>
-
               <?php if (empty($hostpn_value)): ?>
                 <p class="hostpn-m-10"><?php esc_html_e('No file found', 'hostpn'); ?></p>
               <?php else: ?>
-                <?php echo '<pre> hostpn_value: ';print_r($hostpn_value);echo '</pre><br>'; ?>
                 <p class="hostpn-m-10">
+                  <a href="<?php echo esc_url(get_post_meta($hostpn_id, $hostpn_input['id'], true)['url']); ?>" target="_blank"><?php echo esc_html(basename(get_post_meta($hostpn_id, $hostpn_input['id'], true)['url'])); ?></a>
                 </p>
               <?php endif ?>
             <?php
@@ -128,6 +127,30 @@ class HOSTPN_Forms {
                 <input id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" class="<?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?> hostpn-checkbox hostpn-checkbox-switch hostpn-field" type="<?php echo esc_attr($hostpn_input['type']); ?>" <?php echo $hostpn_value == 'on' ? 'checked="checked"' : ''; ?> <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?> <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo wp_kses_post($hostpn_parent_block); ?>>
                 <span class="hostpn-slider hostpn-round"></span>
               </label>
+            <?php
+            break;
+          case 'radio':
+            ?>
+              <div class="hostpn-input-radio-wrapper">
+                <?php if (!empty($hostpn_input['radio_options'])): ?>
+                  <?php foreach ($hostpn_input['radio_options'] as $radio_option): ?>
+                    <div class="hostpn-input-radio-item">
+                      <label for="<?php echo esc_attr($radio_option['id']); ?>">
+                        <?php echo wp_kses_post(wp_specialchars_decode($radio_option['label'])); ?>
+                        
+                        <input type="<?php echo esc_attr($hostpn_input['type']); ?>"
+                          id="<?php echo esc_attr($radio_option['id']); ?>"
+                          name="<?php echo esc_attr($hostpn_input['id']); ?>"
+                          value="<?php echo esc_attr($radio_option['value']); ?>"
+                          <?php echo $hostpn_value == $radio_option['value'] ? 'checked="checked"' : ''; ?>
+                          <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == 'true') ? 'required' : ''); ?>>
+
+                        <div class="hostpn-radio-control"></div>
+                      </label>
+                    </div>
+                  <?php endforeach ?>
+                <?php endif ?>
+              </div>
             <?php
             break;
           case 'range':
@@ -143,7 +166,7 @@ class HOSTPN_Forms {
                   <?php endif ?>
                 </div>
 
-                <input type="<?php echo esc_attr($hostpn_input['type']); ?>" id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-input-range <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?> <?php echo (isset($hostpn_input['hostpn_max']) ? 'max=' . esc_attr($hostpn_input['hostpn_max']) : ''); ?> <?php echo (isset($hostpn_input['hostpn_min']) ? 'min=' . esc_attr($hostpn_input['hostpn_min']) : ''); ?> <?php echo (((array_key_exists('step', $hostpn_input) && $hostpn_input['step'] != '')) ? 'step="' . esc_attr($hostpn_input['step']) . '"' : ''); ?> <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 'multiple' : ''); ?> value="<?php echo (!empty($hostpn_input['button_text']) ? esc_html($hostpn_input['button_text']) : esc_html($hostpn_value)); ?>"/>
+                <input type="<?php echo esc_attr($hostpn_input['type']); ?>" id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" class="hostpn-input-range <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?> <?php echo (isset($hostpn_input['hostpn_max']) ? 'max=' . esc_attr($hostpn_input['hostpn_max']) : ''); ?> <?php echo (isset($hostpn_input['hostpn_min']) ? 'min=' . esc_attr($hostpn_input['hostpn_min']) : ''); ?> <?php echo (((array_key_exists('step', $hostpn_input) && $hostpn_input['step'] != '')) ? 'step="' . esc_attr($hostpn_input['step']) . '"' : ''); ?> <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 'multiple' : ''); ?> value="<?php echo (!empty($hostpn_input['button_text']) ? esc_html($hostpn_input['button_text']) : esc_html($hostpn_value)); ?>"/>
                 <h3 class="hostpn-input-range-output"></h3>
               </div>
             <?php
@@ -168,20 +191,20 @@ class HOSTPN_Forms {
                   <?php endforeach ?>
                 </div>
 
-                <input type="number" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo ((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') ? 'disabled' : ''); ?> id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-input-hidden-stars <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" min="1" max="<?php echo esc_attr($hostpn_stars) ?>">
+                <input type="number" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo ((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') ? 'disabled' : ''); ?> id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" class="hostpn-input-hidden-stars <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" min="1" max="<?php echo esc_attr($hostpn_stars) ?>">
               </div>
             <?php
             break;
           case 'submit':
             ?>
               <div class="hostpn-text-align-right">
-                <input type="submit" value="<?php echo esc_attr($hostpn_input['value']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" id="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-btn" data-hostpn-type="<?php echo esc_attr($hostpn_type); ?>" data-hostpn-subtype="<?php echo ((array_key_exists('subtype', $hostpn_input)) ? esc_attr($hostpn_input['subtype']) : ''); ?>" data-hostpn-user-id="<?php echo esc_attr($hostpn_id); ?>" data-hostpn-post-id="<?php echo esc_attr(get_the_ID()); ?>" data-hostpn-post-type="<?php echo esc_attr(get_post_type(get_the_ID())); ?>"/><?php echo esc_html(HOSTPN_Data::loader()); ?>
+                <input type="submit" value="<?php echo esc_attr($hostpn_input['value']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" id="<?php echo esc_attr($hostpn_input['id']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-btn" data-hostpn-type="<?php echo esc_attr($hostpn_type); ?>" data-hostpn-subtype="<?php echo ((array_key_exists('subtype', $hostpn_input)) ? esc_attr($hostpn_input['subtype']) : ''); ?>" data-hostpn-user-id="<?php echo esc_attr($hostpn_id); ?>" data-hostpn-post-id="<?php echo !empty(get_the_ID()) ? esc_attr(get_the_ID()) : ''; ?>"/><?php esc_html(HOSTPN_Data::hostpn_loader()); ?>
               </div>
             <?php
             break;
           case 'hidden':
             ?>
-              <input type="hidden" id="<?php echo esc_attr($hostpn_input['id']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" value="<?php echo esc_attr($hostpn_value); ?>">
+              <input type="hidden" id="<?php echo esc_attr($hostpn_input['id']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" value="<?php echo esc_attr($hostpn_value); ?>" <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true' ? 'multiple' : ''); ?>>
             <?php
             break;
           case 'nonce':
@@ -193,7 +216,7 @@ class HOSTPN_Forms {
             ?>
               <div class="hostpn-password-checker">
                 <div class="hostpn-password-input hostpn-position-relative">
-                  <input id="hostpn-password" name="<?php echo $hostpn_input['id'] . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true') ? '[]' : ''); ?>" <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true' ? 'multiple' : ''); ?> class="hostpn-field hostpn-password-strength <?php echo array_key_exists('class', $hostpn_input) ? $hostpn_input['class'] : ''; ?>" type="<?php echo $hostpn_input['type']; ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == 'true') ? 'required' : ''); ?> <?php echo ((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') ? 'disabled' : ''); ?> value="<?php echo (!empty($hostpn_input['button_text']) ? $hostpn_input['button_text'] : $hostpn_value); ?>" placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? $hostpn_input['placeholder'] : ''); ?>" <?php echo $hostpn_parent_block; ?>/>
+                  <input id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true') ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true') ? '[]' : ''); ?>" <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true' ? 'multiple' : ''); ?> class="hostpn-field hostpn-password-strength <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" type="<?php echo esc_attr($hostpn_input['type']); ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == 'true') ? 'required' : ''); ?> <?php echo ((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') ? 'disabled' : ''); ?> value="<?php echo (!empty($hostpn_input['button_text']) ? esc_html($hostpn_input['button_text']) : esc_attr($hostpn_value)); ?>" placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? esc_attr($hostpn_input['placeholder']) : ''); ?>" <?php echo wp_kses_post($hostpn_parent_block); ?>/>
 
                   <a href="#" class="hostpn-show-pass hostpn-cursor-pointer hostpn-display-none-soft">
                     <i class="material-icons-outlined hostpn-font-size-20 hostpn-vertical-align-middle">visibility</i>
@@ -254,9 +277,11 @@ class HOSTPN_Forms {
                 }
               ?>
               
-              <?php foreach ($hostpn_input['options'] as $hostpn_input_option_key => $hostpn_input_option_value): ?>
-                <option value="<?php echo esc_attr($hostpn_input_option_key); ?>" <?php echo ((array_key_exists('all_selected', $hostpn_input) && $hostpn_input['all_selected'] == 'true') || (is_array($hostpn_selected_values) && in_array($hostpn_input_option_key, $hostpn_selected_values)) ? 'selected' : ''); ?>><?php echo esc_html($hostpn_input_option_value) ?></option>
-              <?php endforeach ?>
+              <?php if (!empty($hostpn_input['options']) && is_array($hostpn_input['options'])): ?>
+                <?php foreach ($hostpn_input['options'] as $hostpn_input_option_key => $hostpn_input_option_value): ?>
+                  <option value="<?php echo esc_attr($hostpn_input_option_key); ?>" <?php echo ((array_key_exists('all_selected', $hostpn_input) && $hostpn_input['all_selected'] == 'true') || (is_array($hostpn_selected_values) && in_array($hostpn_input_option_key, $hostpn_selected_values)) ? 'selected' : ''); ?>><?php echo esc_html($hostpn_input_option_value) ?></option>
+                <?php endforeach ?>
+              <?php endif ?>
             <?php else: ?>
               <option value="" <?php echo $hostpn_value == '' ? 'selected' : '';?>><?php esc_html_e('Select an option', 'hostpn'); ?></option>
               
@@ -289,7 +314,7 @@ class HOSTPN_Forms {
               <div class="hostpn-text-align-center hostpn-position-relative"><a href="#" class="hostpn-btn hostpn-btn-mini hostpn-image-btn"><?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? esc_html(__('Add images', 'hostpn')) : esc_html(__('Add image', 'hostpn')); ?></a></div>
             <?php endif ?>
 
-            <input name="<?php echo esc_attr($hostpn_input['id']); ?>" id="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-image-input" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
+            <input id="<?php echo esc_attr($hostpn_input['id']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-image-input" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
           </div>
         <?php
         break;
@@ -310,7 +335,7 @@ class HOSTPN_Forms {
               <div class="hostpn-text-align-center hostpn-position-relative"><a href="#" class="hostpn-btn hostpn-video-btn"><?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? esc_html(__('Add videos', 'hostpn')) : esc_html(__('Add video', 'hostpn')); ?></a></div>
             <?php endif ?>
 
-            <input name="<?php echo esc_attr($hostpn_input['id']); ?>" id="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-video-input" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
+            <input id="<?php echo esc_attr($hostpn_input['id']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-video-input" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
           </div>
         <?php
         break;
@@ -331,7 +356,7 @@ class HOSTPN_Forms {
               <div class="hostpn-text-align-center hostpn-position-relative"><a href="#" class="hostpn-btn hostpn-btn-mini hostpn-audio-btn"><?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? esc_html(__('Add audios', 'hostpn')) : esc_html(__('Add audio', 'hostpn')); ?></a></div>
             <?php endif ?>
 
-            <input name="<?php echo esc_attr($hostpn_input['id']); ?>" id="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-audio-input" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
+            <input id="<?php echo esc_attr($hostpn_input['id']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-audio-input" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
           </div>
         <?php
         break;
@@ -352,7 +377,7 @@ class HOSTPN_Forms {
               <div class="hostpn-text-align-center hostpn-position-relative"><a href="#" class="hostpn-btn hostpn-btn-mini hostpn-btn-mini hostpn-file-btn"><?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? esc_html(__('Add files', 'hostpn')) : esc_html(__('Add file', 'hostpn')); ?></a></div>
             <?php endif ?>
 
-            <input name="<?php echo esc_attr($hostpn_input['id']); ?>" id="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-file-input hostpn-btn-mini" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
+            <input id="<?php echo esc_attr($hostpn_input['id']); ?>" name="<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-display-none hostpn-file-input hostpn-btn-mini" type="text" value="<?php echo esc_attr($hostpn_value); ?>"/>
           </div>
         <?php
         break;
@@ -366,7 +391,7 @@ class HOSTPN_Forms {
       case 'html':
         ?>
           <div class="hostpn-field" <?php echo wp_kses_post($hostpn_parent_block); ?>>
-            <?php echo !empty($hostpn_input['html_content']) ? wp_kses_post(html_entity_decode(do_shortcode($hostpn_input['html_content']))) : ''; ?>
+            <?php echo !empty($hostpn_input['html_content']) ? wp_kses(do_shortcode($hostpn_input['html_content']), HOSTPN_KSES) : ''; ?>
           </div>
         <?php
         break;
@@ -383,13 +408,13 @@ class HOSTPN_Forms {
         }
 
         ?>
-          <div class="hostpn-html-multi-wrapper hostpn-mb-50" <?php echo wp_kses_post($hostpn_parent_block); ?>>
+          <div class="hostpn-field hostpn-html-multi-wrapper hostpn-mb-50" <?php echo wp_kses_post($hostpn_parent_block); ?>>
             <?php if ($html_multi_fields_length): ?>
               <?php foreach (range(0, ($html_multi_fields_length - 1)) as $length_index): ?>
                 <div class="hostpn-html-multi-group hostpn-display-table hostpn-width-100-percent hostpn-mb-30">
                   <div class="hostpn-display-inline-table hostpn-width-90-percent">
                     <?php foreach ($hostpn_input['html_multi_fields'] as $index => $html_multi_field): ?>
-                      <?php self::input_builder($html_multi_field, $hostpn_type, $hostpn_id, false, true, $length_index); ?>
+                      <?php self::hostpn_input_builder($html_multi_field, $hostpn_type, $hostpn_id, false, true, $length_index); ?>
                     <?php endforeach ?>
                   </div>
                   <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-center">
@@ -405,7 +430,7 @@ class HOSTPN_Forms {
               <div class="hostpn-html-multi-group hostpn-mb-50">
                 <div class="hostpn-display-inline-table hostpn-width-90-percent">
                   <?php foreach ($hostpn_input['html_multi_fields'] as $html_multi_field): ?>
-                    <?php self::input_builder($html_multi_field, $hostpn_type); ?>
+                    <?php self::hostpn_input_builder($html_multi_field, $hostpn_type); ?>
                   <?php endforeach ?>
                 </div>
                 <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-center">
@@ -427,9 +452,10 @@ class HOSTPN_Forms {
     }
   }
 
-  public static function input_wrapper_builder($input_array, $type, $hostpn_id = 0, $disabled = 0, $hostpn_format = 'half'){
+  public static function hostpn_input_wrapper_builder($input_array, $type, $hostpn_id = 0, $disabled = 0, $hostpn_format = 'half'){
+    // HOSTPN_Forms::input_wrapper_builder($input_array, $type, $hostpn_id = 0, $disabled = 0, $hostpn_format = 'half')
     ?>
-      <?php if (array_key_exists('section', $input_array) && !empty($input_array['section'])): ?>
+      <?php if (array_key_exists('section', $input_array) && !empty($input_array['section'])): ?>      
         <?php if ($input_array['section'] == 'start'): ?>
           <div class="hostpn-toggle-wrapper hostpn-section-wrapper hostpn-position-relative hostpn-mb-30 <?php echo array_key_exists('class', $input_array) ? esc_attr($input_array['class']) : ''; ?>" id="<?php echo array_key_exists('id', $input_array) ? esc_attr($input_array['id']) : ''; ?>">
             <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
@@ -437,9 +463,9 @@ class HOSTPN_Forms {
             <?php endif ?>
 
             <a href="#" class="hostpn-toggle hostpn-width-100-percent hostpn-text-decoration-none">
-              <div class="hostpn-display-table hostpn-width-100-percent">
+              <div class="hostpn-display-table hostpn-width-100-percent hostpn-mb-20">
                 <div class="hostpn-display-inline-table hostpn-width-90-percent">
-                  <label class="hostpn-cursor-pointer hostpn-toggle hostpn-mb-20"><?php echo wp_kses_post($input_array['label']); ?></label>
+                  <label class="hostpn-cursor-pointer hostpn-mb-20 hostpn-color-main-0"><?php echo wp_kses_post($input_array['label']); ?></label>
                 </div>
                 <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
                   <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0">add</i>
@@ -457,7 +483,7 @@ class HOSTPN_Forms {
           <?php if (array_key_exists('label', $input_array) && !empty($input_array['label'])): ?>
             <div class="hostpn-display-inline-table <?php echo (($hostpn_format == 'half' && !(array_key_exists('type', $input_array) && $input_array['type'] == 'submit')) ? 'hostpn-width-40-percent' : 'hostpn-width-100-percent'); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
               <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
-                <label class="hostpn-font-size-16 hostpn-vertical-align-middle hostpn-display-block <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? 'hostpn-toggle' : ''; ?>" for="<?php echo esc_attr($input_array['id']); ?>"><?php echo esc_attr($input_array['label']); ?> <?php echo (array_key_exists('required', $input_array) && !empty($input_array['required']) && $input_array['required'] == true) ? '<span class="hostpn-tooltip" title="' . esc_html(__('Required field', 'hostpn')) . '">*</span>' : ''; ?><?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? '<i class="material-icons-outlined hostpn-cursor-pointer hostpn-float-right">add</i>' : ''; ?></label>
+                <label class="hostpn-vertical-align-middle hostpn-display-block <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? 'hostpn-toggle' : ''; ?>" for="<?php echo esc_attr($input_array['id']); ?>"><?php echo esc_attr($input_array['label']); ?> <?php echo (array_key_exists('required', $input_array) && !empty($input_array['required']) && $input_array['required'] == true) ? '<span class="hostpn-tooltip" title="' . esc_html(__('Required field', 'hostpn')) . '">*</span>' : ''; ?><?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? '<i class="material-icons-outlined hostpn-cursor-pointer hostpn-float-right">add</i>' : ''; ?></label>
 
                 <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
                   <div class="hostpn-toggle-content hostpn-display-none-soft">
@@ -470,7 +496,7 @@ class HOSTPN_Forms {
 
           <div class="hostpn-display-inline-table <?php echo ((array_key_exists('label', $input_array) && empty($input_array['label'])) ? 'hostpn-width-100-percent' : (($hostpn_format == 'half' && !(array_key_exists('type', $input_array) && $input_array['type'] == 'submit')) ? 'hostpn-width-60-percent' : 'hostpn-width-100-percent')); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
             <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
-              <div class="hostpn-input-field"><?php self::input_builder($input_array, $type, $hostpn_id, $disabled); ?></div>
+              <div class="hostpn-input-field"><?php self::hostpn_input_builder($input_array, $type, $hostpn_id, $disabled); ?></div>
             </div>
           </div>
         </div>
@@ -478,7 +504,8 @@ class HOSTPN_Forms {
     <?php
   }
 
-  public static function sanitizer($value, $node = '', $type = '') {
+  public static function hostpn_sanitizer($value, $node = '', $type = '') {
+    // HOSTPN_Forms::hostpn_sanitizer($value, $node = '', $type = '')
     switch (strtolower($node)) {
       case 'input':
         switch (strtolower($type)) {

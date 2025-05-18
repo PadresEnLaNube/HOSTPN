@@ -7,143 +7,53 @@
  * @link       padresenlanube.com/
  * @since      1.0.0
  *
- * @package    HOSTPN
- * @subpackage HOSTPN/common/templates
+ * @package    hostpn
+ * @subpackage hostpn/common/templates
  */
 
   if (!defined('ABSPATH')) exit; // Exit if accessed directly
 ?>
-<!-- GUEST -->
-<div id="hostpn-popup-guest-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
+<div class="hostpn-popup-overlay hostpn-display-none-soft"></div>
+<div class="hostpn-menu-more-overlay hostpn-display-none-soft"></div>
+
+<?php foreach (HOSTPN_CPTS as $cpt => $cpt_name) : ?>
+  <div id="hostpn-popup-<?php echo esc_attr($cpt); ?>-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
+    <?php HOSTPN_Data::hostpn_popup_loader(); ?>
   </div>
-</div>
 
-<div id="hostpn-popup-guest-check" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
+  <div id="hostpn-popup-<?php echo esc_attr($cpt); ?>-check" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
+    <?php HOSTPN_Data::hostpn_popup_loader(); ?>
   </div>
-</div>
 
-<div id="hostpn-popup-guest-view" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
+  <div id="hostpn-popup-<?php echo esc_attr($cpt); ?>-view" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
+    <?php HOSTPN_Data::hostpn_popup_loader(); ?>
   </div>
-</div>
 
-<div id="hostpn-popup-guest-edit" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
+  <div id="hostpn-popup-<?php echo esc_attr($cpt); ?>-edit" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
+    <?php HOSTPN_Data::hostpn_popup_loader(); ?>
   </div>
-</div>
 
-<div id="hostpn-popup-guest-remove" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <h3 class="hostpn-text-align-center"><?php esc_html_e('Guest removal', 'hostpn'); ?></h3>
-  <p class="hostpn-text-align-center"><?php esc_html_e('The guest will be completely deleted. This process cannot be reversed and the guest cannot be recovered.', 'hostpn'); ?></p>
+  <div id="hostpn-popup-<?php echo esc_attr($cpt); ?>-remove" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
+    <div class="hostpn-popup-content">
+      <div class="hostpn-p-30">
+        <h3 class="hostpn-text-align-center"><?php echo esc_html($cpt_name); ?> <?php esc_html_e('removal', 'hostpn'); ?></h3>
+        <p class="hostpn-text-align-center"><?php echo esc_html($cpt_name); ?> <?php esc_html_e('will be completely deleted. This process cannot be reversed and cannot be recovered.', 'hostpn'); ?></p>
 
-  <div class="hostpn-display-table hostpn-width-100-percent">
-    <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
-      <a href="#" class="hostpn-popup-close hostpn-text-decoration-none hostpn-font-size-small"><?php esc_html_e('Cancel', 'hostpn'); ?></a>
-    </div>
-    <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
-      <a href="#" class="hostpn-btn hostpn-btn-mini hostpn-guest-remove" data-hostpn-post-type="hostpn_guest"><?php esc_html_e('Remove', 'hostpn'); ?></a>
-    </div>
-  </div>
-</div>
-
-<!-- ACCOMODATION -->
-<div id="hostpn-popup-accommodation-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-accommodation-check" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-accommodation-view" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-accommodation-edit" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-accommodation-share" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-accommodation-remove" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <h3 class="hostpn-text-align-center"><?php esc_html_e('Accommodation removal', 'hostpn'); ?></h3>
-  <p class="hostpn-text-align-center"><?php esc_html_e('The accommodation will be completely deleted. This process cannot be reversed and the accommodation cannot be recovered.', 'hostpn'); ?></p>
-
-  <div class="hostpn-display-table hostpn-width-100-percent">
-    <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
-      <a href="#" class="hostpn-popup-close hostpn-text-decoration-none hostpn-font-size-small"><?php esc_html_e('Cancel', 'hostpn'); ?></a>
-    </div>
-    <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
-      <a href="#" class="hostpn-btn hostpn-btn-mini hostpn-accommodation-remove" data-hostpn-post-type="hostpn_accomm"><?php esc_html_e('Remove', 'hostpn'); ?></a>
+        <div class="hostpn-display-table hostpn-width-100-percent">
+          <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
+            <a href="#" class="hostpn-popup-close hostpn-text-decoration-none hostpn-font-size-small"><?php esc_html_e('Cancel', 'hostpn'); ?></a>
+          </div>
+          <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
+            <a href="#" class="hostpn-btn hostpn-btn-mini hostpn-<?php echo esc_attr($cpt); ?>-remove" data-hostpn-post-type="hostpn_<?php echo esc_attr($cpt); ?>"><?php esc_html_e('Remove', 'hostpn'); ?> <?php echo esc_html($cpt_name); ?></a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<div id="hostpn-popup-accommodation-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<!-- PART OF TRAVELER -->
-<div id="hostpn-popup-part-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-part-check" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-part-view" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-part-edit" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
-
-<div id="hostpn-popup-part-remove" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <h3 class="hostpn-text-align-center"><?php esc_html_e('part removal', 'hostpn'); ?></h3>
-  <p class="hostpn-text-align-center"><?php esc_html_e('The part will be completely deleted. This process cannot be reversed and the part cannot be recovered.', 'hostpn'); ?></p>
-
-  <div class="hostpn-display-table hostpn-width-100-percent">
-    <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
-      <a href="#" class="hostpn-popup-close hostpn-text-decoration-none hostpn-font-size-small"><?php esc_html_e('Cancel', 'hostpn'); ?></a>
+  <?php if ($cpt == 'accommodation') : ?>
+    <div id="hostpn-popup-accommodation-share" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
+      <?php HOSTPN_Data::hostpn_popup_loader(); ?>
     </div>
-    <div class="hostpn-display-inline-table hostpn-width-50-percent hostpn-text-align-center">
-      <a href="#" class="hostpn-btn hostpn-btn-mini hostpn-part-remove" data-hostpn-post-type="hostpn_part"><?php esc_html_e('Remove', 'hostpn'); ?></a>
-    </div>
-  </div>
-</div>
-
-<div id="hostpn-popup-part-add" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
-  <div class="hostpn-popup-content">
-    <div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>
-  </div>
-</div>
+  <?php endif; ?>
+<?php endforeach; ?>

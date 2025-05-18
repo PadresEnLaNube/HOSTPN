@@ -29,7 +29,7 @@ class HOSTPN_Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
+	public static function hostpn_deactivate() {
 		$plugin_post = new HOSTPN_Post_Type_Guest();
 		
 		if (get_option('hostpn_options_remove') == 'on') {

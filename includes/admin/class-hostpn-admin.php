@@ -57,6 +57,7 @@ class HOSTPN_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+		wp_enqueue_media();
 		wp_enqueue_script($this->plugin_name . '-admin', HOSTPN_URL . 'assets/js/admin/hostpn-admin.js', ['jquery'], $this->version, false);
 	}
 }

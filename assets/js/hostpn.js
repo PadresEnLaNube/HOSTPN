@@ -303,14 +303,14 @@
     if($('.hostpn-popup-close').length){
       $(document).on('click', '.hostpn-popup-close', function(e){
         e.preventDefault();
-        $.fancybox.close();
+        hostpn_popups.closepopup();
       });
     }
 
     if($('.hostpn-popup-open').length){
       $(document).on('click', '.hostpn-popup-open', function(e){
         e.preventDefault();
-        $.fancybox.open($('#' + $(this).attr('data-hostpn-popup-id')), {touch: false});
+        HOSTPN_Popups.open($('#' + $(this).attr('data-hostpn-popup-id')), {touch: false});
       });
     }
 
@@ -361,7 +361,7 @@
 
       if (hostpn_action.popup != '') {
         $(window).on('load', function(e) {
-          $.fancybox.open($('#' + hostpn_action.popup), {touch: false});
+          HOSTPN_Popups.open($('#' + hostpn_action.popup), {touch: false});
 
           if (typeof hostpn_action.tab != '') {
             $('.userspn-tab-links[data-userspn-id="userspn-tab-' + hostpn_action.tab + '"]').click();
@@ -376,12 +376,36 @@
 
     $(document).on('click', '.hostpn-btn-copy', function(e) {
       e.preventDefault();
+      var textToCopy = $($(this).attr('data-hostpn-copy-content')).text();
+      
+      // Try using the modern Clipboard API first
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(textToCopy)
+          .then(() => {
+            hostpn_get_main_message(hostpn_i18n.copied);
+          })
+          .catch(() => {
+            // Fallback for when clipboard API fails
+            fallbackCopyTextToClipboard(textToCopy);
+          });
+      } else {
+        // Fallback for older browsers
+        fallbackCopyTextToClipboard(textToCopy);
+      }
+    });
+
+    // Fallback function for older browsers
+    function fallbackCopyTextToClipboard(text) {
       var hostpn_temp = $('<textarea>');
       $('body').append(hostpn_temp);
-      hostpn_temp.val($($(this).attr('data-hostpn-copy-content')).text()).select();
-      document.execCommand('copy');
+      hostpn_temp.val(text).select();
+      try {
+        document.execCommand('copy');
+        hostpn_get_main_message(hostpn_i18n.copied);
+      } catch (err) {
+        console.error('Fallback: Unable to copy text', err);
+      }
       hostpn_temp.remove();
-      hostpn_get_main_message(hostpn_i18n.copied);
-    });
+    }
   });
 })(jQuery);

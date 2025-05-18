@@ -58,11 +58,11 @@ class HOSTPN_Settings {
 	public function hostpn_options() {
 	  ?>
 	    <div class="hostpn-options hostpn-max-width-1000 hostpn-margin-auto hostpn-mt-50 hostpn-mb-50">
-        <h1 class="hostpn-mb-30"><?php esc_html_e('Base - WPH Options', 'hostpn'); ?></h1>
+        <h1 class="hostpn-mb-30"><?php esc_html_e('Base - HOSTPN Options', 'hostpn'); ?></h1>
         <div class="hostpn-options-fields hostpn-mb-30">
           <form action="" method="post" id="hostpn_form" class="hostpn-form">
             <?php foreach ($this->get_options() as $hostpn_option): ?>
-              <?php HOSTPN_Forms::input_wrapper_builder($hostpn_option, 'option', 0, 0, 'half'); ?>
+              <?php HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_option, 'option', 0, 0, 'half'); ?>
             <?php endforeach ?>
           </form> 
         </div>
@@ -80,10 +80,41 @@ class HOSTPN_Settings {
     return $post_states;
   }
 
-  public function activated_plugin($plugin) {
+  public function hostpn_activated_plugin($plugin) {
     if($plugin == 'hostpn/hostpn.php') {
-      if (!empty(get_option('hostpn_url_main'))) {
-        wp_redirect(esc_url(get_option('hostpn_url_main')));exit();
+      if (get_option('hostpn_pages_accommodation') && get_option('hostpn_url_main')) {
+        if (!get_transient('hostpn_just_activated') && !defined('DOING_AJAX')) {
+          set_transient('hostpn_just_activated', true, 30);
+        }
+      }
+    }
+  }
+
+  public function hostpn_check_activation() {
+    // Only run in admin and not during AJAX requests
+    if (!is_admin() || defined('DOING_AJAX')) {
+      return;
+    }
+
+    // Check if we're already in the redirection process
+    if (get_option('hostpn_redirecting')) {
+      delete_option('hostpn_redirecting');
+      return;
+    }
+
+    if (get_transient('hostpn_just_activated')) {
+      $target_url = get_option('hostpn_url_main');
+      
+      if ($target_url) {
+        // Mark that we're in the redirection process
+        update_option('hostpn_redirecting', true);
+        
+        // Remove the transient
+        delete_transient('hostpn_just_activated');
+        
+        // Redirect and exit
+        wp_safe_redirect(esc_url($target_url));
+        exit;
       }
     }
   }

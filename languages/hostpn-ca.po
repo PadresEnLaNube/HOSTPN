@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Filkers WooCommerce Marketing\n"
+"Project-Id-Version: HOSTPN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-31 14:21+0000\n"
-"PO-Revision-Date: 2024-08-01 05:33+0000\n"
+"PO-Revision-Date: 2024-03-19 11:38+0000\n"
 "Last-Translator: \n"
 "Language-Team: Catalan\n"
 "Language: ca\n"
@@ -13,215 +13,990 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.11; wp-6.6.1\n"
-"X-Domain: filkers"
+"X-Domain: hostpn"
 
-#: includes/class-hostpn-activator.php:41
-msgid "1 cup of respect"
-msgstr "1 tassa de respecte"
+#: includes/class-hostpn-post-type-part.php:154
+msgid "A unique contract reference to distinguish it."
+msgstr "Una referència única de contracte per distingir-lo."
 
-#: includes/class-hostpn-activator.php:41
-msgid "1 dash of adventure"
-msgstr "1 got d'aventura"
+#: includes/class-hostpn-post-type-part.php:68
+#: includes/class-hostpn-post-type-part.php:69
+#: includes/class-hostpn-post-type-accommodation.php:139
+msgid "Accommodation"
+msgstr "Allotjament"
 
-#: includes/class-hostpn-activator.php:41
-msgid "1 dash of humor"
-msgstr "1 punt d'humor"
+#: includes/class-hostpn-taxonomies-accommodation.php:32
+msgid "Accommodation categories"
+msgstr "Categories d'allotjament"
 
-#: includes/class-hostpn-activator.php:41
-msgid "1 dash of joy"
-msgstr "1 raig d'alegria"
+#: includes/class-hostpn-post-type-accommodation.php:101
+#: includes/class-hostpn-post-type-accommodation.php:102
+msgid "Accommodation city"
+msgstr "Ciutat de l'allotjament"
 
-#: includes/class-hostpn-activator.php:41
-msgid "1 dash of tenderness"
-msgstr "1 raig de tendresa"
+#: includes/class-hostpn-post-type-accommodation.php:44
+#: includes/class-hostpn-post-type-accommodation.php:45
+msgid "Accommodation code"
+msgstr "Codi de l'allotjament"
 
-#: includes/class-hostpn-activator.php:41
-msgid "1/2 cup of understanding"
-msgstr "1/2 tassa de comprensió"
+#: includes/class-hostpn-post-type-accommodation.php:81
+#: includes/class-hostpn-post-type-accommodation.php:82
+msgid "Accommodation country"
+msgstr "País de l'allotjament"
 
-#: includes/class-hostpn-activator.php:41
-msgid "1/4 cup of patience"
-msgstr "1/4 tassa de paciència"
+#: includes/class-hostpn-post-type-accommodation.php:30
+#: includes/class-hostpn-post-type-accommodation.php:140
+msgid "Accommodation description"
+msgstr "Descripció de l'allotjament"
 
-#: includes/class-hostpn-activator.php:41
-msgid "2 cups of trust"
-msgstr "2 tasses de confiança"
+#: includes/class-hostpn-post-type-accommodation.php:169
+msgid "Accommodation details"
+msgstr "Detalls de l'allotjament"
 
-#: includes/class-hostpn-activator.php:41
-msgid "2 hearts brimming with love"
-msgstr "2 cors plens d'amor"
+#: includes/class-hostpn-post-type-accommodation.php:92
+#: includes/class-hostpn-post-type-accommodation.php:93
+msgid "Accommodation postal code"
+msgstr "Codi postal de l'allotjament"
 
-#: includes/class-hostpn-activator.php:49
-#: includes/class-hostpn-activator.php:68
+#: includes/class-hostpn-post-type-accommodation.php:583
+msgid "Accommodation share link"
+msgstr "Enllaç per compartir l'allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:22
+#: includes/class-hostpn-post-type-accommodation.php:23
+msgid "Accommodation title"
+msgstr "Títol de l'allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:53
+#: includes/class-hostpn-post-type-accommodation.php:54
+msgid "Accommodation type"
+msgstr "Tipus d'allotjament"
+
+#: includes/class-hostpn-activator.php:47
+#: includes/class-hostpn-activator.php:76
+#: includes/class-hostpn-post-type-accommodation.php:123
+msgid "Accommodations"
+msgstr "Allotjaments"
+
+#: includes/class-hostpn-post-type-part.php:77
+msgid "Add accommodation"
+msgstr "Afegir allotjament"
+
+#: includes/class-hostpn-forms.php:351
+msgid "Add audio"
+msgstr "Afegir àudio"
+
+#: includes/class-hostpn-forms.php:351
+msgid "Add audios"
+msgstr "Afegir àudios"
+
+#: includes/class-hostpn-forms.php:442
+msgid "Add element"
+msgstr "Afegir element"
+
+#: includes/class-hostpn-forms.php:372
+msgid "Add file"
+msgstr "Afegir fitxer"
+
+#: includes/class-hostpn-forms.php:372
+msgid "Add files"
+msgstr "Afegir fitxers"
+
+#: includes/class-hostpn-post-type-part.php:131
+msgid "Add guest"
+msgstr "Afegir hoste"
+
+#: includes/class-hostpn-forms.php:309
+msgid "Add image"
+msgstr "Afegir imatge"
+
+#: includes/class-hostpn-forms.php:309
+msgid "Add images"
+msgstr "Afegir imatges"
+
+#: includes/class-hostpn-post-type-accommodation.php:479
+#: includes/class-hostpn-post-type-accommodation.php:527
+msgid "Add new Accommodation"
+msgstr "Afegir nou allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:127
+#: includes/class-hostpn-post-type-accommodation.php:128
+msgid "Add new accommodation"
+msgstr "Afegir nou allotjament"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:30
+msgid "Add New Accommodation category"
+msgstr "Afegir nova categoria d'allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:251
+#: includes/class-hostpn-post-type-guest.php:252
+#: includes/class-hostpn-post-type-guest.php:638
+#: includes/class-hostpn-post-type-guest.php:686
+msgid "Add new Guest"
+msgstr "Afegir nou hoste"
+
+#: includes/class-hostpn-taxonomies-guest.php:30
+msgid "Add New Guest category"
+msgstr "Afegir nova categoria d'hostes"
+
+#: includes/class-hostpn-post-type-part.php:765
+#: includes/class-hostpn-post-type-part.php:813
+msgid "Add new part"
+msgstr "Afegir nova part"
+
+#: includes/class-hostpn-post-type-part.php:389
+#: includes/class-hostpn-post-type-part.php:390
+msgid "Add new Part of traveler"
+msgstr "Afegir nova part de viatger"
+
+#: includes/class-hostpn-taxonomies-part.php:30
+msgid "Add New Part of travelers category"
+msgstr "Afegir nova categoria de parts de viatgers"
+
+#: includes/class-hostpn-forms.php:330
+msgid "Add video"
+msgstr "Afegir vídeo"
+
+#: includes/class-hostpn-forms.php:330
+msgid "Add videos"
+msgstr "Afegir vídeos"
+
+#: includes/class-hostpn-post-type-guest.php:133
+#: includes/class-hostpn-post-type-guest.php:134
+#: includes/class-hostpn-post-type-accommodation.php:62
+#: includes/class-hostpn-post-type-accommodation.php:63
+#: includes/class-hostpn-functions-user.php:222
+#: includes/class-hostpn-functions-user.php:223
+msgid "Address"
+msgstr "Adreça"
+
+#: includes/class-hostpn-post-type-guest.php:142
+#: includes/class-hostpn-post-type-guest.php:143
+#: includes/class-hostpn-post-type-accommodation.php:71
+#: includes/class-hostpn-post-type-accommodation.php:72
+#: includes/class-hostpn-functions-user.php:231
+#: includes/class-hostpn-functions-user.php:232
+msgid "Address complementary information"
+msgstr "Informació complementària de l'adreça"
+
+#: includes/class-hostpn-data.php:85
+msgid "Afghanistan"
+msgstr "Afganistan"
+
+#: includes/class-hostpn-data.php:117
+msgid "Agrotourism"
+msgstr "Agroturisme"
+
+#: includes/class-hostpn-data.php:85
+msgid "Albania"
+msgstr "Albània"
+
+#: includes/class-hostpn-data.php:85
+msgid "Algeria"
+msgstr "Algèria"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:25
+msgid "All Accommodation categories"
+msgstr "Totes les categories d'allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:125
+msgid "All accommodations"
+msgstr "Tots els allotjaments"
+
+#: includes/class-hostpn-taxonomies-guest.php:25
+msgid "All Guest categories"
+msgstr "Totes les categories d'hostes"
+
+#: includes/class-hostpn-post-type-guest.php:249
+msgid "All Guests"
+msgstr "Tots els hostes"
+
+#: includes/class-hostpn-post-type-part.php:387
+msgid "All Part of travelers"
+msgstr "Totes les parts de viatgers"
+
+#: includes/class-hostpn-taxonomies-part.php:25
+msgid "All Part of travelers categories"
+msgstr "Totes les categories de parts de viatgers"
+
+#. Description of the plugin
 msgid ""
-"<!-- wp:heading {\"level\":3,\"className\":\"wp-block-heading\"} --><h3 "
-"class=\"wp-block-heading\">Un festín para el corazón: un viaje culinario de "
-"amor</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Para crear un plato de "
-"amor original, comienza con una base sólida de confianza, respeto, "
-"comprensión y paciencia. Sazone con humor, alegría, aventura y ternura para "
-"darle vida a la vida. En el centro coloca dos corazones rebosantes de amor. "
-"Cocine a fuego lento durante todo el proceso, revolviendo ocasionalmente "
-"para afrontar los altibajos. Decora con palabras amables, gestos cariñosos y "
-"pequeños detalles. Comparte con tu ser querido y disfruta del delicioso "
-"sabor del amor verdadero.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>"
-"Recuerda que no existe una receta fija para Amor, cada uno lo crea a su "
-"manera. Experimenta, utiliza ingredientes frescos y de alta calidad y "
-"sírvelo con una sonrisa y el corazón abierto. ¡Que el amor sea el condimento "
-"que le dé sabor a tu vida!</p><!-- /wp:paragraph -->"
-msgstr ""
-"<!-- wp:heading {\"level\":3,\"className\":\"wp-block-heading\"} --><h3 "
-"class=\"wp-block-heading\">Un festiu per al cor: un viatge culinari "
-"d'amor</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Per crear un plat "
-"d'amor original, comença amb una base sòlida de confiança, respecte, "
-"comprensió i paciència. Sazone amb humor, alegria, aventura i ternura per "
-"darle vida a la vida. En el centre col·loca dos corazones rebosants d'amor. "
-"Cocine a fuego lento durant tot el procés, girant ocasionalment per afrontar "
-"els alts baixos. Decora amb paraules amables, gestos cariñosos i petits "
-"detalls. Comparteix amb tu ser querido i gaudir del delicioso sabor de "
-"l'amor veritable.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Recuerda "
-"que no existeix una recepta fija para Amor, cada un lo crea a la seva manera."
-" Experimenta, utilitza ingredients frescos i d'alta qualitat i sírvelo amb "
-"una sonrisa i el cor obert. ¡Que el amor sea el condimento que li dé sabor a "
-"tu vida!</p><!-- /wp:paragraph -->"
+"Allow you to ask for, save and send the information required by spanish "
+"Royal Decree 933/2021, of October 26."
+msgstr "Permet sol·licitar, guardar i enviar la informació requerida pel Reial Decret espanyol 933/2021, de 26 d'octubre."
 
-#: includes/class-hostpn-activator.php:46
-msgid ""
-"<p>To serve, garnish with <strong>kind words, loving gestures, and small "
-"details</strong>. Share with your loved one and savor the delicious "
-"experience of true love.&nbsp;</p><p><ul><li><strong>Don't be afraid to "
-"experiment</strong>. Add your own special ingredients to create a unique "
-"dish that represents your love.&nbsp;</li><li><strong>Use fresh, high-"
-"quality ingredients</strong>. True love is a priceless treasure, treat it "
-"with care.&nbsp;</li><li><strong>Serve with a smile and an open "
-"heart</strong>. Love is best enjoyed when shared.</li></ul></p><p>Enjoy your "
-"creation!</p>"
-msgstr ""
-"<p>Per servir, guarniu amb <strong>paraules amables, gestos amorosos i "
-"petits detalls</strong> . Comparteix amb el teu ésser estimat i assaboreix "
-"la deliciosa experiència de l&#39;amor veritable.</p><p><ul><li> <strong>No "
-"tinguis por d&#39;experimentar</strong> . Afegeix els teus propis "
-"ingredients especials per crear un plat únic que representi el teu amor.</li>"
-"<li> <strong>Utilitzeu ingredients frescos i de gran qualitat</strong> . "
-"L&#39;amor veritable és un tresor inestimable, tracteu-lo amb cura.</li><li> "
-"<strong>Serviu amb un somriure i el cor obert</strong> . L&#39;amor es "
-"gaudeix millor quan es comparteix.</li></ul></p><p> Gaudeix de la teva "
-"creació!</p>"
+#: includes/class-hostpn-post-type-guest.php:201
+#: includes/class-hostpn-post-type-guest.php:202
+#: includes/class-hostpn-functions-user.php:292
+#: includes/class-hostpn-functions-user.php:293
+msgid "Alternative phone"
+msgstr "Telèfon alternatiu"
 
-#: includes/class-hostpn-activator.php:43
-msgid ""
-"Add a dash of humor, joy, adventure, and tenderness. Life is tastier with a "
-"touch of fun and spontaneity."
-msgstr ""
-"Afegeix una mica d'humor, alegria, aventura i tendresa. La vida és més "
-"saborosa amb un toc de diversió i espontaneïtat."
-
-#: includes/class-hostpn-post-type-recipe.php:28
-msgid "Add New"
-msgstr "Afegir nou"
-
-#: includes/class-hostpn-taxonomies-recipe.php:30
-msgid "Add New Recipe category"
-msgstr "Afegeix una categoria de receptes noves"
-
-#: includes/class-hostpn-post-type-recipe.php:27
-msgid "Add new Recipe"
-msgstr "Afegeix una nova recepta CPT"
-
-#: templates/public/archive-hostpn_recipe.php:56
-msgid "Add recipe"
-msgstr "Afegeix la recepta"
-
-#: includes/class-hostpn-taxonomies-recipe.php:25
-msgid "All Recipe categories"
-msgstr "Totes les categories de receptes"
-
-#: includes/class-hostpn-post-type-recipe.php:25
-msgid "All Base CPT"
-msgstr "Totes les receptes CPT"
-
-#: includes/class-hostpn-common.php:124
+#: includes/class-hostpn-common.php:143
 msgid "An error has occurred. Please try again in a few minutes."
-msgstr ""
-"S'ha produït un error. Si us plau, torna-ho a provar d'aquí a uns minuts."
+msgstr "S'ha produït un error. Si us plau, torna-ho a provar d'aquí a uns minuts."
 
-#: includes/class-hostpn-activator.php:43
+#: includes/class-hostpn-ajax.php:132
+msgid "An error occurred while checking the Accommodation."
+msgstr "S'ha produït un error en verificar l'allotjament."
+
+#: includes/class-hostpn-ajax.php:251
+msgid "An error occurred while checking the Guest."
+msgstr "S'ha produït un error en verificar l'hoste."
+
+#: includes/class-hostpn-ajax.php:360
+msgid "An error occurred while checking the Part."
+msgstr "S'ha produït un error en verificar la part."
+
+#: includes/class-hostpn-ajax.php:153
+msgid "An error occurred while duplicating the Accommodation."
+msgstr "S'ha produït un error en duplicar l'allotjament."
+
+#: includes/class-hostpn-ajax.php:272
+msgid "An error occurred while duplicating the Guest."
+msgstr "S'ha produït un error en duplicar l'hoste."
+
+#: includes/class-hostpn-ajax.php:381
+msgid "An error occurred while duplicating the Part."
+msgstr "S'ha produït un error en duplicar la part."
+
+#: includes/class-hostpn-ajax.php:414
+msgid "An error occurred while duplicating the part."
+msgstr "S'ha produït un error en duplicar la part."
+
+#: includes/class-hostpn-ajax.php:173
+msgid "An error occurred while removing the Accommodation."
+msgstr "S'ha produït un error en eliminar l'allotjament."
+
+#: includes/class-hostpn-ajax.php:292
+msgid "An error occurred while removing the Guest."
+msgstr "S'ha produït un error en eliminar l'hoste."
+
+#: includes/class-hostpn-ajax.php:401
+msgid "An error occurred while removing the Part."
+msgstr "S'ha produït un error en eliminar la part."
+
+#: includes/class-hostpn-ajax.php:82 includes/class-hostpn-ajax.php:104
+msgid "An error occurred while showing the Accommodation."
+msgstr "S'ha produït un error en mostrar l'allotjament."
+
+#: includes/class-hostpn-ajax.php:201 includes/class-hostpn-ajax.php:223
+msgid "An error occurred while showing the Guest."
+msgstr "S'ha produït un error en mostrar l'hoste."
+
+#: includes/class-hostpn-ajax.php:310 includes/class-hostpn-ajax.php:332
+msgid "An error occurred while showing the Part."
+msgstr "S'ha produït un error en mostrar la part."
+
+#: includes/class-hostpn-data.php:85
+msgid "Andorra"
+msgstr "Andorra"
+
+#: includes/class-hostpn-data.php:85
+msgid "Angola"
+msgstr "Angola"
+
+#: includes/class-hostpn-data.php:85
+msgid "Antigua and Barbuda"
+msgstr "Antigua i Barbuda"
+
+#: includes/class-hostpn-data.php:117
+msgid "Aparthotel"
+msgstr "Aparthotel"
+
+#: includes/class-hostpn-data.php:117
+msgid "Apartment"
+msgstr "Apartament"
+
+#: includes/class-hostpn-functions-user.php:358
+msgid "Application received"
+msgstr "Sol·licitud rebuda"
+
+#: includes/class-hostpn-data.php:85
+msgid "Argentina"
+msgstr "Argentina"
+
+#: includes/class-hostpn-data.php:85
+msgid "Armenia"
+msgstr "Armènia"
+
+#: includes/class-hostpn-forms.php:242
+msgid "Atleast 8 Character"
+msgstr "Almenys 8 caràcters"
+
+#: includes/class-hostpn-data.php:85
+msgid "Australia"
+msgstr "Austràlia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Austria"
+msgstr "Àustria"
+
+#: includes/class-hostpn-data.php:85
+msgid "Azerbaijan"
+msgstr "Azerbaidjan"
+
+#: includes/class-hostpn-data.php:85
+msgid "Bahamas"
+msgstr "Bahames"
+
+#: includes/class-hostpn-data.php:85
+msgid "Bahrain"
+msgstr "Bahrain"
+
+#: includes/class-hostpn-data.php:85
+msgid "Bangladesh"
+msgstr "Bangla Desh"
+
+#: includes/class-hostpn-data.php:85
+msgid "Barbados"
+msgstr "Barbados"
+
+#: includes/class-hostpn-settings.php:61
+msgid "Base - HOSTPN Options"
+msgstr "Base - Opcions HOSTPN"
+
+#: includes/class-hostpn-data.php:85
+msgid "Belarus"
+msgstr "Bielorússia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Belgium"
+msgstr "Bèlgica"
+
+#: includes/class-hostpn-data.php:85
+msgid "Belize"
+msgstr "Belize"
+
+#: includes/class-hostpn-data.php:85
+msgid "Benin"
+msgstr "Benín"
+
+#: includes/class-hostpn-data.php:85
+msgid "Bhutan"
+msgstr "Bhutan"
+
+#: includes/class-hostpn-post-type-guest.php:103
+#: includes/class-hostpn-post-type-guest.php:104
+#: includes/class-hostpn-functions-user.php:192
+#: includes/class-hostpn-functions-user.php:193
+msgid "Birthdate"
+msgstr "Data de naixement"
+
+#: includes/class-hostpn-data.php:85
+msgid "Bolivia (Plurinational State of)"
+msgstr "Bolívia (Estat Plurinacional)"
+
+#: includes/class-hostpn-data.php:85
+msgid "Bosnia and Herzegovina"
+msgstr "Bòsnia i Hercegovina"
+
+#: includes/class-hostpn-data.php:85
+msgid "Botswana"
+msgstr "Botswana"
+
+#: includes/class-hostpn-data.php:85
+msgid "Brazil"
+msgstr "Brasil"
+
+#: includes/class-hostpn-data.php:121
+msgid "Brother"
+msgstr "Germà"
+
+#: includes/class-hostpn-data.php:85
+msgid "Brunei Darussalam"
+msgstr "Brunei Darussalam"
+
+#: includes/class-hostpn-data.php:85
+msgid "Bulgaria"
+msgstr "Bulgària"
+
+#: includes/class-hostpn-data.php:117
+msgid "Bungalow"
+msgstr "Bungalou"
+
+#: includes/class-hostpn-data.php:85
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+#: includes/class-hostpn-data.php:85
+msgid "Burundi"
+msgstr "Burundi"
+
+#: includes/class-hostpn-data.php:85
+msgid "Cabo Verde"
+msgstr "Cap Verd"
+
+#: includes/class-hostpn-data.php:85
+msgid "Cambodia"
+msgstr "Cambodja"
+
+#: includes/class-hostpn-data.php:85
+msgid "Cameroon"
+msgstr "Camerun"
+
+#: includes/class-hostpn-data.php:117
+msgid "Camping"
+msgstr "Càmping"
+
+#: includes/class-hostpn-data.php:85
+msgid "Canada"
+msgstr "Canadà"
+
+#: templates/hostpn-popups.php:43
+msgid "Cancel"
+msgstr "Cancel·la"
+
+#: includes/class-hostpn-post-type-part.php:253
+#: includes/class-hostpn-post-type-part.php:254
+msgid "Card expiration date"
+msgstr "Data de caducitat de la targeta"
+
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Cash"
+msgstr "Efectiu"
+
+#: includes/class-hostpn-data.php:85
+msgid "Central African Republic"
+msgstr "República Centreafricana"
+
+#: includes/class-hostpn-data.php:85
+msgid "Chad"
+msgstr "Txad"
+
+#: includes/class-hostpn-post-type-guest.php:221
+#: includes/class-hostpn-functions-user.php:312
 msgid ""
-"Bake for a lifetime, stirring occasionally. Love is a lifelong journey, full "
-"of ups and downs, but it is always worth it."
-msgstr ""
-"Coure al forn tota la vida, remenant de tant en tant. L'amor és un viatge de "
-"tota la vida, ple d'alts i baixos, però sempre val la pena."
+"Check this box if you are not the one who has booked the accommodation. Then "
+"you will need to set your relationship with this person."
+msgstr "Marca aquesta casella si no ets qui ha reservat l'allotjament. Llavors hauràs d'indicar la teva relació amb aquesta persona."
 
-#: includes/class-hostpn-activator.php:42
-msgid "Baking"
-msgstr "Cocció"
+#: includes/class-hostpn-post-type-part.php:173
+#: includes/class-hostpn-post-type-part.php:174
+msgid "Check-in date"
+msgstr "Data d'entrada"
 
-#: includes/class-hostpn-activator.php:42
-msgid "Dashing"
-msgstr "Lluita"
+#: includes/class-hostpn-post-type-part.php:181
+#: includes/class-hostpn-post-type-part.php:182
+msgid "Check-in time"
+msgstr "Hora d'entrada"
 
-#: includes/class-hostpn-common.php:134
+#: includes/class-hostpn-post-type-part.php:191
+#: includes/class-hostpn-post-type-part.php:192
+msgid "Check-out date"
+msgstr "Data de sortida"
+
+#: includes/class-hostpn-post-type-part.php:199
+#: includes/class-hostpn-post-type-part.php:200
+msgid "Check-out time"
+msgstr "Hora de sortida"
+
+#: includes/class-hostpn-data.php:85
+msgid "Chile"
+msgstr "Xile"
+
+#: includes/class-hostpn-data.php:85
+msgid "China"
+msgstr "Xina"
+
+#: includes/class-hostpn-post-type-guest.php:70
+#: includes/class-hostpn-functions-user.php:158
+msgid "CIF"
+msgstr "CIF"
+
+#: includes/class-hostpn-post-type-guest.php:172
+#: includes/class-hostpn-post-type-guest.php:173
+#: includes/class-hostpn-post-type-guest.php:182
+#: includes/class-hostpn-post-type-guest.php:183
+#: includes/class-hostpn-functions-user.php:253
+#: includes/class-hostpn-functions-user.php:254
+#: includes/class-hostpn-functions-user.php:273
+#: includes/class-hostpn-functions-user.php:274
+msgid "City"
+msgstr "Ciutat"
+
+#: includes/class-hostpn-data.php:85
+msgid "Colombia"
+msgstr "Colòmbia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Comoros"
+msgstr "Comores"
+
+#: includes/class-hostpn-post-type-part.php:895
+msgid "Completed"
+msgstr "Completat"
+
+#: includes/class-hostpn-data.php:85
+msgid "Congo"
+msgstr "Congo"
+
+#: includes/class-hostpn-data.php:85
+msgid "Congo, Democratic Republic of the"
+msgstr "República Democràtica del Congo"
+
+#: includes/class-hostpn-post-type-part.php:163
+#: includes/class-hostpn-post-type-part.php:164
+msgid "Contract date"
+msgstr "Data del contracte"
+
+#: includes/class-hostpn-post-type-part.php:142
+#: includes/class-hostpn-post-type-part.php:143
+msgid "Contract holder"
+msgstr "Titular del contracte"
+
+#: includes/class-hostpn-post-type-part.php:152
+#: includes/class-hostpn-post-type-part.php:153
+msgid "Contract reference"
+msgstr "Referència del contracte"
+
+#: includes/class-hostpn-common.php:166
+msgid "Copied"
+msgstr "Copiat"
+
+#: includes/class-hostpn-post-type-accommodation.php:592
+msgid "Copy url"
+msgstr "Copia l'URL"
+
+#: includes/class-hostpn-data.php:85
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+#: includes/class-hostpn-post-type-guest.php:152
+#: includes/class-hostpn-post-type-guest.php:153
+#: includes/class-hostpn-functions-user.php:242
+#: includes/class-hostpn-functions-user.php:243
+msgid "Country"
+msgstr "País"
+
+#: includes/class-hostpn-post-type-accommodation.php:539
+msgid "Create Accommodation"
+msgstr "Crea allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:698
+msgid "Create Guest"
+msgstr "Crea hoste"
+
+#: includes/class-hostpn-post-type-part.php:825
+msgid "Create part"
+msgstr "Crea part"
+
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Credit card"
+msgstr "Targeta de crèdit"
+
+#: includes/class-hostpn-data.php:85
+msgid "Croatia"
+msgstr "Croàcia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Cuba"
+msgstr "Cuba"
+
+#: includes/class-hostpn-data.php:85
+msgid "Cyprus"
+msgstr "Xipre"
+
+#: includes/class-hostpn-data.php:85
+msgid "Czechia"
+msgstr "Txèquia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Côte d'Ivoire"
+msgstr "Costa d'Ivori"
+
+#: includes/class-hostpn-post-type-guest.php:431
+#: includes/class-hostpn-functions-user.php:151
+#: includes/class-hostpn-functions-user.php:347
+msgid "Dear guest"
+msgstr "Benvolgut/da hoste"
+
+#: includes/class-hostpn-data.php:85
+msgid "Denmark"
+msgstr "Dinamarca"
+
+#: includes/class-hostpn-data.php:117
+msgid "Detached or semi-detached chalet"
+msgstr "Xalet aïllat o adossat"
+
+#: includes/class-hostpn-data.php:85
+msgid "Djibouti"
+msgstr "Djibouti"
+
+#: includes/class-hostpn-post-type-guest.php:82
+#: includes/class-hostpn-post-type-guest.php:83
+#: includes/class-hostpn-functions-user.php:171
+#: includes/class-hostpn-functions-user.php:172
+msgid "Document number"
+msgstr "Número de document"
+
+#: includes/class-hostpn-post-type-guest.php:92
+#: includes/class-hostpn-post-type-guest.php:93
+#: includes/class-hostpn-functions-user.php:181
+#: includes/class-hostpn-functions-user.php:182
+msgid "Document support number"
+msgstr "Número de suport del document"
+
+#: includes/class-hostpn-post-type-guest.php:72
+#: includes/class-hostpn-post-type-guest.php:73
+#: includes/class-hostpn-functions-user.php:161
+#: includes/class-hostpn-functions-user.php:162
+msgid "Document type"
+msgstr "Tipus de document"
+
+#: includes/class-hostpn-data.php:85
+msgid "Dominica"
+msgstr "Dominica"
+
+#: includes/class-hostpn-data.php:85
+msgid "Dominican Republic"
+msgstr "República Dominicana"
+
+#: includes/class-hostpn-post-type-part.php:683
+#: includes/class-hostpn-post-type-part.php:718
+msgid "Download XML file"
+msgstr "Descarrega el fitxer XML"
+
+#: includes/class-hostpn-post-type-accommodation.php:444
+msgid "Duplicate Accommodation"
+msgstr "Duplica l'allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:603
+msgid "Duplicate Guest"
+msgstr "Duplica l'hoste"
+
+#: includes/class-hostpn-post-type-part.php:730
+msgid "Duplicate part"
+msgstr "Duplica la part"
+
+#: includes/class-hostpn-data.php:85
+msgid "Ecuador"
+msgstr "Equador"
+
+#: includes/class-hostpn-post-type-accommodation.php:420
+#: includes/class-hostpn-post-type-accommodation.php:510
+msgid "Edit Accommodation"
+msgstr "Edita l'allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:129
+msgid "Edit accommodation"
+msgstr "Edita l'allotjament"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:28
+msgid "Edit Accommodation category"
+msgstr "Edita la categoria d'allotjament"
+
+#: includes/class-hostpn-common.php:155 includes/class-hostpn-forms.php:347
 msgid "Edit audio"
 msgstr "Edita l'àudio"
 
-#: includes/class-hostpn-common.php:135
+#: includes/class-hostpn-common.php:156 includes/class-hostpn-forms.php:347
 msgid "Edit audios"
 msgstr "Edita àudios"
 
-#: includes/class-hostpn-common.php:138
+#: includes/class-hostpn-common.php:159 includes/class-hostpn-forms.php:368
 msgid "Edit file"
 msgstr "Edita el fitxer"
 
-#: includes/class-hostpn-common.php:139
+#: includes/class-hostpn-common.php:160 includes/class-hostpn-forms.php:368
 msgid "Edit files"
 msgstr "Edita fitxers"
 
-#: includes/class-hostpn-common.php:126
+#: includes/class-hostpn-post-type-guest.php:253
+#: includes/class-hostpn-post-type-guest.php:591
+#: includes/class-hostpn-post-type-guest.php:669
+msgid "Edit Guest"
+msgstr "Edita l'hoste"
+
+#: includes/class-hostpn-taxonomies-guest.php:28
+msgid "Edit Guest category"
+msgstr "Edita la categoria d'hostes"
+
+#: includes/class-hostpn-common.php:147 includes/class-hostpn-forms.php:305
 msgid "Edit image"
 msgstr "Edita la imatge"
 
-#: includes/class-hostpn-common.php:127
+#: includes/class-hostpn-common.php:148 includes/class-hostpn-forms.php:305
 msgid "Edit images"
 msgstr "Edita imatges"
 
-#: templates/public/single-hostpn_recipe.php:50
-msgid "Edit recipe"
-msgstr "Edita la recepta"
+#: includes/class-hostpn-post-type-part.php:706
+#: includes/class-hostpn-post-type-part.php:796
+msgid "Edit part"
+msgstr "Edita la part"
 
-#: includes/class-hostpn-taxonomies-recipe.php:28
-msgid "Edit Recipe category"
-msgstr "Edita la categoria de receptes"
+#: includes/class-hostpn-post-type-part.php:391
+msgid "Edit Part of traveler"
+msgstr "Edita la part de viatger"
 
-#: includes/class-hostpn-post-type-recipe.php:29
-msgid "Edit Recipe"
-msgstr "Edita la recepta CPT"
+#: includes/class-hostpn-taxonomies-part.php:28
+msgid "Edit Part of travelers category"
+msgstr "Edita la categoria de parts de viatgers"
 
-#: includes/class-hostpn-common.php:130
+#: includes/class-hostpn-common.php:151 includes/class-hostpn-forms.php:326
 msgid "Edit video"
 msgstr "Edita el vídeo"
 
-#: includes/class-hostpn-common.php:131
+#: includes/class-hostpn-common.php:152 includes/class-hostpn-forms.php:326
 msgid "Edit videos"
 msgstr "Edita vídeos"
 
-#: templates/public/single-hostpn_recipe.php:126
-msgid "Elaboration steps"
-msgstr "Etapes d'elaboració"
+#: includes/class-hostpn-post-type-part.php:842
+#: includes/class-hostpn-post-type-guest.php:715
+#: includes/class-hostpn-post-type-accommodation.php:556
+msgid "Editing"
+msgstr "Editant"
 
-#: includes/class-hostpn-activator.php:42
-msgid "Hearting"
-msgstr "Encoratjador"
+#: includes/class-hostpn-data.php:85
+msgid "Egypt"
+msgstr "Egipte"
 
-#: templates/public/single-hostpn_recipe.php:135
-msgid "hours"
-msgstr "hores"
+#: includes/class-hostpn-data.php:85
+msgid "El Salvador"
+msgstr "El Salvador"
 
-#. URI of the plugin
+#: includes/class-hostpn-post-type-guest.php:211
+#: includes/class-hostpn-post-type-guest.php:212
+#: includes/class-hostpn-functions-user.php:302
+#: includes/class-hostpn-functions-user.php:303
+msgid "Email"
+msgstr "Correu electrònic"
+
+#: includes/class-hostpn-data.php:85
+msgid "Equatorial Guinea"
+msgstr "Guinea Equatorial"
+
+#: includes/class-hostpn-data.php:85
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#: includes/class-hostpn-data.php:85
+msgid "Estonia"
+msgstr "Estònia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Eswatini"
+msgstr "Eswatini"
+
+#: includes/class-hostpn-data.php:85
+msgid "Ethiopia"
+msgstr "Etiòpia"
+
+#: includes/class-hostpn-post-type-part.php:255
+msgid "Expiration date of the card."
+msgstr "Data de caducitat de la targeta."
+
+#: includes/class-hostpn-data.php:121
+msgid "Father / Mother"
+msgstr "Pare / Mare"
+
+#: includes/class-hostpn-data.php:121
+msgid "Father-in-Law"
+msgstr "Sogre"
+
+#: includes/class-hostpn-post-type-guest.php:120
+#: includes/class-hostpn-functions-user.php:209
+msgid "Female"
+msgstr "Dona"
+
+#: includes/class-hostpn-data.php:85
+msgid "Fiji"
+msgstr "Fiji"
+
+#: includes/class-hostpn-data.php:85
+msgid "Finland"
+msgstr "Finlàndia"
+
+#: includes/class-hostpn-data.php:85
+msgid "France"
+msgstr "França"
+
+#: includes/class-hostpn-data.php:85
+msgid "Gabon"
+msgstr "Gabon"
+
+#: includes/class-hostpn-data.php:85
+msgid "Gambia"
+msgstr "Gàmbia"
+
+#: includes/class-hostpn-post-type-guest.php:123
+#: includes/class-hostpn-post-type-guest.php:124
+#: includes/class-hostpn-functions-user.php:212
+#: includes/class-hostpn-functions-user.php:213
+msgid "Gender"
+msgstr "Gènere"
+
+#: includes/class-hostpn-data.php:85
+msgid "Georgia"
+msgstr "Geòrgia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Germany"
+msgstr "Alemanya"
+
+#: includes/class-hostpn-data.php:85
+msgid "Ghana"
+msgstr "Ghana"
+
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Gift card"
+msgstr "Targeta regal"
+
+#: includes/class-hostpn-data.php:117
+msgid "Glamping"
+msgstr "Glamping"
+
+#: includes/class-hostpn-data.php:121
+msgid "Grandfather / Grandmother"
+msgstr "Avi / Àvia"
+
+#: includes/class-hostpn-data.php:121
+msgid "Grandson / Granddaughter"
+msgstr "Nét / Néta"
+
+#: includes/class-hostpn-data.php:121
+msgid "Great-Grandfather / Great-Grandmother"
+msgstr "Besavi / Besàvia"
+
+#: includes/class-hostpn-data.php:121
+msgid "Great-Grandson / Great-Granddaughter"
+msgstr "Besnét / Besnéta"
+
+#: includes/class-hostpn-data.php:85
+msgid "Greece"
+msgstr "Grècia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Grenada"
+msgstr "Grenada"
+
+#: includes/class-hostpn-data.php:121
+msgid "Guardian"
+msgstr "Tutor/a legal"
+
+#: includes/class-hostpn-data.php:85
+msgid "Guatemala"
+msgstr "Guatemala"
+
+#: includes/class-hostpn-post-type-guest.php:263
+msgid "Guest"
+msgstr "Hoste"
+
+#: includes/class-hostpn-activator.php:37
+msgid "Guest - HOSTPN"
+msgstr "Hoste - HOSTPN"
+
+#: includes/class-hostpn-taxonomies-guest.php:32
+msgid "Guest categories"
+msgstr "Categories d'hostes"
+
+#: includes/class-hostpn-post-type-guest.php:264
+msgid "Guest description"
+msgstr "Descripció de l'hoste"
+
+#: includes/class-hostpn-post-type-guest.php:293
+msgid "Guest details"
+msgstr "Detalls de l'hoste"
+
+#: includes/class-hostpn-data.php:117
+msgid "Guest house"
+msgstr "Casa d'hostes"
+
+#: includes/class-hostpn-post-type-guest.php:22
+#: includes/class-hostpn-post-type-guest.php:23
+msgid "Guest name"
+msgstr "Nom de l'hoste"
+
+#: includes/class-hostpn-post-type-guest.php:40
+#: includes/class-hostpn-post-type-guest.php:41
+msgid "Guest second surname"
+msgstr "Segon cognom de l'hoste"
+
+#: includes/class-hostpn-settings.php:21 includes/class-hostpn-settings.php:22
+msgid "Guest slug"
+msgstr "Slug de l'hoste"
+
+#: includes/class-hostpn-post-type-guest.php:31
+#: includes/class-hostpn-post-type-guest.php:32
+msgid "Guest surname"
+msgstr "Cognom de l'hoste"
+
+#: includes/class-hostpn-activator.php:102
+#: includes/class-hostpn-activator.php:125
+#: includes/class-hostpn-post-type-guest.php:247
+msgid "Guests"
+msgstr "Hostes"
+
+#: includes/class-hostpn-post-type-guest.php:445
+#: includes/class-hostpn-functions-user.php:352
+msgid "Guests page"
+msgstr "Pàgina d'hostes"
+
+#: includes/class-hostpn-data.php:85
+msgid "Guinea"
+msgstr "Guinea"
+
+#: includes/class-hostpn-data.php:85
+msgid "Guinea-Bissau"
+msgstr "Guinea Bissau"
+
+#: includes/class-hostpn-data.php:85
+msgid "Guyana"
+msgstr "Guyana"
+
+#: includes/class-hostpn-data.php:85
+msgid "Haiti"
+msgstr "Haití"
+
+#: includes/class-hostpn-data.php:85
+msgid "Honduras"
+msgstr "Hondures"
+
+#: includes/class-hostpn-settings.php:77
+msgid "Hospedajes España"
+msgstr "Hospedatges Espanya"
+
+#. Name of the plugin
+msgid "Hospedajes España - HOSTPN"
+msgstr "Hospedatges Espanya - HOSTPN"
+
+#: includes/class-hostpn-activator.php:25
+msgid "Host - HOSTPN"
+msgstr "Amfitrió - HOSTPN"
+
+#: includes/class-hostpn-data.php:117
+msgid "Hostel"
+msgstr "Hostal"
+
+#: includes/class-hostpn-data.php:117
+msgid "Hotel"
+msgstr "Hotel"
+
+#: includes/class-hostpn-data.php:117
+msgid "House or private home"
+msgstr "Casa o habitatge privat"
+
+#: includes/class-hostpn-data.php:117
+msgid "Housing for tourism purposes"
+msgstr "Habitatge per a finalitats turístiques"
+
 #. Author URI of the plugin
 msgid "https://padresenlanube.com/"
 msgstr "https://padresenlanube.com/"
 
-#: includes/class-hostpn.php:102
+#. URI of the plugin
+msgid "https://padresenlanube.com/plugins/hostpn/"
+msgstr "https://padresenlanube.com/plugins/hostpn/"
+
+#: includes/class-hostpn-data.php:85
+msgid "Hungary"
+msgstr "Hongria"
+
+#: includes/class-hostpn-data.php:85
+msgid "Iceland"
+msgstr "Islàndia"
+
+#: includes/class-hostpn-settings.php:31
 msgid ""
 "If you activate this option the plugin will remove all options on "
 "deactivation. Please, be careful. This process cannot be undone."
@@ -229,291 +1004,1191 @@ msgstr ""
 "Si activeu aquesta opció, el connector eliminarà totes les opcions de "
 "desactivació. Siusplau, tingues compte. Aquest procés no es pot desfer."
 
-#: includes/class-hostpn-activator.php:43
-msgid ""
-"In a large bowl, mix together the trust, respect, understanding, and "
-"patience. These are the foundations of a strong and lasting relationship."
-msgstr ""
-"En un bol gran, barregeu la confiança, el respecte, la comprensió i la "
-"paciència. Aquests són els fonaments d'una relació forta i duradora."
+#: includes/class-hostpn-data.php:85
+msgid "India"
+msgstr "Índia"
 
-#: includes/class-hostpn.php:122 includes/class-hostpn.php:123
-msgid "Ingredient"
-msgstr "Ingredient"
+#: includes/class-hostpn-data.php:85
+msgid "Indonesia"
+msgstr "Indonèsia"
 
-#: includes/class-hostpn.php:115
-#: templates/public/single-hostpn_recipe.php:101
-msgid "Ingredients"
-msgstr "Ingredients"
+#: includes/class-hostpn-post-type-accommodation.php:599
+msgid "Install plugin"
+msgstr "Instal·la el connector"
 
-#: includes/class-hostpn-menus.php:69
-msgid "Loading..."
-msgstr "Carregant..."
+#: includes/class-hostpn-post-type-part.php:228
+#: includes/class-hostpn-post-type-part.php:229
+msgid "Internet available"
+msgstr "Internet disponible"
 
-#: includes/class-hostpn-activator.php:48
-#: includes/class-hostpn-activator.php:67
-msgid "Love recipe"
-msgstr "Recepta d'amor"
+#: includes/class-hostpn-data.php:85
+msgid "Iran (Islamic Republic of)"
+msgstr "Iran (República Islàmica)"
 
-#: templates/public/single-hostpn_recipe.php:135
-msgid "minutes"
-msgstr "minuts"
+#: includes/class-hostpn-data.php:85
+msgid "Iraq"
+msgstr "Iraq"
 
-#: includes/class-hostpn-activator.php:42
-msgid "Mixing"
-msgstr "Mescla"
+#: includes/class-hostpn-data.php:85
+msgid "Ireland"
+msgstr "Irlanda"
 
-#: templates/public/single-hostpn_recipe.php:46
-msgid "More recipes"
-msgstr "Més receptes"
+#: includes/class-hostpn-data.php:85
+msgid "Israel"
+msgstr "Israel"
 
-#: includes/class-hostpn-taxonomies-recipe.php:31
-msgid "New Recipe category"
-msgstr "Nova categoria de receptes"
+#: includes/class-hostpn-data.php:85
+msgid "Italy"
+msgstr "Itàlia"
 
-#: templates/public/single-hostpn_recipe.php:192
-msgid "Next"
-msgstr "Pròxim"
+#: includes/class-hostpn-post-type-guest.php:220
+msgid "I´m not the holder of the contract"
+msgstr "No sóc el titular del contracte"
 
-#: includes/class-hostpn-post-type-recipe.php:32
-msgid "Not Base CPT found"
-msgstr "No s'han trobat receptes CPT"
+#: includes/class-hostpn-data.php:85
+msgid "Jamaica"
+msgstr "Jamaica"
 
-#: includes/class-hostpn-post-type-recipe.php:33
-msgid "Not Base CPT found in Trash"
-msgstr "No s'ha trobat el CPT de receptes a la paperera"
+#: includes/class-hostpn-data.php:85
+msgid "Japan"
+msgstr "Japó"
 
-#: includes/class-hostpn-forms.php:324
-#: includes/class-hostpn-forms.php:340
+#: includes/class-hostpn-data.php:85
+msgid "Jordan"
+msgstr "Jordània"
+
+#: includes/class-hostpn-data.php:85
+msgid "Kazakhstan"
+msgstr "Kazakhstan"
+
+#: includes/class-hostpn-data.php:85
+msgid "Kenya"
+msgstr "Kenya"
+
+#: includes/class-hostpn-data.php:85
+msgid "Kiribati"
+msgstr "Kiribati"
+
+#: includes/class-hostpn-data.php:85
+msgid "Kuwait"
+msgstr "Kuwait"
+
+#: includes/class-hostpn-data.php:85
+msgid "Kyrgyzstan"
+msgstr "Kirguizstan"
+
+#: includes/class-hostpn-data.php:85
+msgid "Lao People's Democratic Republic"
+msgstr "República Democràtica Popular Lao"
+
+#: includes/class-hostpn-data.php:85
+msgid "Latvia"
+msgstr "Letònia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Lebanon"
+msgstr "Líban"
+
+#: includes/class-hostpn-data.php:85
+msgid "Lesotho"
+msgstr "Lesotho"
+
+#: includes/class-hostpn-data.php:85
+msgid "Liberia"
+msgstr "Libèria"
+
+#: includes/class-hostpn-data.php:85
+msgid "Libya"
+msgstr "Líbia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+#: includes/class-hostpn-data.php:85
+msgid "Lithuania"
+msgstr "Lituània"
+
+#: includes/class-hostpn-forms.php:230
+msgid "Lowercase & Uppercase"
+msgstr "Minúscules i majúscules"
+
+#: includes/class-hostpn-data.php:85
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+#: includes/class-hostpn-data.php:85
+msgid "Madagascar"
+msgstr "Madagascar"
+
+#: includes/class-hostpn-data.php:85
+msgid "Malawi"
+msgstr "Malawi"
+
+#: includes/class-hostpn-data.php:85
+msgid "Malaysia"
+msgstr "Malàisia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Maldives"
+msgstr "Maldives"
+
+#: includes/class-hostpn-post-type-guest.php:120
+#: includes/class-hostpn-functions-user.php:209
+msgid "Male"
+msgstr "Home"
+
+#: includes/class-hostpn-data.php:85
+msgid "Mali"
+msgstr "Mali"
+
+#: includes/class-hostpn-data.php:85
+msgid "Malta"
+msgstr "Malta"
+
+#: includes/class-hostpn-post-type-part.php:886
+msgid "Marking as completed"
+msgstr "Marcant com a completat"
+
+#: includes/class-hostpn-post-type-part.php:873
+msgid "Marking as not completed"
+msgstr "Marcant com a no completat"
+
+#: includes/class-hostpn-data.php:85
+msgid "Marshall Islands"
+msgstr "Illes Marshall"
+
+#: includes/class-hostpn-data.php:85
+msgid "Mauritania"
+msgstr "Mauritània"
+
+#: includes/class-hostpn-data.php:85
+msgid "Mauritius"
+msgstr "Maurici"
+
+#: includes/class-hostpn-data.php:85
+msgid "Mexico"
+msgstr "Mèxic"
+
+#: includes/class-hostpn-data.php:85
+msgid "Micronesia (Federated States of)"
+msgstr "Micronèsia (Estats Federats)"
+
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Mobile payment"
+msgstr "Pagament mòbil"
+
+#: includes/class-hostpn-data.php:85
+msgid "Moldova (Republic of)"
+msgstr "Moldàvia (República)"
+
+#: includes/class-hostpn-data.php:85
+msgid "Monaco"
+msgstr "Mònaco"
+
+#: includes/class-hostpn-data.php:85
+msgid "Mongolia"
+msgstr "Mongòlia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Montenegro"
+msgstr "Montenegro"
+
+#: includes/class-hostpn-data.php:85
+msgid "Morocco"
+msgstr "Marroc"
+
+#: includes/class-hostpn-data.php:117
+msgid "Motel"
+msgstr "Motel"
+
+#: includes/class-hostpn-data.php:85
+msgid "Mozambique"
+msgstr "Moçambic"
+
+#: includes/class-hostpn-data.php:85
+msgid "Myanmar"
+msgstr "Myanmar"
+
+#: includes/class-hostpn-post-type-part.php:285
+msgid "Name and surname of the holder of the payment."
+msgstr "Nom i cognom del titular del pagament."
+
+#: includes/class-hostpn-data.php:85
+msgid "Namibia"
+msgstr "Namíbia"
+
+#: includes/class-hostpn-post-type-guest.php:113
+#: includes/class-hostpn-post-type-guest.php:114
+#: includes/class-hostpn-functions-user.php:202
+#: includes/class-hostpn-functions-user.php:203
+msgid "Nationality"
+msgstr "Nacionalitat"
+
+#: includes/class-hostpn-data.php:85
+msgid "Nauru"
+msgstr "Nauru"
+
+#: includes/class-hostpn-data.php:85
+msgid "Nepal"
+msgstr "Nepal"
+
+#: includes/class-hostpn-data.php:121
+msgid "Nephew"
+msgstr "Nebot"
+
+#: includes/class-hostpn-data.php:85
+msgid "Netherlands"
+msgstr "Països Baixos"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:31
+msgid "New Accommodation category"
+msgstr "Nova categoria d'allotjament"
+
+#: includes/class-hostpn-taxonomies-guest.php:31
+msgid "New Guest category"
+msgstr "Nova categoria d'hostes"
+
+#: includes/class-hostpn-taxonomies-part.php:31
+msgid "New Part of travelers category"
+msgstr "Nova categoria de parts de viatgers"
+
+#: includes/class-hostpn-data.php:85
+msgid "New Zealand"
+msgstr "Nova Zelanda"
+
+#: includes/class-hostpn-data.php:85
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+#: includes/class-hostpn-post-type-guest.php:70
+#: includes/class-hostpn-functions-user.php:158
+msgid "NIE"
+msgstr "NIE"
+
+#: includes/class-hostpn-post-type-guest.php:70
+#: includes/class-hostpn-functions-user.php:158
+msgid "NIF"
+msgstr "NIF"
+
+#: includes/class-hostpn-data.php:85
+msgid "Niger"
+msgstr "Níger"
+
+#: includes/class-hostpn-data.php:85
+msgid "Nigeria"
+msgstr "Nigèria"
+
+#: includes/class-hostpn-forms.php:116
+msgid "No file found"
+msgstr "No s'ha trobat cap fitxer"
+
+#: includes/class-hostpn-data.php:85
+msgid "North Korea"
+msgstr "Corea del Nord"
+
+#: includes/class-hostpn-data.php:85
+msgid "North Macedonia"
+msgstr "Macedònia del Nord"
+
+#: includes/class-hostpn-data.php:85
+msgid "Norway"
+msgstr "Noruega"
+
+#: includes/class-hostpn-post-type-accommodation.php:132
+msgid "Not accommodation found"
+msgstr "No s'ha trobat allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:133
+msgid "Not accommodation found in Trash"
+msgstr "No s'ha trobat allotjament a la paperera"
+
+#: includes/class-hostpn-post-type-part.php:882
+msgid "Not completed"
+msgstr "No completat"
+
+#: includes/class-hostpn-post-type-guest.php:256
+msgid "Not Guest found"
+msgstr "No s'ha trobat cap hoste"
+
+#: includes/class-hostpn-post-type-guest.php:257
+msgid "Not Guest found in Trash"
+msgstr "No s'ha trobat cap hoste a la paperera"
+
+#: includes/class-hostpn-post-type-part.php:394
+msgid "Not Part of traveler found"
+msgstr "No s'ha trobat cap part de viatger"
+
+#: includes/class-hostpn-post-type-part.php:395
+msgid "Not Part of traveler found in Trash"
+msgstr "No s'ha trobat cap part de viatger a la paperera"
+
+#: includes/class-hostpn-functions-user.php:311
+msgid "Not the holder of the contract"
+msgstr "No és el titular del contracte"
+
+#: includes/class-hostpn-forms.php:234
+msgid "Number (0-9)"
+msgstr "Nombre (0-9)"
+
+#: includes/class-hostpn-post-type-part.php:209
+#: includes/class-hostpn-post-type-part.php:210
+msgid "Number of people"
+msgstr "Nombre de persones"
+
+#: includes/class-hostpn-post-type-part.php:219
+#: includes/class-hostpn-post-type-part.php:220
+msgid "Number of rooms"
+msgstr "Nombre d'habitacions"
+
+#: includes/class-hostpn-data.php:85
+msgid "Oman"
+msgstr "Oman"
+
+#: includes/class-hostpn-forms.php:416 includes/class-hostpn-forms.php:432
 msgid "Order element"
 msgstr "Element d'ordre"
 
-#: includes/class-hostpn-common.php:142
+#: includes/class-hostpn-common.php:163
 msgid "Ordered element"
 msgstr "Element ordenat"
 
-#: includes/class-hostpn-post-type-recipe.php:24
-msgid "Parent Recipe"
-msgstr "Recepta dels pares"
+#: includes/class-hostpn-data.php:117 includes/class-hostpn-data.php:121
+#: includes/class-hostpn-post-type-guest.php:70
+#: includes/class-hostpn-post-type-guest.php:120
+#: includes/class-hostpn-functions-user.php:158
+#: includes/class-hostpn-functions-user.php:209
+msgid "Other"
+msgstr "Altres"
 
-#: includes/class-hostpn-taxonomies-recipe.php:26
-msgid "Parent Recipe category"
-msgstr "Categoria de la recepta dels pares"
-
-#: includes/class-hostpn-taxonomies-recipe.php:27
-msgid "Parent Recipe category:"
-msgstr "Categoria de la recepta dels pares:"
-
-#: includes/class-hostpn-activator.php:43
-msgid ""
-"Place the two hearts in the center of the mixture. Love is the main "
-"ingredient in this dish."
-msgstr ""
-"Col·loqueu els dos cors al centre de la barreja. L'amor és l'ingredient "
-"principal d'aquest plat."
-
-#: templates/public/single-hostpn_recipe.php:129
-msgid "Play recipe"
-msgstr "Jugar a la recepta"
-
-#: includes/class-hostpn-post-type-recipe.php:21
-msgctxt "Post Type general name"
-msgid "Base CPT"
-msgstr "Receptes CPT"
-
-#: includes/class-hostpn-post-type-recipe.php:22
-msgctxt "Post Type singular name"
-msgid "Recipe"
-msgstr "Recepta CPT"
-
-#: includes/class-hostpn-activator.php:43
-msgid ""
-"Preheat the oven to low heat. Love cooks best over a slow flame, with "
-"patience and care."
-msgstr ""
-"Preescalfeu el forn a foc lent. L'amor cuina millor a foc lent, amb "
-"paciència i cura."
-
-#: includes/class-hostpn-activator.php:42
-msgid "Preparing step"
-msgstr "Pas de preparació"
-
-#: templates/public/single-hostpn_recipe.php:189
-msgid "Previous"
-msgstr "Anterior"
-
-#: includes/class-hostpn-taxonomies-recipe.php:32
-msgid "Recipe categories"
-msgstr "Categories de receptes"
-
-#: includes/class-hostpn-post-type-recipe.php:69
-msgid "Recipe details"
-msgstr "Detalls de la recepta"
-
-#: includes/class-hostpn.php:174 includes/class-hostpn.php:175
-msgid "Recipe gallery"
-msgstr "Galeria de receptes"
-
-#: includes/class-hostpn.php:92 includes/class-hostpn.php:93
-msgid "Recipe slug"
-msgstr "Llimac de la recepta"
-
-#: includes/class-hostpn.php:167
-msgid "Recipe suggestions"
-msgstr "Suggeriments de receptes"
-
-#: includes/class-hostpn.php:160 includes/class-hostpn.php:161
-msgid "Recipe total time (hours:minutes)"
-msgstr "Temps total de la recepta (hores: minuts)"
-
-#: includes/class-hostpn.php:182 includes/class-hostpn.php:183
-msgid "Recipe video url"
-msgstr "URL del vídeo de la recepta"
-
-#: templates/public/archive-hostpn_recipe.php:27
-msgid "Base CPT"
-msgstr "Receptes"
-
-#: includes/class-hostpn-post-type-recipe.php:23
-#: includes/class-hostpn-post-type-recipe.php:39
-msgid "Base CPT"
-msgstr "Receptes CPT"
-
-#: includes/class-hostpn-post-type-recipe.php:40
-msgid "Base CPT description"
-msgstr "Descripció de les receptes CPT"
-
-#: includes/class-hostpn-activator.php:25
-msgid "Base CPT manager - WPH"
-msgstr "Gestor de receptes - WPH"
-
-#. Name of the plugin
-#: includes/class-hostpn-menus.php:29
-msgid "Base CPT manager WPH"
-msgstr "Gestor de receptes WPH"
-
-#: includes/class-hostpn.php:101
-msgid "Remove plugin options on deactivation"
-msgstr "Elimina les opcions del connector en desactivar-se"
-
-#: includes/class-hostpn-menus.php:69
-msgid "Save options"
-msgstr "Desa opcions"
-
-#: includes/class-hostpn-common.php:125
-msgid "Saved successfully"
-msgstr "S'ha desat correctament"
-
-#: includes/class-hostpn-taxonomies-recipe.php:24
-msgid "Search Recipe categories"
-msgstr "Cerca categories de receptes"
-
-#: includes/class-hostpn-post-type-recipe.php:31
-msgid "Search Recipe"
-msgstr "Cerca la recepta CPT"
-
-#: includes/class-hostpn-common.php:136
-msgid "Select audio"
-msgstr "Seleccioneu l'àudio"
-
-#: includes/class-hostpn-common.php:137
-msgid "Select audios"
-msgstr "Seleccioneu els àudios"
-
-#: includes/class-hostpn-common.php:140
-msgid "Select file"
-msgstr "Seleccioneu el fitxer"
-
-#: includes/class-hostpn-common.php:141
-msgid "Select files"
-msgstr "Seleccioneu fitxers"
-
-#: includes/class-hostpn-common.php:128
-msgid "Select image"
-msgstr "Seleccioneu la imatge"
-
-#: includes/class-hostpn-common.php:129
-msgid "Select images"
-msgstr "Seleccioneu imatges"
-
-#: includes/class-hostpn-common.php:132
-msgid "Select video"
-msgstr "Seleccioneu el vídeo"
-
-#: includes/class-hostpn-common.php:133
-msgid "Select videos"
-msgstr "Seleccioneu vídeos"
-
-#: includes/class-hostpn.php:143 includes/class-hostpn.php:144
-msgid "Step description"
-msgstr "Descripció del pas"
-
-#: includes/class-hostpn.php:151 includes/class-hostpn.php:152
-msgid "Step time (hours:minutes)"
-msgstr "Temps de pas (hores: minuts)"
-
-#: includes/class-hostpn.php:136 includes/class-hostpn.php:137
-msgid "Step title"
-msgstr "Títol del pas"
-
-#: includes/class-hostpn.php:129
-msgid "Steps"
-msgstr "Passos"
-
-#: templates/public/single-hostpn_recipe.php:201
-msgid "Suggestions"
-msgstr "Suggeriments"
-
-#: includes/class-hostpn-taxonomies-recipe.php:22
-msgctxt "Taxonomy general name"
-msgid "Recipe categories"
-msgstr "Categories de receptes"
-
-#: includes/class-hostpn-taxonomies-recipe.php:23
-msgctxt "Taxonomy singular name"
-msgid "Recipe category"
-msgstr "Categoria de receptes"
-
-#. Description of the plugin
-msgid "This is a short description of what the plugin does"
-msgstr "Aquesta és una breu descripció del que fa el connector"
-
-#: includes/class-hostpn.php:94
-msgid ""
-"This option sets the slug of the main recipes archive page, and the recipe "
-"pages. By default they will be:"
-msgstr ""
-"Aquesta opció estableix el slug de la pàgina principal d'arxiu de receptes i "
-"les pàgines de receptes. Per defecte seran:"
-
-#: templates/public/single-hostpn_recipe.php:135
-msgid "Total time"
-msgstr "Temps total"
-
-#: includes/class-hostpn-taxonomies-recipe.php:29
-msgid "Update Recipe category"
-msgstr "Actualitza la categoria de receptes"
-
-#: includes/class-hostpn-post-type-recipe.php:30
-msgid "Update Recipe"
-msgstr "Actualitza la recepta CPT"
-
-#: includes/class-hostpn-post-type-recipe.php:26
-msgid "View Recipe"
-msgstr "Veure la recepta CPT"
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Other payment methods"
+msgstr "Altres mètodes de pagament"
 
 #. Author of the plugin
 msgid "Padres en la Nube"
 msgstr "Wordpress-Herois"
 
-#: includes/class-hostpn-menus.php:23
-msgid "WPH Options"
-msgstr "Opcions WPH"
+#: includes/class-hostpn-data.php:85
+msgid "Pakistan"
+msgstr "Pakistan"
 
-#: includes/class-hostpn.php:184
+#: includes/class-hostpn-data.php:85
+msgid "Palau"
+msgstr "Palau"
+
+#: includes/class-hostpn-data.php:85
+msgid "Panama"
+msgstr "Panamà"
+
+#: includes/class-hostpn-data.php:85
+msgid "Papua New Guinea"
+msgstr "Papua Nova Guinea"
+
+#: includes/class-hostpn-data.php:117
+msgid "Parador de tourism"
+msgstr "Parador de turisme"
+
+#: includes/class-hostpn-data.php:85
+msgid "Paraguay"
+msgstr "Paraguai"
+
+#: includes/class-hostpn-post-type-accommodation.php:124
+msgid "Parent accommodation"
+msgstr "Allotjament pare/mare"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:26
+msgid "Parent Accommodation category"
+msgstr "Categoria d'allotjament pare/mare"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:27
+msgid "Parent Accommodation category:"
+msgstr "Categoria d'allotjament pare/mare:"
+
+#: includes/class-hostpn-post-type-guest.php:248
+msgid "Parent Guest"
+msgstr "Hoste pare/mare"
+
+#: includes/class-hostpn-taxonomies-guest.php:26
+msgid "Parent Guest category"
+msgstr "Categoria d'hostes pare/mare"
+
+#: includes/class-hostpn-taxonomies-guest.php:27
+msgid "Parent Guest category:"
+msgstr "Categoria d'hostes pare/mare:"
+
+#: includes/class-hostpn-post-type-part.php:386
+msgid "Parent Part of traveler"
+msgstr "Part de viatger pare/mare"
+
+#: includes/class-hostpn-taxonomies-part.php:26
+msgid "Parent Part of travelers category"
+msgstr "Categoria de parts de viatgers pare/mare"
+
+#: includes/class-hostpn-taxonomies-part.php:27
+msgid "Parent Part of travelers category:"
+msgstr "Categoria de parts de viatgers pare/mare:"
+
+#: includes/class-hostpn-post-type-part.php:32
+msgid "Part description"
+msgstr "Descripció de la part"
+
+#: includes/class-hostpn-post-type-part.php:401
+msgid "Part of traveler"
+msgstr "Part de viatger"
+
+#: includes/class-hostpn-post-type-part.php:306
+#: includes/class-hostpn-post-type-part.php:307
+msgid "Part of traveler accomplish date"
+msgstr "Data de realització de la part de viatger"
+
+#: includes/class-hostpn-post-type-part.php:315
+#: includes/class-hostpn-post-type-part.php:316
+msgid "Part of traveler accomplish time"
+msgstr "Hora de realització de la part de viatger"
+
+#: includes/class-hostpn-post-type-part.php:338
+msgid "Part of traveler accomplished by"
+msgstr "Part de viatger realitzada per"
+
+#: includes/class-hostpn-post-type-part.php:360
+#: includes/class-hostpn-post-type-part.php:361
+msgid "Part of traveler comments"
+msgstr "Comentaris de la part de viatger"
+
+#: includes/class-hostpn-post-type-part.php:402
+msgid "Part of traveler description"
+msgstr "Descripció de la part de viatger"
+
+#: includes/class-hostpn-post-type-part.php:431
+msgid "Part of traveler details"
+msgstr "Detalls de la part de viatger"
+
+#: includes/class-hostpn-post-type-part.php:385
+msgid "Part of travelers"
+msgstr "Parts de viatgers"
+
+#: includes/class-hostpn-taxonomies-part.php:32
+msgid "Part of travelers categories"
+msgstr "Categories de parts de viatgers"
+
+#: includes/class-hostpn-post-type-part.php:23
+#: includes/class-hostpn-post-type-part.php:24
+msgid "Part title"
+msgstr "Títol de la part"
+
+#: includes/class-hostpn-activator.php:151
+#: includes/class-hostpn-activator.php:174
+msgid "Parts of travelers"
+msgstr "Parts de viatgers"
+
+#: includes/class-hostpn-post-type-guest.php:70
+#: includes/class-hostpn-functions-user.php:158
+msgid "Passport"
+msgstr "Passaport"
+
+#: includes/class-hostpn-forms.php:226
+msgid "Password strength checker"
+msgstr "Verificador de fortalesa de contrasenya"
+
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Payment at destination"
+msgstr "Pagament a la destinació"
+
+#: includes/class-hostpn-post-type-part.php:263
+#: includes/class-hostpn-post-type-part.php:264
+msgid "Payment date"
+msgstr "Data de pagament"
+
+#: includes/class-hostpn-post-type-part.php:283
+#: includes/class-hostpn-post-type-part.php:284
+msgid "Payment holder"
+msgstr "Titular del pagament"
+
+#: includes/class-hostpn-post-type-part.php:272
+#: includes/class-hostpn-post-type-part.php:273
+msgid "Payment method"
+msgstr "Mètode de pagament"
+
+#: includes/class-hostpn-post-type-part.php:274
 msgid ""
-"You can set a video repository url here (like YouTube or Vimeo) to show the "
-"content in the recipe's page."
+"Payment method identification: card type and number, bank account IBAN, "
+"mobile number, etc."
 msgstr ""
-"Podeu establir un URL de dipòsit de vídeo aquí (com YouTube o Vimeo) per "
-"mostrar el contingut a la pàgina de la recepta."
+"Identificació del mètode de pagament: tipus i número de targeta, compte "
+"bancari IBAN, número de mòbil, etc."
+
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Payment platform"
+msgstr "Plataforma de pagament"
+
+#: includes/class-hostpn-post-type-part.php:242
+#: includes/class-hostpn-post-type-part.php:243
+msgid "Payment type"
+msgstr "Tipus de pagament"
+
+#: includes/class-hostpn-data.php:117
+msgid "Pension"
+msgstr "Pensió"
+
+#: includes/class-hostpn-post-type-part.php:121
+#: includes/class-hostpn-post-type-part.php:122
+msgid "People hosted"
+msgstr "Persones allotjades"
+
+#: includes/class-hostpn-data.php:85
+msgid "Peru"
+msgstr "Perú"
+
+#: includes/class-hostpn-data.php:85
+msgid "Philippines"
+msgstr "Filipines"
+
+#: includes/class-hostpn-post-type-guest.php:192
+#: includes/class-hostpn-post-type-guest.php:193
+#: includes/class-hostpn-functions-user.php:283
+#: includes/class-hostpn-functions-user.php:284
+msgid "Phone"
+msgstr "Telèfon"
+
+#: includes/class-hostpn-post-type-guest.php:433
+msgid "Please check the information fulfilled in the form:"
+msgstr "Si us plau, comprova la informació omplerta al formulari:"
+
+#: includes/class-hostpn-common.php:144
+msgid "Please create a new user or login to save the information."
+msgstr "Si us plau, crea un nou usuari o inicia sessió per desar la informació."
+
+#: includes/class-hostpn-post-type-accommodation.php:596
+msgid ""
+"Please install Users Manager - WPH plugin to allow user creation and "
+"management."
+msgstr ""
+"Si us plau, instal·la el connector Users Manager - WPH per permetre la "
+"creació i gestió d'usuaris."
+
+#: includes/class-hostpn-data.php:85
+msgid "Poland"
+msgstr "Polònia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Portugal"
+msgstr "Portugal"
+
+#: includes/class-hostpn-post-type-accommodation.php:121
+msgctxt "Post Type general name"
+msgid "Accommodation"
+msgstr "Allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:245
+msgctxt "Post Type general name"
+msgid "Guest"
+msgstr "Hoste"
+
+#: includes/class-hostpn-post-type-part.php:383
+msgctxt "Post Type general name"
+msgid "Part of traveler"
+msgstr "Part de viatger"
+
+#: includes/class-hostpn-post-type-accommodation.php:122
+msgctxt "Post Type singular name"
+msgid "Accommodation"
+msgstr "Allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:246
+msgctxt "Post Type singular name"
+msgid "Guest"
+msgstr "Hoste"
+
+#: includes/class-hostpn-post-type-part.php:384
+msgctxt "Post Type singular name"
+msgid "Part of traveler"
+msgstr "Part de viatger"
+
+#: includes/class-hostpn-post-type-guest.php:162
+#: includes/class-hostpn-post-type-guest.php:163
+#: includes/class-hostpn-functions-user.php:263
+#: includes/class-hostpn-functions-user.php:264
+msgid "Postal code"
+msgstr "Codi postal"
+
+#: includes/class-hostpn-data.php:85
+msgid "Qatar"
+msgstr "Qatar"
+
+#: includes/class-hostpn-data.php:117
+msgid "Refuge"
+msgstr "Refugi"
+
+#: includes/class-hostpn-post-type-guest.php:232
+#: includes/class-hostpn-functions-user.php:323
+msgid "Relationship"
+msgstr "Relació"
+
+#: includes/class-hostpn-post-type-guest.php:231
+#: includes/class-hostpn-functions-user.php:322
+msgid "Relationship with contract holder"
+msgstr "Relació amb el titular del contracte"
+
+#: templates/hostpn-popups.php:38
+msgid "removal"
+msgstr "eliminació"
+
+#: templates/hostpn-popups.php:46
+msgid "Remove"
+msgstr "Elimina"
+
+#: includes/class-hostpn-post-type-accommodation.php:456
+msgid "Remove Accommodation"
+msgstr "Elimina l'allotjament"
+
+#: includes/class-hostpn-forms.php:420 includes/class-hostpn-forms.php:436
+msgid "Remove element"
+msgstr "Elimina l'element"
+
+#: includes/class-hostpn-post-type-guest.php:615
+msgid "Remove Guest"
+msgstr "Elimina l'hoste"
+
+#: includes/class-hostpn-post-type-part.php:742
+msgid "Remove part"
+msgstr "Elimina la part"
+
+#: includes/class-hostpn-settings.php:30
+msgid "Remove plugin options on deactivation"
+msgstr "Elimina les opcions del connector en desactivar-se"
+
+#: includes/class-hostpn-common.php:146
+msgid "Removed successfully"
+msgstr "Eliminat correctament"
+
+#: includes/class-hostpn-forms.php:481
+msgid "Required field"
+msgstr "Camp obligatori"
+
+#: includes/class-hostpn-data.php:117
+msgid "Residence"
+msgstr "Residència"
+
+#: includes/class-hostpn-data.php:85
+msgid "Romania"
+msgstr "Romania"
+
+#: includes/class-hostpn-data.php:117
+msgid "Room/s in a house"
+msgstr "Habitació/s en una casa"
+
+#: includes/class-hostpn-data.php:117
+msgid "Rural apartment"
+msgstr "Apartament rural"
+
+#: includes/class-hostpn-data.php:117
+msgid "Rural hotel"
+msgstr "Hotel rural"
+
+#: includes/class-hostpn-data.php:117
+msgid "Rural house"
+msgstr "Casa rural"
+
+#: includes/class-hostpn-data.php:85
+msgid "Russian Federation"
+msgstr "Federació Russa"
+
+#: includes/class-hostpn-data.php:85
+msgid "Rwanda"
+msgstr "Ruanda"
+
+#: includes/class-hostpn-data.php:85
+msgid "Saint Kitts and Nevis"
+msgstr "Saint Kitts i Nevis"
+
+#: includes/class-hostpn-data.php:85
+msgid "Saint Lucia"
+msgstr "Saint Lucia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Saint Vincent and the Grenadines"
+msgstr "Saint Vincent i les Grenadines"
+
+#: includes/class-hostpn-data.php:85
+msgid "Samoa"
+msgstr "Samoa"
+
+#: includes/class-hostpn-data.php:85
+msgid "San Marino"
+msgstr "San Marino"
+
+#: includes/class-hostpn-data.php:85
+msgid "Sao Tome and Principe"
+msgstr "São Tomé i Príncipe"
+
+#: includes/class-hostpn-data.php:85
+msgid "Saudi Arabia"
+msgstr "Aràbia Saudita"
+
+#: includes/class-hostpn-post-type-accommodation.php:569
+msgid "Save Accommodation"
+msgstr "Desa l'allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:728
+msgid "Save Guest"
+msgstr "Desa l'hoste"
+
+#: includes/class-hostpn-settings.php:42
+msgid "Save options"
+msgstr "Desa opcions"
+
+#: includes/class-hostpn-post-type-part.php:855
+msgid "Save part"
+msgstr "Desa la part"
+
+#: includes/class-hostpn-common.php:145
+msgid "Saved successfully"
+msgstr "S'ha desat correctament"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:24
+msgid "Search Accommodation categories"
+msgstr "Cerca categories d'allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:131
+msgid "Search accommodations"
+msgstr "Cerca allotjaments"
+
+#: includes/class-hostpn-taxonomies-guest.php:24
+msgid "Search Guest categories"
+msgstr "Cerca categories d'hostes"
+
+#: includes/class-hostpn-post-type-guest.php:255
+msgid "Search Guests"
+msgstr "Cerca hostes"
+
+#: includes/class-hostpn-post-type-part.php:393
+msgid "Search Part of travelers"
+msgstr "Cerca parts de viatgers"
+
+#: includes/class-hostpn-taxonomies-part.php:24
+msgid "Search Part of travelers categories"
+msgstr "Cerca categories de parts de viatgers"
+
+#: includes/class-hostpn-functions-user.php:144
+#: includes/class-hostpn-functions-user.php:145
+msgid "Second surname"
+msgstr "Segon cognom"
+
+#: includes/class-hostpn-ajax.php:34 includes/class-hostpn-ajax-nopriv.php:33
+msgid "Security check failed: Invalid nonce."
+msgstr "La verificació de seguretat ha fallat: Nonce invàlid."
+
+#: includes/class-hostpn-ajax.php:25 includes/class-hostpn-ajax-nopriv.php:24
+msgid "Security check failed: Nonce is required."
+msgstr "La verificació de seguretat ha fallat: Es requereix nonce."
+
+#: includes/class-hostpn-forms.php:281
+msgid "Select an option"
+msgstr "Seleccioneu una opció"
+
+#: includes/class-hostpn-common.php:157
+msgid "Select audio"
+msgstr "Seleccioneu l'àudio"
+
+#: includes/class-hostpn-common.php:158
+msgid "Select audios"
+msgstr "Seleccioneu els àudios"
+
+#: includes/class-hostpn-post-type-part.php:339
+msgid "Select contact"
+msgstr "Seleccioneu contacte"
+
+#: includes/class-hostpn-common.php:161
+msgid "Select file"
+msgstr "Seleccioneu el fitxer"
+
+#: includes/class-hostpn-common.php:162
+msgid "Select files"
+msgstr "Seleccioneu fitxers"
+
+#: includes/class-hostpn-common.php:149
+msgid "Select image"
+msgstr "Seleccioneu la imatge"
+
+#: includes/class-hostpn-common.php:150
+msgid "Select images"
+msgstr "Seleccioneu imatges"
+
+#: includes/class-hostpn-common.php:164
+msgid "Select option"
+msgstr "Seleccioneu opció"
+
+#: includes/class-hostpn-common.php:165
+msgid "Select options"
+msgstr "Seleccioneu opcions"
+
+#: includes/class-hostpn-common.php:153
+msgid "Select video"
+msgstr "Seleccioneu el vídeo"
+
+#: includes/class-hostpn-common.php:154
+msgid "Select videos"
+msgstr "Seleccioneu vídeos"
+
+#: includes/class-hostpn-data.php:85
+msgid "Senegal"
+msgstr "Senegal"
+
+#: includes/class-hostpn-data.php:85
+msgid "Serbia"
+msgstr "Sèrbia"
+
+#: includes/class-hostpn-settings.php:55
+msgid "Settings"
+msgstr "Configuració"
+
+#: includes/class-hostpn-data.php:85
+msgid "Seychelles"
+msgstr "Seychelles"
+
+#: includes/class-hostpn-post-type-accommodation.php:432
+msgid "Share accommodation"
+msgstr "Comparteix allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:397
+msgid "Share link to allow guests fill their information out directly in the platform."
+msgstr "Comparteix l'enllaç perquè els hostes puguin omplir la seva informació directament a la plataforma."
+
+#: includes/class-hostpn-data.php:85
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+#: includes/class-hostpn-data.php:85
+msgid "Singapore"
+msgstr "Singapur"
+
+#: includes/class-hostpn-data.php:85
+msgid "Slovakia"
+msgstr "Eslovàquia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Slovenia"
+msgstr "Eslovènia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Solomon Islands"
+msgstr "Illes Salomó"
+
+#: includes/class-hostpn-data.php:85
+msgid "Somalia"
+msgstr "Somàlia"
+
+#: includes/class-hostpn-data.php:121
+msgid "Son"
+msgstr "Fill"
+
+#: includes/class-hostpn-data.php:121
+msgid "Son-in-Law / Daughter-in-Law"
+msgstr "Gendre / Nora"
+
+#: includes/class-hostpn-data.php:85
+msgid "South Africa"
+msgstr "Sud-àfrica"
+
+#: includes/class-hostpn-data.php:85
+msgid "South Korea"
+msgstr "Corea del Sud"
+
+#: includes/class-hostpn-data.php:85
+msgid "South Sudan"
+msgstr "Sudan del Sud"
+
+#: includes/class-hostpn-data.php:117
+msgid "Spa"
+msgstr "Spa"
+
+#: includes/class-hostpn-data.php:85
+msgid "Spain"
+msgstr "Espanya"
+
+#: includes/class-hostpn-functions-user.php:151
+msgid "Spanish State regulations require us to collect the data of travelers who stay in the country (spanish Royal Decree 933/2021, of October 26), so I need you to fill out this form with your data and, if applicable, those of the people who will be with you during the stay. Once you create your guest, you will be able to create your companions, even send them a link to fulfill the form by themselves."
+msgstr "La normativa de l'Estat espanyol ens obliga a recollir les dades dels viatgers que s'allotgen al país (Reial Decret espanyol 933/2021, de 26 d'octubre), així que necessito que ompliu aquest formulari amb les vostres dades i, si escau, les de les persones que us acompanyaran durant l'estada. Un cop creat l'hoste, podreu crear els vostres acompanyants, fins i tot enviar-los un enllaç perquè omplin el formulari per si mateixos."
+
+#: includes/class-hostpn-forms.php:238
+msgid "Special Character (!@#$%^&*)"
+msgstr "Caràcter especial (!@#$%^&*)"
+
+#: includes/class-hostpn-post-type-guest.php:55
+#: includes/class-hostpn-functions-user.php:337
+#: includes/class-hostpn-functions-user.php:413
+msgid "Special needs, allergies, important situations to highlight..."
+msgstr "Necessitats especials, al·lèrgies, situacions importants a destacar..."
+
+#: includes/class-hostpn-data.php:121
+msgid "Spouse"
+msgstr "Cònjuge"
+
+#: includes/class-hostpn-data.php:85
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+#: includes/class-hostpn-data.php:85
+msgid "Sudan"
+msgstr "Sudan"
+
+#: includes/class-hostpn-data.php:85
+msgid "Suriname"
+msgstr "Surinam"
+
+#: includes/class-hostpn-data.php:85
+msgid "Sweden"
+msgstr "Suècia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Switzerland"
+msgstr "Suïssa"
+
+#: includes/class-hostpn-data.php:85
+msgid "Syrian Arab Republic"
+msgstr "Síria"
+
+#: includes/class-hostpn-data.php:85
+msgid "Tajikistan"
+msgstr "Tadjikistan"
+
+#: includes/class-hostpn-data.php:85
+msgid "Tanzania, United Republic of"
+msgstr "Tanzània"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:22
+msgctxt "Taxonomy general name"
+msgid "Accommodation categories"
+msgstr "Categories d'allotjament"
+
+#: includes/class-hostpn-taxonomies-guest.php:22
+msgctxt "Taxonomy general name"
+msgid "Guest categories"
+msgstr "Categories d'hostes"
+
+#: includes/class-hostpn-taxonomies-part.php:22
+msgctxt "Taxonomy general name"
+msgid "Part of travelers categories"
+msgstr "Categories de parts de viatgers"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:23
+msgctxt "Taxonomy singular name"
+msgid "Accommodation category"
+msgstr "Categoria d'allotjament"
+
+#: includes/class-hostpn-taxonomies-guest.php:23
+msgctxt "Taxonomy singular name"
+msgid "Guest category"
+msgstr "Categoria d'hostes"
+
+#: includes/class-hostpn-taxonomies-part.php:23
+msgctxt "Taxonomy singular name"
+msgid "Part of travelers category"
+msgstr "Categoria de part de viatger"
+
+#: includes/class-hostpn-data.php:85
+msgid "Thailand"
+msgstr "Tailàndia"
+
+#: includes/class-hostpn-post-type-part.php:350
+msgid "The estimated time was"
+msgstr "El temps estimat va ser"
+
+#: includes/class-hostpn-post-type-guest.php:84
+#: includes/class-hostpn-functions-user.php:173
+msgid ""
+"The number/ID of the document that you set on \"Document type\" field just "
+"above."
+msgstr ""
+"El número/ID del document que heu establert al camp \"Tipus de document\" just a dalt."
+
+#: includes/class-hostpn-post-type-accommodation.php:390
+msgid "This Accommodation is periodic"
+msgstr "Aquest allotjament és periòdic"
+
+#: includes/class-hostpn-post-type-accommodation.php:386
+msgid "This Accommodation is timed"
+msgstr "Aquest allotjament és cronometrat"
+
+#: includes/class-hostpn-post-type-guest.php:565
+msgid "This Guest is periodic"
+msgstr "Aquest hoste és periòdic"
+
+#: includes/class-hostpn-post-type-guest.php:561
+msgid "This Guest is timed"
+msgstr "Aquest hoste és cronometrat"
+
+#: includes/class-hostpn-settings.php:23
+msgid "This option sets the slug of the main Guest archive page, and the Guest pages. By default they will be:"
+msgstr "Aquesta opció estableix el slug de la pàgina principal d'arxiu d'hostes i les pàgines d'hostes. Per defecte seran:"
+
+#: includes/class-hostpn-post-type-part.php:676
+msgid "This part is periodic"
+msgstr "Aquesta part és periòdica"
+
+#: includes/class-hostpn-post-type-part.php:672
+msgid "This part is timed"
+msgstr "Aquesta part és cronometrada"
+
+#: includes/class-hostpn-post-type-part.php:350
+msgid "This Part of traveler was not timed."
+msgstr "Aquesta part de viatger no va ser cronometrada."
+
+#: includes/class-hostpn-post-type-part.php:25
+msgid "This title will help you to remind and find this part in the future"
+msgstr "Aquest títol t'ajudarà a recordar i trobar aquesta part en el futur"
+
+#: includes/class-hostpn-post-type-part.php:349
+#: includes/class-hostpn-post-type-part.php:351
+msgid "Time spent (Hours:Minutes)"
+msgstr "Temps dedicat (Hores:Minuts)"
+
+#: includes/class-hostpn-data.php:85
+msgid "Timor-Leste"
+msgstr "Timor Oriental"
+
+#: includes/class-hostpn-data.php:85
+msgid "Togo"
+msgstr "Togo"
+
+#: includes/class-hostpn-data.php:85
+msgid "Tonga"
+msgstr "Tonga"
+
+#: includes/class-hostpn-data.php:117
+msgid "Tourist accommodation"
+msgstr "Allotjament turístic"
+
+#: includes/class-hostpn-post-type-part.php:232
+msgid "Transfer"
+msgstr "Transferència"
+
+#: includes/class-hostpn-data.php:85
+msgid "Trinidad and Tobago"
+msgstr "Trinitat i Tobago"
+
+#: includes/class-hostpn-data.php:85
+msgid "Tunisia"
+msgstr "Tunísia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Turkey"
+msgstr "Turquia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Turkmenistan"
+msgstr "Turkmenistan"
+
+#: includes/class-hostpn-data.php:85
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+#: includes/class-hostpn-data.php:85
+msgid "Uganda"
+msgstr "Uganda"
+
+#: includes/class-hostpn-data.php:85
+msgid "Ukraine"
+msgstr "Ucraïna"
+
+#: includes/class-hostpn-data.php:121
+msgid "Uncle"
+msgstr "Oncle"
+
+#: includes/class-hostpn-data.php:85
+msgid "United Arab Emirates"
+msgstr "Emirats Àrabs Units"
+
+#: includes/class-hostpn-data.php:85
+msgid "United Kingdom"
+msgstr "Regne Unit"
+
+#: includes/class-hostpn-data.php:85
+msgid "United States of America"
+msgstr "Estats Units d'Amèrica"
+
+#: includes/class-hostpn-post-type-accommodation.php:130
+msgid "Update accommodation"
+msgstr "Actualitza allotjament"
+
+#: includes/class-hostpn-taxonomies-accommodation.php:29
+msgid "Update Accommodation category"
+msgstr "Actualitza la categoria d'allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:254
+msgid "Update Guest"
+msgstr "Actualitza hoste"
+
+#: includes/class-hostpn-taxonomies-guest.php:29
+msgid "Update Guest category"
+msgstr "Actualitza la categoria d'hostes"
+
+#: includes/class-hostpn-post-type-part.php:392
+msgid "Update Part of traveler"
+msgstr "Actualitza part de viatger"
+
+#: includes/class-hostpn-taxonomies-part.php:29
+msgid "Update Part of travelers category"
+msgstr "Actualitza la categoria de parts de viatgers"
+
+#: includes/class-hostpn-post-type-accommodation.php:408
+msgid "View Accommodation"
+msgstr "Veure allotjament"
+
+#: includes/class-hostpn-post-type-accommodation.php:126
+msgid "View accommodation"
+msgstr "Veure allotjament"
+
+#: includes/class-hostpn-post-type-guest.php:250
+#: includes/class-hostpn-post-type-guest.php:579
+msgid "View Guest"
+msgstr "Veure hoste"
+
+#: includes/class-hostpn-post-type-part.php:694
+msgid "View part"
+msgstr "Veure part"
+
+#: includes/class-hostpn-post-type-part.php:388
+msgid "View Part of traveler"
+msgstr "Veure part de viatger"
+
+#: includes/class-hostpn-data.php:117
+msgid "Villa"
+msgstr "Vil·la"
+
+#: includes/class-hostpn-post-type-guest.php:432
+msgid "We have received your application successfully."
+msgstr "Hem rebut la teva sol·licitud correctament."
+
+#: includes/class-hostpn-functions-user.php:348
+msgid "We have successfully received your registration and application."
+msgstr "Hem rebut correctament el teu registre i sol·licitud."
+
+#: templates/hostpn-popups.php:39
+msgid "will be completely deleted. This process cannot be reversed and cannot be recovered."
+msgstr "serà eliminat completament. Aquest procés no es pot revertir ni recuperar."
+
+#: includes/class-hostpn-data.php:85
+msgid "Yemen"
+msgstr "Iemen"
+
+#: includes/class-hostpn-functions-user.php:349
+msgid "You can now add more guests by yourself or share the link to other companions to allow them fulfill their own form."
+msgstr "Ara pots afegir més hostes tu mateix o compartir l'enllaç amb altres acompanyants perquè puguin omplir el seu propi formulari."
+
+#: includes/class-hostpn-post-type-guest.php:443
+msgid "You can now add more guests or share the link to other companions to allow them fulfill their own form."
+msgstr "Ara pots afegir més hostes o compartir l'enllaç amb altres acompanyants perquè puguin omplir el seu propi formulari."
+
+#: includes/class-hostpn-post-type-accommodation.php:584
+msgid "You can share accommodation link to allow companions to fill out their guests forms directly in the platform."
+msgstr "Pots compartir l'enllaç de l'allotjament perquè els acompanyants puguin omplir directament els seus formularis d'hostes a la plataforma."
+
+#: includes/class-hostpn-data.php:85
+msgid "Zambia"
+msgstr "Zàmbia"
+
+#: includes/class-hostpn-data.php:85
+msgid "Zimbabwe"
+msgstr "Zimbabwe"
