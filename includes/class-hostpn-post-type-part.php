@@ -44,6 +44,8 @@ class HOSTPN_Post_Type_Part {
         'numberposts' => -1,
         'post_type' => 'hostpn_accommodation',
         'post_status' => 'any', 
+        'orderby' => 'date', 
+        'order' => 'DESC', 
       ];
       
       if (class_exists('Polylang')) {
@@ -607,10 +609,24 @@ class HOSTPN_Post_Type_Part {
     }
   }
 
-  public function hostpn_enqueue_part_scripts() {
-    wp_enqueue_script('hostpn-aux');
-    wp_enqueue_script('hostpn-forms');
+  public function hostpn_part_register_scripts() {
+    if (!wp_script_is('hostpn-aux', 'registered')) {
+      wp_register_script('hostpn-aux', HOSTPN_URL . 'assets/js/hostpn-aux.js', [], HOSTPN_VERSION, true);
+    }
+
+    if (!wp_script_is('hostpn-forms', 'registered')) {
+      wp_register_script('hostpn-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', [], HOSTPN_VERSION, true);
+    }
+    
+    if (!wp_script_is('hostpn-selector', 'registered')) {
+      wp_register_script('hostpn-selector', HOSTPN_URL . 'assets/js/hostpn-selector.js', [], HOSTPN_VERSION, true);
+    }
   }
+
+  public function hostpn_part_print_scripts() {
+    wp_print_scripts(['hostpn-aux', 'hostpn-forms', 'hostpn-selector']);
+  }
+
   public function hostpn_part_list_wrapper() {
     ob_start();
 
@@ -637,8 +653,8 @@ class HOSTPN_Post_Type_Part {
       'numberposts' => -1,
       'post_type' => 'hostpn_part',
       'post_status' => 'any', 
-      'orderby' => 'menu_order', 
-      'order' => 'ASC', 
+      'orderby' => 'date', 
+      'order' => 'DESC', 
     ];
     
     if (class_exists('Polylang')) {
@@ -781,7 +797,8 @@ class HOSTPN_Post_Type_Part {
 
   public function hostpn_part_view($part_id) {  
     ob_start();
-    self::hostpn_enqueue_part_scripts();
+    self::hostpn_part_register_scripts();
+    self::hostpn_part_print_scripts();
     ?>
       <div class="part-view hostpn-p-30" data-hostpn_part-id="<?php echo esc_attr($part_id); ?>">
         <h4 class="hostpn-text-align-center"><?php echo esc_html(get_the_title($part_id)); ?></h4>
@@ -808,7 +825,8 @@ class HOSTPN_Post_Type_Part {
 
   public function hostpn_part_new() {
     ob_start();
-    self::hostpn_enqueue_part_scripts();
+    self::hostpn_part_register_scripts();
+    self::hostpn_part_print_scripts();
     ?>
       <div class="part-new hostpn-p-30">
         <h4 class="hostpn-mb-30"><?php esc_html_e('Add new Part', 'hostpn'); ?></h4>
@@ -835,7 +853,8 @@ class HOSTPN_Post_Type_Part {
 
   public function hostpn_part_edit($part_id) {
     ob_start();
-    self::hostpn_enqueue_part_scripts();
+    self::hostpn_part_register_scripts();
+    self::hostpn_part_print_scripts();
     ?>
       <div class="part-edit hostpn-p-30">
         <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Editing', 'hostpn'); ?></p>
@@ -863,7 +882,8 @@ class HOSTPN_Post_Type_Part {
 
   public function hostpn_part_check($part_id) {
     ob_start();
-    self::hostpn_enqueue_part_scripts();
+    self::hostpn_part_register_scripts();
+    self::hostpn_part_print_scripts();
     ?>
       <div class="part-check hostpn-p-30">
         <?php if (!empty(get_post_meta($part_id, 'hostpn_part_accomplish_date', true))): ?>

@@ -253,7 +253,34 @@ class HOSTPN_Forms {
             break;
           default:
             ?>
-              <input id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 'multiple' : ''); ?> class="hostpn-field <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" type="<?php echo esc_attr($hostpn_input['type']); ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?> <?php echo (((array_key_exists('step', $hostpn_input) && $hostpn_input['step'] != '')) ? 'step="' . esc_attr($hostpn_input['step']) . '"' : ''); ?> <?php echo (isset($hostpn_input['max']) ? 'max=' . esc_attr($hostpn_input['max']) : ''); ?> <?php echo (isset($hostpn_input['min']) ? 'min=' . esc_attr($hostpn_input['min']) : ''); ?> <?php echo (isset($hostpn_input['pattern']) ? 'pattern=' . esc_attr($hostpn_input['pattern']) : ''); ?> value="<?php echo (!empty($hostpn_input['button_text']) ? esc_html($hostpn_input['button_text']) : esc_html($hostpn_value)); ?>" placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? esc_html($hostpn_input['placeholder']) : ''); ?>" <?php echo wp_kses_post($hostpn_parent_block); ?>/>
+              <input 
+                <?php /* ID and name attributes */ ?>
+                id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" 
+                name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>"
+                
+                <?php /* Type and styling */ ?>
+                class="hostpn-field <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" 
+                type="<?php echo esc_attr($hostpn_input['type']); ?>"
+                
+                <?php /* State attributes */ ?>
+                <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?>
+                <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?>
+                <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 'multiple' : ''); ?>
+                
+                <?php /* Validation and limits */ ?>
+                <?php echo (((array_key_exists('step', $hostpn_input) && $hostpn_input['step'] != '')) ? 'step="' . esc_attr($hostpn_input['step']) . '"' : ''); ?>
+                <?php echo (isset($hostpn_input['max']) ? 'max="' . esc_attr($hostpn_input['max']) . '"' : ''); ?>
+                <?php echo (isset($hostpn_input['min']) ? 'min="' . esc_attr($hostpn_input['min']) . '"' : ''); ?>
+                <?php echo (isset($hostpn_input['maxlength']) ? 'maxlength="' . esc_attr($hostpn_input['maxlength']) . '"' : ''); ?>
+                <?php echo (isset($hostpn_input['pattern']) ? 'pattern="' . esc_attr($hostpn_input['pattern']) . '"' : ''); ?>
+                
+                <?php /* Content attributes */ ?>
+                value="<?php echo (!empty($hostpn_input['button_text']) ? esc_html($hostpn_input['button_text']) : esc_html($hostpn_value)); ?>"
+                placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? esc_html($hostpn_input['placeholder']) : ''); ?>"
+                
+                <?php /* Custom data attributes */ ?>
+                <?php echo wp_kses_post($hostpn_parent_block); ?>
+              />
             <?php
             break;
         }

@@ -336,9 +336,22 @@ class HOSTPN_Post_Type_Accommodation {
     }
   }
 
-  public function hostpn_accommodation_enqueue_scripts() {
-    wp_enqueue_script('hostpn-aux');
-    wp_enqueue_script('hostpn-forms');
+  public function hostpn_accommodation_register_scripts() {
+    if (!wp_script_is('hostpn-aux', 'registered')) {
+      wp_register_script('hostpn-aux', HOSTPN_URL . 'assets/js/hostpn-aux.js', [], HOSTPN_VERSION, true);
+    }
+
+    if (!wp_script_is('hostpn-forms', 'registered')) {
+      wp_register_script('hostpn-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', [], HOSTPN_VERSION, true);
+    }
+
+    if (!wp_script_is('hostpn-selector', 'registered')) {
+      wp_register_script('hostpn-selector', HOSTPN_URL . 'assets/js/hostpn-selector.js', [], HOSTPN_VERSION, true);
+    }
+  }
+
+  public function hostpn_accommodation_print_scripts() {
+    wp_print_scripts(['hostpn-aux', 'hostpn-forms', 'hostpn-selector']);
   }
 
   public function hostpn_accommodation_list_wrapper() {
@@ -501,7 +514,8 @@ class HOSTPN_Post_Type_Accommodation {
 
   public function hostpn_accommodation_view($accommodation_id) {  
     ob_start();
-    self::hostpn_accommodation_enqueue_scripts();
+    self::hostpn_accommodation_register_scripts();
+    self::hostpn_accommodation_print_scripts();
     ?>
       <div class="accommodation-view hostpn-p-30" data-hostpn_accommodation-id="<?php echo esc_attr($accommodation_id); ?>">
         <h4 class="hostpn-text-align-center"><?php echo esc_html(get_the_title($accommodation_id)); ?></h4>
@@ -528,7 +542,7 @@ class HOSTPN_Post_Type_Accommodation {
 
   public function hostpn_accommodation_new() {
     ob_start();
-    self::hostpn_accommodation_enqueue_scripts();
+    self::hostpn_accommodation_print_scripts();
     ?>
       <div class="accommodation-new hostpn-p-30">
         <h4 class="hostpn-mb-30"><?php esc_html_e('Add new Accommodation', 'hostpn'); ?></h4>
@@ -555,7 +569,7 @@ class HOSTPN_Post_Type_Accommodation {
 
   public function hostpn_accommodation_edit($accommodation_id) {
     ob_start();
-    self::hostpn_accommodation_enqueue_scripts();
+    self::hostpn_accommodation_print_scripts();
     ?>
       <div class="accommodation-edit hostpn-p-30">
         <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Editing', 'hostpn'); ?></p>

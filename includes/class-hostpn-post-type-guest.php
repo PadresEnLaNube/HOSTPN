@@ -128,6 +128,7 @@ class HOSTPN_Post_Type_Guest {
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'text',
+        'maxlength' => 20,
         'required' => true,
         'xml' => 'direccion',
         'label' => esc_html(__('Address', 'hostpn')),
@@ -497,9 +498,22 @@ class HOSTPN_Post_Type_Guest {
     }
   }
 
-  public function hostpn_enqueue_guest_scripts() {
-    wp_enqueue_script('hostpn-aux');
-    wp_enqueue_script('hostpn-forms');
+  public function hostpn_guest_register_scripts() {
+    if (!wp_script_is('hostpn-aux', 'registered')) {
+      wp_register_script('hostpn-aux', HOSTPN_URL . 'assets/js/hostpn-aux.js', [], HOSTPN_VERSION, true);
+    }
+
+    if (!wp_script_is('hostpn-forms', 'registered')) {
+      wp_register_script('hostpn-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', [], HOSTPN_VERSION, true);
+    }
+
+    if (!wp_script_is('hostpn-selector', 'registered')) {
+      wp_register_script('hostpn-selector', HOSTPN_URL . 'assets/js/hostpn-selector.js', [], HOSTPN_VERSION, true);
+    }
+  }
+
+  public function hostpn_guest_print_scripts() {
+    wp_print_scripts(['hostpn-aux', 'hostpn-forms', 'hostpn-selector']);
   }
 
   public function hostpn_guest_list_wrapper() {
@@ -528,8 +542,8 @@ class HOSTPN_Post_Type_Guest {
       'numberposts' => -1,
       'post_type' => 'hostpn_guest',
       'post_status' => 'any', 
-      'orderby' => 'menu_order', 
-      'order' => 'ASC', 
+      'orderby' => 'date', 
+      'order' => 'DESC', 
     ];
     
     if (class_exists('Polylang')) {
@@ -552,7 +566,7 @@ class HOSTPN_Post_Type_Guest {
               <div class="hostpn-display-table hostpn-width-100-percent">
                 <div class="hostpn-display-inline-table hostpn-width-60-percent">
                   <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-view" data-hostpn-ajax-type="hostpn_guest_view">
-                    <span><?php echo esc_html(get_the_title($guest_id)); ?></span>
+                    <span><?php echo esc_html(get_post_meta($guest_id, 'hostpn_name', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname_alt', true)); ?></span>
                       
                     <?php if ($hostpn_guest_timed_checkbox == 'on'): ?>
                       <i class="material-icons-outlined hostpn-timed hostpn-cursor-pointer hostpn-vertical-align-super hostpn-p-5 hostpn-font-size-15 hostpn-tooltip" title="<?php esc_html_e('This Guest is timed', 'hostpn'); ?>">access_time</i>
@@ -646,7 +660,8 @@ class HOSTPN_Post_Type_Guest {
 
   public function hostpn_guest_view($guest_id) {  
     ob_start();
-    self::hostpn_enqueue_guest_scripts();
+    self::hostpn_guest_register_scripts();
+    self::hostpn_guest_print_scripts();
     ?>
       <div class="guest-view hostpn-p-30" data-hostpn_guest-id="<?php echo esc_attr($guest_id); ?>">
         <h4 class="hostpn-text-align-center"><?php echo esc_html(get_the_title($guest_id)); ?></h4>
@@ -673,7 +688,8 @@ class HOSTPN_Post_Type_Guest {
 
   public function hostpn_guest_new() {
     ob_start();
-    self::hostpn_enqueue_guest_scripts();
+    self::hostpn_guest_register_scripts();
+    self::hostpn_guest_print_scripts();
     ?>
       <div class="guest-new hostpn-p-30">
         <h4 class="hostpn-mb-30"><?php esc_html_e('Add new Guest', 'hostpn'); ?></h4>
@@ -700,7 +716,8 @@ class HOSTPN_Post_Type_Guest {
 
   public function hostpn_guest_edit($guest_id) {
     ob_start();
-    self::hostpn_enqueue_guest_scripts();
+    self::hostpn_guest_register_scripts();
+    self::hostpn_guest_print_scripts();
     ?>
       <div class="guest-edit hostpn-p-30">
         <p class="hostpn-text-align-center hostpn-mb-0"><?php esc_html_e('Editing', 'hostpn'); ?></p>
