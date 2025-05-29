@@ -119,10 +119,24 @@ class HOSTPN_Common {
 			'hostpn_ajax_nonce' => wp_create_nonce('hostpn-nonce'),
 		]);
 
-		$hostpn_action = !empty($_GET['hostpn_action']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_action'])) : '';
-		$hostpn_btn_id = !empty($_GET['hostpn_btn_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_btn_id'])) : '';
-		$hostpn_popup = !empty($_GET['hostpn_popup']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_popup'])) : '';
-		$hostpn_tab = !empty($_GET['hostpn_tab']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_tab'])) : '';
+		// Verify nonce for GET parameters
+		$nonce_verified = false;
+		if (!empty($_GET['hostpn_nonce'])) {
+			$nonce_verified = wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['hostpn_nonce'])), 'hostpn-get-nonce');
+		}
+
+		// Only process GET parameters if nonce is verified
+		$hostpn_action = '';
+		$hostpn_btn_id = '';
+		$hostpn_popup = '';
+		$hostpn_tab = '';
+
+		if ($nonce_verified) {
+			$hostpn_action = !empty($_GET['hostpn_action']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_action'])) : '';
+			$hostpn_btn_id = !empty($_GET['hostpn_btn_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_btn_id'])) : '';
+			$hostpn_popup = !empty($_GET['hostpn_popup']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_popup'])) : '';
+			$hostpn_tab = !empty($_GET['hostpn_tab']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_tab'])) : '';
+		}
 
 		wp_localize_script($this->plugin_name, 'hostpn_path', [
 			'main' => HOSTPN_URL,
@@ -137,6 +151,7 @@ class HOSTPN_Common {
 			'btn_id' => $hostpn_btn_id,
 			'popup' => $hostpn_popup,
 			'tab' => $hostpn_tab,
+			'hostpn_get_nonce' => wp_create_nonce('hostpn-get-nonce'),
 		]);
 
 		wp_localize_script($this->plugin_name, 'hostpn_i18n', [

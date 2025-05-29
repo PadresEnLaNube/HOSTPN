@@ -50,17 +50,17 @@ https://github.com/Alex-D/Trumbowyg/blob/develop/src/trumbowyg.js
 
 To install the Hospedajes España - HOSTPN plugin, you can either upload the plugin files to the /wp-content/plugins/hostpn directory, or install the plugin through the WordPress plugins screen directly. After uploading, activate the plugin through the 'Plugins' screen in WordPress.
 
-= Can I customize the look and feel of my host listings? =
+= Can I customize the look and feel of my listings? =
 
-Yes, you can customize the appearance of your host listings by modifying the CSS styles provided in the plugin. Additionally, you can enqueue your own custom styles to override the default plugin styles.
+Yes, you can customize the appearance of your listings by modifying the CSS styles provided in the plugin. Additionally, you can enqueue your own custom styles to override the default plugin styles.
 
 = Where can I find the uncompressed source code for the plugin's JavaScript and CSS files? =
 
 You can find the uncompressed source code for the JavaScript and CSS files in the src directory of the plugin. You can also visit our GitHub repository for the complete source code.
 
-= How do I add a new host to my site? =
+= How do I add a new Custom Post Type to my site? =
 
-To add a new host, go to the 'Host' section in the WordPress dashboard and click on 'Add New'. Fill in the required details for your host, including the title, ingredients, steps, and any other custom fields provided by the plugin. Once you're done, click 'Publish' to make the host live on your site.
+To add a new Custom Post Type, go to the 'Apartment / Part of Traveller / Guest' section in the WordPress dashboard and click on 'Add New'. Fill in the required details for your Custom Post Type, including any custom fields provided by the plugin. Once you're done, click 'Publish' to make the Custom Post Type live on your site.
 
 = Can I use this plugin with any WordPress theme? =
 
@@ -74,17 +74,17 @@ Yes, the Hospedajes España - HOSTPN plugin is fully translation-ready. You can 
 
 You can update the plugin through the WordPress plugins screen just like any other plugin. When a new version is available, you will see an update notification, and you can click 'Update Now' to install the latest version.
 
-= How do I backup my hosts before updating the plugin? =
+= How do I backup my Custom Post Types before updating the plugin? =
 
-To backup your hosts, you can export your posts and custom post types from the WordPress Tools > Export menu. Choose the 'Host' post type and download the export file. You can import this file later if needed.
+To backup your Custom Post Types, you can export your posts and custom post types from the WordPress Tools > Export menu. Choose the 'Host' post type and download the export file. You can import this file later if needed.
 
-= How do I add ratings and reviews to my hosts? =
+= How do I add ratings and reviews to my Custom Post Types? =
 
 The plugin don't include a built-in ratings and reviews system yet. You can integrate third-party plugins that offer these features or customize the plugin to include them.
 
-= How do I optimize my hosts for SEO? =
+= How do I optimize my Custom Post Types for SEO? =
 
-To optimize your hosts for SEO, ensure that you use relevant keywords in your host titles, descriptions, and content. You can also use SEO plugins like Yoast SEO to further enhance your host posts' search engine visibility.
+To optimize your Custom Post Types for SEO, ensure that you use relevant keywords in your host titles, descriptions, and content. You can also use SEO plugins like Yoast SEO to further enhance your host posts' search engine visibility.
 
 = How do I get support for the Hospedajes España - HOSTPN plugin? =
 

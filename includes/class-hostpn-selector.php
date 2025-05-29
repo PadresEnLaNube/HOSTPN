@@ -46,7 +46,7 @@ class HOSTPN_Selector {
             true
         );
 
-        wp_localize_script('hostpn-selector', 'Selector', array(
+        wp_localize_script('hostpn-selector', 'HOSTPN_Selector', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('hostpn-selector-nonce')
         ));

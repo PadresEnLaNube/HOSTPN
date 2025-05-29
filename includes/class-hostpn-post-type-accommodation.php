@@ -211,76 +211,93 @@ class HOSTPN_Post_Type_Accommodation {
   }
 
   public function hostpn_accommodation_save_post($post_id, $cpt, $update) {
-    if (array_key_exists('hostpn_nonce', $_POST) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_nonce'])), 'hostpn-nonce')) {
-      echo wp_json_encode(['error_key' => 'hostpn_nonce_error', ]);exit();
-    }
+    if($cpt->post_type == 'hostpn_accommodation' && array_key_exists('hostpn_accommodation_title', $_POST)){
+      // Always require nonce verification
+      if (!array_key_exists('hostpn_ajax_nonce', $_POST)) {
+        echo wp_json_encode([
+          'error_key' => 'hostpn_nonce_error_required',
+          'error_content' => esc_html(__('Security check failed: Nonce is required.', 'hostpn')),
+        ]);
 
-    if (!array_key_exists('hostpn_duplicate', $_POST)) {
-      foreach ($this->hostpn_accommodation_get_fields_meta() as $wph_field) {
-        $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
+        exit;
+      }
 
-        if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
-          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
+      if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_ajax_nonce'])), 'hostpn-nonce')) {
+        echo wp_json_encode([
+          'error_key' => 'hostpn_nonce_error_invalid',
+          'error_content' => esc_html(__('Security check failed: Invalid nonce.', 'hostpn')),
+        ]);
 
-          if (!empty($wph_input)) {
-            switch ($wph_input) {
-              case 'input':
-                if (array_key_exists('type', $wph_field) && $wph_field['type'] == 'checkbox') {
-                  if (isset($_POST[$wph_field['id']])) {
-                    update_post_meta($post_id, $wph_field['id'], $wph_value);
+        exit;
+      }
+
+      if (!array_key_exists('hostpn_duplicate', $_POST)) {
+        foreach (self::hostpn_get_fields_meta() as $hostpn_field) {
+          $hostpn_input = array_key_exists('input', $hostpn_field) ? $hostpn_field['input'] : '';
+
+          if (array_key_exists($hostpn_field['id'], $_POST) || $hostpn_input == 'html_multi') {
+            $hostpn_value = array_key_exists($hostpn_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$hostpn_field['id']], $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '') : '';
+
+            if (!empty($hostpn_input)) {
+              switch ($hostpn_input) {
+                case 'input':
+                  if (array_key_exists('type', $hostpn_field) && $hostpn_field['type'] == 'checkbox') {
+                    if (isset($_POST[$hostpn_field['id']])) {
+                      update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
+                    }else{
+                      update_post_meta($post_id, $hostpn_field['id'], '');
+                    }
                   }else{
-                    update_post_meta($post_id, $wph_field['id'], '');
-                  }
-                }else{
-                  update_post_meta($post_id, $wph_field['id'], $wph_value);
-                }
-
-                break;
-              case 'select':
-                if (array_key_exists('multiple', $wph_field) && $wph_field['multiple']) {
-                  $multi_array = [];
-                  $empty = true;
-
-                  foreach ($_POST[$wph_field['id']] as $multi_value) {
-                    $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                    update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   }
 
-                  update_post_meta($post_id, $wph_field['id'], $multi_array);
-                }else{
-                  update_post_meta($post_id, $wph_field['id'], $wph_value);
-                }
-                
-                break;
-              case 'html_multi':
-                foreach ($wph_field['html_multi_fields'] as $wph_multi_field) {
-                  if (array_key_exists($wph_multi_field['id'], $_POST)) {
+                  break;
+                case 'select':
+                  if (array_key_exists('multiple', $hostpn_field) && $hostpn_field['multiple']) {
                     $multi_array = [];
                     $empty = true;
 
-                    foreach ($_POST[$wph_multi_field['id']] as $multi_value) {
-                      if (!empty($multi_value)) {
-                        $empty = false;
+                    foreach ($_POST[$hostpn_field['id']] as $multi_value) {
+                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '');
+                    }
+
+                    update_post_meta($post_id, $hostpn_field['id'], $multi_array);
+                  }else{
+                    update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
+                  }
+                  
+                  break;
+                case 'html_multi':
+                  foreach ($hostpn_field['html_multi_fields'] as $hostpn_multi_field) {
+                    if (array_key_exists($hostpn_multi_field['id'], $_POST)) {
+                      $multi_array = [];
+                      $empty = true;
+
+                      foreach ($_POST[$hostpn_multi_field['id']] as $multi_value) {
+                        if (!empty($multi_value)) {
+                          $empty = false;
+                        }
+
+                        $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_multi_field['input'], !empty($hostpn_multi_field['type']) ? $hostpn_multi_field['type'] : '');
                       }
 
-                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
-                    }
-
-                    if (!$empty) {
-                      update_post_meta($post_id, $wph_multi_field['id'], $multi_array);
-                    }else{
-                      update_post_meta($post_id, $wph_multi_field['id'], '');
+                      if (!$empty) {
+                        update_post_meta($post_id, $hostpn_multi_field['id'], $multi_array);
+                      }else{
+                        update_post_meta($post_id, $hostpn_multi_field['id'], '');
+                      }
                     }
                   }
-                }
 
-                break;
-              default:
-                update_post_meta($post_id, $wph_field['id'], $wph_value);
-                break;
+                  break;
+                default:
+                  update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
+                  break;
+              }
             }
+          }else{
+            update_post_meta($post_id, $hostpn_field['id'], '');
           }
-        }else{
-          update_post_meta($post_id, $wph_field['id'], '');
         }
       }
     }
@@ -605,7 +622,15 @@ class HOSTPN_Post_Type_Accommodation {
         <?php if (class_exists('USERSWPH')): ?>
           <div class="hostpn-display-table hostpn-width-100-percent">
             <div class="hostpn-display-inline-table hostpn-width-90-percent">
-              <code id="hostpn-share-url"><?php echo esc_url(home_url('guests') . '?hostpn_action=popup_open&hostpn_popup=userspn-profile-popup&hostpn_tab=register'); ?></code>
+              <code id="hostpn-share-url"><?php 
+                $share_url = add_query_arg([
+                  'hostpn_action' => 'popup_open',
+                  'hostpn_popup' => 'userspn-profile-popup',
+                  'hostpn_tab' => 'register',
+                  'hostpn_get_nonce' => wp_create_nonce('hostpn-get-nonce')
+                ], home_url('guests'));
+                echo esc_url($share_url); 
+              ?></code>
             </div>
             <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-center hostpn-copy-disabled">
               <i class="material-icons-outlined hostpn-btn-copy hostpn-vertical-align-middle hostpn-cursor-pointer hostpn-tooltip" title="<?php esc_html_e('Copy url', 'hostpn'); ?>" data-hostpn-copy-content="#hostpn-share-url">content_copy</i>

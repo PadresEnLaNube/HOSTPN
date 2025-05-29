@@ -127,10 +127,16 @@ class HOSTPN_Post_Type_Part {
       if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
         $hostpn_page_guest = !empty(get_option('hostpn_pages_guest')) ? get_option('hostpn_pages_guest') : url_to_postid(home_url());
 
+        $guest_url = add_query_arg([
+          'hostpn_action' => 'btn',
+          'hostpn_btn_id' => 'hostpn-popup-guest-add-btn',
+          'hostpn_get_nonce' => wp_create_nonce('hostpn-get-nonce')
+        ], get_permalink($hostpn_page_guest));
+
         $hostpn_fields_meta['hostpn_people_add'] = [
           'id' => 'hostpn_people_add',
           'input' => 'html',
-          'html_content' => '<div class="hostpn-width-100-percent hostpn-mb-20"><a class="hostpn-font-size-small" href="' . esc_url(get_permalink($hostpn_page_guest) . '?hostpn_action=btn&hostpn_btn_id=hostpn-popup-guest-add-btn') . '"><i class="material-icons-outlined hostpn-vertical-align-middle">add</i>' . esc_html(__('Add guest', 'hostpn')) . '</a></div>',
+          'html_content' => '<div class="hostpn-width-100-percent hostpn-mb-20"><a class="hostpn-font-size-small" href="' . esc_url($guest_url) . '"><i class="material-icons-outlined hostpn-vertical-align-middle">add</i>' . esc_html(__('Add guest', 'hostpn')) . '</a></div>',
         ];
       }
 
@@ -475,76 +481,93 @@ class HOSTPN_Post_Type_Part {
   }
 
   public function hostpn_part_save_post($post_id, $cpt, $update) {
-    if (array_key_exists('hostpn_nonce', $_POST) && !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_nonce'])), 'hostpn-nonce')) {
-      echo wp_json_encode(['error_key' => 'hostpn_nonce_error', ]);exit();
-    }
+    if($cpt->post_type == 'hostpn_part' && array_key_exists('hostpn_part_title', $_POST)){
+      // Always require nonce verification
+      if (!array_key_exists('hostpn_ajax_nonce', $_POST)) {
+        echo wp_json_encode([
+          'error_key' => 'hostpn_nonce_error_required',
+          'error_content' => esc_html(__('Security check failed: Nonce is required.', 'hostpn')),
+        ]);
 
-    if (!array_key_exists('hostpn_duplicate', $_POST)) {
-      foreach (self::hostpn_part_get_fields() as $wph_field) {
-        $wph_input = array_key_exists('input', $wph_field) ? $wph_field['input'] : '';
+        exit;
+      }
 
-        if (array_key_exists($wph_field['id'], $_POST) || $wph_input == 'html_multi') {
-          $wph_value = array_key_exists($wph_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$wph_field['id']], $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '') : '';
+      if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_ajax_nonce'])), 'hostpn-nonce')) {
+        echo wp_json_encode([
+          'error_key' => 'hostpn_nonce_error_invalid',
+          'error_content' => esc_html(__('Security check failed: Invalid nonce.', 'hostpn')),
+        ]);
 
-          if (!empty($wph_input)) {
-            switch ($wph_input) {
-              case 'input':
-                if (array_key_exists('type', $wph_field) && $wph_field['type'] == 'checkbox') {
-                  if (isset($_POST[$wph_field['id']])) {
-                    update_post_meta($post_id, $wph_field['id'], $wph_value);
+        exit;
+      }
+
+      if (!array_key_exists('hostpn_duplicate', $_POST)) {
+        foreach (self::hostpn_get_fields_meta() as $hostpn_field) {
+          $hostpn_input = array_key_exists('input', $hostpn_field) ? $hostpn_field['input'] : '';
+
+          if (array_key_exists($hostpn_field['id'], $_POST) || $hostpn_input == 'html_multi') {
+            $hostpn_value = array_key_exists($hostpn_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$hostpn_field['id']], $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '') : '';
+
+            if (!empty($hostpn_input)) {
+              switch ($hostpn_input) {
+                case 'input':
+                  if (array_key_exists('type', $hostpn_field) && $hostpn_field['type'] == 'checkbox') {
+                    if (isset($_POST[$hostpn_field['id']])) {
+                      update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
+                    }else{
+                      update_post_meta($post_id, $hostpn_field['id'], '');
+                    }
                   }else{
-                    update_post_meta($post_id, $wph_field['id'], '');
-                  }
-                }else{
-                  update_post_meta($post_id, $wph_field['id'], $wph_value);
-                }
-
-                break;
-              case 'select':
-                if (array_key_exists('multiple', $wph_field) && $wph_field['multiple']) {
-                  $multi_array = [];
-                  $empty = true;
-
-                  foreach ($_POST[$wph_field['id']] as $multi_value) {
-                    $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_field['input'], !empty($wph_field['type']) ? $wph_field['type'] : '');
+                    update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   }
 
-                  update_post_meta($post_id, $wph_field['id'], $multi_array);
-                }else{
-                  update_post_meta($post_id, $wph_field['id'], $wph_value);
-                }
-                
-                break;
-              case 'html_multi':
-                foreach ($wph_field['html_multi_fields'] as $wph_multi_field) {
-                  if (array_key_exists($wph_multi_field['id'], $_POST)) {
+                  break;
+                case 'select':
+                  if (array_key_exists('multiple', $hostpn_field) && $hostpn_field['multiple']) {
                     $multi_array = [];
                     $empty = true;
 
-                    foreach ($_POST[$wph_multi_field['id']] as $multi_value) {
-                      if (!empty($multi_value)) {
-                        $empty = false;
+                    foreach ($_POST[$hostpn_field['id']] as $multi_value) {
+                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '');
+                    }
+
+                    update_post_meta($post_id, $hostpn_field['id'], $multi_array);
+                  }else{
+                    update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
+                  }
+                  
+                  break;
+                case 'html_multi':
+                  foreach ($hostpn_field['html_multi_fields'] as $hostpn_multi_field) {
+                    if (array_key_exists($hostpn_multi_field['id'], $_POST)) {
+                      $multi_array = [];
+                      $empty = true;
+
+                      foreach ($_POST[$hostpn_multi_field['id']] as $multi_value) {
+                        if (!empty($multi_value)) {
+                          $empty = false;
+                        }
+
+                        $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_multi_field['input'], !empty($hostpn_multi_field['type']) ? $hostpn_multi_field['type'] : '');
                       }
 
-                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $wph_multi_field['input'], !empty($wph_multi_field['type']) ? $wph_multi_field['type'] : '');
-                    }
-
-                    if (!$empty) {
-                      update_post_meta($post_id, $wph_multi_field['id'], $multi_array);
-                    }else{
-                      update_post_meta($post_id, $wph_multi_field['id'], '');
+                      if (!$empty) {
+                        update_post_meta($post_id, $hostpn_multi_field['id'], $multi_array);
+                      }else{
+                        update_post_meta($post_id, $hostpn_multi_field['id'], '');
+                      }
                     }
                   }
-                }
 
-                break;
-              default:
-                update_post_meta($post_id, $wph_field['id'], $wph_value);
-                break;
+                  break;
+                default:
+                  update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
+                  break;
+              }
             }
+          }else{
+            update_post_meta($post_id, $hostpn_field['id'], '');
           }
-        }else{
-          update_post_meta($post_id, $wph_field['id'], '');
         }
       }
     }

@@ -10,27 +10,7 @@
  * @subpackage HOSTPN/includes
  * @author     Padres en la Nube <info@padresenlanube.com>
  */
-class HOSTPN_Shortcodes {
-  function hostpn_test($atts) {
-    /* echo do_shortcode('[hostpn-function user_id="1"]'); */
-    $a = extract(shortcode_atts([
-      'user_id' => get_current_user_id(),
-    ], $atts));
-  
-    ob_start();
-    ?>
-      <script>
-        jQuery(document).ready(function($) {
-  
-        });
-      </script>
-    <?php
-    $hostpn_return_string = ob_get_contents(); 
-    ob_end_clean(); 
-    return $hostpn_return_string;
-  }
-      
-
+class HOSTPN_Shortcodes {    
   /**
    * Manage the shortcodes in the platform.
    *

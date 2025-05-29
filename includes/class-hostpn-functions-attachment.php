@@ -30,8 +30,8 @@ class HOSTPN_Functions_Attachment {
 	 * @since    1.0.0
 	 */
 	public function insert_attachment_from_url($url, $parent_post_id = null) {
-    if(!class_exists('WP_Http')){
-      include_once(ABSPATH . WPINC . '/class-http.php');
+    if (!class_exists('WP_Http')) {
+      require_once(ABSPATH . WPINC . '/class-http.php');
     }
 
     $http = new WP_Http();

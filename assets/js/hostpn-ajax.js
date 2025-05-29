@@ -11,6 +11,7 @@
       var data = {
         action: 'hostpn_ajax_nopriv',
         hostpn_ajax_nopriv_nonce: hostpn_ajax.hostpn_ajax_nonce,
+        hostpn_get_nonce: hostpn_action.hostpn_get_nonce,
         hostpn_ajax_nopriv_type: 'hostpn_form_save',
         hostpn_form_id: hostpn_form.attr('id'),
         hostpn_form_type: hostpn_btn.attr('data-hostpn-type'),
@@ -120,10 +121,11 @@
           var data = {
             action: 'hostpn_ajax',
             hostpn_ajax_type: hostpn_ajax_type,
+            ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
+            hostpn_get_nonce: hostpn_action.hostpn_get_nonce,
             hostpn_accommodation_id: hostpn_accommodation_id ? hostpn_accommodation_id : '',
             hostpn_part_id: hostpn_part_id ? hostpn_part_id : '',
             hostpn_guest_id: hostpn_guest_id ? hostpn_guest_id : '',
-            hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce
           };
 
           // Log the data being sent

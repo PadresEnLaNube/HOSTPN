@@ -416,7 +416,6 @@ class HOSTPN {
 	 */
 	private function hostpn_load_shortcodes() {
 		$plugin_shortcodes = new HOSTPN_Shortcodes();
-		$this->loader->hostpn_add_shortcode('hostpn-test', $plugin_shortcodes, 'hostpn_test');
 		$this->loader->hostpn_add_shortcode('hostpn-navigation', $plugin_shortcodes, 'hostpn_navigation');
 		$this->loader->hostpn_add_shortcode('hostpn-call-to-action', $plugin_shortcodes, 'hostpn_call_to_action');
 	}
