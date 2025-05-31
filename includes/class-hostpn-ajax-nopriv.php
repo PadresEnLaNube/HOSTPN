@@ -37,7 +37,15 @@ class HOSTPN_Ajax_Nopriv {
       }
 
   		$hostpn_ajax_nopriv_type = HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['hostpn_ajax_nopriv_type']));
-      $hostpn_ajax_keys = !empty($_POST['hostpn_ajax_keys']) ? wp_unslash($_POST['hostpn_ajax_keys']) : [];
+      
+      $hostpn_ajax_keys = !empty($_POST['hostpn_ajax_keys']) ? array_map(function($key) {
+        return array(
+          'id' => sanitize_key($key['id']),
+          'node' => sanitize_key($key['node']),
+          'type' => sanitize_key($key['type'])
+        );
+      }, wp_unslash($_POST['hostpn_ajax_keys'])) : [];
+
       $hostpn_key_value = [];
 
       if (!empty($hostpn_ajax_keys)) {
