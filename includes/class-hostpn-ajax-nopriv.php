@@ -39,10 +39,11 @@ class HOSTPN_Ajax_Nopriv {
   		$hostpn_ajax_nopriv_type = HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['hostpn_ajax_nopriv_type']));
       
       $hostpn_ajax_keys = !empty($_POST['hostpn_ajax_keys']) ? array_map(function($key) {
+        $sanitized_key = wp_unslash($key);
         return array(
-          'id' => sanitize_key($key['id']),
-          'node' => sanitize_key($key['node']),
-          'type' => sanitize_key($key['type'])
+          'id' => sanitize_key($sanitized_key['id']),
+          'node' => sanitize_key($sanitized_key['node']),
+          'type' => sanitize_key($sanitized_key['type'])
         );
       }, wp_unslash($_POST['hostpn_ajax_keys'])) : [];
 
@@ -55,17 +56,42 @@ class HOSTPN_Ajax_Nopriv {
             ${$hostpn_clear_key} = $hostpn_key_value[$hostpn_clear_key] = [];
 
             if (!empty($_POST[$hostpn_clear_key])) {
-              foreach (wp_unslash($_POST[$hostpn_clear_key]) as $multi_key => $multi_value) {
-                $final_value = !empty($_POST[$hostpn_clear_key][$multi_key]) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST[$hostpn_clear_key][$multi_key]), $hostpn_key['node'], $hostpn_key['type']) : '';
+              $unslashed_array = wp_unslash($_POST[$hostpn_clear_key]);
+              
+              if (!is_array($unslashed_array)) {
+                $unslashed_array = array($unslashed_array);
+              }
+
+              $sanitized_array = array_map(function($value) use ($hostpn_key) {
+                return HOSTPN_Forms::hostpn_sanitizer(
+                  $value,
+                  $hostpn_key['node'],
+                  $hostpn_key['type'],
+                  $hostpn_key['field_config']
+                );
+              }, $unslashed_array);
+              
+              foreach ($sanitized_array as $multi_key => $multi_value) {
+                $final_value = !empty($multi_value) ? $multi_value : '';
                 ${$hostpn_clear_key}[$multi_key] = $hostpn_key_value[$hostpn_clear_key][$multi_key] = $final_value;
               }
-            }else{
+            } else {
               ${$hostpn_clear_key} = '';
               $hostpn_key_value[$hostpn_clear_key][$multi_key] = '';
             }
-          }else{
-            $hostpn_key_id = !empty($_POST[$hostpn_key['id']]) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST[$hostpn_key['id']]), $hostpn_key['node'], $hostpn_key['type']) : '';
-            ${$hostpn_key['id']} = $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;
+          } else {
+            $sanitized_key = sanitize_key($hostpn_key['id']);
+            $unslashed_value = !empty($_POST[$sanitized_key]) ? wp_unslash($_POST[$sanitized_key]) : '';
+            
+            $hostpn_key_id = !empty($unslashed_value) ? 
+              HOSTPN_Forms::hostpn_sanitizer(
+                $unslashed_value, 
+                $hostpn_key['node'], 
+                $hostpn_key['type'],
+                $hostpn_key['field_config']
+              ) : '';
+            
+              ${$hostpn_key['id']} = $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;
           }
         }
       }

@@ -531,39 +531,15 @@ class HOSTPN_Forms {
     <?php
   }
 
-  public static function hostpn_sanitizer($value, $node = '', $type = '') {
-    // HOSTPN_Forms::hostpn_sanitizer($value, $node = '', $type = '')
-    switch (strtolower($node)) {
-      case 'input':
-        switch (strtolower($type)) {
-          case 'text':
-            return sanitize_text_field($value);
-          case 'email':
-            return sanitize_email($value);
-          case 'url':
-            return sanitize_url($value);
-          case 'color':
-            return sanitize_hex_color($value);
-          default:
-            return sanitize_text_field($value);
-        }
-      case 'select':
-        switch ($type) {
-          case 'select-multiple':
-            foreach ($value as $key => $values) {
-              $value[$key] = sanitize_key($values);
-            }
-
-            return $value;
-          default:
-            return sanitize_key($value);
-        }
-      case 'textarea':
-        return wp_kses_post($value);
-      case 'editor':
-        return wp_kses_post($value);
-      default:
-        return sanitize_text_field($value);
+  public static function hostpn_sanitizer($value, $node = '', $type = '', $field_config = []) {
+    // Use the new validation system
+    $result = HOSTPN_Validation::hostpn_validate_and_sanitize($value, $node, $type, $field_config);
+    
+    // If validation failed, return empty value and log the error
+    if (is_wp_error($result)) {
+        return '';
     }
+    
+    return $result;
   }
 }

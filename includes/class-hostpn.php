@@ -95,6 +95,7 @@ class HOSTPN {
 	 * - HOSTPN_Functions_Ajax. Ajax functions.
 	 * - HOSTPN_Functions_Ajax_Nopriv. Ajax No Private functions.
 	 * - HOSTPN_Functions_Shortcodes. Define all shortcodes for the platform.
+	 * - HOSTPN_Functions_Validation. Define validation and sanitization.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks with WordPress.
 	 *
@@ -191,6 +192,11 @@ class HOSTPN {
 		 * The class defining form management.
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-forms.php';
+
+		/**
+		 * The class defining validation and sanitization.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-validation.php';
 
 		/**
 		 * The class defining XML management.

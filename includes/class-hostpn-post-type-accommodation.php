@@ -13,8 +13,8 @@
 class HOSTPN_Post_Type_Accommodation {
   public function hostpn_accommodation_get_fields($accommodation_id = 0) {
     $hostpn_fields = [];
-      $hostpn_fields['hostpn_title'] = [
-        'id' => 'hostpn_title',
+      $hostpn_fields['hostpn_accommodation_title'] = [
+        'id' => 'hostpn_accommodation_title',
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'text',
@@ -102,11 +102,17 @@ class HOSTPN_Post_Type_Accommodation {
         'placeholder' => esc_html(__('Accommodation city', 'hostpn')),
       ];
 
-      $hostpn_fields_meta['hostpn_nonce'] = [
-        'id' => 'hostpn_nonce',
+      $hostpn_fields_meta['hostpn_accommodation_form'] = [
+        'id' => 'hostpn_accommodation_form',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'hidden',
+        'value' => 'hostpn_guest_form',
+      ];
+      $hostpn_fields_meta['hostpn_ajax_nonce'] = [
+        'id' => 'hostpn_ajax_nonce',
         'input' => 'input',
         'type' => 'nonce',
-        'xml' => '',
       ];
     return $hostpn_fields_meta;
   }
@@ -211,7 +217,7 @@ class HOSTPN_Post_Type_Accommodation {
   }
 
   public function hostpn_accommodation_save_post($post_id, $cpt, $update) {
-    if($cpt->post_type == 'hostpn_accommodation' && array_key_exists('hostpn_accommodation_title', $_POST)){
+    if($cpt->post_type == 'hostpn_accommodation' && array_key_exists('hostpn_accommodation_form', $_POST)){
       // Always require nonce verification
       if (!array_key_exists('hostpn_ajax_nonce', $_POST)) {
         echo wp_json_encode([
@@ -232,11 +238,17 @@ class HOSTPN_Post_Type_Accommodation {
       }
 
       if (!array_key_exists('hostpn_duplicate', $_POST)) {
-        foreach (self::hostpn_get_fields_meta() as $hostpn_field) {
+        foreach (array_merge(self::hostpn_accommodation_get_fields(), self::hostpn_accommodation_get_fields_meta()) as $hostpn_field) {
           $hostpn_input = array_key_exists('input', $hostpn_field) ? $hostpn_field['input'] : '';
 
           if (array_key_exists($hostpn_field['id'], $_POST) || $hostpn_input == 'html_multi') {
-            $hostpn_value = array_key_exists($hostpn_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$hostpn_field['id']], $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '') : '';
+            $hostpn_value = array_key_exists($hostpn_field['id'], $_POST) ? 
+                HOSTPN_Forms::hostpn_sanitizer(
+                    wp_unslash($_POST[$hostpn_field['id']]), 
+                    $hostpn_field['input'], 
+                    !empty($hostpn_field['type']) ? $hostpn_field['type'] : '',
+                    $hostpn_field // Pass the entire field config
+                ) : '';
 
             if (!empty($hostpn_input)) {
               switch ($hostpn_input) {
@@ -244,58 +256,74 @@ class HOSTPN_Post_Type_Accommodation {
                   if (array_key_exists('type', $hostpn_field) && $hostpn_field['type'] == 'checkbox') {
                     if (isset($_POST[$hostpn_field['id']])) {
                       update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
-                    }else{
+                    } else {
                       update_post_meta($post_id, $hostpn_field['id'], '');
                     }
-                  }else{
+                  } else {
                     update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   }
-
                   break;
+
                 case 'select':
                   if (array_key_exists('multiple', $hostpn_field) && $hostpn_field['multiple']) {
                     $multi_array = [];
                     $empty = true;
 
-                    foreach ($_POST[$hostpn_field['id']] as $multi_value) {
-                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '');
+                    foreach (wp_unslash($_POST[$hostpn_field['id']]) as $multi_value) {
+                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer(
+                        $multi_value, 
+                        $hostpn_field['input'], 
+                        !empty($hostpn_field['type']) ? $hostpn_field['type'] : '',
+                        $hostpn_field // Pass the entire field config
+                      );
                     }
 
                     update_post_meta($post_id, $hostpn_field['id'], $multi_array);
-                  }else{
+                  } else {
                     update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   }
-                  
                   break;
+
                 case 'html_multi':
                   foreach ($hostpn_field['html_multi_fields'] as $hostpn_multi_field) {
                     if (array_key_exists($hostpn_multi_field['id'], $_POST)) {
                       $multi_array = [];
                       $empty = true;
 
-                      foreach ($_POST[$hostpn_multi_field['id']] as $multi_value) {
+                      // Sanitize the POST data before using it
+                      $sanitized_post_data = isset($_POST[$hostpn_multi_field['id']]) ? 
+                          array_map(function($value) {
+                              return sanitize_text_field(wp_unslash($value));
+                          }, (array)$_POST[$hostpn_multi_field['id']]) : [];
+
+                      foreach ($sanitized_post_data as $multi_value) {
                         if (!empty($multi_value)) {
                           $empty = false;
                         }
 
-                        $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_multi_field['input'], !empty($hostpn_multi_field['type']) ? $hostpn_multi_field['type'] : '');
+                        $multi_array[] = HOSTPN_Forms::hostpn_sanitizer(
+                            $multi_value, 
+                            $hostpn_multi_field['input'], 
+                            !empty($hostpn_multi_field['type']) ? $hostpn_multi_field['type'] : '',
+                            $hostpn_multi_field // Pass the entire field config
+                        );
                       }
 
                       if (!$empty) {
                         update_post_meta($post_id, $hostpn_multi_field['id'], $multi_array);
-                      }else{
+                      } else {
                         update_post_meta($post_id, $hostpn_multi_field['id'], '');
                       }
                     }
                   }
-
                   break;
+
                 default:
                   update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   break;
               }
             }
-          }else{
+          } else {
             update_post_meta($post_id, $hostpn_field['id'], '');
           }
         }
@@ -348,6 +376,15 @@ class HOSTPN_Post_Type_Accommodation {
               }
 
               break;
+            case 'post_check':
+              update_post_meta($element_id, 'hostpn_accommodation_accomplish_date', strtotime('now'));
+              self::hostpn_accommodation_history_add($element_id);
+
+              break;
+            case 'post_uncheck':
+              delete_post_meta($element_id, 'hostpn_accommodation_accomplish_date');
+
+              break;
           }
       }
     }
@@ -397,8 +434,8 @@ class HOSTPN_Post_Type_Accommodation {
       'numberposts' => -1,
       'post_type' => 'hostpn_accommodation',
       'post_status' => 'any', 
-      'orderby' => 'menu_order', 
-      'order' => 'ASC', 
+      'orderby' => 'date', 
+      'order' => 'DESC', 
     ];
     
     if (class_exists('Polylang')) {
@@ -559,6 +596,7 @@ class HOSTPN_Post_Type_Accommodation {
 
   public function hostpn_accommodation_new() {
     ob_start();
+    self::hostpn_accommodation_register_scripts();
     self::hostpn_accommodation_print_scripts();
     ?>
       <div class="accommodation-new hostpn-p-30">
@@ -586,6 +624,7 @@ class HOSTPN_Post_Type_Accommodation {
 
   public function hostpn_accommodation_edit($accommodation_id) {
     ob_start();
+    self::hostpn_accommodation_register_scripts();
     self::hostpn_accommodation_print_scripts();
     ?>
       <div class="accommodation-edit hostpn-p-30">

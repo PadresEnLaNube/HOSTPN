@@ -121,7 +121,7 @@
           var data = {
             action: 'hostpn_ajax',
             hostpn_ajax_type: hostpn_ajax_type,
-            ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
+            hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
             hostpn_get_nonce: hostpn_action.hostpn_get_nonce,
             hostpn_accommodation_id: hostpn_accommodation_id ? hostpn_accommodation_id : '',
             hostpn_part_id: hostpn_part_id ? hostpn_part_id : '',
@@ -137,6 +137,7 @@
             data: data,
             success: function(response) {
               try {
+                console.log('HOSTPN AJAX - Response received:', response);
                 // First try to parse the response as JSON
                 var response_json = typeof response === 'string' ? JSON.parse(response) : response;
                 

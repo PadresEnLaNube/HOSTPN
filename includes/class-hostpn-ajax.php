@@ -43,7 +43,8 @@ class HOSTPN_Ajax {
         return array(
           'id' => sanitize_key($key['id']),
           'node' => sanitize_key($key['node']),
-          'type' => sanitize_key($key['type'])
+          'type' => sanitize_key($key['type']),
+          'field_config' => !empty($key['field_config']) ? $key['field_config'] : []
         );
       }, wp_unslash($_POST['hostpn_ajax_keys'])) : [];
 
@@ -60,16 +61,33 @@ class HOSTPN_Ajax {
             ${$hostpn_clear_key} = $hostpn_key_value[$hostpn_clear_key] = [];
 
             if (!empty($_POST[$hostpn_clear_key])) {
-              foreach (wp_unslash($_POST[$hostpn_clear_key]) as $multi_key => $multi_value) {
-                $final_value = !empty($_POST[$hostpn_clear_key][$multi_key]) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST[$hostpn_clear_key][$multi_key]), $hostpn_key['node'], $hostpn_key['type']) : '';
+              $unslashed_array = wp_unslash($_POST[$hostpn_clear_key]);
+              $sanitized_array = array_map(function($value) use ($hostpn_key) {
+                return HOSTPN_Forms::hostpn_sanitizer(
+                  $value,
+                  $hostpn_key['node'],
+                  $hostpn_key['type'],
+                  $hostpn_key['field_config']
+                );
+              }, $unslashed_array);
+              
+              foreach ($sanitized_array as $multi_key => $multi_value) {
+                $final_value = !empty($multi_value) ? $multi_value : '';
                 ${$hostpn_clear_key}[$multi_key] = $hostpn_key_value[$hostpn_clear_key][$multi_key] = $final_value;
               }
-            }else{
+            } else {
               ${$hostpn_clear_key} = '';
               $hostpn_key_value[$hostpn_clear_key][$multi_key] = '';
             }
-          }else{
-            $hostpn_key_id = !empty($_POST[$hostpn_key['id']]) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST[$hostpn_key['id']]), $hostpn_key['node'], $hostpn_key['type']) : '';
+          } else {
+            $sanitized_key = sanitize_key($hostpn_key['id']);
+            $hostpn_key_id = !empty($_POST[$sanitized_key]) ? 
+              HOSTPN_Forms::hostpn_sanitizer(
+                wp_unslash($_POST[$sanitized_key]), 
+                $hostpn_key['node'], 
+                $hostpn_key['type'],
+                $hostpn_key['field_config']
+              ) : '';
             ${$hostpn_key['id']} = $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;
           }
         }

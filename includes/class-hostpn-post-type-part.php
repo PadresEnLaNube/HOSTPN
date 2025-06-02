@@ -13,8 +13,8 @@
 class HOSTPN_Post_Type_Part {
   public function hostpn_part_get_fields($part_id = 0) {
     $hostpn_fields = [];
-      $hostpn_fields['hostpn_title'] = [
-        'id' => 'hostpn_title',
+      $hostpn_fields['hostpn_part_title'] = [
+        'id' => 'hostpn_part_title',
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'text',
@@ -24,8 +24,8 @@ class HOSTPN_Post_Type_Part {
         'placeholder' => __('Part title', 'hostpn'),
         'description' => __('This title will help you to remind and find this Part in the future', 'hostpn'),
       ];
-      $hostpn_fields['hostpn_description'] = [
-        'id' => 'hostpn_description',
+      $hostpn_fields['hostpn_part_description'] = [
+        'id' => 'hostpn_part_description',
         'class' => 'hostpn-input hostpn-width-100-percent',
         'value' => !empty($part_id) ? (str_replace(']]>', ']]&gt;', apply_filters('the_content', get_post($part_id)->post_content))) : '',
         'input' => 'textarea',
@@ -35,270 +35,274 @@ class HOSTPN_Post_Type_Part {
   }
 
   public function hostpn_part_get_fields_meta() {
-    $accommodation_id = !empty($_GET['hostpn_accommodation_id']) ? HOSTPN_Forms::hostpn_sanitizer($_GET['hostpn_accommodation_id']) : '';
     $hostpn_fields_meta = [];
+    
+    $posts_atts = [
+      'fields' => 'ids',
+      'numberposts' => -1,
+      'post_type' => 'hostpn_accommodation',
+      'post_status' => 'any', 
+      'orderby' => 'date', 
+      'order' => 'DESC', 
+    ];
+    
+    if (class_exists('Polylang')) {
+      $posts_atts['lang'] = pll_current_language('slug');
+    }
 
-    $hostpn_fields_meta = [];
+    $accommodations = get_posts($posts_atts);
+    
+    if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
+      $hostpn_accommodation_options = [];
+      
+      foreach ($accommodations as $accommodation_id) {
+        $hostpn_accommodation_options[$accommodation_id] = esc_html(get_the_title($accommodation_id));
+      }
+
+      $hostpn_fields_meta['hostpn_accommodation_id'] = [
+        'id' => 'hostpn_accommodation_id',
+        'class' => 'hostpn-select hostpn-width-100-percent',
+        'input' => 'select',
+        'options' => $hostpn_accommodation_options,
+        'required' => true,
+        'label' => __('Accommodation', 'hostpn'),
+        'placeholder' => __('Accommodation', 'hostpn'),
+      ];
+
+      $hostpn_page_accommodation = !empty(get_option('hostpn_pages_accommodation')) ? get_option('hostpn_pages_accommodation') : url_to_postid(home_url());
+
+      $hostpn_fields_meta['hostpn_accommodation_add'] = [
+        'id' => 'hostpn_accommodation_add',
+        'input' => 'html',
+        'html_content' => '<div class="hostpn-width-100-percent hostpn-mb-20"><a class="hostpn-font-size-small" href="' . esc_url(get_permalink($hostpn_page_accommodation)) . '"><i class="material-icons-outlined hostpn-vertical-align-middle">add</i>' . esc_html(__('Add accommodation', 'hostpn')) . '</a></div>',
+      ];
+    }else{
+      $current_accommodation_id = !empty($accommodation_id) ? $accommodation_id : $accommodations[0];
+
+      $hostpn_fields_meta['hostpn_accommodation_id'] = [
+        'id' => 'hostpn_accommodation_id',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'hidden',
+        'value' => $current_accommodation_id,
+      ];
+    }
+
+    $hostpn_people_options = [];
+    if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
       $posts_atts = [
         'fields' => 'ids',
         'numberposts' => -1,
-        'post_type' => 'hostpn_accommodation',
+        'post_type' => 'hostpn_guest',
         'post_status' => 'any', 
-        'orderby' => 'date', 
-        'order' => 'DESC', 
       ];
-      
-      if (class_exists('Polylang')) {
-        $posts_atts['lang'] = pll_current_language('slug');
-      }
+    }else{
+      $posts_atts = [
+        'fields' => 'ids',
+        'numberposts' => -1,
+        'post_type' => 'hostpn_guest',
+        'post_status' => 'any',
+        'post_author' => get_current_user_id(),
+      ];
+    }
 
-      $accommodations = get_posts($posts_atts);
-      
-      if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
-        $hostpn_accommodation_options = [];
-        
-        foreach ($accommodations as $accommodation_id) {
-          $hostpn_accommodation_options[$accommodation_id] = esc_html(get_the_title($accommodation_id));
-        }
+    foreach (get_posts($posts_atts) as $guest_id) {
+      $hostpn_people_options[$guest_id] = get_post_meta($guest_id, 'hostpn_name', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname_alt', true);
+    }
 
-        $hostpn_fields_meta['hostpn_accommodation_id'] = [
-          'id' => 'hostpn_accommodation_id',
-          'class' => 'hostpn-select hostpn-width-100-percent',
-          'input' => 'select',
-          'options' => $hostpn_accommodation_options,
-          'required' => true,
-          'label' => __('Accommodation', 'hostpn'),
-          'placeholder' => __('Accommodation', 'hostpn'),
-        ];
+    $hostpn_fields_meta['hostpn_people'] = [
+      'id' => 'hostpn_people',
+      'class' => 'hostpn-select hostpn-width-100-percent',
+      'input' => 'select',
+      'options' => $hostpn_people_options,
+      'multiple' => true,
+      'required' => true,
+      'xml' => 'persona',
+      'label' => __('People hosted', 'hostpn'),
+      'placeholder' => __('People hosted', 'hostpn'),
+    ];
 
-        $hostpn_page_accommodation = !empty(get_option('hostpn_pages_accommodation')) ? get_option('hostpn_pages_accommodation') : url_to_postid(home_url());
+    if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
+      $hostpn_page_guest = !empty(get_option('hostpn_pages_guest')) ? get_option('hostpn_pages_guest') : url_to_postid(home_url());
 
-        $hostpn_fields_meta['hostpn_accommodation_add'] = [
-          'id' => 'hostpn_accommodation_add',
-          'input' => 'html',
-          'html_content' => '<div class="hostpn-width-100-percent hostpn-mb-20"><a class="hostpn-font-size-small" href="' . esc_url(get_permalink($hostpn_page_accommodation)) . '"><i class="material-icons-outlined hostpn-vertical-align-middle">add</i>' . esc_html(__('Add accommodation', 'hostpn')) . '</a></div>',
-        ];
-      }else{
-        $current_accommodation_id = !empty($accommodation_id) ? $accommodation_id : $accommodations[0];
+      $guest_url = add_query_arg([
+        'hostpn_action' => 'btn',
+        'hostpn_btn_id' => 'hostpn-popup-guest-add-btn',
+        'hostpn_get_nonce' => wp_create_nonce('hostpn-get-nonce')
+      ], get_permalink($hostpn_page_guest));
 
-        $hostpn_fields_meta['hostpn_accommodation_id'] = [
-          'id' => 'hostpn_accommodation_id',
-          'class' => 'hostpn-input hostpn-width-100-percent',
-          'input' => 'input',
-          'type' => 'hidden',
-          'value' => $current_accommodation_id,
-        ];
-      }
+      $hostpn_fields_meta['hostpn_people_add'] = [
+        'id' => 'hostpn_people_add',
+        'input' => 'html',
+        'html_content' => '<div class="hostpn-width-100-percent hostpn-mb-20"><a class="hostpn-font-size-small" href="' . esc_url($guest_url) . '"><i class="material-icons-outlined hostpn-vertical-align-middle">add</i>' . esc_html(__('Add guest', 'hostpn')) . '</a></div>',
+      ];
+    }
 
-      $hostpn_people_options = [];
-      if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
-        $posts_atts = [
-          'fields' => 'ids',
-          'numberposts' => -1,
-          'post_type' => 'hostpn_guest',
-          'post_status' => 'any', 
-        ];
-      }else{
-        $posts_atts = [
-          'fields' => 'ids',
-          'numberposts' => -1,
-          'post_type' => 'hostpn_guest',
-          'post_status' => 'any',
-          'post_author' => get_current_user_id(),
-        ];
-      }
+    $hostpn_fields_meta['hostpn_contract_holder'] = [
+      'id' => 'hostpn_contract_holder',
+      'class' => 'hostpn-select hostpn-width-100-percent',
+      'input' => 'select',
+      'options' => $hostpn_people_options,
+      'required' => true,
+      'xml' => 'rol',
+      'label' => __('Contract holder', 'hostpn'),
+      'placeholder' => __('Contract holder', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_reference'] = [
+      'id' => 'hostpn_reference',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'text',
+      'required' => true,
+      'xml' => 'referencia',
+      'label' => __('Contract reference', 'hostpn'),
+      'placeholder' => __('Contract reference', 'hostpn'),
+      'description' => __('A unique contract reference to distinguish it.', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_date'] = [
+      'id' => 'hostpn_date',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'date',
+      'required' => true,
+      'xml' => 'fechaContrato',
+      'label' => __('Contract date', 'hostpn'),
+      'placeholder' => __('Contract date', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_check_in_date'] = [
+      'id' => 'hostpn_check_in_date',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'date',
+      'required' => true,
+      'xml' => 'fechaEntrada',
+      'label' => __('Check-in date', 'hostpn'),
+      'placeholder' => __('Check-in date', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_check_in_time'] = [
+      'id' => 'hostpn_check_in_time',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'time',
+      'label' => __('Check-in time', 'hostpn'),
+      'placeholder' => __('Check-in time', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_check_out_date'] = [
+      'id' => 'hostpn_check_out_date',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'date',
+      'required' => true,
+      'xml' => 'fechaSalida',
+      'label' => __('Check-out date', 'hostpn'),
+      'placeholder' => __('Check-out date', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_check_out_time'] = [
+      'id' => 'hostpn_check_out_time',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'time',
+      'label' => __('Check-out time', 'hostpn'),
+      'placeholder' => __('Check-out time', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_people_number'] = [
+      'id' => 'hostpn_people_number',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'number',
+      'required' => true,
+      'xml' => 'numPersonas',
+      'label' => __('Number of people', 'hostpn'),
+      'placeholder' => __('Number of people', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_rooms'] = [
+      'id' => 'hostpn_rooms',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'number',
+      'required' => true,
+      'xml' => 'numHabitaciones',
+      'label' => __('Number of rooms', 'hostpn'),
+      'placeholder' => __('Number of rooms', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_internet'] = [
+      'id' => 'hostpn_internet',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'checkbox',
+      'xml' => 'internet',
+      'label' => __('Internet available', 'hostpn'),
+      'placeholder' => __('Internet available', 'hostpn'),
+    ];
 
-      foreach (get_posts($posts_atts) as $guest_id) {
-        $hostpn_people_options[$guest_id] = get_post_meta($guest_id, 'hostpn_name', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname_alt', true);
-      }
+    $payment_type_options = ['efect' => esc_html(__('Cash', 'hostpn')), 'tarjt' => esc_html(__('Credit card', 'hostpn')), 'platf' => esc_html(__('Payment platform', 'hostpn')), 'trans' => esc_html(__('Transfer', 'hostpn')), 'movil' => esc_html(__('Mobile payment', 'hostpn')), 'treg' => esc_html(__('Gift card', 'hostpn')), 'desti' => esc_html(__('Payment at destination', 'hostpn')), 'otro' => esc_html(__('Other payment methods', 'hostpn')), ];
 
-      $hostpn_fields_meta['hostpn_people'] = [
-        'id' => 'hostpn_people',
-        'class' => 'hostpn-select hostpn-width-100-percent',
-        'input' => 'select',
-        'options' => $hostpn_people_options,
-        'multiple' => true,
-        'required' => true,
-        'xml' => 'persona',
-        'label' => __('People hosted', 'hostpn'),
-        'placeholder' => __('People hosted', 'hostpn'),
-      ];
+    $hostpn_fields_meta['hostpn_payment_type'] = [
+      'id' => 'hostpn_payment_type',
+      'class' => 'hostpn-select hostpn-width-100-percent',
+      'input' => 'select',
+      'options' => $payment_type_options,
+      'parent' => 'this',
+      'required' => true,
+      'xml' => 'tipoPago',
+      'label' => __('Payment type', 'hostpn'),
+      'placeholder' => __('Payment type', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_card_expiration'] = [
+      'id' => 'hostpn_card_expiration',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'parent' => 'hostpn_payment_type',
+      'parent_option' => 'tarjt',
+      'type' => 'month',
+      'xml' => 'caducidadTarjeta',
+      'label' => __('Card expiration date', 'hostpn'),
+      'placeholder' => __('Card expiration date', 'hostpn'),
+      'description' => __('Expiration date of the card.', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_payment_date'] = [
+      'id' => 'hostpn_payment_date',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'date',
+      'xml' => 'fechaPago',
+      'label' => __('Payment date', 'hostpn'),
+      'placeholder' => __('Payment date', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_payment_method'] = [
+      'id' => 'hostpn_payment_method',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'text',
+      'xml' => 'medioPago',
+      'label' => __('Payment method', 'hostpn'),
+      'placeholder' => __('Payment method', 'hostpn'),
+      'description' => __('Payment method identification: card type and number, bank account IBAN, mobile number, etc.', 'hostpn'),
+    ];
+    $hostpn_fields_meta['hostpn_payment_holder'] = [
+      'id' => 'hostpn_payment_holder',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'text',
+      'required' => true,
+      'xml' => 'titular',
+      'label' => __('Payment holder', 'hostpn'),
+      'placeholder' => __('Payment holder', 'hostpn'),
+      'description' => __('Name and surname of the holder of the payment.', 'hostpn'),
+    ];
 
-      if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
-        $hostpn_page_guest = !empty(get_option('hostpn_pages_guest')) ? get_option('hostpn_pages_guest') : url_to_postid(home_url());
-
-        $guest_url = add_query_arg([
-          'hostpn_action' => 'btn',
-          'hostpn_btn_id' => 'hostpn-popup-guest-add-btn',
-          'hostpn_get_nonce' => wp_create_nonce('hostpn-get-nonce')
-        ], get_permalink($hostpn_page_guest));
-
-        $hostpn_fields_meta['hostpn_people_add'] = [
-          'id' => 'hostpn_people_add',
-          'input' => 'html',
-          'html_content' => '<div class="hostpn-width-100-percent hostpn-mb-20"><a class="hostpn-font-size-small" href="' . esc_url($guest_url) . '"><i class="material-icons-outlined hostpn-vertical-align-middle">add</i>' . esc_html(__('Add guest', 'hostpn')) . '</a></div>',
-        ];
-      }
-
-      $hostpn_fields_meta['hostpn_contract_holder'] = [
-        'id' => 'hostpn_contract_holder',
-        'class' => 'hostpn-select hostpn-width-100-percent',
-        'input' => 'select',
-        'options' => $hostpn_people_options,
-        'required' => true,
-        'xml' => 'rol',
-        'label' => __('Contract holder', 'hostpn'),
-        'placeholder' => __('Contract holder', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_reference'] = [
-        'id' => 'hostpn_reference',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'text',
-        'required' => true,
-        'xml' => 'referencia',
-        'label' => __('Contract reference', 'hostpn'),
-        'placeholder' => __('Contract reference', 'hostpn'),
-        'description' => __('A unique contract reference to distinguish it.', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_date'] = [
-        'id' => 'hostpn_date',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
-        'required' => true,
-        'xml' => 'fechaContrato',
-        'label' => __('Contract date', 'hostpn'),
-        'placeholder' => __('Contract date', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_check_in_date'] = [
-        'id' => 'hostpn_check_in_date',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
-        'required' => true,
-        'xml' => 'fechaEntrada',
-        'label' => __('Check-in date', 'hostpn'),
-        'placeholder' => __('Check-in date', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_check_in_time'] = [
-        'id' => 'hostpn_check_in_time',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'time',
-        'label' => __('Check-in time', 'hostpn'),
-        'placeholder' => __('Check-in time', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_check_out_date'] = [
-        'id' => 'hostpn_check_out_date',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
-        'required' => true,
-        'xml' => 'fechaSalida',
-        'label' => __('Check-out date', 'hostpn'),
-        'placeholder' => __('Check-out date', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_check_out_time'] = [
-        'id' => 'hostpn_check_out_time',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'time',
-        'label' => __('Check-out time', 'hostpn'),
-        'placeholder' => __('Check-out time', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_people_number'] = [
-        'id' => 'hostpn_people_number',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'number',
-        'required' => true,
-        'xml' => 'numPersonas',
-        'label' => __('Number of people', 'hostpn'),
-        'placeholder' => __('Number of people', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_rooms'] = [
-        'id' => 'hostpn_rooms',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'number',
-        'required' => true,
-        'xml' => 'numHabitaciones',
-        'label' => __('Number of rooms', 'hostpn'),
-        'placeholder' => __('Number of rooms', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_internet'] = [
-        'id' => 'hostpn_internet',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'checkbox',
-        'xml' => 'internet',
-        'label' => __('Internet available', 'hostpn'),
-        'placeholder' => __('Internet available', 'hostpn'),
-      ];
-
-      $payment_type_options = ['efect' => esc_html(__('Cash', 'hostpn')), 'tarjt' => esc_html(__('Credit card', 'hostpn')), 'platf' => esc_html(__('Payment platform', 'hostpn')), 'trans' => esc_html(__('Transfer', 'hostpn')), 'movil' => esc_html(__('Mobile payment', 'hostpn')), 'treg' => esc_html(__('Gift card', 'hostpn')), 'desti' => esc_html(__('Payment at destination', 'hostpn')), 'otro' => esc_html(__('Other payment methods', 'hostpn')), ];
-
-      $hostpn_fields_meta['hostpn_payment_type'] = [
-        'id' => 'hostpn_payment_type',
-        'class' => 'hostpn-select hostpn-width-100-percent',
-        'input' => 'select',
-        'options' => $payment_type_options,
-        'parent' => 'this',
-        'required' => true,
-        'xml' => 'tipoPago',
-        'label' => __('Payment type', 'hostpn'),
-        'placeholder' => __('Payment type', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_card_expiration'] = [
-        'id' => 'hostpn_card_expiration',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'parent' => 'hostpn_payment_type',
-        'parent_option' => 'tarjt',
-        'type' => 'month',
-        'xml' => 'caducidadTarjeta',
-        'label' => __('Card expiration date', 'hostpn'),
-        'placeholder' => __('Card expiration date', 'hostpn'),
-        'description' => __('Expiration date of the card.', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_payment_date'] = [
-        'id' => 'hostpn_payment_date',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'date',
-        'xml' => 'fechaPago',
-        'label' => __('Payment date', 'hostpn'),
-        'placeholder' => __('Payment date', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_payment_method'] = [
-        'id' => 'hostpn_payment_method',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'text',
-        'xml' => 'medioPago',
-        'label' => __('Payment method', 'hostpn'),
-        'placeholder' => __('Payment method', 'hostpn'),
-        'description' => __('Payment method identification: card type and number, bank account IBAN, mobile number, etc.', 'hostpn'),
-      ];
-      $hostpn_fields_meta['hostpn_payment_holder'] = [
-        'id' => 'hostpn_payment_holder',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'text',
-        'required' => true,
-        'xml' => 'titular',
-        'label' => __('Payment holder', 'hostpn'),
-        'placeholder' => __('Payment holder', 'hostpn'),
-        'description' => __('Name and surname of the holder of the payment.', 'hostpn'),
-      ];
-
-      $hostpn_fields_meta['hostpn_nonce'] = [
-        'id' => 'hostpn_nonce',
-        'input' => 'input',
-        'type' => 'nonce',
-        'xml' => '',
-      ];
+    $hostpn_fields_meta['hostpn_part_form'] = [
+      'id' => 'hostpn_part_form',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'hidden',
+      'value' => 'hostpn_part_form',
+    ];
+    $hostpn_fields_meta['hostpn_ajax_nonce'] = [
+      'id' => 'hostpn_ajax_nonce',
+      'input' => 'input',
+      'type' => 'nonce',
+    ];
     return $hostpn_fields_meta;
   }
 
@@ -481,7 +485,7 @@ class HOSTPN_Post_Type_Part {
   }
 
   public function hostpn_part_save_post($post_id, $cpt, $update) {
-    if($cpt->post_type == 'hostpn_part' && array_key_exists('hostpn_part_title', $_POST)){
+    if($cpt->post_type == 'hostpn_part' && array_key_exists('hostpn_part_form', $_POST)){
       // Always require nonce verification
       if (!array_key_exists('hostpn_ajax_nonce', $_POST)) {
         echo wp_json_encode([
@@ -502,11 +506,17 @@ class HOSTPN_Post_Type_Part {
       }
 
       if (!array_key_exists('hostpn_duplicate', $_POST)) {
-        foreach (self::hostpn_get_fields_meta() as $hostpn_field) {
+        foreach (array_merge(self::hostpn_part_get_fields(), self::hostpn_part_get_fields_meta()) as $hostpn_field) {
           $hostpn_input = array_key_exists('input', $hostpn_field) ? $hostpn_field['input'] : '';
 
           if (array_key_exists($hostpn_field['id'], $_POST) || $hostpn_input == 'html_multi') {
-            $hostpn_value = array_key_exists($hostpn_field['id'], $_POST) ? HOSTPN_Forms::hostpn_sanitizer($_POST[$hostpn_field['id']], $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '') : '';
+            $hostpn_value = array_key_exists($hostpn_field['id'], $_POST) ? 
+                HOSTPN_Forms::hostpn_sanitizer(
+                    wp_unslash($_POST[$hostpn_field['id']]), 
+                    $hostpn_field['input'], 
+                    !empty($hostpn_field['type']) ? $hostpn_field['type'] : '',
+                    $hostpn_field // Pass the entire field config
+                ) : '';
 
             if (!empty($hostpn_input)) {
               switch ($hostpn_input) {
@@ -514,58 +524,74 @@ class HOSTPN_Post_Type_Part {
                   if (array_key_exists('type', $hostpn_field) && $hostpn_field['type'] == 'checkbox') {
                     if (isset($_POST[$hostpn_field['id']])) {
                       update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
-                    }else{
+                    } else {
                       update_post_meta($post_id, $hostpn_field['id'], '');
                     }
-                  }else{
+                  } else {
                     update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   }
-
                   break;
+
                 case 'select':
                   if (array_key_exists('multiple', $hostpn_field) && $hostpn_field['multiple']) {
                     $multi_array = [];
                     $empty = true;
 
-                    foreach ($_POST[$hostpn_field['id']] as $multi_value) {
-                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_field['input'], !empty($hostpn_field['type']) ? $hostpn_field['type'] : '');
+                    foreach (wp_unslash($_POST[$hostpn_field['id']]) as $multi_value) {
+                      $multi_array[] = HOSTPN_Forms::hostpn_sanitizer(
+                        $multi_value, 
+                        $hostpn_field['input'], 
+                        !empty($hostpn_field['type']) ? $hostpn_field['type'] : '',
+                        $hostpn_field // Pass the entire field config
+                      );
                     }
 
                     update_post_meta($post_id, $hostpn_field['id'], $multi_array);
-                  }else{
+                  } else {
                     update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   }
-                  
                   break;
+
                 case 'html_multi':
                   foreach ($hostpn_field['html_multi_fields'] as $hostpn_multi_field) {
                     if (array_key_exists($hostpn_multi_field['id'], $_POST)) {
                       $multi_array = [];
                       $empty = true;
 
-                      foreach ($_POST[$hostpn_multi_field['id']] as $multi_value) {
+                      // Sanitize the POST data before using it
+                      $sanitized_post_data = isset($_POST[$hostpn_multi_field['id']]) ? 
+                          array_map(function($value) {
+                              return sanitize_text_field(wp_unslash($value));
+                          }, (array)$_POST[$hostpn_multi_field['id']]) : [];
+
+                      foreach ($sanitized_post_data as $multi_value) {
                         if (!empty($multi_value)) {
                           $empty = false;
                         }
 
-                        $multi_array[] = HOSTPN_Forms::hostpn_sanitizer($multi_value, $hostpn_multi_field['input'], !empty($hostpn_multi_field['type']) ? $hostpn_multi_field['type'] : '');
+                        $multi_array[] = HOSTPN_Forms::hostpn_sanitizer(
+                            $multi_value, 
+                            $hostpn_multi_field['input'], 
+                            !empty($hostpn_multi_field['type']) ? $hostpn_multi_field['type'] : '',
+                            $hostpn_multi_field // Pass the entire field config
+                        );
                       }
 
                       if (!$empty) {
                         update_post_meta($post_id, $hostpn_multi_field['id'], $multi_array);
-                      }else{
+                      } else {
                         update_post_meta($post_id, $hostpn_multi_field['id'], '');
                       }
                     }
                   }
-
                   break;
+
                 default:
                   update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
                   break;
               }
             }
-          }else{
+          } else {
             update_post_meta($post_id, $hostpn_field['id'], '');
           }
         }
