@@ -269,7 +269,6 @@ class HOSTPN_Functions_User {
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'text',
-        'required' => true,
         'xml' => 'nombreMunicipio',
         'label' => esc_html(__('City', 'hostpn')),
         'placeholder' => esc_html(__('City', 'hostpn')),

@@ -27,7 +27,9 @@
       }
 
       $(hostpn_form.find('input:not([type="submit"]), select, textarea')).each(function(index, element) {
-        if ($(this).parents('.hostpn-html-multi-group').length) {
+        var is_multiple = $(this).parents('.userspn-html-multi-group').length;
+        
+        if (is_multiple) {
           if (!(typeof window['hostpn_window_vars']['form_field_' + element.name] !== 'undefined')) {
             window['hostpn_window_vars']['form_field_' + element.name] = [];
           }
@@ -55,6 +57,7 @@
           id: element.name,
           node: element.nodeName,
           type: element.type,
+          multiple: (is_multiple == 'multiple' ? true : false),
         });
       });
 
@@ -137,23 +140,47 @@
             data: data,
             success: function(response) {
               try {
-                console.log('HOSTPN AJAX - Response received:', response);
-                // First try to parse the response as JSON
-                var response_json = typeof response === 'string' ? JSON.parse(response) : response;
+                console.log('HOSTPN AJAX - Raw response received:', response);
                 
-                // Check for error key in response
+                // Check if response is already an object (parsed JSON)
+                var response_json = typeof response === 'object' ? response : null;
+                
+                // If not an object, try to parse as JSON
+                if (!response_json) {
+                  try {
+                    response_json = JSON.parse(response);
+                  } catch (parseError) {
+                    // If parsing fails, assume it's HTML content
+                    console.log('HOSTPN AJAX - Response appears to be HTML content');
+                    hostpn_popup_element.find('.hostpn-popup-content').html(response);
+                    
+                    // Initialize media uploaders if function exists
+                    if (typeof initMediaUpload === 'function') {
+                      $('.hostpn-image-upload-wrapper').each(function() {
+                        initMediaUpload($(this), 'image');
+                      });
+                      $('.hostpn-audio-upload-wrapper').each(function() {
+                        initMediaUpload($(this), 'audio');
+                      });
+                      $('.hostpn-video-upload-wrapper').each(function() {
+                        initMediaUpload($(this), 'video');
+                      });
+                    }
+                    return;
+                  }
+                }
+
+                // Handle JSON response
                 if (response_json.error_key) {
-                  hostpn_get_main_message('HOSTPN AJAX - Server returned error:', response_json.error_key);
-                  // Display the error message if available, otherwise show generic error
-                  var errorMessage = response_json.error_ || hostpn_i18n.an_error_has_occurred;
+                  console.log('HOSTPN AJAX - Server returned error:', response_json.error_key);
+                  var errorMessage = response_json.error_message || hostpn_i18n.an_error_has_occurred;
                   hostpn_get_main_message(errorMessage);
                   return;
                 }
 
-                // Check for HTML content
+                // Handle successful JSON response with HTML content
                 if (response_json.html) {
-                  console.log('HOSTPN AJAX - HTML content received');
-                  console.log(response_json);
+                  console.log('HOSTPN AJAX - HTML content received in JSON response');
                   hostpn_popup_element.find('.hostpn-popup-content').html(response_json.html);
                   
                   // Initialize media uploaders if function exists
@@ -170,12 +197,12 @@
                   }
                 } else {
                   console.log('HOSTPN AJAX - Response missing HTML content');
-                  console.log(hostpn_i18n.an_error_has_occurred);
+                  hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
                 }
               } catch (e) {
-                console.log('HOSTPN AJAX - Failed to parse response:', e);
+                console.log('HOSTPN AJAX - Error processing response:', e);
                 console.log('Raw response:', response);
-                console.log(hostpn_i18n.an_error_has_occurred);
+                hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
               }
             },
             error: function(xhr, status, error) {

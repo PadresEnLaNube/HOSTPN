@@ -43,7 +43,8 @@ class HOSTPN_Ajax_Nopriv {
         return array(
           'id' => sanitize_key($sanitized_key['id']),
           'node' => sanitize_key($sanitized_key['node']),
-          'type' => sanitize_key($sanitized_key['type'])
+          'type' => sanitize_key($sanitized_key['type']),
+          'multiple' => sanitize_key($sanitized_key['multiple'])
         );
       }, wp_unslash($_POST['hostpn_ajax_keys'])) : [];
 
@@ -51,7 +52,7 @@ class HOSTPN_Ajax_Nopriv {
 
       if (!empty($hostpn_ajax_keys)) {
         foreach ($hostpn_ajax_keys as $hostpn_key) {
-          if (strpos($hostpn_key['id'], '[]') !== false) {
+          if ($hostpn_key['multiple'] == 'true') {
             $hostpn_clear_key = str_replace('[]', '', $hostpn_key['id']);
             ${$hostpn_clear_key} = $hostpn_key_value[$hostpn_clear_key] = [];
 

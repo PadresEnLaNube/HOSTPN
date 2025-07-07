@@ -11,104 +11,77 @@
  * @author     Padres en la Nube <info@padresenlanube.com>
  */
 class HOSTPN_Forms {
-	/**
-	 * Plaform forms.
-	 *
-	 * @since    1.0.0
-	 */
+  /**
+   * Plaform forms.
+   *
+   * @since    1.0.0
+   */
 
-  public static function hostpn_input_builder($hostpn_input, $hostpn_type, $hostpn_id = 0, $disabled = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0) {
-    // HOSTPN_Forms::input_builder($hostpn_input, $hostpn_type, $hostpn_id = 0, $disabled = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0)
+  /**
+   * Get the current value of a field based on its type and storage
+   * 
+   * @param string $field_id The field ID
+   * @param string $hostpn_type The type of field (user, post, option)
+   * @param int $hostpn_id The ID of the user/post/option
+   * @param int $hostpn_meta_array Whether the field is part of a meta array
+   * @param int $hostpn_array_index The index in the meta array
+   * @param array $hostpn_input The input array containing field configuration
+   * @return mixed The current value of the field
+   */
+  private static function hostpn_get_field_value($field_id, $hostpn_type, $hostpn_id = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0, $hostpn_input = []) {
+    $current_value = '';
+
     if ($hostpn_meta_array) {
       switch ($hostpn_type) {
         case 'user':
-          $user_meta = get_user_meta($hostpn_id, $hostpn_input['id'], true);
-
-          if (is_array($user_meta) && array_key_exists($hostpn_array_index, $user_meta) && !empty($user_meta[$hostpn_array_index])) {
-            $hostpn_value = $user_meta[$hostpn_array_index];
-          }else{
-            if (array_key_exists('value', $hostpn_input)) {
-              $hostpn_value = $hostpn_input['value'];
-            }else{
-              $hostpn_value = '';
-            }
+          $meta = get_user_meta($hostpn_id, $field_id, true);
+          if (is_array($meta) && isset($meta[$hostpn_array_index])) {
+            $current_value = $meta[$hostpn_array_index];
           }
           break;
         case 'post':
-          $post_meta = get_post_meta($hostpn_id, $hostpn_input['id'], true);
-
-          if (is_array($post_meta) && array_key_exists($hostpn_array_index, $post_meta) && !empty($post_meta[$hostpn_array_index])) {
-            $hostpn_value = $post_meta[$hostpn_array_index];
-          }else{
-            if (array_key_exists('value', $hostpn_input)) {
-              $hostpn_value = $hostpn_input['value'];
-            }else{
-              $hostpn_value = '';
-            }
+          $meta = get_post_meta($hostpn_id, $field_id, true);
+          if (is_array($meta) && isset($meta[$hostpn_array_index])) {
+            $current_value = $meta[$hostpn_array_index];
           }
           break;
         case 'option':
-          $option = get_option($hostpn_input['id']);
-
-          if (is_array($option) && array_key_exists($hostpn_array_index, $option) && !empty($option[$hostpn_array_index])) {
-            $hostpn_value = $option[$hostpn_array_index];
-          }else{
-            if (array_key_exists('value', $hostpn_input)) {
-              $hostpn_value = $hostpn_input['value'];
-            }else{
-              $hostpn_value = '';
-            }
+          $option = get_option($field_id);
+          if (is_array($option) && isset($option[$hostpn_array_index])) {
+            $current_value = $option[$hostpn_array_index];
           }
           break;
       }
-    }else{
+    } else {
       switch ($hostpn_type) {
         case 'user':
-          $user_meta = get_user_meta($hostpn_id, $hostpn_input['id'], true);
-
-          if ($user_meta != '') {
-            $hostpn_value = $user_meta;
-          }else{
-            if (array_key_exists('value', $hostpn_input)) {
-              $hostpn_value = $hostpn_input['value'];
-            }else{
-              $hostpn_value = '';
-            }
-          }
+          $current_value = get_user_meta($hostpn_id, $field_id, true);
           break;
         case 'post':
-          $post_meta = get_post_meta($hostpn_id, $hostpn_input['id'], true);
-
-          if ($post_meta != '') {
-            $hostpn_value = $post_meta;
-          }else{
-            if (array_key_exists('value', $hostpn_input)) {
-              $hostpn_value = $hostpn_input['value'];
-            }else{
-              $hostpn_value = '';
-            }
-          }
+          $current_value = get_post_meta($hostpn_id, $field_id, true);
           break;
         case 'option':
-          $option = get_option($hostpn_input['id']);
-
-          if ($option != '') {
-            $hostpn_value = $option;
-          }else{
-            if (array_key_exists('value', $hostpn_input)) {
-              $hostpn_value = $hostpn_input['value'];
-            }else{
-              $hostpn_value = '';
-            }
-          }
+          $current_value = get_option($field_id);
           break;
       }
     }
 
+    // If no value is found and there's a default value in the input config, use it
+    if (empty($current_value) && !empty($hostpn_input['value'])) {
+      $current_value = $hostpn_input['value'];
+    }
+
+    return $current_value;
+  }
+
+  public static function hostpn_input_builder($hostpn_input, $hostpn_type, $hostpn_id = 0, $disabled = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0) {
+    // Get the current value using the new function
+    $hostpn_value = self::hostpn_get_field_value($hostpn_input['id'], $hostpn_type, $hostpn_id, $hostpn_meta_array, $hostpn_array_index, $hostpn_input);
+
     $hostpn_parent_block = (!empty($hostpn_input['parent']) ? 'data-hostpn-parent="' . $hostpn_input['parent'] . '"' : '') . ' ' . (!empty($hostpn_input['parent_option']) ? 'data-hostpn-parent-option="' . $hostpn_input['parent_option'] . '"' : '');
 
     switch ($hostpn_input['input']) {
-      case 'input':
+      case 'input':        
         switch ($hostpn_input['type']) {
           case 'file':
             ?>
@@ -219,7 +192,7 @@ class HOSTPN_Forms {
                   <input id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true') ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true') ? '[]' : ''); ?>" <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] == 'true' ? 'multiple' : ''); ?> class="hostpn-field hostpn-password-strength <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" type="<?php echo esc_attr($hostpn_input['type']); ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == 'true') ? 'required' : ''); ?> <?php echo ((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') ? 'disabled' : ''); ?> value="<?php echo (!empty($hostpn_input['button_text']) ? esc_html($hostpn_input['button_text']) : esc_attr($hostpn_value)); ?>" placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? esc_attr($hostpn_input['placeholder']) : ''); ?>" <?php echo wp_kses_post($hostpn_parent_block); ?>/>
 
                   <a href="#" class="hostpn-show-pass hostpn-cursor-pointer hostpn-display-none-soft">
-                    <i class="material-icons-outlined hostpn-font-size-20 hostpn-vertical-align-middle">visibility</i>
+                    <i class="material-icons-outlined hostpn-font-size-20">visibility</i>
                   </a>
                 </div>
 
@@ -249,6 +222,11 @@ class HOSTPN_Forms {
                   </ul>
                 </div>
               </div>
+            <?php
+            break;
+          case 'color':
+            ?>
+              <input id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 'multiple' : ''); ?> class="hostpn-field <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" type="<?php echo esc_attr($hostpn_input['type']); ?>" <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?> value="<?php echo (!empty($hostpn_value) ? esc_attr($hostpn_value) : '#000000'); ?>" placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? esc_attr($hostpn_input['placeholder']) : ''); ?>" <?php echo wp_kses_post($hostpn_parent_block); ?>/>
             <?php
             break;
           default:
@@ -286,38 +264,39 @@ class HOSTPN_Forms {
         }
         break;
       case 'select':
-        ?>
-          <select <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?> <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?> <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 'multiple' : ''); ?> id="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" class="hostpn-field <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>" placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? esc_attr($hostpn_input['placeholder']) : ''); ?>" data-placeholder="<?php echo (array_key_exists('placeholder', $hostpn_input) ? esc_attr($hostpn_input['placeholder']) : ''); ?>" <?php echo wp_kses_post($hostpn_parent_block); ?>>
-
-            <?php if (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']): ?>
-              <?php 
-                switch ($hostpn_type) {
-                  case 'user':
-                    $hostpn_selected_values = !empty(get_user_meta($hostpn_id, $hostpn_input['id'], true)) ? get_user_meta($hostpn_id, $hostpn_input['id'], true) : [];
-                    break;
-                  case 'post':
-                    $hostpn_selected_values = !empty(get_post_meta($hostpn_id, $hostpn_input['id'], true)) ? get_post_meta($hostpn_id, $hostpn_input['id'], true) : [];
-                    break;
-                  case 'option':
-                    $hostpn_selected_values = !empty(get_option($hostpn_input['id'])) ? get_option($hostpn_input['id']) : [];
-                    break;
-                }
-              ?>
-              
-              <?php if (!empty($hostpn_input['options']) && is_array($hostpn_input['options'])): ?>
-                <?php foreach ($hostpn_input['options'] as $hostpn_input_option_key => $hostpn_input_option_value): ?>
-                  <option value="<?php echo esc_attr($hostpn_input_option_key); ?>" <?php echo ((array_key_exists('all_selected', $hostpn_input) && $hostpn_input['all_selected'] == 'true') || (is_array($hostpn_selected_values) && in_array($hostpn_input_option_key, $hostpn_selected_values)) ? 'selected' : ''); ?>><?php echo esc_html($hostpn_input_option_value) ?></option>
-                <?php endforeach ?>
-              <?php endif ?>
-            <?php else: ?>
-              <option value="" <?php echo $hostpn_value == '' ? 'selected' : '';?>><?php esc_html_e('Select an option', 'hostpn'); ?></option>
-              
-              <?php foreach ($hostpn_input['options'] as $hostpn_input_option_key => $hostpn_input_option_value): ?>
-                <option value="<?php echo esc_attr($hostpn_input_option_key); ?>" <?php echo ((array_key_exists('all_selected', $hostpn_input) && $hostpn_input['all_selected'] == 'true') || ($hostpn_value != '' && $hostpn_input_option_key == $hostpn_value) ? 'selected' : ''); ?>><?php echo esc_html($hostpn_input_option_value); ?></option>
-              <?php endforeach ?>
-            <?php endif ?>
+        if (!empty($hostpn_input['options']) && is_array($hostpn_input['options'])) {
+          ?>
+          <select 
+            id="<?php echo esc_attr($hostpn_input['id']); ?>" 
+            name="<?php echo esc_attr($hostpn_input['id']) . ((array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? '[]' : ''); ?>" 
+            class="hostpn-field <?php echo array_key_exists('class', $hostpn_input) ? esc_attr($hostpn_input['class']) : ''; ?>"
+            <?php echo (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) ? 'multiple' : ''; ?>
+            <?php echo ((array_key_exists('required', $hostpn_input) && $hostpn_input['required'] == true) ? 'required' : ''); ?>
+            <?php echo (((array_key_exists('disabled', $hostpn_input) && $hostpn_input['disabled'] == 'true') || $disabled) ? 'disabled' : ''); ?>
+            <?php echo wp_kses_post($hostpn_parent_block); ?>
+          >
+            <?php if (array_key_exists('placeholder', $hostpn_input) && !empty($hostpn_input['placeholder'])): ?>
+              <option value=""><?php echo esc_html($hostpn_input['placeholder']); ?></option>
+            <?php endif; ?>
+            
+            <?php 
+            $selected_values = array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple'] ? 
+              (is_array($hostpn_value) ? $hostpn_value : array()) : 
+              array($hostpn_value);
+            
+            foreach ($hostpn_input['options'] as $value => $label): 
+              $is_selected = in_array($value, $selected_values);
+            ?>
+              <option 
+                value="<?php echo esc_attr($value); ?>"
+                <?php echo $is_selected ? 'selected="selected"' : ''; ?>
+              >
+                <?php echo esc_html($label); ?>
+              </option>
+            <?php endforeach; ?>
           </select>
-        <?php
+          <?php
+        }
         break;
       case 'textarea':
         ?>
@@ -441,6 +420,8 @@ class HOSTPN_Forms {
                 <div class="hostpn-html-multi-group hostpn-display-table hostpn-width-100-percent hostpn-mb-30">
                   <div class="hostpn-display-inline-table hostpn-width-90-percent">
                     <?php foreach ($hostpn_input['html_multi_fields'] as $index => $html_multi_field): ?>
+                      <label><?php echo esc_html($html_multi_field['label']); ?></label>
+
                       <?php self::hostpn_input_builder($html_multi_field, $hostpn_type, $hostpn_id, false, true, $length_index); ?>
                     <?php endforeach ?>
                   </div>
@@ -480,7 +461,6 @@ class HOSTPN_Forms {
   }
 
   public static function hostpn_input_wrapper_builder($input_array, $type, $hostpn_id = 0, $disabled = 0, $hostpn_format = 'half'){
-    // HOSTPN_Forms::input_wrapper_builder($input_array, $type, $hostpn_id = 0, $disabled = 0, $hostpn_format = 'half')
     ?>
       <?php if (array_key_exists('section', $input_array) && !empty($input_array['section'])): ?>      
         <?php if ($input_array['section'] == 'start'): ?>
@@ -506,7 +486,7 @@ class HOSTPN_Forms {
           </div>
         <?php endif ?>
       <?php else: ?>
-        <div class="hostpn-input-wrapper <?php echo esc_attr($input_array['id']); ?> <?php echo !empty($input_array['tabs']) ? 'hostpn-input-tabbed' : ''; ?> hostpn-input-field-<?php echo esc_attr($input_array['input']); ?> <?php echo (!empty($input_array['required']) && $input_array['required'] == true) ? 'hostpn-input-field-required' : ''; ?> <?php echo ($disabled) ? 'hostpn-input-field-disabled' : ''; ?>">
+        <div class="hostpn-input-wrapper <?php echo esc_attr($input_array['id']); ?> <?php echo !empty($input_array['tabs']) ? 'hostpn-input-tabbed' : ''; ?> hostpn-input-field-<?php echo esc_attr($input_array['input']); ?> <?php echo (!empty($input_array['required']) && $input_array['required'] == true) ? 'hostpn-input-field-required' : ''; ?> <?php echo ($disabled) ? 'hostpn-input-field-disabled' : ''; ?> hostpn-mb-30">
           <?php if (array_key_exists('label', $input_array) && !empty($input_array['label'])): ?>
             <div class="hostpn-display-inline-table <?php echo (($hostpn_format == 'half' && !(array_key_exists('type', $input_array) && $input_array['type'] == 'submit')) ? 'hostpn-width-40-percent' : 'hostpn-width-100-percent'); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
               <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
@@ -528,6 +508,259 @@ class HOSTPN_Forms {
           </div>
         </div>
       <?php endif ?>
+    <?php
+  }
+
+  /**
+   * Display wrapper for field values with format control
+   * 
+   * @param array $input_array The input array containing field configuration
+   * @param string $type The type of field (user, post, option)
+   * @param int $hostpn_id The ID of the user/post/option
+   * @param int $hostpn_meta_array Whether the field is part of a meta array
+   * @param int $hostpn_array_index The index in the meta array
+   * @param string $hostpn_format The display format ('half' or 'full')
+   * @return string Formatted HTML output
+   */
+  public static function hostpn_input_display_wrapper($input_array, $type, $hostpn_id = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0, $hostpn_format = 'half') {
+    ob_start();
+    ?>
+    <?php if (array_key_exists('section', $input_array) && !empty($input_array['section'])): ?>      
+      <?php if ($input_array['section'] == 'start'): ?>
+        <div class="hostpn-toggle-wrapper hostpn-section-wrapper hostpn-position-relative hostpn-mb-30 <?php echo array_key_exists('class', $input_array) ? esc_attr($input_array['class']) : ''; ?>" id="<?php echo array_key_exists('id', $input_array) ? esc_attr($input_array['id']) : ''; ?>">
+          <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
+            <i class="material-icons-outlined hostpn-section-helper hostpn-color-main-0 hostpn-tooltip" title="<?php echo wp_kses_post($input_array['description']); ?>">help</i>
+          <?php endif ?>
+
+          <a href="#" class="hostpn-toggle hostpn-width-100-percent hostpn-text-decoration-none">
+            <div class="hostpn-display-table hostpn-width-100-percent hostpn-mb-20">
+              <div class="hostpn-display-inline-table hostpn-width-90-percent">
+                <label class="hostpn-cursor-pointer hostpn-mb-20 hostpn-color-main-0"><?php echo wp_kses_post($input_array['label']); ?></label>
+              </div>
+              <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
+                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0">add</i>
+              </div>
+            </div>
+          </a>
+
+          <div class="hostpn-content hostpn-pl-10 hostpn-toggle-content hostpn-mb-20 hostpn-display-none-soft">
+      <?php elseif ($input_array['section'] == 'end'): ?>
+          </div>
+        </div>
+      <?php endif ?>
+    <?php else: ?>
+      <div class="hostpn-input-wrapper <?php echo esc_attr($input_array['id']); ?> hostpn-input-display-<?php echo esc_attr($input_array['input']); ?> <?php echo (!empty($input_array['required']) && $input_array['required'] == true) ? 'hostpn-input-field-required' : ''; ?> hostpn-mb-30">
+        <?php if (array_key_exists('label', $input_array) && !empty($input_array['label'])): ?>
+          <div class="hostpn-display-inline-table <?php echo ($hostpn_format == 'half' ? 'hostpn-width-40-percent' : 'hostpn-width-100-percent'); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
+            <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
+              <label class="hostpn-vertical-align-middle hostpn-display-block <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? 'hostpn-toggle' : ''; ?>" for="<?php echo esc_attr($input_array['id']); ?>">
+                <?php echo esc_html($input_array['label']); ?>
+                <?php echo (array_key_exists('required', $input_array) && !empty($input_array['required']) && $input_array['required'] == true) ? '<span class="hostpn-tooltip" title="' . esc_html(__('Required field', 'hostpn')) . '">*</span>' : ''; ?>
+                <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? '<i class="material-icons-outlined hostpn-cursor-pointer hostpn-float-right">add</i>' : ''; ?>
+              </label>
+
+              <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
+                <div class="hostpn-toggle-content hostpn-display-none-soft">
+                  <small><?php echo wp_kses_post(wp_specialchars_decode($input_array['description'])); ?></small>
+                </div>
+              <?php endif ?>
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <div class="hostpn-display-inline-table <?php echo ((array_key_exists('label', $input_array) && empty($input_array['label'])) ? 'hostpn-width-100-percent' : ($hostpn_format == 'half' ? 'hostpn-width-60-percent' : 'hostpn-width-100-percent')); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
+          <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
+            <div class="hostpn-input-field">
+              <?php self::hostpn_input_builder_display($input_array, $type, $hostpn_id, $hostpn_meta_array, $hostpn_array_index); ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    <?php endif; ?>
+    <?php
+    return ob_get_clean();
+  }
+
+  /**
+   * Display formatted values of hostpn_input_builder fields in frontend
+   * 
+   * @param array $hostpn_input The input array containing field configuration
+   * @param string $hostpn_type The type of field (user, post, option)
+   * @param int $hostpn_id The ID of the user/post/option
+   * @param int $hostpn_meta_array Whether the field is part of a meta array
+   * @param int $hostpn_array_index The index in the meta array
+   * @return string Formatted HTML output of field values
+   */
+  public static function hostpn_input_builder_display($hostpn_input, $hostpn_type, $hostpn_id = 0, $hostpn_meta_array = 0, $hostpn_array_index = 0) {
+    // Get the current value using the new function
+    $current_value = self::hostpn_get_field_value($hostpn_input['id'], $hostpn_type, $hostpn_id, $hostpn_meta_array, $hostpn_array_index, $hostpn_input);
+
+    // Start the field value display
+    ?>
+      <div class="hostpn-field-value">
+        <?php
+        switch ($hostpn_input['input']) {
+          case 'input':
+            switch ($hostpn_input['type']) {
+              case 'hidden':
+                break;
+              case 'nonce':
+                break;
+              case 'file':
+                if (!empty($current_value)) {
+                  $file_url = wp_get_attachment_url($current_value);
+                  ?>
+                    <div class="hostpn-file-display">
+                      <a href="<?php echo esc_url($file_url); ?>" target="_blank" class="hostpn-file-link">
+                        <?php echo esc_html(basename($file_url)); ?>
+                      </a>
+                    </div>
+                  <?php
+                } else {
+                  echo '<span class="hostpn-no-file">' . esc_html__('No file uploaded', 'hostpn') . '</span>';
+                }
+                break;
+
+              case 'checkbox':
+                ?>
+                  <div class="hostpn-checkbox-display">
+                    <span class="hostpn-checkbox-status <?php echo $current_value === 'on' ? 'checked' : 'unchecked'; ?>">
+                      <?php echo $current_value === 'on' ? esc_html__('Yes', 'hostpn') : esc_html__('No', 'hostpn'); ?>
+                    </span>
+                  </div>
+                <?php
+                break;
+
+              case 'radio':
+                if (!empty($hostpn_input['radio_options'])) {
+                  foreach ($hostpn_input['radio_options'] as $option) {
+                    if ($current_value === $option['value']) {
+                      ?>
+                        <span class="hostpn-radio-selected"><?php echo esc_html($option['label']); ?></span>
+                      <?php
+                    }
+                  }
+                }
+                break;
+
+              case 'color':
+                ?>
+                  <div class="hostpn-color-display">
+                    <span class="hostpn-color-preview" style="background-color: <?php echo esc_attr($current_value); ?>"></span>
+                    <span class="hostpn-color-value"><?php echo esc_html($current_value); ?></span>
+                  </div>
+                <?php
+                break;
+
+              default:
+                ?>
+                  <span class="hostpn-text-value"><?php echo esc_html($current_value); ?></span>
+                <?php
+                break;
+            }
+            break;
+
+          case 'select':
+            if (!empty($hostpn_input['options']) && is_array($hostpn_input['options'])) {
+              if (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']) {
+                // Handle multiple select
+                $selected_values = is_array($current_value) ? $current_value : array();
+                if (!empty($selected_values)) {
+                  ?>
+                  <div class="hostpn-select-values hostpn-select-values-column">
+                    <?php foreach ($selected_values as $value): ?>
+                      <?php if (isset($hostpn_input['options'][$value])): ?>
+                        <div class="hostpn-select-value-item"><?php echo esc_html($hostpn_input['options'][$value]); ?></div>
+                      <?php endif; ?>
+                    <?php endforeach; ?>
+                  </div>
+                  <?php
+                }
+              } else {
+                // Handle single select
+                $current_value = is_scalar($current_value) ? (string)$current_value : '';
+                if (isset($hostpn_input['options'][$current_value])) {
+                  ?>
+                  <span class="hostpn-select-value"><?php echo esc_html($hostpn_input['options'][$current_value]); ?></span>
+                  <?php
+                }
+              }
+            }
+            break;
+
+          case 'textarea':
+            ?>
+              <div class="hostpn-textarea-value"><?php echo wp_kses_post(nl2br($current_value)); ?></div>
+            <?php
+            break;
+          case 'image':
+            if (!empty($current_value)) {
+              $image_ids = explode(',', $current_value);
+              ?>
+                <div class="hostpn-image-gallery">
+                  <?php foreach ($image_ids as $image_id): ?>
+                    <div class="hostpn-image-item">
+                      <?php echo wp_get_attachment_image($image_id, 'medium'); ?>
+                    </div>
+                  <?php endforeach; ?>
+                </div>
+              <?php
+            } else {
+              ?>
+                <span class="hostpn-no-image"><?php esc_html_e('No images uploaded', 'hostpn'); ?></span>
+              <?php
+            }
+            break;
+
+          case 'editor':
+            ?>
+              <div class="hostpn-editor-content"><?php echo wp_kses_post($current_value); ?></div>
+            <?php
+            break;
+
+          case 'html':
+            if (!empty($hostpn_input['html_content'])) {
+              ?>
+                <div class="hostpn-html-content"><?php echo wp_kses_post(do_shortcode($hostpn_input['html_content'])); ?></div>
+              <?php
+            }
+            break;
+
+          case 'html_multi':
+            switch ($hostpn_type) {
+              case 'user':
+                $html_multi_fields_length = !empty(get_user_meta($hostpn_id, $hostpn_input['html_multi_fields'][0]['id'], true)) ? count(get_user_meta($hostpn_id, $hostpn_input['html_multi_fields'][0]['id'], true)) : 0;
+                break;
+              case 'post':
+                $html_multi_fields_length = !empty(get_post_meta($hostpn_id, $hostpn_input['html_multi_fields'][0]['id'], true)) ? count(get_post_meta($hostpn_id, $hostpn_input['html_multi_fields'][0]['id'], true)) : 0;
+                break;
+              case 'option':
+                $html_multi_fields_length = !empty(get_option($hostpn_input['html_multi_fields'][0]['id'])) ? count(get_option($hostpn_input['html_multi_fields'][0]['id'])) : 0;
+            }
+
+            ?>
+              <div class="hostpn-html-multi-content">
+                <?php if ($html_multi_fields_length): ?>
+                  <?php foreach (range(0, ($html_multi_fields_length - 1)) as $length_index): ?>
+                    <div class="hostpn-html-multi-group hostpn-display-table hostpn-width-100-percent hostpn-mb-30">
+                      <?php foreach ($hostpn_input['html_multi_fields'] as $index => $html_multi_field): ?>
+                          <div class="hostpn-display-inline-table hostpn-width-60-percent">
+                            <label><?php echo esc_html($html_multi_field['label']); ?></label>
+                          </div>
+
+                          <div class="hostpn-display-inline-table hostpn-width-40-percent">
+                            <?php self::hostpn_input_builder_display($html_multi_field, $hostpn_type, $hostpn_id, 1, $length_index); ?>
+                          </div>
+                      <?php endforeach ?>
+                    </div>
+                  <?php endforeach ?>
+                <?php endif; ?>
+              </div>
+            <?php
+            break;
+        }
+        ?>
+      </div>
     <?php
   }
 
