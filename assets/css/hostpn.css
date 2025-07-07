@@ -1777,3 +1777,83 @@ header .wp-block-navigation .wp-block-navigation-item__content.wp-block-navigati
     cursor:default;
   }
 /* END HOSTPN SWITCH */
+
+/* ACCOMMODATION FILTER */
+.hostpn-accommodation-search-wrapper, .hostpn-part-search-wrapper, .hostpn-guest-search-wrapper {
+  padding: 8px 15px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.hostpn-accommodation-search-toggle, .hostpn-part-search-toggle, .hostpn-guest-search-toggle {
+  color: var(--hostpn-formpage-color-secondary);
+  margin-right: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.hostpn-accommodation-search-toggle:hover, .hostpn-part-search-toggle:hover, .hostpn-guest-search-toggle:hover {
+  color: var(--hostpn-formpage-color-secondary-dark);
+  transform: scale(1.1);
+}
+
+.hostpn-accommodation-search-input, .hostpn-part-search-input, .hostpn-guest-search-input {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.hostpn-accommodation-search-input:focus, .hostpn-part-search-input:focus, .hostpn-guest-search-input:focus {
+  box-shadow: none !important;
+}
+
+.hostpn-accommodation-search-input::placeholder, .hostpn-part-search-input::placeholder, .hostpn-guest-search-input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Animation for search input */
+.hostpn-accommodation-search-input.hostpn-display-none, .hostpn-part-search-input.hostpn-display-none, .hostpn-guest-search-input.hostpn-display-none {
+  width: 0;
+  opacity: 0;
+  margin-right: 0 !important;
+}
+
+.hostpn-accommodation-search-input:not(.hostpn-display-none), .hostpn-part-search-input:not(.hostpn-display-none), .hostpn-guest-search-input:not(.hostpn-display-none) {
+  width: 90% !important;
+  opacity: 1;
+  margin-right: 10px !important;
+}
+
+/* Smooth transitions for filtered items */
+.hostpn-hostpn_point-list-item, .hostpn-hostpn_part-list-item, .hostpn-hostpn_guest-list-item {
+  transition: all 0.3s ease;
+}
+
+.hostpn-hostpn_point-list-item:not(:visible), .hostpn-hostpn_part-list-item:not(:visible), .hostpn-hostpn_guest-list-item:not(:visible) {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hostpn-accommodation-search-container, .hostpn-part-search-container, .hostpn-guest-search-container {
+    justify-content: center;
+  }
+
+  .hostpn-accommodation-search-wrapper, .hostpn-part-search-wrapper, .hostpn-guest-search-wrapper  {
+    max-width: 250px;
+  }
+}
+
+/* END accommodation FILTER */

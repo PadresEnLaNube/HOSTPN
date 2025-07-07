@@ -181,6 +181,9 @@ class HOSTPN_Common {
 			'copied' => esc_html(__('Copied', 'hostpn')),
 		]);
 
+		// Pass CPTs to JavaScript
+		wp_localize_script($this->plugin_name, 'hostpn_cpts', HOSTPN_CPTS);
+
 		// Initialize popups
 		HOSTPN_Popups::instance();
 

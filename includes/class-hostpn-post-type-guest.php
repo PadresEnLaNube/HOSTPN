@@ -522,6 +522,17 @@ class HOSTPN_Post_Type_Guest {
     if(is_user_logged_in()) {
       ?>
         <div class="hostpn-hostpn_guest-list hostpn-mb-50">
+          <div class="hostpn-guest-search-container hostpn-mb-20 hostpn-text-align-right">
+            <div class="hostpn-guest-search-wrapper">
+              <input type="text" class="hostpn-guest-search-input hostpn-input hostpn-display-none" placeholder="<?php esc_attr_e('Filter...', 'hostpn'); ?>" />
+              <i class="material-icons-outlined hostpn-guest-search-toggle hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Search Guests', 'hostpn'); ?>">search</i>
+              
+              <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-guest-add" data-hostpn-ajax-type="hostpn_guest_new">
+                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Add new Guest', 'hostpn'); ?>">add</i>
+              </a>
+            </div>
+          </div>
+
           <div class="hostpn-hostpn_guest-list-wrapper">
             <?php echo wp_kses(self::hostpn_guest_list(), HOSTPN_KSES); ?>
           </div>

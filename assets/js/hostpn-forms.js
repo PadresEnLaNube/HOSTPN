@@ -457,6 +457,147 @@
     $(document).on('change', '#hostpn_identity', function(e) {
       hostpn_select_identity();
     });
+
+    // UNIFIED SEARCH FUNCTIONALITY FOR ALL CPTS
+    if (typeof hostpn_cpts !== 'undefined') {
+      // Initialize search functionality for each CPT
+      Object.keys(hostpn_cpts).forEach(function(cptKey) {
+        var cptName = hostpn_cpts[cptKey];
+        var searchToggleSelector = '.hostpn-' + cptKey + '-search-toggle';
+        var searchInputSelector = '.hostpn-' + cptKey + '-search-input';
+        var searchWrapperSelector = '.hostpn-' + cptKey + '-search-wrapper';
+        var listSelector = '.hostpn-hostpn_' + cptKey + '-list';
+        var listWrapperSelector = '.hostpn-hostpn_' + cptKey + '-list-wrapper';
+        var addNewSelector = '.hostpn-' + cptKey + '[data-hostpn_' + cptKey + '-id="0"]';
+
+        // Only initialize if elements exist
+        if ($(searchToggleSelector).length) {
+          
+          // Toggle search input visibility
+          $(document).on('click', searchToggleSelector, function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            var searchToggle = $(this);
+            var searchInput = searchToggle.siblings(searchInputSelector);
+            var searchWrapper = searchToggle.closest(searchWrapperSelector);
+            var list = searchToggle.closest(listSelector);
+            var listWrapper = list.find(listWrapperSelector);
+            var itemsList = listWrapper.find('ul');
+
+            if (searchInput.hasClass('hostpn-display-none')) {
+              // Show search input
+              searchInput.removeClass('hostpn-display-none').focus();
+              searchToggle.text('close');
+              searchWrapper.addClass('hostpn-search-active');
+            } else {
+              // Hide search input and clear filter
+              searchInput.addClass('hostpn-display-none').val('');
+              searchToggle.text('search');
+              searchWrapper.removeClass('hostpn-search-active');
+              
+              // Show all items
+              itemsList.find('li').show();
+            }
+          });
+
+          // Filter items on keyup
+          $(document).on('keyup', searchInputSelector, function(e) {
+            var searchInput = $(this);
+            var searchTerm = searchInput.val().toLowerCase().trim();
+            var list = searchInput.closest(listSelector);
+            var listWrapper = list.find(listWrapperSelector);
+            var itemsList = listWrapper.find('ul');
+            var items = itemsList.find('li:not(' + addNewSelector + ')');
+
+            if (searchTerm === '') {
+              // Show all items when search is empty
+              items.show();
+              // Also show the "Add new" item
+              itemsList.find(addNewSelector).show();
+            } else {
+              // Filter items based on title
+              items.each(function() {
+                var itemTitle = $(this).find('.hostpn-display-inline-table a span').first().text().toLowerCase();
+                if (itemTitle.includes(searchTerm)) {
+                  $(this).show();
+                } else {
+                  $(this).hide();
+                }
+              });
+              // Hide the "Add new" item when filtering
+              itemsList.find(addNewSelector).hide();
+            }
+          });
+
+          // Close search on escape key
+          $(document).on('keydown', searchInputSelector, function(e) {
+            if (e.keyCode === 27) { // Escape key
+              var searchInput = $(this);
+              var searchToggle = searchInput.siblings(searchToggleSelector);
+              var searchWrapper = searchInput.closest(searchWrapperSelector);
+              var list = searchInput.closest(listSelector);
+              var listWrapper = list.find(listWrapperSelector);
+              var itemsList = listWrapper.find('ul');
+
+              searchInput.addClass('hostpn-display-none').val('');
+              searchToggle.text('search');
+              searchWrapper.removeClass('hostpn-search-active');
+              
+              // Show all items
+              itemsList.find('li').show();
+            }
+          });
+                }
+      });
+
+      // Single unified click outside handler for all search wrappers
+      $(document).on('click', function(e) {
+        var clickedInsideSearch = false;
+        var activeSearchInput = null;
+        var activeSearchToggle = null;
+        var activeSearchWrapper = null;
+        var activeList = null;
+        var activeListWrapper = null;
+        var activeItemsList = null;
+
+        // Check if clicked inside any search wrapper
+        Object.keys(hostpn_cpts).forEach(function(cptKey) {
+          var searchWrapperSelector = '.hostpn-' + cptKey + '-search-wrapper';
+          var searchInputSelector = '.hostpn-' + cptKey + '-search-input';
+          var searchToggleSelector = '.hostpn-' + cptKey + '-search-toggle';
+          var listSelector = '.hostpn-hostpn_' + cptKey + '-list';
+          var listWrapperSelector = '.hostpn-hostpn_' + cptKey + '-list-wrapper';
+
+          if ($(e.target).closest(searchWrapperSelector).length) {
+            clickedInsideSearch = true;
+          }
+
+          // Find active search input
+          var searchInput = $(searchInputSelector + ':not(.hostpn-display-none)');
+          if (searchInput.length && !activeSearchInput) {
+            activeSearchInput = searchInput;
+            activeSearchToggle = searchInput.siblings(searchToggleSelector);
+            activeSearchWrapper = searchInput.closest(searchWrapperSelector);
+            activeList = searchInput.closest(listSelector);
+            activeListWrapper = activeList.find(listWrapperSelector);
+            activeItemsList = activeListWrapper.find('ul');
+          }
+        });
+
+        // Close search if clicked outside
+        if (!clickedInsideSearch && activeSearchInput) {
+          activeSearchInput.addClass('hostpn-display-none').val('');
+          activeSearchToggle.text('search');
+          activeSearchWrapper.removeClass('hostpn-search-active');
+          
+          // Show all items
+          activeItemsList.find('li').show();
+        }
+      });
+      
+    }
   });
 
   $(document).on('click', '.hostpn-toggle', function(e) {

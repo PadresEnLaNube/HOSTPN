@@ -424,6 +424,17 @@ class HOSTPN_Post_Type_Accommodation {
     if(HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
       ?>
         <div class="hostpn-hostpn_accommodation-list hostpn-mb-50">
+          <div class="hostpn-accommodation-search-container hostpn-mb-20 hostpn-text-align-right">
+            <div class="hostpn-accommodation-search-wrapper">
+              <input type="text" class="hostpn-accommodation-search-input hostpn-input hostpn-display-none" placeholder="<?php esc_attr_e('Filter...', 'hostpn'); ?>" />
+              <i class="material-icons-outlined hostpn-accommodation-search-toggle hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Search Accommodations', 'hostpn'); ?>">search</i>
+
+              <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-accommodation-add" data-hostpn-ajax-type="hostpn_accommodation_new">
+                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Add new Accommodation', 'hostpn'); ?>">add</i>
+              </a>
+            </div>
+          </div>
+
           <div class="hostpn-hostpn_accommodation-list-wrapper">
             <?php echo wp_kses(self::hostpn_accommodation_list(), HOSTPN_KSES); ?>
           </div>
