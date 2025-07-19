@@ -217,7 +217,7 @@ class HOSTPN_Functions_User {
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'text',
-        'maxlength' => 20,
+        'maxlength' => 40,
         'required' => true,
         'xml' => 'direccion',
         'label' => esc_html(__('Address', 'hostpn')),

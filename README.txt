@@ -4,7 +4,7 @@ Donate link: https://padresenlanube.com/
 Tags: hospedajes España, Spain, hosting, check-in, host register
 Requires at least: 3.5
 Tested up to: 6.8
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -100,6 +100,24 @@ To uninstall the plugin, go to the 'Plugins' screen in WordPress, find the Hospe
 
 
 == Changelog ==
+
+= 1.0.1 =
+
+Remove README.md file and update README.txt to reflect version 1.0.1. 
+Enhance address field maxlength for guest and user input forms from 20 to 40 characters for better data handling. 
+Improve AJAX handling and nonce verification for enhanced security and consistency across the codebase.
+Restore .gitignore file
+Add accommodation, guest, and part search functionality with unified JavaScript handling. Enhance CSS for search input styling and transitions. Update PHP files to include search components in post type templates.
+Update version to 1.0.1, enhance AJAX response handling in JavaScript for improved error management and HTML content processing. Refactor form input structure in PHP for better consistency and readability, including the addition of a new input display wrapper method.
+Remove hostpn.zip file and update AJAX handling in JavaScript and PHP files for improved nonce usage and sanitization. Refactor form input structure for accommodations, guests, and parts, ensuring consistency and enhanced security across the codebase.
+Revert version number to 1.0.0 in hostpn.php and class-hostpn.php. Update AJAX handling in class-hostpn-ajax and class-hostpn-ajax-nopriv to sanitize input keys for improved security and consistency.
+Refactor README.txt for clarity on listing customization and update terminology from 'host' to 'Custom Post Type'. Enhance nonce verification in AJAX handling across multiple classes to improve security. Update JavaScript and PHP files for consistency in nonce usage and improve code readability.
+Update README.txt to reflect plugin requirements and terminology changes, including version requirement update to 3.5, and replace references from 'recipe' to 'host' throughout the document for consistency.
+Update version to 1.0.1, enhance form input structure with improved readability, and enforce maxlength attribute for address fields. Refactor script registration methods for accommodations, guests, and parts to ensure proper loading and printing of scripts.
+Rename plugin from 'Hospedajes España - WPH' to 'Hospedajes España - HOSTPN', update related references, and remove unused assets. Adjust initialization to use 'init' hook. Update language files and ensure consistency in function naming across the codebase.
+Refactor user references from 'wph' to 'pn' across JavaScript and PHP files, updating class names, selectors, and function names for consistency. Adjusted form handling and popup integration.
+Update guest and part post types to order by post date in descending order; modify popup template comments for clarity.
+WPH to PN
 
 = 1.0.0 =
 
