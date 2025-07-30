@@ -454,6 +454,50 @@ class HOSTPN_Post_Type_Guest {
                 }
               }
 
+              // Get the email from the form data
+              $guest_email = !empty($hostpn_email) ? $hostpn_email : '';
+              $guest_name = !empty($hostpn_name) ? $hostpn_name : '';
+              $guest_surname = !empty($hostpn_surname) ? $hostpn_surname : '';
+              
+              // Determine the user ID for the guest post
+              $guest_user_id = get_current_user_id(); // Default to current user
+              
+              if (!empty($guest_email)) {
+                // Check if a user with this email already exists
+                $existing_user = get_user_by('email', $guest_email);
+                
+                if ($existing_user) {
+                  // Use existing user
+                  $guest_user_id = $existing_user->ID;
+                } else {
+                  // Create new user with the guest email
+                  $user_functions = new HOSTPN_Functions_User();
+                  $display_name = trim($guest_name . ' ' . $guest_surname);
+                  $username = sanitize_user($guest_email);
+                  
+                  // Generate a random password for the new user
+                  $random_password = wp_generate_password(12, false);
+                  
+                  $guest_user_id = $user_functions->insert_user(
+                    $username,
+                    $random_password,
+                    $guest_email,
+                    $guest_name,
+                    $guest_surname,
+                    $display_name,
+                    '',
+                    '',
+                    '',
+                    ['hostpn_role_guest']
+                  );
+                  
+                  // If user creation failed, fall back to current user
+                  if (!$guest_user_id) {
+                    $guest_user_id = get_current_user_id();
+                  }
+                }
+              }
+
               $post_functions = new HOSTPN_Functions_Post();
               $guest_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', get_current_user_id());
 
@@ -462,6 +506,8 @@ class HOSTPN_Post_Type_Guest {
                   update_post_meta($guest_id, $key, $value);
                 }
               }
+
+              wp_update_post(['ID' => $guest_id, 'post_author' => get_current_user_id(),]);
 
               break;
             case 'post_edit':

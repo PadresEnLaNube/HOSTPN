@@ -148,6 +148,14 @@
             this.updateOptions();
             // Change icon to arrow up
             this.wrapper.find('.hostpn-selector__indicator-icon').text('keyboard_arrow_up');
+            
+            // Auto-focus on search input if it's visible
+            if (this.options.searchable && this.searchInput && this.searchInput.parent().is(':visible')) {
+                // Use setTimeout to ensure the menu is fully rendered before focusing
+                setTimeout(() => {
+                    this.searchInput.focus();
+                }, 10);
+            }
         }
 
         closeMenu() {

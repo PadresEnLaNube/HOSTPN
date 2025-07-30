@@ -2,34 +2,27 @@
 	'use strict';
 
   window.hostpn_select_country = function () {
-    // First ensure the field is hidden and not required by default
-    $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code')
-      .addClass('hostpn-display-none userspn-display-none')
-      .find('#hostpn_city_code')
-      .prop('required', false);
-
-    if ($('#hostpn_country').val() == 'esp') {
-      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city')
-        .addClass('hostpn-display-none userspn-display-none')
-        .find('#hostpn_city')
-        .prop('required', false);
+    if (typeof $('#hostpn_country').val() !== 'undefined' && $('#hostpn_country').val() == 'esp') {
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city').addClass('hostpn-display-none userspn-display-none').find('#hostpn_city').prop('required', false);
       
-      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code')
-        .removeClass('hostpn-display-none userspn-display-none')
-        .find('#hostpn_city_code')
-        .prop('required', true);
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code').removeClass('hostpn-display-none userspn-display-none').find('#hostpn_city_code').prop('required', true);
     } else {
-      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city')
-        .removeClass('hostpn-display-none userspn-display-none')
-        .find('#hostpn_city')
-        .prop('required', true);
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city').removeClass('hostpn-display-none userspn-display-none').find('#hostpn_city').prop('required', true);
+      
+      $('#hostpn_country').closest('.hostpn_country').siblings('.hostpn_city_code').addClass('hostpn-display-none userspn-display-none').find('#hostpn_city_code').prop('required', false);
     }
   }
   
   window.hostpn_select_identity = function () {
-    if ($('#hostpn_identity').val() == 'nif' || $('#hostpn_identity').val() == 'nie') {
+    if (typeof $('#hostpn_identity').val() !== 'undefined' && ($('#hostpn_identity').val() == 'nif' || $('#hostpn_identity').val() == 'nie')) {
       $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').removeClass('hostpn-display-none userspn-display-none');
       $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_surname_alt').find('#hostpn_surname_alt').prop('required', true);
+
+      if ($('#hostpn_identity').val() == 'nif') {
+        $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').find('#hostpn_identity_support_number').prop('required', true);
+      } else {
+        $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').find('#hostpn_identity_support_number').prop('required', false);
+      }
     }else{
       $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_identity_support_number').addClass('hostpn-display-none userspn-display-none');
       $('#hostpn_identity').closest('.hostpn_identity').siblings('.hostpn_surname_alt').find('#hostpn_surname_alt').prop('required', false);

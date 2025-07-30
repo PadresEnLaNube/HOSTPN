@@ -11,6 +11,7 @@
       var data = {
         action: 'hostpn_ajax_nopriv',
         hostpn_ajax_nopriv_nonce: hostpn_ajax.hostpn_ajax_nonce,
+        userspn_ajax_nopriv_nonce: userspn_ajax.userspn_ajax_nonce,
         hostpn_get_nonce: hostpn_action.hostpn_get_nonce,
         hostpn_ajax_nopriv_type: 'hostpn_form_save',
         hostpn_form_id: hostpn_form.attr('id'),

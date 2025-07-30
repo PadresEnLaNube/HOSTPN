@@ -119,6 +119,12 @@ class HOSTPN_Common {
 			'hostpn_ajax_nonce' => wp_create_nonce('hostpn-nonce'),
 		]);
 
+		if (class_exists('USERSPN')) {
+			wp_localize_script($this->plugin_name . '-ajax', 'userspn_ajax', [
+				'userspn_ajax_nonce' => wp_create_nonce('userspn-nonce'),
+			]);
+		}
+
 		// Verify nonce for GET parameters
 		$nonce_verified = false;
 		if (!empty($_GET['hostpn_nonce'])) {
