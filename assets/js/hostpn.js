@@ -361,12 +361,12 @@
 
       if (hostpn_action.popup != '') {
         $(window).on('load', function(e) {
-          HOSTPN_Popups.open($('#' + hostpn_action.popup), {touch: false});
+          HOSTPN_Popups.open($('#' + hostpn_action.popup));
 
           if (typeof hostpn_action.tab != '') {
             $('.userspn-tab-links[data-userspn-id="userspn-tab-' + hostpn_action.tab + '"]').click();
             $('#userspn-' + hostpn_action.tab + ' input#userspn_email').focus();
-          }else{
+          } else {
             $('.userspn-tab-links[data-userspn-id="userspn-tab-login"]').click();
             $('#userspn-login input#user_login').focus();
           }
@@ -407,5 +407,7 @@
       }
       hostpn_temp.remove();
     }
+
+
   });
 })(jQuery);

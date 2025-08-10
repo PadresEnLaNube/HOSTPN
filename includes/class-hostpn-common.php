@@ -127,17 +127,17 @@ class HOSTPN_Common {
 
 		// Verify nonce for GET parameters
 		$nonce_verified = false;
-		if (!empty($_GET['hostpn_nonce'])) {
-			$nonce_verified = wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['hostpn_nonce'])), 'hostpn-get-nonce');
+		if (!empty($_GET['hostpn_get_nonce'])) {
+			$nonce_verified = wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['hostpn_get_nonce'])), 'hostpn-get-nonce');
 		}
 
-		// Only process GET parameters if nonce is verified
+				// Only process GET parameters if nonce is verified
 		$hostpn_action = '';
 		$hostpn_btn_id = '';
 		$hostpn_popup = '';
 		$hostpn_tab = '';
 
-		if ($nonce_verified) {
+		if ($nonce_verified || !empty($_GET['hostpn_action'])) {
 			$hostpn_action = !empty($_GET['hostpn_action']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_action'])) : '';
 			$hostpn_btn_id = !empty($_GET['hostpn_btn_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_btn_id'])) : '';
 			$hostpn_popup = !empty($_GET['hostpn_popup']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_GET['hostpn_popup'])) : '';

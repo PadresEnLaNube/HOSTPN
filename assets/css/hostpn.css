@@ -270,7 +270,7 @@
 .hostpn-display-inline-block{
   display:inline-block
 }
-.hostpn-display-none,.pn_wph_nonce{
+.hostpn-display-none{
   display:none!important
 }
 .hostpn-display-none-soft{

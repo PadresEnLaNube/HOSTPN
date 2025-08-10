@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: HOSTPN\n"
+"Project-Id-Version: Filkers WooCommerce Marketing\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-31 14:21+0000\n"
-"PO-Revision-Date: 2024-03-19 11:38+0000\n"
+"PO-Revision-Date: 2024-08-01 05:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: Basque\n"
 "Language: eu\n"
@@ -13,990 +13,214 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.6.11; wp-6.6.1\n"
-"X-Domain: hostpn"
+"X-Domain: filkers"
 
-#: includes/class-hostpn-post-type-part.php:154
-msgid "A unique contract reference to distinguish it."
-msgstr "Bereizteko kontratu erreferentzia bakarra."
+#: includes/class-hostpn-activator.php:41
+msgid "1 cup of respect"
+msgstr "1 kopa errespetua"
 
-#: includes/class-hostpn-post-type-part.php:68
-#: includes/class-hostpn-post-type-part.php:69
-#: includes/class-hostpn-post-type-accommodation.php:139
-msgid "Accommodation"
-msgstr "Ostatua"
+#: includes/class-hostpn-activator.php:41
+msgid "1 dash of adventure"
+msgstr "1 abentura puntu"
 
-#: includes/class-hostpn-taxonomies-accommodation.php:32
-msgid "Accommodation categories"
-msgstr "Ostatu kategoriak"
+#: includes/class-hostpn-activator.php:41
+msgid "1 dash of humor"
+msgstr "1 umore pixka bat"
 
-#: includes/class-hostpn-post-type-accommodation.php:101
-#: includes/class-hostpn-post-type-accommodation.php:102
-msgid "Accommodation city"
-msgstr "Ostatuaren hiria"
+#: includes/class-hostpn-activator.php:41
+msgid "1 dash of joy"
+msgstr "1 poza poz"
 
-#: includes/class-hostpn-post-type-accommodation.php:44
-#: includes/class-hostpn-post-type-accommodation.php:45
-msgid "Accommodation code"
-msgstr "Ostatuaren kodea"
+#: includes/class-hostpn-activator.php:41
+msgid "1 dash of tenderness"
+msgstr "1 samurtasun puntu"
 
-#: includes/class-hostpn-post-type-accommodation.php:81
-#: includes/class-hostpn-post-type-accommodation.php:82
-msgid "Accommodation country"
-msgstr "Ostatuaren herrialdea"
+#: includes/class-hostpn-activator.php:41
+msgid "1/2 cup of understanding"
+msgstr "1/2 kopa ulermena"
 
-#: includes/class-hostpn-post-type-accommodation.php:30
-#: includes/class-hostpn-post-type-accommodation.php:140
-msgid "Accommodation description"
-msgstr "Ostatuaren deskribapena"
+#: includes/class-hostpn-activator.php:41
+msgid "1/4 cup of patience"
+msgstr "1/4 kopa pazientzia"
 
-#: includes/class-hostpn-post-type-accommodation.php:169
-msgid "Accommodation details"
-msgstr "Ostatuaren xehetasunak"
+#: includes/class-hostpn-activator.php:41
+msgid "2 cups of trust"
+msgstr "2 edalontzi konfiantza"
 
-#: includes/class-hostpn-post-type-accommodation.php:92
-#: includes/class-hostpn-post-type-accommodation.php:93
-msgid "Accommodation postal code"
-msgstr "Ostatuaren posta kodea"
+#: includes/class-hostpn-activator.php:41
+msgid "2 hearts brimming with love"
+msgstr "2 bihotz maitasunez gainezka"
 
-#: includes/class-hostpn-post-type-accommodation.php:583
-msgid "Accommodation share link"
-msgstr "Ostatua partekatzeko esteka"
-
-#: includes/class-hostpn-post-type-accommodation.php:22
-#: includes/class-hostpn-post-type-accommodation.php:23
-msgid "Accommodation title"
-msgstr "Ostatuaren izenburua"
-
-#: includes/class-hostpn-post-type-accommodation.php:53
-#: includes/class-hostpn-post-type-accommodation.php:54
-msgid "Accommodation type"
-msgstr "Ostatu mota"
-
-#: includes/class-hostpn-activator.php:47
-#: includes/class-hostpn-activator.php:76
-#: includes/class-hostpn-post-type-accommodation.php:123
-msgid "Accommodations"
-msgstr "Ostatuak"
-
-#: includes/class-hostpn-post-type-part.php:77
-msgid "Add accommodation"
-msgstr "Ostatua gehitu"
-
-#: includes/class-hostpn-forms.php:351
-msgid "Add audio"
-msgstr "Audioa gehitu"
-
-#: includes/class-hostpn-forms.php:351
-msgid "Add audios"
-msgstr "Audioak gehitu"
-
-#: includes/class-hostpn-forms.php:442
-msgid "Add element"
-msgstr "Elementua gehitu"
-
-#: includes/class-hostpn-forms.php:372
-msgid "Add file"
-msgstr "Fitxategia gehitu"
-
-#: includes/class-hostpn-forms.php:372
-msgid "Add files"
-msgstr "Fitxategiak gehitu"
-
-#: includes/class-hostpn-post-type-part.php:131
-msgid "Add guest"
-msgstr "Gonbidatua gehitu"
-
-#: includes/class-hostpn-forms.php:309
-msgid "Add image"
-msgstr "Irudia gehitu"
-
-#: includes/class-hostpn-forms.php:309
-msgid "Add images"
-msgstr "Irudiak gehitu"
-
-#: includes/class-hostpn-post-type-accommodation.php:479
-#: includes/class-hostpn-post-type-accommodation.php:527
-msgid "Add new Accommodation"
-msgstr "Ostatua berria gehitu"
-
-#: includes/class-hostpn-post-type-accommodation.php:127
-#: includes/class-hostpn-post-type-accommodation.php:128
-msgid "Add new accommodation"
-msgstr "Ostatua berria gehitu"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:30
-msgid "Add New Accommodation category"
-msgstr "Ostatu kategoria berria gehitu"
-
-#: includes/class-hostpn-post-type-guest.php:251
-#: includes/class-hostpn-post-type-guest.php:252
-#: includes/class-hostpn-post-type-guest.php:638
-#: includes/class-hostpn-post-type-guest.php:686
-msgid "Add new Guest"
-msgstr "Gonbidatu berria gehitu"
-
-#: includes/class-hostpn-taxonomies-guest.php:30
-msgid "Add New Guest category"
-msgstr "Gonbidatu kategoria berria gehitu"
-
-#: includes/class-hostpn-post-type-part.php:765
-#: includes/class-hostpn-post-type-part.php:813
-msgid "Add new part"
-msgstr "Zati berria gehitu"
-
-#: includes/class-hostpn-post-type-part.php:389
-#: includes/class-hostpn-post-type-part.php:390
-msgid "Add new Part of traveler"
-msgstr "Bidaiariaren zati berria gehitu"
-
-#: includes/class-hostpn-taxonomies-part.php:30
-msgid "Add New Part of travelers category"
-msgstr "Bidaiarien zati kategoria berria gehitu"
-
-#: includes/class-hostpn-forms.php:330
-msgid "Add video"
-msgstr "Bideoa gehitu"
-
-#: includes/class-hostpn-forms.php:330
-msgid "Add videos"
-msgstr "Bideoak gehitu"
-
-#: includes/class-hostpn-post-type-guest.php:133
-#: includes/class-hostpn-post-type-guest.php:134
-#: includes/class-hostpn-post-type-accommodation.php:62
-#: includes/class-hostpn-post-type-accommodation.php:63
-#: includes/class-hostpn-functions-user.php:222
-#: includes/class-hostpn-functions-user.php:223
-msgid "Address"
-msgstr "Helbidea"
-
-#: includes/class-hostpn-post-type-guest.php:142
-#: includes/class-hostpn-post-type-guest.php:143
-#: includes/class-hostpn-post-type-accommodation.php:71
-#: includes/class-hostpn-post-type-accommodation.php:72
-#: includes/class-hostpn-functions-user.php:231
-#: includes/class-hostpn-functions-user.php:232
-msgid "Address complementary information"
-msgstr "Helbidearen informazio osagarria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Afghanistan"
-msgstr "Afganistan"
-
-#: includes/class-hostpn-data.php:117
-msgid "Agrotourism"
-msgstr "Agroturismoa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Albania"
-msgstr "Albania"
-
-#: includes/class-hostpn-data.php:85
-msgid "Algeria"
-msgstr "Aljeria"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:25
-msgid "All Accommodation categories"
-msgstr "Ostatu kategoria guztiak"
-
-#: includes/class-hostpn-post-type-accommodation.php:125
-msgid "All accommodations"
-msgstr "Ostatu guztiak"
-
-#: includes/class-hostpn-taxonomies-guest.php:25
-msgid "All Guest categories"
-msgstr "Gonbidatu kategoria guztiak"
-
-#: includes/class-hostpn-post-type-guest.php:249
-msgid "All Guests"
-msgstr "Gonbidatu guztiak"
-
-#: includes/class-hostpn-post-type-part.php:387
-msgid "All Part of travelers"
-msgstr "Bidaiarien zati guztiak"
-
-#: includes/class-hostpn-taxonomies-part.php:25
-msgid "All Part of travelers categories"
-msgstr "Bidaiarien zati kategoria guztiak"
-
-#. Description of the plugin
+#: includes/class-hostpn-activator.php:49
+#: includes/class-hostpn-activator.php:68
 msgid ""
-"Allow you to ask for, save and send the information required by spanish "
-"Royal Decree 933/2021, of October 26."
-msgstr "Espainiako 933/2021 Errege Dekretuak, urriaren 26koa, eskatzen duen informazioa eskatu, gorde eta bidaltzeko aukera ematen du."
+"<!-- wp:heading {\"level\":3,\"className\":\"wp-block-heading\"} --><h3 "
+"class=\"wp-block-heading\">Un festín para el corazón: un viaje culinario de "
+"amor</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Para crear un plato de "
+"amor original, comienza con una base sólida de confianza, respeto, "
+"comprensión y paciencia. Sazone con humor, alegría, aventura y ternura para "
+"darle vida a la vida. En el centro coloca dos corazones rebosantes de amor. "
+"Cocine a fuego lento durante todo el proceso, revolviendo ocasionalmente "
+"para afrontar los altibajos. Decora con palabras amables, gestos cariñosos y "
+"pequeños detalles. Comparte con tu ser querido y disfruta del delicioso "
+"sabor del amor verdadero.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>"
+"Recuerda que no existe una receta fija para Amor, cada uno lo crea a su "
+"manera. Experimenta, utiliza ingredientes frescos y de alta calidad y "
+"sírvelo con una sonrisa y el corazón abierto. ¡Que el amor sea el condimento "
+"que le dé sabor a tu vida!</p><!-- /wp:paragraph -->"
+msgstr ""
+"<!-- wp:heading {\"level\":3,\"className\":\"wp-block-heading\"} --><h3 "
+"class=\"wp-block-heading\">Un festival para el corazón: un viaje culinario "
+"de amor</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Para crear un plato "
+"de amor original, comienza con una base solida de confianza, respeto, "
+"comprensión y pazientzia. Sazone con humor, alegría, aventura y ternura para "
+"darle vida a la vida. En el centro coloca dos corazones rebosantes de amor. "
+"Cocine a fuego lento durante todo el proceso, revolviendo ocasionalmente "
+"altibajos aurre egiteko. Decora con palabras amables, gestos cariñosos y "
+"pequeños detalles. Comparte con tu ser querido y disfruta del delicioso "
+"sabor del amor verdadero.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>"
+"Recuerda que no existe una receta fija para Amor, cada uno lo crea a su "
+"manera. Esperimentazioa, osagai freskoak erabili eta kalitate handiko eta "
+"bihotza irekita dagoen soinuarekin batera. ¡Que el amor sea el condimento "
+"que le dé sabor a tu vida!</p><!-- /wp:paragraph -->"
 
-#: includes/class-hostpn-post-type-guest.php:201
-#: includes/class-hostpn-post-type-guest.php:202
-#: includes/class-hostpn-functions-user.php:292
-#: includes/class-hostpn-functions-user.php:293
-msgid "Alternative phone"
-msgstr "Telefono alternatiboa"
+#: includes/class-hostpn-activator.php:46
+msgid ""
+"<p>To serve, garnish with <strong>kind words, loving gestures, and small "
+"details</strong>. Share with your loved one and savor the delicious "
+"experience of true love.&nbsp;</p><p><ul><li><strong>Don't be afraid to "
+"experiment</strong>. Add your own special ingredients to create a unique "
+"dish that represents your love.&nbsp;</li><li><strong>Use fresh, high-"
+"quality ingredients</strong>. True love is a priceless treasure, treat it "
+"with care.&nbsp;</li><li><strong>Serve with a smile and an open "
+"heart</strong>. Love is best enjoyed when shared.</li></ul></p><p>Enjoy your "
+"creation!</p>"
+msgstr ""
+"<p>Zerbitzatzeko, apaintzeko <strong>hitz onekin, keinu maitagarriekin eta "
+"xehetasun txikiekin</strong> . Partekatu zure maitearekin eta dastatu "
+"benetako maitasunaren esperientzia goxoa.</p><p><ul><li> <strong>Ez izan "
+"beldurrik esperimentatzeko</strong> . Gehitu zure osagai bereziak zure "
+"maitasuna adierazten duen plater paregabea sortzeko.</li><li> <strong>"
+"Erabili kalitate handiko osagai freskoak</strong> . Benetako maitasuna "
+"preziorik gabeko altxor bat da, trata ezazu arretaz.</li><li> <strong>"
+"Zerbitzatu irribarre batekin eta bihotz irekiarekin</strong> . Maitasuna "
+"partekatzen denean gozatzen da onena.</li></ul></p><p> Gozatu zure sorkuntza!"
+"</p>"
 
-#: includes/class-hostpn-common.php:143
+#: includes/class-hostpn-activator.php:43
+msgid ""
+"Add a dash of humor, joy, adventure, and tenderness. Life is tastier with a "
+"touch of fun and spontaneity."
+msgstr ""
+"Gehitu umore, poza, abentura eta samurtasun pixka bat. Bizitza zaporetsuagoa "
+"da dibertsio eta berezkotasun ukitu batekin."
+
+#: includes/class-hostpn-post-type-recipe.php:28
+msgid "Add New"
+msgstr "Gehitu berria"
+
+#: includes/class-hostpn-taxonomies-recipe.php:30
+msgid "Add New Recipe category"
+msgstr "Gehitu Errezeta Berria kategoria"
+
+#: includes/class-hostpn-post-type-recipe.php:27
+msgid "Add new Recipe"
+msgstr "Gehitu errezeta CPT berria"
+
+#: templates/public/archive-hostpn_recipe.php:56
+msgid "Add recipe"
+msgstr "Gehitu errezeta"
+
+#: includes/class-hostpn-taxonomies-recipe.php:25
+msgid "All Recipe categories"
+msgstr "Errezeta kategoria guztiak"
+
+#: includes/class-hostpn-post-type-recipe.php:25
+msgid "All Base CPT"
+msgstr "Errezeta guztiak CPT"
+
+#: includes/class-hostpn-common.php:124
 msgid "An error has occurred. Please try again in a few minutes."
 msgstr "Akats bat gertatu da. Mesedez, saiatu berriro minutu batzuk barru."
 
-#: includes/class-hostpn-ajax.php:132
-msgid "An error occurred while checking the Accommodation."
-msgstr "Errorea gertatu da ostatu egiaztatzean."
-
-#: includes/class-hostpn-ajax.php:251
-msgid "An error occurred while checking the Guest."
-msgstr "Errorea gertatu da gonbidatua egiaztatzean."
-
-#: includes/class-hostpn-ajax.php:360
-msgid "An error occurred while checking the Part."
-msgstr "Errorea gertatu da zatia egiaztatzean."
-
-#: includes/class-hostpn-ajax.php:153
-msgid "An error occurred while duplicating the Accommodation."
-msgstr "Errorea gertatu da ostatu bikoiztzean."
-
-#: includes/class-hostpn-ajax.php:272
-msgid "An error occurred while duplicating the Guest."
-msgstr "Errorea gertatu da gonbidatua bikoiztzean."
-
-#: includes/class-hostpn-ajax.php:381
-msgid "An error occurred while duplicating the Part."
-msgstr "Errorea gertatu da zatia bikoiztzean."
-
-#: includes/class-hostpn-ajax.php:414
-msgid "An error occurred while duplicating the part."
-msgstr "Errorea gertatu da zatia bikoiztzean."
-
-#: includes/class-hostpn-ajax.php:173
-msgid "An error occurred while removing the Accommodation."
-msgstr "Errorea gertatu da ostatu kentzean."
-
-#: includes/class-hostpn-ajax.php:292
-msgid "An error occurred while removing the Guest."
-msgstr "Errorea gertatu da gonbidatua kentzean."
-
-#: includes/class-hostpn-ajax.php:401
-msgid "An error occurred while removing the Part."
-msgstr "Errorea gertatu da zatia kentzean."
-
-#: includes/class-hostpn-ajax.php:82 includes/class-hostpn-ajax.php:104
-msgid "An error occurred while showing the Accommodation."
-msgstr "Errorea gertatu da ostatu erakustean."
-
-#: includes/class-hostpn-ajax.php:201 includes/class-hostpn-ajax.php:223
-msgid "An error occurred while showing the Guest."
-msgstr "Errorea gertatu da gonbidatua erakustean."
-
-#: includes/class-hostpn-ajax.php:310 includes/class-hostpn-ajax.php:332
-msgid "An error occurred while showing the Part."
-msgstr "Errorea gertatu da zatia erakustean."
-
-#: includes/class-hostpn-data.php:85
-msgid "Andorra"
-msgstr "Andorra"
-
-#: includes/class-hostpn-data.php:85
-msgid "Angola"
-msgstr "Angola"
-
-#: includes/class-hostpn-data.php:85
-msgid "Antigua and Barbuda"
-msgstr "Antigua eta Barbuda"
-
-#: includes/class-hostpn-data.php:117
-msgid "Aparthotel"
-msgstr "Aparthotel"
-
-#: includes/class-hostpn-data.php:117
-msgid "Apartment"
-msgstr "Apartamentua"
-
-#: includes/class-hostpn-functions-user.php:358
-msgid "Application received"
-msgstr "Eskaera jaso da"
-
-#: includes/class-hostpn-data.php:85
-msgid "Argentina"
-msgstr "Argentina"
-
-#: includes/class-hostpn-data.php:85
-msgid "Armenia"
-msgstr "Armenia"
-
-#: includes/class-hostpn-forms.php:242
-msgid "Atleast 8 Character"
-msgstr "Gutxienez 8 karaktere"
-
-#: includes/class-hostpn-data.php:85
-msgid "Australia"
-msgstr "Australia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Austria"
-msgstr "Austria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Azerbaijan"
-msgstr "Azerbaijan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Bahamas"
-msgstr "Bahamak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Bahrain"
-msgstr "Bahrain"
-
-#: includes/class-hostpn-data.php:85
-msgid "Bangladesh"
-msgstr "Bangladesh"
-
-#: includes/class-hostpn-data.php:85
-msgid "Barbados"
-msgstr "Barbados"
-
-#: includes/class-hostpn-settings.php:61
-msgid "Base - HOSTPN Options"
-msgstr "Oinarria - HOSTPN Aukerak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Belarus"
-msgstr "Bielorrusia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Belgium"
-msgstr "Belgika"
-
-#: includes/class-hostpn-data.php:85
-msgid "Belize"
-msgstr "Belize"
-
-#: includes/class-hostpn-data.php:85
-msgid "Benin"
-msgstr "Benin"
-
-#: includes/class-hostpn-data.php:85
-msgid "Bhutan"
-msgstr "Bhutan"
-
-#: includes/class-hostpn-post-type-guest.php:103
-#: includes/class-hostpn-post-type-guest.php:104
-#: includes/class-hostpn-functions-user.php:192
-#: includes/class-hostpn-functions-user.php:193
-msgid "Birthdate"
-msgstr "Jaiotze data"
-
-#: includes/class-hostpn-data.php:85
-msgid "Bolivia (Plurinational State of)"
-msgstr "Bolivia (Estatua Plurinazionala)"
-
-#: includes/class-hostpn-data.php:85
-msgid "Bosnia and Herzegovina"
-msgstr "Bosnia eta Herzegovina"
-
-#: includes/class-hostpn-data.php:85
-msgid "Botswana"
-msgstr "Botswana"
-
-#: includes/class-hostpn-data.php:85
-msgid "Brazil"
-msgstr "Brasil"
-
-#: includes/class-hostpn-data.php:121
-msgid "Brother"
-msgstr "Anaia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Brunei Darussalam"
-msgstr "Brunei Darussalam"
-
-#: includes/class-hostpn-data.php:85
-msgid "Bulgaria"
-msgstr "Bulgaria"
-
-#: includes/class-hostpn-data.php:117
-msgid "Bungalow"
-msgstr "Bungalow"
-
-#: includes/class-hostpn-data.php:85
-msgid "Burkina Faso"
-msgstr "Burkina Faso"
-
-#: includes/class-hostpn-data.php:85
-msgid "Burundi"
-msgstr "Burundi"
-
-#: includes/class-hostpn-data.php:85
-msgid "Cabo Verde"
-msgstr "Cabo Verde"
-
-#: includes/class-hostpn-data.php:85
-msgid "Cambodia"
-msgstr "Kanbodia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Cameroon"
-msgstr "Kamerun"
-
-#: includes/class-hostpn-data.php:117
-msgid "Camping"
-msgstr "Kanpamentua"
-
-#: includes/class-hostpn-data.php:85
-msgid "Canada"
-msgstr "Kanada"
-
-#: templates/hostpn-popups.php:43
-msgid "Cancel"
-msgstr "Utzi"
-
-#: includes/class-hostpn-post-type-part.php:253
-#: includes/class-hostpn-post-type-part.php:254
-msgid "Card expiration date"
-msgstr "Txartelaren iraungitze data"
-
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Cash"
-msgstr "Eskudirutan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Central African Republic"
-msgstr "Afrika Erdiko Errepublika"
-
-#: includes/class-hostpn-data.php:85
-msgid "Chad"
-msgstr "Txad"
-
-#: includes/class-hostpn-post-type-guest.php:221
-#: includes/class-hostpn-functions-user.php:312
+#: includes/class-hostpn-activator.php:43
 msgid ""
-"Check this box if you are not the one who has booked the accommodation. Then "
-"you will need to set your relationship with this person."
-msgstr "Markatu laukia ez bazara ostatua erreserbatu duzuna. Ondoren, pertsona horrekin duzun harremana zehaztu beharko duzu."
+"Bake for a lifetime, stirring occasionally. Love is a lifelong journey, full "
+"of ups and downs, but it is always worth it."
+msgstr ""
+"Labean bizitza osorako, noizean behin irabiatuz. Maitasuna bizitza osoko "
+"bidaia da, gora-beherez betea, baina beti merezi du."
 
-#: includes/class-hostpn-post-type-part.php:173
-#: includes/class-hostpn-post-type-part.php:174
-msgid "Check-in date"
-msgstr "Sartze data"
+#: includes/class-hostpn-activator.php:42
+msgid "Baking"
+msgstr "Gozogintza"
 
-#: includes/class-hostpn-post-type-part.php:181
-#: includes/class-hostpn-post-type-part.php:182
-msgid "Check-in time"
-msgstr "Sartze ordua"
+#: includes/class-hostpn-activator.php:42
+msgid "Dashing"
+msgstr "Marraztea"
 
-#: includes/class-hostpn-post-type-part.php:191
-#: includes/class-hostpn-post-type-part.php:192
-msgid "Check-out date"
-msgstr "Irteera data"
-
-#: includes/class-hostpn-post-type-part.php:199
-#: includes/class-hostpn-post-type-part.php:200
-msgid "Check-out time"
-msgstr "Irteera ordua"
-
-#: includes/class-hostpn-data.php:85
-msgid "Chile"
-msgstr "Txile"
-
-#: includes/class-hostpn-data.php:85
-msgid "China"
-msgstr "Txina"
-
-#: includes/class-hostpn-post-type-guest.php:70
-#: includes/class-hostpn-functions-user.php:158
-msgid "CIF"
-msgstr "CIF"
-
-#: includes/class-hostpn-post-type-guest.php:172
-#: includes/class-hostpn-post-type-guest.php:173
-#: includes/class-hostpn-post-type-guest.php:182
-#: includes/class-hostpn-post-type-guest.php:183
-#: includes/class-hostpn-functions-user.php:253
-#: includes/class-hostpn-functions-user.php:254
-#: includes/class-hostpn-functions-user.php:273
-#: includes/class-hostpn-functions-user.php:274
-msgid "City"
-msgstr "Hiria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Colombia"
-msgstr "Kolonbia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Comoros"
-msgstr "Komoreak"
-
-#: includes/class-hostpn-post-type-part.php:895
-msgid "Completed"
-msgstr "Osatuta"
-
-#: includes/class-hostpn-data.php:85
-msgid "Congo"
-msgstr "Kongo"
-
-#: includes/class-hostpn-data.php:85
-msgid "Congo, Democratic Republic of the"
-msgstr "Kongoko Errepublika Demokratikoa"
-
-#: includes/class-hostpn-post-type-part.php:163
-#: includes/class-hostpn-post-type-part.php:164
-msgid "Contract date"
-msgstr "Kontratuaren data"
-
-#: includes/class-hostpn-post-type-part.php:142
-#: includes/class-hostpn-post-type-part.php:143
-msgid "Contract holder"
-msgstr "Kontratuaren titularra"
-
-#: includes/class-hostpn-post-type-part.php:152
-#: includes/class-hostpn-post-type-part.php:153
-msgid "Contract reference"
-msgstr "Kontratuaren erreferentzia"
-
-#: includes/class-hostpn-common.php:166
-msgid "Copied"
-msgstr "Kopiatuta"
-
-#: includes/class-hostpn-post-type-accommodation.php:592
-msgid "Copy url"
-msgstr "URLa kopiatu"
-
-#: includes/class-hostpn-data.php:85
-msgid "Costa Rica"
-msgstr "Costa Rica"
-
-#: includes/class-hostpn-post-type-guest.php:152
-#: includes/class-hostpn-post-type-guest.php:153
-#: includes/class-hostpn-functions-user.php:242
-#: includes/class-hostpn-functions-user.php:243
-msgid "Country"
-msgstr "Herrialdea"
-
-#: includes/class-hostpn-post-type-accommodation.php:539
-msgid "Create Accommodation"
-msgstr "Ostatua sortu"
-
-#: includes/class-hostpn-post-type-guest.php:698
-msgid "Create Guest"
-msgstr "Gonbidatua sortu"
-
-#: includes/class-hostpn-post-type-part.php:825
-msgid "Create part"
-msgstr "Zatia sortu"
-
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Credit card"
-msgstr "Kreditu txartela"
-
-#: includes/class-hostpn-data.php:85
-msgid "Croatia"
-msgstr "Kroazia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Cuba"
-msgstr "Kuba"
-
-#: includes/class-hostpn-data.php:85
-msgid "Cyprus"
-msgstr "Zipre"
-
-#: includes/class-hostpn-data.php:85
-msgid "Czech Republic"
-msgstr "Txekiar Errepublika"
-
-#: includes/class-hostpn-data.php:85
-msgid "Côte d'Ivoire"
-msgstr "Boli Kosta"
-
-#: includes/class-hostpn-post-type-guest.php:431
-#: includes/class-hostpn-functions-user.php:151
-#: includes/class-hostpn-functions-user.php:347
-msgid "Dear guest"
-msgstr "Gonbidatua"
-
-#: includes/class-hostpn-data.php:85
-msgid "Denmark"
-msgstr "Danimarka"
-
-#: includes/class-hostpn-data.php:117
-msgid "Detached or semi-detached chalet"
-msgstr "Txalet isolatua edo erdi-isolatua"
-
-#: includes/class-hostpn-data.php:85
-msgid "Djibouti"
-msgstr "Djibuti"
-
-#: includes/class-hostpn-post-type-guest.php:82
-#: includes/class-hostpn-post-type-guest.php:83
-#: includes/class-hostpn-functions-user.php:171
-#: includes/class-hostpn-functions-user.php:172
-msgid "Document number"
-msgstr "Dokumentu zenbakia"
-
-#: includes/class-hostpn-post-type-guest.php:92
-#: includes/class-hostpn-post-type-guest.php:93
-#: includes/class-hostpn-functions-user.php:181
-#: includes/class-hostpn-functions-user.php:182
-msgid "Document support number"
-msgstr "Dokumentu laguntza zenbakia"
-
-#: includes/class-hostpn-post-type-guest.php:72
-#: includes/class-hostpn-post-type-guest.php:73
-#: includes/class-hostpn-functions-user.php:161
-#: includes/class-hostpn-functions-user.php:162
-msgid "Document type"
-msgstr "Dokumentu mota"
-
-#: includes/class-hostpn-data.php:85
-msgid "Dominica"
-msgstr "Dominika"
-
-#: includes/class-hostpn-data.php:85
-msgid "Dominican Republic"
-msgstr "Dominikar Errepublika"
-
-#: includes/class-hostpn-post-type-part.php:683
-#: includes/class-hostpn-post-type-part.php:718
-msgid "Download XML file"
-msgstr "Deskargatu XML fitxategia"
-
-#: includes/class-hostpn-post-type-accommodation.php:444
-msgid "Duplicate Accommodation"
-msgstr "Bikoiztu ostatu"
-
-#: includes/class-hostpn-post-type-guest.php:603
-msgid "Duplicate Guest"
-msgstr "Bikoiztu gonbidatu"
-
-#: includes/class-hostpn-post-type-part.php:730
-msgid "Duplicate part"
-msgstr "Bikoiztu zati"
-
-#: includes/class-hostpn-data.php:85
-msgid "Ecuador"
-msgstr "Ekuador"
-
-#: includes/class-hostpn-post-type-accommodation.php:420
-#: includes/class-hostpn-post-type-accommodation.php:510
-msgid "Edit Accommodation"
-msgstr "Editatu ostatu"
-
-#: includes/class-hostpn-post-type-accommodation.php:129
-msgid "Edit accommodation"
-msgstr "Editatu ostatu"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:28
-msgid "Edit Accommodation category"
-msgstr "Editatu ostatu kategoria"
-
-#: includes/class-hostpn-common.php:155 includes/class-hostpn-forms.php:347
+#: includes/class-hostpn-common.php:134
 msgid "Edit audio"
 msgstr "Editatu audioa"
 
-#: includes/class-hostpn-common.php:156 includes/class-hostpn-forms.php:347
+#: includes/class-hostpn-common.php:135
 msgid "Edit audios"
 msgstr "Editatu audioak"
 
-#: includes/class-hostpn-common.php:159 includes/class-hostpn-forms.php:368
+#: includes/class-hostpn-common.php:138
 msgid "Edit file"
 msgstr "Editatu fitxategia"
 
-#: includes/class-hostpn-common.php:160 includes/class-hostpn-forms.php:368
+#: includes/class-hostpn-common.php:139
 msgid "Edit files"
 msgstr "Editatu fitxategiak"
 
-#: includes/class-hostpn-post-type-guest.php:253
-#: includes/class-hostpn-post-type-guest.php:591
-#: includes/class-hostpn-post-type-guest.php:669
-msgid "Edit Guest"
-msgstr "Editatu gonbidatu"
-
-#: includes/class-hostpn-taxonomies-guest.php:28
-msgid "Edit Guest category"
-msgstr "Editatu gonbidatu kategoria"
-
-#: includes/class-hostpn-common.php:147 includes/class-hostpn-forms.php:305
+#: includes/class-hostpn-common.php:126
 msgid "Edit image"
 msgstr "Editatu irudia"
 
-#: includes/class-hostpn-common.php:148 includes/class-hostpn-forms.php:305
+#: includes/class-hostpn-common.php:127
 msgid "Edit images"
 msgstr "Editatu irudiak"
 
-#: includes/class-hostpn-post-type-part.php:706
-#: includes/class-hostpn-post-type-part.php:796
-msgid "Edit part"
-msgstr "Editatu zati"
+#: templates/public/single-hostpn_recipe.php:50
+msgid "Edit recipe"
+msgstr "Editatu errezeta"
 
-#: includes/class-hostpn-post-type-part.php:391
-msgid "Edit Part of traveler"
-msgstr "Editatu bidaiari zatia"
+#: includes/class-hostpn-taxonomies-recipe.php:28
+msgid "Edit Recipe category"
+msgstr "Editatu Errezeta kategoria"
 
-#: includes/class-hostpn-taxonomies-part.php:28
-msgid "Edit Part of travelers category"
-msgstr "Editatu bidaiari zati kategoria"
+#: includes/class-hostpn-post-type-recipe.php:29
+msgid "Edit Recipe"
+msgstr "Editatu errezeta CPT"
 
-#: includes/class-hostpn-common.php:151 includes/class-hostpn-forms.php:326
+#: includes/class-hostpn-common.php:130
 msgid "Edit video"
 msgstr "Editatu bideoa"
 
-#: includes/class-hostpn-common.php:152 includes/class-hostpn-forms.php:326
+#: includes/class-hostpn-common.php:131
 msgid "Edit videos"
 msgstr "Editatu bideoak"
 
-#: includes/class-hostpn-post-type-part.php:842
-#: includes/class-hostpn-post-type-guest.php:715
-#: includes/class-hostpn-post-type-accommodation.php:556
-msgid "Editing"
-msgstr "Editatzen"
+#: templates/public/single-hostpn_recipe.php:126
+msgid "Elaboration steps"
+msgstr "Elaborazio-urratsak"
 
-#: includes/class-hostpn-data.php:85
-msgid "Egypt"
-msgstr "Egipto"
+#: includes/class-hostpn-activator.php:42
+msgid "Hearting"
+msgstr "Bihotzekoa"
 
-#: includes/class-hostpn-data.php:85
-msgid "El Salvador"
-msgstr "El Salvador"
+#: templates/public/single-hostpn_recipe.php:135
+msgid "hours"
+msgstr "orduak"
 
-#: includes/class-hostpn-post-type-guest.php:211
-#: includes/class-hostpn-post-type-guest.php:212
-#: includes/class-hostpn-functions-user.php:302
-#: includes/class-hostpn-functions-user.php:303
-msgid "Email"
-msgstr "Posta elektronikoa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Equatorial Guinea"
-msgstr "Ekuatore Ginea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Eritrea"
-msgstr "Eritrea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Estonia"
-msgstr "Estonia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Eswatini"
-msgstr "Eswatini"
-
-#: includes/class-hostpn-data.php:85
-msgid "Ethiopia"
-msgstr "Etiopia"
-
-#: includes/class-hostpn-post-type-part.php:255
-msgid "Expiration date of the card."
-msgstr "Txartelaren iraungitze data."
-
-#: includes/class-hostpn-data.php:121
-msgid "Father / Mother"
-msgstr "Aita / Ama"
-
-#: includes/class-hostpn-data.php:121
-msgid "Father-in-Law"
-msgstr "Aita/amaren suhia"
-
-#: includes/class-hostpn-post-type-guest.php:120
-#: includes/class-hostpn-functions-user.php:209
-msgid "Female"
-msgstr "Emakumezkoa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Fiji"
-msgstr "Fiji"
-
-#: includes/class-hostpn-data.php:85
-msgid "Finland"
-msgstr "Finlandia"
-
-#: includes/class-hostpn-data.php:85
-msgid "France"
-msgstr "Frantzia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Gabon"
-msgstr "Gabon"
-
-#: includes/class-hostpn-data.php:85
-msgid "Gambia"
-msgstr "Gambia"
-
-#: includes/class-hostpn-post-type-guest.php:123
-#: includes/class-hostpn-post-type-guest.php:124
-#: includes/class-hostpn-functions-user.php:212
-#: includes/class-hostpn-functions-user.php:213
-msgid "Gender"
-msgstr "Generoa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Georgia"
-msgstr "Georgia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Germany"
-msgstr "Alemania"
-
-#: includes/class-hostpn-data.php:85
-msgid "Ghana"
-msgstr "Ghana"
-
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Gift card"
-msgstr "Opari txartela"
-
-#: includes/class-hostpn-data.php:117
-msgid "Glamping"
-msgstr "Glampinga"
-
-#: includes/class-hostpn-data.php:121
-msgid "Grandfather / Grandmother"
-msgstr "Aitona / Amona"
-
-#: includes/class-hostpn-data.php:121
-msgid "Grandson / Granddaughter"
-msgstr "Biloba (mutila/neska)"
-
-#: includes/class-hostpn-data.php:121
-msgid "Great-Grandfather / Great-Grandmother"
-msgstr "Birraitona / Birramona"
-
-#: includes/class-hostpn-data.php:121
-msgid "Great-Grandson / Great-Granddaughter"
-msgstr "Birbiloba (mutila/neska)"
-
-#: includes/class-hostpn-data.php:85
-msgid "Greece"
-msgstr "Grezia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Grenada"
-msgstr "Grenada"
-
-#: includes/class-hostpn-data.php:121
-msgid "Guardian"
-msgstr "Tutorea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Guatemala"
-msgstr "Guatemala"
-
-#: includes/class-hostpn-post-type-guest.php:263
-msgid "Guest"
-msgstr "Gonbidatua"
-
-#: includes/class-hostpn-activator.php:37
-msgid "Guest - HOSTPN"
-msgstr "Gonbidatua - HOSTPN"
-
-#: includes/class-hostpn-taxonomies-guest.php:32
-msgid "Guest categories"
-msgstr "Gonbidatu kategoriak"
-
-#: includes/class-hostpn-post-type-guest.php:264
-msgid "Guest description"
-msgstr "Gonbidatuaren deskribapena"
-
-#: includes/class-hostpn-post-type-guest.php:293
-msgid "Guest details"
-msgstr "Gonbidatuaren xehetasunak"
-
-#: includes/class-hostpn-data.php:117
-msgid "Guest house"
-msgstr "Ostatu-etxea"
-
-#: includes/class-hostpn-post-type-guest.php:22
-#: includes/class-hostpn-post-type-guest.php:23
-msgid "Guest name"
-msgstr "Gonbidatuaren izena"
-
-#: includes/class-hostpn-post-type-guest.php:40
-#: includes/class-hostpn-post-type-guest.php:41
-msgid "Guest second surname"
-msgstr "Gonbidatuaren bigarren abizena"
-
-#: includes/class-hostpn-settings.php:21 includes/class-hostpn-settings.php:22
-msgid "Guest slug"
-msgstr "Gonbidatu slug-a"
-
-#: includes/class-hostpn-post-type-guest.php:31
-#: includes/class-hostpn-post-type-guest.php:32
-msgid "Guest surname"
-msgstr "Gonbidatuaren abizena"
-
-#: includes/class-hostpn-activator.php:102
-#: includes/class-hostpn-activator.php:125
-#: includes/class-hostpn-post-type-guest.php:247
-msgid "Guests"
-msgstr "Gonbidatuak"
-
-#: includes/class-hostpn-post-type-guest.php:445
-#: includes/class-hostpn-functions-user.php:352
-msgid "Guests page"
-msgstr "Gonbidatuen orria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Guinea"
-msgstr "Ginea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Guinea-Bissau"
-msgstr "Ginea-Bissau"
-
-#: includes/class-hostpn-data.php:85
-msgid "Guyana"
-msgstr "Guyana"
-
-#: includes/class-hostpn-data.php:85
-msgid "Haiti"
-msgstr "Haiti"
-
-#: includes/class-hostpn-data.php:85
-msgid "Honduras"
-msgstr "Honduras"
-
-#: includes/class-hostpn-settings.php:77
-msgid "Hospedajes España"
-msgstr "Espainiako Ostatua"
-
-#. Name of the plugin
-msgid "Hospedajes España - HOSTPN"
-msgstr "Espainiako Ostatua - HOSTPN"
-
-#: includes/class-hostpn-activator.php:25
-msgid "Host - HOSTPN"
-msgstr "Ostalaritza - HOSTPN"
-
-#: includes/class-hostpn-data.php:117
-msgid "Hostel"
-msgstr "Ostatua"
-
-#: includes/class-hostpn-data.php:117
-msgid "Hotel"
-msgstr "Hotela"
-
-#: includes/class-hostpn-data.php:117
-msgid "House or private home"
-msgstr "Etxea edo etxebizitza pribatua"
-
-#: includes/class-hostpn-data.php:117
-msgid "Housing for tourism purposes"
-msgstr "Turismo-helburuko etxebizitza"
-
+#. URI of the plugin
 #. Author URI of the plugin
 msgid "https://padresenlanube.com/"
 msgstr "https://padresenlanube.com/"
 
-#. URI of the plugin
-msgid "https://padresenlanube.com/plugins/hostpn/"
-msgstr ""
-
-#: includes/class-hostpn-data.php:85
-msgid "Hungary"
-msgstr "Hungaria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Iceland"
-msgstr "Islandia"
-
-#: includes/class-hostpn-settings.php:31
+#: includes/class-hostpn.php:102
 msgid ""
 "If you activate this option the plugin will remove all options on "
 "deactivation. Please, be careful. This process cannot be undone."
@@ -1004,1230 +228,291 @@ msgstr ""
 "Aukera hau aktibatzen baduzu, pluginak desaktibatzeko aukera guztiak kenduko "
 "ditu. Mesedez, kontuz. Prozesu hau ezin da desegin."
 
-#: includes/class-hostpn-data.php:85
-msgid "India"
-msgstr "India"
-
-#: includes/class-hostpn-data.php:85
-msgid "Indonesia"
-msgstr "Indonesia"
-
-#: includes/class-hostpn-post-type-accommodation.php:599
-msgid "Install plugin"
-msgstr "Plugin-a instalatu"
-
-#: includes/class-hostpn-post-type-part.php:228
-#: includes/class-hostpn-post-type-part.php:229
-msgid "Internet available"
-msgstr "Internet erabilgarri"
-
-#: includes/class-hostpn-data.php:85
-msgid "Iran (Islamic Republic of)"
-msgstr "Iran (Errepublika Islamikoa)"
-
-#: includes/class-hostpn-data.php:85
-msgid "Iraq"
-msgstr "Irak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Ireland"
-msgstr "Irlanda"
-
-#: includes/class-hostpn-data.php:85
-msgid "Israel"
-msgstr "Israel"
-
-#: includes/class-hostpn-data.php:85
-msgid "Italy"
-msgstr "Italia"
-
-#: includes/class-hostpn-post-type-guest.php:220
-msgid "I´m not the holder of the contract"
-msgstr "Ez naiz kontratuaren titularra"
-
-#: includes/class-hostpn-data.php:85
-msgid "Jamaica"
-msgstr "Jamaika"
-
-#: includes/class-hostpn-data.php:85
-msgid "Japan"
-msgstr "Japonia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Jordan"
-msgstr "Jordania"
-
-#: includes/class-hostpn-data.php:85
-msgid "Kazakhstan"
-msgstr "Kazakhstan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Kenya"
-msgstr "Kenya"
-
-#: includes/class-hostpn-data.php:85
-msgid "Kiribati"
-msgstr "Kiribati"
-
-#: includes/class-hostpn-data.php:85
-msgid "Kuwait"
-msgstr "Kuwait"
-
-#: includes/class-hostpn-data.php:85
-msgid "Kyrgyzstan"
-msgstr "Kirgizistan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Lao People's Democratic Republic"
-msgstr "Laosko Herri Errepublika Demokratikoa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Latvia"
-msgstr "Letonia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Lebanon"
-msgstr "Libano"
-
-#: includes/class-hostpn-data.php:85
-msgid "Lesotho"
-msgstr "Lesotho"
-
-#: includes/class-hostpn-data.php:85
-msgid "Liberia"
-msgstr "Liberia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Libya"
-msgstr "Libia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Liechtenstein"
-msgstr "Liechtenstein"
-
-#: includes/class-hostpn-data.php:85
-msgid "Lithuania"
-msgstr "Lituania"
-
-#: includes/class-hostpn-forms.php:230
-msgid "Lowercase & Uppercase"
+#: includes/class-hostpn-activator.php:43
+msgid ""
+"In a large bowl, mix together the trust, respect, understanding, and "
+"patience. These are the foundations of a strong and lasting relationship."
 msgstr ""
+"Ontzi handi batean, nahastu konfiantza, errespetua, ulermena eta pazientzia. "
+"Hauek dira harreman sendo eta iraunkor baten oinarriak."
 
-#: includes/class-hostpn-data.php:85
-msgid "Luxembourg"
-msgstr "Luxenburgo"
+#: includes/class-hostpn.php:122 includes/class-hostpn.php:123
+msgid "Ingredient"
+msgstr "Osagaia"
 
-#: includes/class-hostpn-data.php:85
-msgid "Madagascar"
-msgstr "Madagaskar"
+#: includes/class-hostpn.php:115
+#: templates/public/single-hostpn_recipe.php:101
+msgid "Ingredients"
+msgstr "Osagaiak"
 
-#: includes/class-hostpn-data.php:85
-msgid "Malawi"
-msgstr "Malawi"
+#: includes/class-hostpn-menus.php:69
+msgid "Loading..."
+msgstr "Kargatzen..."
 
-#: includes/class-hostpn-data.php:85
-msgid "Malaysia"
-msgstr "Malaysia"
+#: includes/class-hostpn-activator.php:48
+#: includes/class-hostpn-activator.php:67
+msgid "Love recipe"
+msgstr "Maite errezeta"
 
-#: includes/class-hostpn-data.php:85
-msgid "Maldives"
-msgstr "Maldivak"
+#: templates/public/single-hostpn_recipe.php:135
+msgid "minutes"
+msgstr "minutu"
 
-#: includes/class-hostpn-post-type-guest.php:120
-#: includes/class-hostpn-functions-user.php:209
-msgid "Male"
-msgstr "Gizonzkoa"
+#: includes/class-hostpn-activator.php:42
+msgid "Mixing"
+msgstr "Nahastea"
 
-#: includes/class-hostpn-data.php:85
-msgid "Mali"
-msgstr "Mali"
+#: templates/public/single-hostpn_recipe.php:46
+msgid "More recipes"
+msgstr "Errezeta gehiago"
 
-#: includes/class-hostpn-data.php:85
-msgid "Malta"
-msgstr "Malta"
+#: includes/class-hostpn-taxonomies-recipe.php:31
+msgid "New Recipe category"
+msgstr "Errezeta kategoria berria"
 
-#: includes/class-hostpn-post-type-part.php:886
-msgid "Marking as completed"
-msgstr "Osatutzat markatzen"
+#: templates/public/single-hostpn_recipe.php:192
+msgid "Next"
+msgstr "Hurrengoa"
 
-#: includes/class-hostpn-post-type-part.php:873
-msgid "Marking as not completed"
-msgstr "Osatugabe gisa markatzen"
+#: includes/class-hostpn-post-type-recipe.php:32
+msgid "Not Base CPT found"
+msgstr "Ez da aurkitu errezetak CPT"
 
-#: includes/class-hostpn-data.php:85
-msgid "Marshall Islands"
-msgstr "Marshall uharteak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Mauritania"
-msgstr "Mauritania"
-
-#: includes/class-hostpn-data.php:85
-msgid "Mauritius"
-msgstr "Maurizio"
-
-#: includes/class-hostpn-data.php:85
-msgid "Mexico"
-msgstr "Mexiko"
-
-#: includes/class-hostpn-data.php:85
-msgid "Micronesia (Federated States of)"
-msgstr "Mikronesia (Estatu Batuak)"
-
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Mobile payment"
-msgstr "Ordainketa mugikor bidez"
-
-#: includes/class-hostpn-data.php:85
-msgid "Moldova (Republic of)"
-msgstr "Moldavia (Errepublika)"
-
-#: includes/class-hostpn-data.php:85
-msgid "Monaco"
-msgstr "Monako"
-
-#: includes/class-hostpn-data.php:85
-msgid "Mongolia"
-msgstr "Mongolia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Montenegro"
-msgstr "Montenegro"
-
-#: includes/class-hostpn-data.php:85
-msgid "Morocco"
-msgstr "Maroko"
-
-#: includes/class-hostpn-data.php:117
-msgid "Motel"
-msgstr "Motel"
-
-#: includes/class-hostpn-data.php:85
-msgid "Mozambique"
-msgstr "Mozambike"
-
-#: includes/class-hostpn-data.php:85
-msgid "Myanmar"
-msgstr "Myanmar"
-
-#: includes/class-hostpn-post-type-part.php:285
-msgid "Name and surname of the holder of the payment."
-msgstr "Ordainketaren titularraren izena eta abizena."
-
-#: includes/class-hostpn-data.php:85
-msgid "Namibia"
-msgstr "Namibia"
-
-#: includes/class-hostpn-post-type-guest.php:113
-#: includes/class-hostpn-post-type-guest.php:114
-#: includes/class-hostpn-functions-user.php:202
-#: includes/class-hostpn-functions-user.php:203
-msgid "Nationality"
-msgstr "Nazionalitatea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Nauru"
-msgstr "Nauru"
-
-#: includes/class-hostpn-data.php:85
-msgid "Nepal"
-msgstr "Nepal"
-
-#: includes/class-hostpn-data.php:121
-msgid "Nephew"
-msgstr "Iloba"
-
-#: includes/class-hostpn-data.php:85
-msgid "Netherlands"
-msgstr "Herbehereak"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:31
-msgid "New Accommodation category"
-msgstr "Ostatu kategoria berria"
-
-#: includes/class-hostpn-taxonomies-guest.php:31
-msgid "New Guest category"
-msgstr ""
-
-#: includes/class-hostpn-taxonomies-part.php:31
-msgid "New Part of travelers category"
-msgstr ""
-
-#: includes/class-hostpn-data.php:85
-msgid "New Zealand"
-msgstr "Zeelanda Berria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Nicaragua"
-msgstr "Nikaragua"
-
-#: includes/class-hostpn-post-type-guest.php:70
-#: includes/class-hostpn-functions-user.php:158
-msgid "NIE"
-msgstr "NIE"
-
-#: includes/class-hostpn-post-type-guest.php:70
-#: includes/class-hostpn-functions-user.php:158
-msgid "NIF"
-msgstr "NIF"
-
-#: includes/class-hostpn-data.php:85
-msgid "Niger"
-msgstr "Niger"
-
-#: includes/class-hostpn-data.php:85
-msgid "Nigeria"
-msgstr "Nigeria"
-
-#: includes/class-hostpn-forms.php:116
-msgid "No file found"
-msgstr "Ez da fitxategirik aurkitu"
-
-#: includes/class-hostpn-data.php:85
-msgid "North Korea"
-msgstr "Ipar Korea"
-
-#: includes/class-hostpn-data.php:85
-msgid "North Macedonia"
-msgstr "Ipar Mazedonia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Norway"
-msgstr "Norvegia"
-
-#: includes/class-hostpn-post-type-accommodation.php:132
-msgid "Not accommodation found"
-msgstr "Ez da ostaturik aurkitu"
-
-#: includes/class-hostpn-post-type-accommodation.php:133
-msgid "Not accommodation found in Trash"
-msgstr "Ez da ostaturik aurkitu zakarrontzian"
-
-#: includes/class-hostpn-post-type-part.php:882
-msgid "Not completed"
-msgstr "Osatugabe"
-
-#: includes/class-hostpn-post-type-guest.php:256
-msgid "Not Guest found"
-msgstr "Ez da gonbidaturik aurkitu"
-
-#: includes/class-hostpn-post-type-guest.php:257
-msgid "Not Guest found in Trash"
+#: includes/class-hostpn-post-type-recipe.php:33
+msgid "Not Base CPT found in Trash"
 msgstr "Ez da errezeta CPT aurkitu zakarrontzian"
 
-#: includes/class-hostpn-post-type-part.php:394
-msgid "Not Part of traveler found"
-msgstr "Ez da bidaiari zatirik aurkitu"
-
-#: includes/class-hostpn-post-type-part.php:395
-msgid "Not Part of traveler found in Trash"
-msgstr "Ez da bidaiari zatirik aurkitu zakarrontzian"
-
-#: includes/class-hostpn-functions-user.php:311
-msgid "Not the holder of the contract"
-msgstr "Ez da kontratuaren titularra"
-
-#: includes/class-hostpn-forms.php:234
-msgid "Number (0-9)"
-msgstr "Zenbakiak (0-9)"
-
-#: includes/class-hostpn-post-type-part.php:209
-#: includes/class-hostpn-post-type-part.php:210
-msgid "Number of people"
-msgstr "Pertsona kopurua"
-
-#: includes/class-hostpn-post-type-part.php:219
-#: includes/class-hostpn-post-type-part.php:220
-msgid "Number of rooms"
-msgstr "Gela kopurua"
-
-#: includes/class-hostpn-data.php:85
-msgid "Oman"
-msgstr "Oman"
-
-#: includes/class-hostpn-forms.php:416 includes/class-hostpn-forms.php:432
+#: includes/class-hostpn-forms.php:324
+#: includes/class-hostpn-forms.php:340
 msgid "Order element"
 msgstr "Agindu elementua"
 
-#: includes/class-hostpn-common.php:163
+#: includes/class-hostpn-common.php:142
 msgid "Ordered element"
 msgstr "Ordenatutako elementua"
 
-#: includes/class-hostpn-data.php:117 includes/class-hostpn-data.php:121
-#: includes/class-hostpn-post-type-guest.php:70
-#: includes/class-hostpn-post-type-guest.php:120
-#: includes/class-hostpn-functions-user.php:158
-#: includes/class-hostpn-functions-user.php:209
-msgid "Other"
-msgstr "Bestelakoa"
+#: includes/class-hostpn-post-type-recipe.php:24
+msgid "Parent Recipe"
+msgstr "Gurasoen Errezeta"
 
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Other payment methods"
-msgstr "Ordainketa metodo alternatiboak"
+#: includes/class-hostpn-taxonomies-recipe.php:26
+msgid "Parent Recipe category"
+msgstr "Gurasoen Errezeta kategoria"
+
+#: includes/class-hostpn-taxonomies-recipe.php:27
+msgid "Parent Recipe category:"
+msgstr "Gurasoentzako errezeta kategoria:"
+
+#: includes/class-hostpn-activator.php:43
+msgid ""
+"Place the two hearts in the center of the mixture. Love is the main "
+"ingredient in this dish."
+msgstr ""
+"Jarri bi bihotzak nahasketaren erdian. Maitasuna da plater honen osagai "
+"nagusia."
+
+#: templates/public/single-hostpn_recipe.php:129
+msgid "Play recipe"
+msgstr "Errezeta jolastu"
+
+#: includes/class-hostpn-post-type-recipe.php:21
+msgctxt "Post Type general name"
+msgid "Base CPT"
+msgstr "Errezetak CPT"
+
+#: includes/class-hostpn-post-type-recipe.php:22
+msgctxt "Post Type singular name"
+msgid "Recipe"
+msgstr "Errezeta CPT"
+
+#: includes/class-hostpn-activator.php:43
+msgid ""
+"Preheat the oven to low heat. Love cooks best over a slow flame, with "
+"patience and care."
+msgstr ""
+"Berotu labea su baxuan. Maitasuna su motelean egosten da onena, pazientziaz "
+"eta arretaz."
+
+#: includes/class-hostpn-activator.php:42
+msgid "Preparing step"
+msgstr "Prestaketa urratsa"
+
+#: templates/public/single-hostpn_recipe.php:189
+msgid "Previous"
+msgstr "Aurrekoa"
+
+#: includes/class-hostpn-taxonomies-recipe.php:32
+msgid "Recipe categories"
+msgstr "Errezeta kategoriak"
+
+#: includes/class-hostpn-post-type-recipe.php:69
+msgid "Recipe details"
+msgstr "Errezetaren xehetasunak"
+
+#: includes/class-hostpn.php:174 includes/class-hostpn.php:175
+msgid "Recipe gallery"
+msgstr "Errezeta galeria"
+
+#: includes/class-hostpn.php:92 includes/class-hostpn.php:93
+msgid "Recipe slug"
+msgstr "Errezeta barea"
+
+#: includes/class-hostpn.php:167
+msgid "Recipe suggestions"
+msgstr "Errezeta iradokizunak"
+
+#: includes/class-hostpn.php:160 includes/class-hostpn.php:161
+msgid "Recipe total time (hours:minutes)"
+msgstr "Errezetaren denbora osoa (orduak:minutuak)"
+
+#: includes/class-hostpn.php:182 includes/class-hostpn.php:183
+msgid "Recipe video url"
+msgstr "Errezeta bideoaren URLa"
+
+#: templates/public/archive-hostpn_recipe.php:27
+msgid "Base CPT"
+msgstr "Errezetak"
+
+#: includes/class-hostpn-post-type-recipe.php:23
+#: includes/class-hostpn-post-type-recipe.php:39
+msgid "Base CPT"
+msgstr "Errezetak CPT"
+
+#: includes/class-hostpn-post-type-recipe.php:40
+msgid "Base CPT description"
+msgstr "Errezetak CPT deskribapena"
+
+#: includes/class-hostpn-activator.php:25
+msgid "Base CPT manager - WPH"
+msgstr "Errezeten kudeatzailea - WPH"
+
+#. Name of the plugin
+#: includes/class-hostpn-menus.php:29
+msgid "Base CPT manager WPH"
+msgstr "Errezeten kudeatzailea WPH"
+
+#: includes/class-hostpn.php:101
+msgid "Remove plugin options on deactivation"
+msgstr "Kendu plugin-aukerak desaktibatzeko"
+
+#: includes/class-hostpn-menus.php:69
+msgid "Save options"
+msgstr "Gorde aukerak"
+
+#: includes/class-hostpn-common.php:125
+msgid "Saved successfully"
+msgstr "Behar bezala gorde da"
+
+#: includes/class-hostpn-taxonomies-recipe.php:24
+msgid "Search Recipe categories"
+msgstr "Bilatu Errezeta kategoriak"
+
+#: includes/class-hostpn-post-type-recipe.php:31
+msgid "Search Recipe"
+msgstr "Bilatu errezeta CPT"
+
+#: includes/class-hostpn-common.php:136
+msgid "Select audio"
+msgstr "Hautatu audioa"
+
+#: includes/class-hostpn-common.php:137
+msgid "Select audios"
+msgstr "Aukeratu audioak"
+
+#: includes/class-hostpn-common.php:140
+msgid "Select file"
+msgstr "Hautatu fitxategia"
+
+#: includes/class-hostpn-common.php:141
+msgid "Select files"
+msgstr "Hautatu fitxategiak"
+
+#: includes/class-hostpn-common.php:128
+msgid "Select image"
+msgstr "Hautatu irudia"
+
+#: includes/class-hostpn-common.php:129
+msgid "Select images"
+msgstr "Aukeratu irudiak"
+
+#: includes/class-hostpn-common.php:132
+msgid "Select video"
+msgstr "Hautatu bideoa"
+
+#: includes/class-hostpn-common.php:133
+msgid "Select videos"
+msgstr "Hautatu bideoak"
+
+#: includes/class-hostpn.php:143 includes/class-hostpn.php:144
+msgid "Step description"
+msgstr "Urratsaren deskribapena"
+
+#: includes/class-hostpn.php:151 includes/class-hostpn.php:152
+msgid "Step time (hours:minutes)"
+msgstr "Urratsaren denbora (orduak:minutuak)"
+
+#: includes/class-hostpn.php:136 includes/class-hostpn.php:137
+msgid "Step title"
+msgstr "Urratsaren izenburua"
+
+#: includes/class-hostpn.php:129
+msgid "Steps"
+msgstr "Urratsak"
+
+#: templates/public/single-hostpn_recipe.php:201
+msgid "Suggestions"
+msgstr "Iradokizunak"
+
+#: includes/class-hostpn-taxonomies-recipe.php:22
+msgctxt "Taxonomy general name"
+msgid "Recipe categories"
+msgstr "Errezeta kategoriak"
+
+#: includes/class-hostpn-taxonomies-recipe.php:23
+msgctxt "Taxonomy singular name"
+msgid "Recipe category"
+msgstr "Errezeta kategoria"
+
+#. Description of the plugin
+msgid "This is a short description of what the plugin does"
+msgstr "Hau pluginak egiten duenaren deskribapen labur bat da"
+
+#: includes/class-hostpn.php:94
+msgid ""
+"This option sets the slug of the main recipes archive page, and the recipe "
+"pages. By default they will be:"
+msgstr ""
+"Aukera honek errezeten artxibo-orri nagusiaren eta errezeten orriak ezartzen "
+"ditu. Lehenespenez, hauek izango dira:"
+
+#: templates/public/single-hostpn_recipe.php:135
+msgid "Total time"
+msgstr "Denbora osoa"
+
+#: includes/class-hostpn-taxonomies-recipe.php:29
+msgid "Update Recipe category"
+msgstr "Eguneratu Errezeta kategoria"
+
+#: includes/class-hostpn-post-type-recipe.php:30
+msgid "Update Recipe"
+msgstr "Eguneratu errezeta CPT"
+
+#: includes/class-hostpn-post-type-recipe.php:26
+msgid "View Recipe"
+msgstr "Ikusi errezeta CPT"
 
 #. Author of the plugin
 msgid "Padres en la Nube"
 msgstr "Wordpress-Heroiak"
 
-#: includes/class-hostpn-data.php:85
-msgid "Pakistan"
-msgstr "Pakistan"
+#: includes/class-hostpn-menus.php:23
+msgid "WPH Options"
+msgstr "WPH Aukerak"
 
-#: includes/class-hostpn-data.php:85
-msgid "Palau"
-msgstr "Palau"
-
-#: includes/class-hostpn-data.php:85
-msgid "Panama"
-msgstr "Panama"
-
-#: includes/class-hostpn-data.php:85
-msgid "Papua New Guinea"
-msgstr "Papua Ginea Berria"
-
-#: includes/class-hostpn-data.php:117
-msgid "Parador de tourism"
-msgstr "Turismo-paradorra"
-
-#: includes/class-hostpn-data.php:85
-msgid "Paraguay"
-msgstr "Paraguai"
-
-#: includes/class-hostpn-post-type-accommodation.php:124
-msgid "Parent accommodation"
-msgstr "Guraso ostatua"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:26
-msgid "Parent Accommodation category"
-msgstr "Guraso ostatu kategoria"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:27
-msgid "Parent Accommodation category:"
-msgstr "Guraso ostatu kategoria:"
-
-#: includes/class-hostpn-post-type-guest.php:248
-msgid "Parent Guest"
-msgstr "Guraso gonbidatua"
-
-#: includes/class-hostpn-taxonomies-guest.php:26
-msgid "Parent Guest category"
-msgstr "Guraso gonbidatu kategoria"
-
-#: includes/class-hostpn-taxonomies-guest.php:27
-msgid "Parent Guest category:"
-msgstr "Guraso gonbidatu kategoria:"
-
-#: includes/class-hostpn-post-type-part.php:386
-msgid "Parent Part of traveler"
-msgstr "Guraso bidaiari zatia"
-
-#: includes/class-hostpn-taxonomies-part.php:26
-msgid "Parent Part of travelers category"
-msgstr "Guraso bidaiari zati kategoria"
-
-#: includes/class-hostpn-taxonomies-part.php:27
-msgid "Parent Part of travelers category:"
-msgstr "Guraso bidaiari zati kategoria:"
-
-#: includes/class-hostpn-post-type-part.php:32
-msgid "Part description"
-msgstr "Zatiaren deskribapena"
-
-#: includes/class-hostpn-post-type-part.php:401
-msgid "Part of traveler"
-msgstr "Bidaiariaren zatia"
-
-#: includes/class-hostpn-post-type-part.php:306
-#: includes/class-hostpn-post-type-part.php:307
-msgid "Part of traveler accomplish date"
-msgstr "Bidaiariaren zatiaren burutze data"
-
-#: includes/class-hostpn-post-type-part.php:315
-#: includes/class-hostpn-post-type-part.php:316
-msgid "Part of traveler accomplish time"
-msgstr "Bidaiariaren zatiaren burutze ordua"
-
-#: includes/class-hostpn-post-type-part.php:338
-msgid "Part of traveler accomplished by"
-msgstr "Bidaiariaren zatia burutu duena"
-
-#: includes/class-hostpn-post-type-part.php:360
-#: includes/class-hostpn-post-type-part.php:361
-msgid "Part of traveler comments"
-msgstr "Bidaiariaren zatiaren iruzkinak"
-
-#: includes/class-hostpn-post-type-part.php:402
-msgid "Part of traveler description"
-msgstr "Bidaiariaren zatiaren deskribapena"
-
-#: includes/class-hostpn-post-type-part.php:431
-msgid "Part of traveler details"
-msgstr "Bidaiariaren zatiaren xehetasunak"
-
-#: includes/class-hostpn-post-type-part.php:385
-msgid "Part of travelers"
-msgstr "Bidaiarien zatiak"
-
-#: includes/class-hostpn-taxonomies-part.php:32
-msgid "Part of travelers categories"
-msgstr "Bidaiarien zati kategoriak"
-
-#: includes/class-hostpn-post-type-part.php:23
-#: includes/class-hostpn-post-type-part.php:24
-msgid "Part title"
-msgstr "Zatiaren izenburua"
-
-#: includes/class-hostpn-activator.php:151
-#: includes/class-hostpn-activator.php:174
-msgid "Parts of travelers"
-msgstr "Bidaiarien zatiak"
-
-#: includes/class-hostpn-post-type-guest.php:70
-#: includes/class-hostpn-functions-user.php:158
-msgid "Passport"
-msgstr "Pasaportea"
-
-#: includes/class-hostpn-forms.php:226
-msgid "Password strength checker"
-msgstr "Pasahitzaren indarra egiaztatu"
-
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Payment at destination"
-msgstr "Helmugan ordainketa"
-
-#: includes/class-hostpn-post-type-part.php:263
-#: includes/class-hostpn-post-type-part.php:264
-msgid "Payment date"
-msgstr "Ordainketa data"
-
-#: includes/class-hostpn-post-type-part.php:283
-#: includes/class-hostpn-post-type-part.php:284
-msgid "Payment holder"
-msgstr "Ordainketaren titularra"
-
-#: includes/class-hostpn-post-type-part.php:272
-#: includes/class-hostpn-post-type-part.php:273
-msgid "Payment method"
-msgstr "Ordainketa metodoa"
-
-#: includes/class-hostpn-post-type-part.php:274
+#: includes/class-hostpn.php:184
 msgid ""
-"Payment method identification: card type and number, bank account IBAN, "
-"mobile number, etc."
-msgstr "Ordainketa metodoaren identifikazioa: txartel mota eta zenbakia, banku kontu IBAN, mugikor zenbakia, etab."
-
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Payment platform"
-msgstr "Ordainketa plataforma"
-
-#: includes/class-hostpn-post-type-part.php:242
-#: includes/class-hostpn-post-type-part.php:243
-msgid "Payment type"
-msgstr "Ordainketa mota"
-
-#: includes/class-hostpn-data.php:117
-msgid "Pentsioa"
-msgstr "Pentsioa"
-
-#: includes/class-hostpn-post-type-part.php:121
-#: includes/class-hostpn-post-type-part.php:122
-msgid "People hosted"
-msgstr "Ostatutako pertsonak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Peru"
-msgstr "Peru"
-
-#: includes/class-hostpn-data.php:85
-msgid "Philippines"
-msgstr "Filipinak"
-
-#: includes/class-hostpn-post-type-guest.php:192
-#: includes/class-hostpn-post-type-guest.php:193
-#: includes/class-hostpn-functions-user.php:283
-#: includes/class-hostpn-functions-user.php:284
-msgid "Phone"
-msgstr "Telefonoa"
-
-#: includes/class-hostpn-post-type-guest.php:433
-msgid "Please check the information fulfilled in the form:"
-msgstr "Mesedez, egiaztatu formularioan betetako informazioa:"
-
-#: includes/class-hostpn-common.php:144
-msgid "Please create a new user or login to save the information."
-msgstr "Mesedez, sortu erabiltzaile berri bat edo hasi saioa informazioa gordetzeko."
-
-#: includes/class-hostpn-post-type-accommodation.php:596
-msgid ""
-"Please install Users Manager - WPH plugin to allow user creation and "
-"management."
-msgstr "Mesedez, instalatu Users Manager - WPH plugina erabiltzaileak sortu eta kudeatzeko."
-
-#: includes/class-hostpn-data.php:85
-msgid "Poland"
-msgstr "Polonia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Portugal"
-msgstr "Portugal"
-
-#: includes/class-hostpn-post-type-accommodation.php:121
-msgctxt "Post Type general name"
-msgid "Accommodation"
-msgstr "Ostatua"
-
-#: includes/class-hostpn-post-type-guest.php:245
-msgctxt "Post Type general name"
-msgid "Guest"
-msgstr "Gonbidatua"
-
-#: includes/class-hostpn-post-type-part.php:383
-msgctxt "Post Type general name"
-msgid "Part of traveler"
-msgstr "Bidaiariaren zatia"
-
-#: includes/class-hostpn-post-type-accommodation.php:122
-msgctxt "Post Type singular name"
-msgid "Accommodation"
-msgstr "Ostatua"
-
-#: includes/class-hostpn-post-type-guest.php:246
-msgctxt "Post Type singular name"
-msgid "Guest"
-msgstr "Gonbidatua"
-
-#: includes/class-hostpn-post-type-part.php:384
-msgctxt "Post Type singular name"
-msgid "Part of traveler"
-msgstr "Bidaiariaren zatia"
-
-#: includes/class-hostpn-post-type-guest.php:162
-#: includes/class-hostpn-post-type-guest.php:163
-#: includes/class-hostpn-functions-user.php:263
-#: includes/class-hostpn-functions-user.php:264
-msgid "Postal code"
-msgstr "Posta kodea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Qatar"
-msgstr "Qatar"
-
-#: includes/class-hostpn-data.php:117
-msgid "Refuge"
-msgstr "Aterpea"
-
-#: includes/class-hostpn-post-type-guest.php:232
-#: includes/class-hostpn-functions-user.php:323
-msgid "Relationship"
-msgstr "Harremana"
-
-#: includes/class-hostpn-post-type-guest.php:231
-#: includes/class-hostpn-functions-user.php:322
-msgid "Relationship with contract holder"
-msgstr "Kontratu titularrarekin harremana"
-
-#: templates/hostpn-popups.php:38
-msgid "removal"
-msgstr "kentzea"
-
-#: templates/hostpn-popups.php:46
-msgid "Remove"
-msgstr "Kendu"
-
-#: includes/class-hostpn-post-type-accommodation.php:456
-msgid "Remove Accommodation"
-msgstr "Kendu ostatu"
-
-#: includes/class-hostpn-forms.php:420 includes/class-hostpn-forms.php:436
-msgid "Remove element"
-msgstr "Kendu elementu"
-
-#: includes/class-hostpn-post-type-guest.php:615
-msgid "Remove Guest"
-msgstr "Kendu gonbidatu"
-
-#: includes/class-hostpn-post-type-part.php:742
-msgid "Remove part"
-msgstr "Kendu zati"
-
-#: includes/class-hostpn-settings.php:30
-msgid "Remove plugin options on deactivation"
-msgstr "Kendu plugin-aukerak desaktibatzeko"
-
-#: includes/class-hostpn-common.php:146
-msgid "Removed successfully"
-msgstr "Arrakastaz kenduta"
-
-#: includes/class-hostpn-forms.php:481
-msgid "Required field"
-msgstr "Beharrezko eremua"
-
-#: includes/class-hostpn-data.php:117
-msgid "Residence"
-msgstr "Egoitza"
-
-#: includes/class-hostpn-data.php:85
-msgid "Romania"
-msgstr "Errumania"
-
-#: includes/class-hostpn-data.php:117
-msgid "Room/s in a house"
-msgstr "Etxeko gelak"
-
-#: includes/class-hostpn-data.php:117
-msgid "Rural apartment"
-msgstr "Landako apartamentu"
-
-#: includes/class-hostpn-data.php:117
-msgid "Rural hotel"
-msgstr "Landako hotela"
-
-#: includes/class-hostpn-data.php:117
-msgid "Rural house"
-msgstr "Landako etxea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Russian Federation"
-msgstr "Errusiako Federazioa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Rwanda"
-msgstr "Ruanda"
-
-#: includes/class-hostpn-data.php:85
-msgid "Saint Kitts and Nevis"
-msgstr "Saint Kitts eta Nevis"
-
-#: includes/class-hostpn-data.php:85
-msgid "Saint Lucia"
-msgstr "Santa Luzia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Saint Vincent and the Grenadines"
-msgstr "Saint Vincent eta Grenadinak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Samoa"
-msgstr "Samoa"
-
-#: includes/class-hostpn-data.php:85
-msgid "San Marino"
-msgstr "San Marino"
-
-#: includes/class-hostpn-data.php:85
-msgid "Sao Tome and Principe"
-msgstr "Sao Tome eta Principe"
-
-#: includes/class-hostpn-data.php:85
-msgid "Saudi Arabia"
-msgstr "Arabia Saudi"
-
-#: includes/class-hostpn-post-type-accommodation.php:569
-msgid "Save Accommodation"
-msgstr "Gorde ostatu"
-
-#: includes/class-hostpn-post-type-guest.php:728
-msgid "Save Guest"
-msgstr "Gorde gonbidatu"
-
-#: includes/class-hostpn-settings.php:42
-msgid "Save options"
-msgstr "Gorde aukerak"
-
-#: includes/class-hostpn-post-type-part.php:855
-msgid "Save part"
-msgstr "Gorde zati"
-
-#: includes/class-hostpn-common.php:145
-msgid "Saved successfully"
-msgstr "Arrakastaz gordeta"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:24
-msgid "Search Accommodation categories"
-msgstr "Bilatu ostatu kategoriak"
-
-#: includes/class-hostpn-post-type-accommodation.php:131
-msgid "Search accommodations"
-msgstr "Bilatu ostatuak"
-
-#: includes/class-hostpn-taxonomies-guest.php:24
-msgid "Search Guest categories"
-msgstr "Bilatu gonbidatu kategoriak"
-
-#: includes/class-hostpn-post-type-guest.php:255
-msgid "Search Guests"
-msgstr "Bilatu gonbidatuak"
-
-#: includes/class-hostpn-post-type-part.php:393
-msgid "Search Part of travelers"
-msgstr "Bilatu bidaiari zatiak"
-
-#: includes/class-hostpn-taxonomies-part.php:24
-msgid "Search Part of travelers categories"
-msgstr "Bilatu bidaiari zati kategoriak"
-
-#: includes/class-hostpn-functions-user.php:144
-#: includes/class-hostpn-functions-user.php:145
-msgid "Second surname"
-msgstr "Bigarren abizena"
-
-#: includes/class-hostpn-ajax.php:34 includes/class-hostpn-ajax-nopriv.php:33
-msgid "Security check failed: Invalid nonce."
-msgstr "Segurtasun egiaztapena huts egin du: nonce baliogabea."
-
-#: includes/class-hostpn-ajax.php:25 includes/class-hostpn-ajax-nopriv.php:24
-msgid "Security check failed: Nonce is required."
-msgstr "Segurtasun egiaztapena huts egin du: nonce beharrezkoa da."
-
-#: includes/class-hostpn-forms.php:281
-msgid "Select an option"
-msgstr "Aukeratu aukera bat"
-
-#: includes/class-hostpn-common.php:157
-msgid "Select audio"
-msgstr "Hautatu audioa"
-
-#: includes/class-hostpn-common.php:158
-msgid "Select audios"
-msgstr "Aukeratu audioak"
-
-#: includes/class-hostpn-post-type-part.php:339
-msgid "Select contact"
-msgstr "Hautatu kontaktua"
-
-#: includes/class-hostpn-common.php:161
-msgid "Select file"
-msgstr "Hautatu fitxategia"
-
-#: includes/class-hostpn-common.php:162
-msgid "Select files"
-msgstr "Hautatu fitxategiak"
-
-#: includes/class-hostpn-common.php:149
-msgid "Select image"
-msgstr "Hautatu irudia"
-
-#: includes/class-hostpn-common.php:150
-msgid "Select images"
-msgstr "Aukeratu irudiak"
-
-#: includes/class-hostpn-common.php:164
-msgid "Select option"
-msgstr "Aukeratu aukera"
-
-#: includes/class-hostpn-common.php:165
-msgid "Select options"
-msgstr "Aukeratu aukerak"
-
-#: includes/class-hostpn-common.php:153
-msgid "Select video"
-msgstr "Hautatu bideoa"
-
-#: includes/class-hostpn-common.php:154
-msgid "Select videos"
-msgstr "Hautatu bideoak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Senegal"
-msgstr "Senegal"
-
-#: includes/class-hostpn-data.php:85
-msgid "Serbia"
-msgstr "Serbia"
-
-#: includes/class-hostpn-settings.php:55
-msgid "Settings"
-msgstr "Ezarpenak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Seychelles"
-msgstr "Seychelleak"
-
-#: includes/class-hostpn-post-type-accommodation.php:432
-msgid "Share accommodation"
-msgstr "Partekatu ostatua"
-
-#: includes/class-hostpn-post-type-accommodation.php:397
-msgid ""
-"Share link to allow guests fill their information out directly in the "
-"platform."
-msgstr "Partekatu esteka gonbidatuek beren informazioa zuzenean plataforman bete dezaten."
-
-#: includes/class-hostpn-data.php:85
-msgid "Sierra Leone"
-msgstr "Sierra Leona"
-
-#: includes/class-hostpn-data.php:85
-msgid "Singapore"
-msgstr "Singapur"
-
-#: includes/class-hostpn-data.php:85
-msgid "Slovakia"
-msgstr "Eslovakia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Slovenia"
-msgstr "Eslovenia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Solomon Islands"
-msgstr "Salomon Uharteak"
-
-#: includes/class-hostpn-data.php:85
-msgid "Somalia"
-msgstr "Somalia"
-
-#: includes/class-hostpn-data.php:121
-msgid "Son"
-msgstr "Semea"
-
-#: includes/class-hostpn-data.php:121
-msgid "Son-in-Law / Daughter-in-Law"
-msgstr "Suhia / Erraina"
-
-#: includes/class-hostpn-data.php:85
-msgid "South Africa"
-msgstr "Hegoafrika"
-
-#: includes/class-hostpn-data.php:85
-msgid "South Korea"
-msgstr "Hego Korea"
-
-#: includes/class-hostpn-data.php:85
-msgid "South Sudan"
-msgstr "Hego Sudan"
-
-#: includes/class-hostpn-data.php:117
-msgid "Spa"
-msgstr "Spa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Spain"
-msgstr "Espainia"
-
-#: includes/class-hostpn-functions-user.php:151
-msgid ""
-"Spanish State regulations require us to collect the data of travelers who "
-"stay in the country (spanish Royal Decree 933/2021, of October 26), so I "
-"need you to fill out this form with your data and, if applicable, those of "
-"the people who will be with you during the stay. Once you create your guest, "
-"you will be able to create your companions, even send them a link to fulfill "
-"the form by themselves."
+"You can set a video repository url here (like YouTube or Vimeo) to show the "
+"content in the recipe's page."
 msgstr ""
-
-#: includes/class-hostpn-forms.php:238
-msgid "Special Character (!@#$%^&*)"
-msgstr "Karaktere berezia (!@#$%^&*)"
-
-#: includes/class-hostpn-post-type-guest.php:55
-#: includes/class-hostpn-functions-user.php:337
-#: includes/class-hostpn-functions-user.php:413
-msgid "Special needs, allergies, important situations to highlight..."
-msgstr "Beharrizan bereziak, alergiak, nabarmentzeko egoera garrantzitsuak..."
-
-#: includes/class-hostpn-data.php:121
-msgid "Spouse"
-msgstr "Ezkontidea"
-
-#: includes/class-hostpn-data.php:85
-msgid "Sri Lanka"
-msgstr "Sri Lanka"
-
-#: includes/class-hostpn-data.php:85
-msgid "Sudan"
-msgstr "Sudan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Suriname"
-msgstr "Surinam"
-
-#: includes/class-hostpn-data.php:85
-msgid "Sweden"
-msgstr "Suedia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Switzerland"
-msgstr "Suitza"
-
-#: includes/class-hostpn-data.php:85
-msgid "Syrian Arab Republic"
-msgstr "Siriako Arabiar Errepublika"
-
-#: includes/class-hostpn-data.php:85
-msgid "Tajikistan"
-msgstr "Tadjikistan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Tanzania, United Republic of"
-msgstr "Tanzaniako Errepublika Batua"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:22
-msgctxt "Taxonomy general name"
-msgid "Accommodation categories"
-msgstr "Ostatu kategoriak"
-
-#: includes/class-hostpn-taxonomies-guest.php:22
-msgctxt "Taxonomy general name"
-msgid "Guest categories"
-msgstr "Gonbidatu kategoriak"
-
-#: includes/class-hostpn-taxonomies-part.php:22
-msgctxt "Taxonomy general name"
-msgid "Part of travelers categories"
-msgstr "Bidaiarien zati kategoriak"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:23
-msgctxt "Taxonomy singular name"
-msgid "Accommodation category"
-msgstr "Ostatu kategoria"
-
-#: includes/class-hostpn-taxonomies-guest.php:23
-msgctxt "Taxonomy singular name"
-msgid "Guest category"
-msgstr "Gonbidatu kategoria"
-
-#: includes/class-hostpn-taxonomies-part.php:23
-msgctxt "Taxonomy singular name"
-msgid "Part of travelers category"
-msgstr "Bidaiarien zati kategoria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Thailand"
-msgstr "Thailandia"
-
-#: includes/class-hostpn-post-type-part.php:350
-msgid "The estimated time was"
-msgstr "Aurreikusitako denbora zen"
-
-#: includes/class-hostpn-post-type-guest.php:84
-#: includes/class-hostpn-functions-user.php:173
-msgid ""
-"The number/ID of the document that you set on \"Document type\" field just "
-"above."
-msgstr "Goiko 'Dokumentu mota' eremuan ezarritako dokumentuaren zenbakia/IDa."
-
-#: includes/class-hostpn-post-type-accommodation.php:390
-msgid "This Accommodation is periodic"
-msgstr "Ostatu hau periodikoa da"
-
-#: includes/class-hostpn-post-type-accommodation.php:386
-msgid "This Accommodation is timed"
-msgstr "Ostatu hau denboratua da"
-
-#: includes/class-hostpn-post-type-guest.php:565
-msgid "This Guest is periodic"
-msgstr "Gonbidatu hau periodikoa da"
-
-#: includes/class-hostpn-post-type-guest.php:561
-msgid "This Guest is timed"
-msgstr "Gonbidatu hau denboratua da"
-
-#: includes/class-hostpn-settings.php:23
-msgid ""
-"This option sets the slug of the main Guest archive page, and the Guest "
-"pages. By default they will be:"
-msgstr ""
-"Aukera honek gonbidatuen artxibo-orri nagusiaren eta gonbidatuen orrien "
-"slug-a ezartzen du. Lehenetsita hauek izango dira:"
-
-#: includes/class-hostpn-post-type-part.php:676
-msgid "This part is periodic"
-msgstr "Zati hau periodikoa da"
-
-#: includes/class-hostpn-post-type-part.php:672
-msgid "This part is timed"
-msgstr "Zati hau denboratua da"
-
-#: includes/class-hostpn-post-type-part.php:350
-msgid "This Part of traveler was not timed."
-msgstr "Bidaiariaren zati hau ez da denboratua izan."
-
-#: includes/class-hostpn-post-type-part.php:25
-msgid "This title will help you to remind and find this part in the future"
-msgstr "Izenburu honek lagunduko dizu etorkizunean zati hau gogoratu eta aurkitzen."
-
-#: includes/class-hostpn-post-type-part.php:349
-#: includes/class-hostpn-post-type-part.php:351
-msgid "Time spent (Hours:Minutes)"
-msgstr "Emandako denbora (Orduak:Minutuak)"
-
-#: includes/class-hostpn-data.php:85
-msgid "Timor-Leste"
-msgstr "Ekialdeko Timor"
-
-#: includes/class-hostpn-data.php:85
-msgid "Togo"
-msgstr "Togo"
-
-#: includes/class-hostpn-data.php:85
-msgid "Tonga"
-msgstr "Tonga"
-
-#: includes/class-hostpn-data.php:117
-msgid "Tourist accommodation"
-msgstr "Ostatu turistikoa"
-
-#: includes/class-hostpn-post-type-part.php:232
-msgid "Transfer"
-msgstr "Transferentzia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Trinidad and Tobago"
-msgstr "Trinidad eta Tobago"
-
-#: includes/class-hostpn-data.php:85
-msgid "Tunisia"
-msgstr "Tunisia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Turkey"
-msgstr "Turkia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Turkmenistan"
-msgstr "Turkmenistan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Tuvalu"
-msgstr "Tuvalu"
-
-#: includes/class-hostpn-data.php:85
-msgid "Uganda"
-msgstr "Uganda"
-
-#: includes/class-hostpn-data.php:85
-msgid "Ukraine"
-msgstr "Ukraina"
-
-#: includes/class-hostpn-data.php:121
-msgid "Uncle"
-msgstr "Osaba"
-
-#: includes/class-hostpn-data.php:85
-msgid "United Arab Emirates"
-msgstr "Arabiar Emirerri Batuak"
-
-#: includes/class-hostpn-data.php:85
-msgid "United Kingdom"
-msgstr "Erresuma Batua"
-
-#: includes/class-hostpn-data.php:85
-msgid "United States of America"
-msgstr "Ameriketako Estatu Batuak"
-
-#: includes/class-hostpn-post-type-accommodation.php:130
-msgid "Update accommodation"
-msgstr "Eguneratu ostatu"
-
-#: includes/class-hostpn-taxonomies-accommodation.php:29
-msgid "Update Accommodation category"
-msgstr "Eguneratu ostatu kategoria"
-
-#: includes/class-hostpn-post-type-guest.php:254
-msgid "Update Guest"
-msgstr "Eguneratu gonbidatu"
-
-#: includes/class-hostpn-taxonomies-guest.php:29
-msgid "Update Guest category"
-msgstr "Eguneratu gonbidatu kategoria"
-
-#: includes/class-hostpn-post-type-part.php:392
-msgid "Update Part of traveler"
-msgstr "Eguneratu bidaiari zatia"
-
-#: includes/class-hostpn-taxonomies-part.php:29
-msgid "Update Part of travelers category"
-msgstr "Eguneratu bidaiari zati kategoria"
-
-#: includes/class-hostpn-data.php:85
-msgid "Uruguay"
-msgstr "Uruguai"
-
-#: includes/class-hostpn-data.php:85
-msgid "Uzbekistan"
-msgstr "Uzbekistan"
-
-#: includes/class-hostpn-data.php:85
-msgid "Vanuatu"
-msgstr "Vanuatu"
-
-#: includes/class-hostpn-data.php:117
-msgid "Vehicle rental office"
-msgstr "Ibilgailu alokairu bulegoa"
-
-#: includes/class-hostpn-data.php:85
-msgid "Venezuela (Bolivarian Republic of)"
-msgstr "Venezuela (Errepublika Bolibartarra)"
-
-#: includes/class-hostpn-data.php:85
-msgid "Viet Nam"
-msgstr "Vietnam"
-
-#: includes/class-hostpn-post-type-accommodation.php:408
-msgid "View Accommodation"
-msgstr "Ikusi ostatu"
-
-#: includes/class-hostpn-post-type-accommodation.php:126
-msgid "View accommodation"
-msgstr "Ikusi ostatu"
-
-#: includes/class-hostpn-post-type-guest.php:250
-#: includes/class-hostpn-post-type-guest.php:579
-msgid "View Guest"
-msgstr "Ikusi gonbidatu"
-
-#: includes/class-hostpn-post-type-part.php:694
-msgid "View part"
-msgstr "Ikusi zati"
-
-#: includes/class-hostpn-post-type-part.php:388
-msgid "View Part of traveler"
-msgstr "Ikusi bidaiari zatia"
-
-#: includes/class-hostpn-data.php:117
-msgid "Villa"
-msgstr "Billa"
-
-#: includes/class-hostpn-post-type-guest.php:432
-msgid "We have received your application successfully."
-msgstr "Zure eskaera arrakastaz jaso dugu."
-
-#: includes/class-hostpn-functions-user.php:348
-msgid "We have successfully received your registration and application."
-msgstr "Zure erregistroa eta eskaera arrakastaz jaso ditugu."
-
-#: templates/hostpn-popups.php:39
-msgid ""
-"will be completely deleted. This process cannot be reversed and cannot be "
-"recovered."
-msgstr "erabat ezabatuko da. Prozesu hau ezin da desegin eta ezin da berreskuratu."
-
-#: includes/class-hostpn-data.php:85
-msgid "Yemen"
-msgstr "Yemen"
-
-#: includes/class-hostpn-functions-user.php:349
-msgid ""
-"You can now add more guests by yourself or share the link to other "
-"companions to allow them fulfill their own form."
-msgstr "Orain beste gonbidatu batzuk gehi ditzakezu edo esteka partekatu beste lagunek beren formularioa bete dezaten."
-
-#: includes/class-hostpn-post-type-guest.php:443
-msgid ""
-"You can now add more guests or share the link to other companions to allow "
-"them fulfill their own form."
-msgstr "Orain beste gonbidatu batzuk gehi ditzakezu edo esteka partekatu beste lagunek beren formularioa bete dezaten."
-
-#: includes/class-hostpn-post-type-accommodation.php:584
-msgid ""
-"You can share accommodation link to allow companions to fill out their "
-"guests forms directly in the platform."
-msgstr "Ostatua partekatzeko esteka partekatu dezakezu, lagunek beren gonbidatuen formularioak zuzenean plataforman bete ditzaten."
-
-#: includes/class-hostpn-data.php:85
-msgid "Zambia"
-msgstr "Zambia"
-
-#: includes/class-hostpn-data.php:85
-msgid "Zimbabwe"
-msgstr "Zimbabwe"
+"Bideo-biltegiaren URL bat ezar dezakezu hemen (YouTube edo Vimeo adibidez) "
+"errezetaren orrian edukia erakusteko."

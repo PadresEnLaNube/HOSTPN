@@ -50,9 +50,9 @@ class HOSTPN_Shortcodes {
         <?php
       }
     }
-    $wph_return_string = ob_get_contents(); 
+    $hostpn_return_string = ob_get_contents(); 
     ob_end_clean(); 
-    return $wph_return_string;
+    return $hostpn_return_string;
   }
 
   public function hostpn_call_to_action($atts) {

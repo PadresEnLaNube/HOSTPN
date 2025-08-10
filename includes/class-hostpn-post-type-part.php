@@ -794,7 +794,7 @@ class HOSTPN_Post_Type_Part {
                       </li>
                       <li>
                         <a href="#" class="hostpn-part-download hostpn-text-decoration-none">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
                               <p><?php esc_html_e('Download XML file', 'hostpn'); ?></p>
                             </div>
@@ -996,9 +996,9 @@ class HOSTPN_Post_Type_Part {
     if(empty(get_post_meta($part_id, 'hostpn_part_history', true))) {
       update_post_meta($part_id, 'hostpn_part_history', [strtotime('now') => $host_meta_array]);
     }else{
-      $wph_post_meta_new = get_post_meta($part_id, 'hostpn_part_history', true);
-      $wph_post_meta_new[strtotime('now')] = $host_meta_array;
-      update_post_meta($part_id, 'hostpn_part_history', $wph_post_meta_new);
+      $hostpn_post_meta_new = get_post_meta($part_id, 'hostpn_part_history', true);
+      $hostpn_post_meta_new[strtotime('now')] = $host_meta_array;
+      update_post_meta($part_id, 'hostpn_part_history', $hostpn_post_meta_new);
     }
   }
   public function hostpn_part_next($part_id) {

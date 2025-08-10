@@ -527,7 +527,7 @@ class HOSTPN_Post_Type_Accommodation {
                       </li>
                       <li>
                         <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-accommodation-share" data-hostpn-ajax-type="hostpn_accommodation_share">
-                          <div class="wph-display-table hostpn-width-100-percent">
+                          <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-70-percent">
                               <p><?php esc_html_e('Share accommodation', 'hostpn'); ?></p>
                             </div>
@@ -680,7 +680,7 @@ class HOSTPN_Post_Type_Accommodation {
         <h3 class="hostpn-text-align-center"><?php esc_html_e('Accommodation share link', 'hostpn'); ?></h3>
         <p class="hostpn-text-align-center"><?php esc_html_e('You can share accommodation link to allow companions to fill out their guests forms directly in the platform.', 'hostpn'); ?></p>
 
-        <?php if (class_exists('USERSWPH')): ?>
+        <?php if (class_exists('USERSPN')): ?>
           <div class="hostpn-display-table hostpn-width-100-percent">
             <div class="hostpn-display-inline-table hostpn-width-90-percent">
               <code id="hostpn-share-url"><?php 
@@ -698,7 +698,7 @@ class HOSTPN_Post_Type_Accommodation {
             </div>
           </div>
         <?php else: ?>
-          <p class="hostpn-text-align-center"><?php esc_html_e('Please install Users Manager - WPH plugin to allow user creation and management.', 'hostpn'); ?></p>
+          <p class="hostpn-text-align-center"><?php esc_html_e('Please install Users Manager - PN plugin to allow user creation and management.', 'hostpn'); ?></p>
 
           <div class="hostpn-text-align-center">
             <a href="<?php echo esc_url(self::hostpn_share_link()); ?>" class="hostpn-btn hostpn-btn-mini"><?php esc_html_e('Install plugin', 'hostpn'); ?></a>
@@ -706,12 +706,12 @@ class HOSTPN_Post_Type_Accommodation {
         <?php endif ?>
       </div>
     <?php
-    $wph_return_string = ob_get_contents(); 
+    $hostpn_return_string = ob_get_contents(); 
     ob_end_clean(); 
-    return $wph_return_string;
+    return $hostpn_return_string;
   }
 
   public function hostpn_share_link() {
-    return esc_url(admin_url('/plugin-install.php?s=userswph&tab=search&type=term'));
+    return esc_url(admin_url('/plugin-install.php?s=userspn&tab=search&type=term'));
   }
 }

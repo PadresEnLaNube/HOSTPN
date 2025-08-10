@@ -52,7 +52,7 @@ class HOSTPN {
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.2';
+			$this->version = '1.0.4';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -327,6 +327,10 @@ class HOSTPN {
 		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_guest, 'hostpn_guest_add_meta_box');
 		$this->loader->hostpn_add_action('save_post_hostpn_guest', $plugin_post_type_guest, 'hostpn_guest_save_post', 10, 3);
 		$this->loader->hostpn_add_shortcode('hostpn-guest-list', $plugin_post_type_guest, 'hostpn_guest_list_wrapper');
+		
+		// Add hooks for customizing admin columns
+		$this->loader->hostpn_add_filter('manage_hostpn_guest_posts_columns', $plugin_post_type_guest, 'hostpn_guest_custom_columns');
+		$this->loader->hostpn_add_action('manage_hostpn_guest_posts_custom_column', $plugin_post_type_guest, 'hostpn_guest_custom_column_content', 10, 2);
 	}
 
 	/**
