@@ -115,6 +115,443 @@ class HOSTPN_Post_Type_Accommodation {
         'input' => 'input',
         'type' => 'nonce',
       ];
+
+      // Nuevos campos editor para normas y condiciones
+      $hostpn_fields_meta['hostpn_accommodation_rules'] = [
+        'id' => 'hostpn_accommodation_rules',
+        'input' => 'editor',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'label' => esc_html(__('Accommodation Rules', 'hostpn')),
+        'description' => esc_html(__('Enter the accommodation rules and policies', 'hostpn')),
+      ];
+
+      $hostpn_fields_meta['hostpn_checkin_conditions'] = [
+        'id' => 'hostpn_checkin_conditions',
+        'input' => 'editor',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'label' => esc_html(__('Check-in Conditions', 'hostpn')),
+        'description' => esc_html(__('Enter the check-in conditions and requirements', 'hostpn')),
+      ];
+
+      $hostpn_fields_meta['hostpn_checkout_conditions'] = [
+        'id' => 'hostpn_checkout_conditions',
+        'input' => 'editor',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'label' => esc_html(__('Check-out Conditions', 'hostpn')),
+        'description' => esc_html(__('Enter the check-out conditions and requirements', 'hostpn')),
+      ];
+
+      // Campos de características del alojamiento - Aparcamiento
+      $hostpn_fields_meta['hostpn_parking_description'] = [
+        'id' => 'hostpn_parking_description',
+        'input' => 'textarea',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'label' => esc_html(__('Parking Description', 'hostpn')),
+        'description' => esc_html(__('Describe parking availability and conditions', 'hostpn')),
+      ];
+
+      // Campos de características del alojamiento - Internet
+      $hostpn_fields_meta['hostpn_internet_description'] = [
+        'id' => 'hostpn_internet_description',
+        'input' => 'textarea',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'label' => esc_html(__('Internet Description', 'hostpn')),
+        'description' => esc_html(__('Describe internet speed and features', 'hostpn')),
+      ];
+
+      // Accommodation features - Kitchen Section Start
+      $hostpn_fields_meta['hostpn_kitchen_section_start'] = [
+        'id' => 'hostpn_kitchen_section_start',
+        'section' => 'start',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-kitchen-section',
+        'label' => esc_html(__('Kitchen Features', 'hostpn')),
+      ];
+
+      // Kitchen features array
+      $kitchen_features = [
+        'dining_table' => __('Dining table', 'hostpn'),
+        'coffee_maker' => __('Coffee maker', 'hostpn'),
+        'cleaning_products' => __('Cleaning products', 'hostpn'),
+        'toaster' => __('Toaster', 'hostpn'),
+        'stovetops' => __('Stovetops', 'hostpn'),
+        'oven' => __('Oven', 'hostpn'),
+        'kitchen_utensils' => __('Kitchen utensils', 'hostpn'),
+        'electric_kettle' => __('Electric kettle', 'hostpn'),
+        'kitchen' => __('Kitchen', 'hostpn'),
+        'washing_machine' => __('Washing machine', 'hostpn'),
+        'dishwasher' => __('Dishwasher', 'hostpn'),
+        'microwave' => __('Microwave', 'hostpn'),
+        'refrigerator' => __('Refrigerator', 'hostpn'),
+        'kitchen_area' => __('Kitchen area', 'hostpn'),
+        'blender' => __('Blender', 'hostpn'),
+        'food_processor' => __('Food processor', 'hostpn'),
+        'juicer' => __('Juicer', 'hostpn'),
+        'grill' => __('Grill', 'hostpn'),
+        'steamer' => __('Steamer', 'hostpn'),
+        'slow_cooker' => __('Slow cooker', 'hostpn'),
+        'air_fryer' => __('Air fryer', 'hostpn'),
+        'wine_cooler' => __('Wine cooler', 'hostpn'),
+        'freezer' => __('Freezer', 'hostpn'),
+        'kitchen_island' => __('Kitchen island', 'hostpn'),
+        'pantry' => __('Pantry', 'hostpn'),
+        'garbage_disposal' => __('Garbage disposal', 'hostpn'),
+        'water_filter' => __('Water filter', 'hostpn'),
+        'ice_maker' => __('Ice maker', 'hostpn'),
+        'breakfast_bar' => __('Breakfast bar', 'hostpn'),
+        'wine_rack' => __('Wine rack', 'hostpn'),
+        'spice_rack' => __('Spice rack', 'hostpn'),
+        'knife_block' => __('Knife block', 'hostpn'),
+      ];
+
+      // Generate kitchen features using foreach
+      foreach ($kitchen_features as $feature_id => $feature_label) {
+        $hostpn_fields_meta['hostpn_' . $feature_id] = [
+          'id' => 'hostpn_' . $feature_id,
+          'input' => 'input',
+          'type' => 'checkbox',
+          'class' => 'hostpn-input hostpn-width-100-percent  hostpn-kitchen-feature',
+          'label' => esc_html($feature_label),
+        ];
+      }
+
+      // Accommodation features - Kitchen additional items (html_multi)
+      $hostpn_fields_meta['hostpn_kitchen_additional_features'] = [
+        'id' => 'hostpn_kitchen_additional_features',
+        'input' => 'html_multi',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-kitchen-additional-features',
+        'html_multi_fields' => [
+          [
+            'id' => 'hostpn_kitchen_custom_name', 
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text', 
+            'multiple' => true,
+            'label' => esc_html(__('Custom kitchen feature name', 'hostpn')),
+            'placeholder' => esc_html(__('Enter the name of the custom kitchen feature', 'hostpn')),
+          ],
+        ],
+        'label' => esc_html(__('Additional Kitchen Features', 'hostpn')),
+        'description' => esc_html(__('Add custom kitchen features not listed above', 'hostpn')),
+      ];
+
+      // Accommodation features - Kitchen Section End
+      $hostpn_fields_meta['hostpn_kitchen_section_end'] = [
+        'id' => 'hostpn_kitchen_section_end',
+        'section' => 'end',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-kitchen-section',
+        'label' => esc_html(__('Kitchen Features', 'hostpn')),
+      ];
+
+      // Accommodation features - Room Section Start
+      $hostpn_fields_meta['hostpn_room_section_start'] = [
+        'id' => 'hostpn_room_section_start',
+        'section' => 'start',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-room-section',
+        'label' => esc_html(__('Room Features', 'hostpn')),
+      ];
+
+      // Room features array
+      $room_features = [
+        'bed_linen' => __('Bed linen', 'hostpn'),
+        'wardrobe' => __('Wardrobe', 'hostpn'),
+        'nightstand' => __('Nightstand', 'hostpn'),
+        'dresser' => __('Dresser', 'hostpn'),
+        'mirror' => __('Mirror', 'hostpn'),
+        'armchair' => __('Armchair', 'hostpn'),
+        'reading_lamp' => __('Reading lamp', 'hostpn'),
+        'bedside_lamp' => __('Bedside lamp', 'hostpn'),
+        'ceiling_lamp' => __('Ceiling lamp', 'hostpn'),
+        'floor_lamp' => __('Floor lamp', 'hostpn'),
+        'table_lamp' => __('Table lamp', 'hostpn'),
+        'wall_lamp' => __('Wall lamp', 'hostpn'),
+        'curtains' => __('Curtains', 'hostpn'),
+        'blinds' => __('Blinds', 'hostpn'),
+        'shutters' => __('Shutters', 'hostpn'),
+        'blackout_curtains' => __('Blackout curtains', 'hostpn'),
+        'sheer_curtains' => __('Sheer curtains', 'hostpn'),
+        'thermal_curtains' => __('Thermal curtains', 'hostpn'),
+        'soundproofing' => __('Soundproofing', 'hostpn'),
+        'air_conditioning' => __('Air conditioning', 'hostpn'),
+        'heating' => __('Heating', 'hostpn'),
+        'ceiling_fan' => __('Ceiling fan', 'hostpn'),
+        'floor_fan' => __('Floor fan', 'hostpn'),
+        'table_fan' => __('Table fan', 'hostpn'),
+        'wall_fan' => __('Wall fan', 'hostpn'),
+        'humidifier' => __('Humidifier', 'hostpn'),
+        'dehumidifier' => __('Dehumidifier', 'hostpn'),
+        'air_purifier' => __('Air purifier', 'hostpn'),
+        'ionizer' => __('Ionizer', 'hostpn'),
+        'ozone_generator' => __('Ozone generator', 'hostpn'),
+        'uv_sterilizer' => __('UV sterilizer', 'hostpn'),
+        'hepa_filter' => __('HEPA filter', 'hostpn'),
+        'carbon_filter' => __('Carbon filter', 'hostpn'),
+        'electrostatic_filter' => __('Electrostatic filter', 'hostpn'),
+        'photocatalytic_filter' => __('Photocatalytic filter', 'hostpn'),
+        'plasma_filter' => __('Plasma filter', 'hostpn'),
+        'uv_filter' => __('UV filter', 'hostpn'),
+        'ion_filter' => __('Ion filter', 'hostpn'),
+        'ozone_filter' => __('Ozone filter', 'hostpn'),
+      ];
+
+      // Generate room features using foreach
+      foreach ($room_features as $feature_id => $feature_label) {
+        $hostpn_fields_meta['hostpn_' . $feature_id] = [
+          'id' => 'hostpn_' . $feature_id,
+          'input' => 'input',
+          'type' => 'checkbox',
+          'class' => 'hostpn-input hostpn-width-100-percent  hostpn-room-feature',
+          'label' => esc_html($feature_label),
+        ];
+      }
+
+      // Accommodation features - Room additional items (html_multi)
+      $hostpn_fields_meta['hostpn_room_additional_features'] = [
+        'id' => 'hostpn_room_additional_features',
+        'input' => 'html_multi',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-room-additional-features',
+        'html_multi_fields' => [
+          [
+            'id' => 'hostpn_room_custom_name', 
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text', 
+            'multiple' => true,
+            'label' => esc_html(__('Custom room feature name', 'hostpn')),
+            'placeholder' => esc_html(__('Enter the name of the custom room feature', 'hostpn')),
+          ],
+        ],
+        'label' => esc_html(__('Additional Room Features', 'hostpn')),
+        'description' => esc_html(__('Add custom room features not listed above', 'hostpn')),
+      ];
+
+      // Accommodation features - Room Section End
+      $hostpn_fields_meta['hostpn_room_section_end'] = [
+        'id' => 'hostpn_room_section_end',
+        'section' => 'end',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-room-section',
+        'label' => esc_html(__('Room Features', 'hostpn')),
+      ];
+
+      // Accommodation features - Bathroom Section Start
+      $hostpn_fields_meta['hostpn_bathroom_section_start'] = [
+        'id' => 'hostpn_bathroom_section_start',
+        'section' => 'start',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-bathroom-section',
+        'label' => esc_html(__('Bathroom Features', 'hostpn')),
+      ];
+
+      // Bathroom features array
+      $bathroom_features = [
+        'private_bathroom' => __('Private bathroom', 'hostpn'),
+        'shared_bathroom' => __('Shared bathroom', 'hostpn'),
+        'hair_dryer' => __('Hair dryer', 'hostpn'),
+        'shampoo' => __('Shampoo', 'hostpn'),
+        'conditioner' => __('Conditioner', 'hostpn'),
+        'body_wash' => __('Body wash', 'hostpn'),
+        'soap' => __('Soap', 'hostpn'),
+        'toilet_paper' => __('Toilet paper', 'hostpn'),
+        'towels' => __('Towels', 'hostpn'),
+        'bath_mat' => __('Bath mat', 'hostpn'),
+        'shower_curtain' => __('Shower curtain', 'hostpn'),
+        'bath_tub' => __('Bath tub', 'hostpn'),
+        'shower' => __('Shower', 'hostpn'),
+        'bidet' => __('Bidet', 'hostpn'),
+        'toilet' => __('Toilet', 'hostpn'),
+        'sink' => __('Sink', 'hostpn'),
+        'mirror' => __('Mirror', 'hostpn'),
+        'medicine_cabinet' => __('Medicine cabinet', 'hostpn'),
+        'vanity' => __('Vanity', 'hostpn'),
+        'heating' => __('Heating', 'hostpn'),
+        'ventilation' => __('Ventilation', 'hostpn'),
+      ];
+
+      // Generate bathroom features using foreach
+      foreach ($bathroom_features as $feature_id => $feature_label) {
+        $hostpn_fields_meta['hostpn_' . $feature_id] = [
+          'id' => 'hostpn_' . $feature_id,
+          'input' => 'input',
+          'type' => 'checkbox',
+          'class' => 'hostpn-input hostpn-width-100-percent  hostpn-bathroom-feature',
+          'label' => esc_html($feature_label),
+        ];
+      }
+
+      // Accommodation features - Bathroom additional items (html_multi)
+      $hostpn_fields_meta['hostpn_bathroom_additional_features'] = [
+        'id' => 'hostpn_bathroom_additional_features',
+        'input' => 'html_multi',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-bathroom-additional-features',
+        'html_multi_fields' => [
+          [
+            'id' => 'hostpn_bathroom_custom_name',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text', 
+            'multiple' => true,
+            'label' => esc_html(__('Custom bathroom feature name', 'hostpn')),
+            'placeholder' => esc_html(__('Enter the name of the custom bathroom feature', 'hostpn')),
+          ],
+        ],
+        'label' => esc_html(__('Additional Bathroom Features', 'hostpn')),
+        'description' => esc_html(__('Add custom bathroom features not listed above', 'hostpn')),
+      ];
+
+      // Accommodation features - Bathroom Section End
+      $hostpn_fields_meta['hostpn_bathroom_section_end'] = [
+        'id' => 'hostpn_bathroom_section_end',
+        'section' => 'end',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-bathroom-section',
+        'label' => esc_html(__('Bathroom Features', 'hostpn')),
+      ];
+
+      // Accommodation features - Living Area Section Start
+      $hostpn_fields_meta['hostpn_living_area_section_start'] = [
+        'id' => 'hostpn_living_area_section_start',
+        'section' => 'start',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-living-area-section',
+        'label' => esc_html(__('Living Area Features', 'hostpn')),
+      ];
+
+      // Living Area features array
+      $living_area_features = [
+        'sofa' => __('Sofa', 'hostpn'),
+        'armchair' => __('Armchair', 'hostpn'),
+        'coffee_table' => __('Coffee table', 'hostpn'),
+        'side_table' => __('Side table', 'hostpn'),
+        'tv_stand' => __('TV stand', 'hostpn'),
+        'bookcase' => __('Bookcase', 'hostpn'),
+        'magazine_rack' => __('Magazine rack', 'hostpn'),
+        'throw_pillows' => __('Throw pillows', 'hostpn'),
+        'blanket' => __('Blanket', 'hostpn'),
+        'rug' => __('Rug', 'hostpn'),
+        'floor_lamp' => __('Floor lamp', 'hostpn'),
+        'table_lamp' => __('Table lamp', 'hostpn'),
+        'wall_lamp' => __('Wall lamp', 'hostpn'),
+        'ceiling_lamp' => __('Ceiling lamp', 'hostpn'),
+        'chandelier' => __('Chandelier', 'hostpn'),
+        'pendant_lamp' => __('Pendant lamp', 'hostpn'),
+        'track_lighting' => __('Track lighting', 'hostpn'),
+        'recessed_lighting' => __('Recessed lighting', 'hostpn'),
+        'sconces' => __('Sconces', 'hostpn'),
+        'fireplace' => __('Fireplace', 'hostpn'),
+        'wood_stove' => __('Wood stove', 'hostpn'),
+        'pellet_stove' => __('Pellet stove', 'hostpn'),
+        'gas_stove' => __('Gas stove', 'hostpn'),
+        'electric_stove' => __('Electric stove', 'hostpn'),
+        'propane_stove' => __('Propane stove', 'hostpn'),
+        'kerosene_stove' => __('Kerosene stove', 'hostpn'),
+        'ethanol_stove' => __('Ethanol stove', 'hostpn'),
+        'bioethanol_stove' => __('Bioethanol stove', 'hostpn'),
+        'gel_stove' => __('Gel stove', 'hostpn'),
+        'paraffin_stove' => __('Paraffin stove', 'hostpn'),
+        'denatured_alcohol_stove' => __('Denatured alcohol stove', 'hostpn'),
+        'methylated_spirits_stove' => __('Methylated spirits stove', 'hostpn'),
+        'isopropyl_alcohol_stove' => __('Isopropyl alcohol stove', 'hostpn'),
+        'rubbing_alcohol_stove' => __('Rubbing alcohol stove', 'hostpn'),
+      ];
+
+      // Generate living area features using foreach
+      foreach ($living_area_features as $feature_id => $feature_label) {
+        $hostpn_fields_meta['hostpn_' . $feature_id] = [
+          'id' => 'hostpn_' . $feature_id,
+          'input' => 'input',
+          'type' => 'checkbox',
+          'class' => 'hostpn-input hostpn-width-100-percent  hostpn-living-area-feature',
+          'label' => esc_html($feature_label),
+        ];
+      }
+
+      // Accommodation features - Living Area additional items (html_multi)
+      $hostpn_fields_meta['hostpn_living_area_additional_features'] = [
+        'id' => 'hostpn_living_area_additional_features',
+        'input' => 'html_multi',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-living-area-additional-features',
+        'html_multi_fields' => [
+          [
+            'id' => 'hostpn_living_area_custom_name', 
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text', 
+            'multiple' => true,
+            'label' => esc_html(__('Custom living area feature name', 'hostpn')),
+            'placeholder' => esc_html(__('Enter the name of the custom living area feature', 'hostpn')),
+          ],
+        ],
+        'label' => esc_html(__('Additional Living Area Features', 'hostpn')),
+        'description' => esc_html(__('Add custom living area features not listed above', 'hostpn')),
+      ];
+
+      // Accommodation features - Living Area Section End
+      $hostpn_fields_meta['hostpn_living_area_section_end'] = [
+        'id' => 'hostpn_living_area_section_end',
+        'section' => 'end',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-living-area-section',
+        'label' => esc_html(__('Living Area Features', 'hostpn')),
+      ];
+
+      // Accommodation features - Audiovisual Equipment Section Start
+      $hostpn_fields_meta['hostpn_audiovisual_section_start'] = [
+        'id' => 'hostpn_audiovisual_section_start',
+        'section' => 'start',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-audiovisual-section',
+        'label' => esc_html(__('Audiovisual Equipment', 'hostpn')),
+      ];
+
+      // Audiovisual features array
+      $audiovisual_features = [
+        'tv' => __('TV', 'hostpn'),
+        'smart_tv' => __('Smart TV', 'hostpn'),
+        '4k_tv' => __('4K TV', 'hostpn'),
+        '8k_tv' => __('8K TV', 'hostpn'),
+        'oled_tv' => __('OLED TV', 'hostpn'),
+        'qled_tv' => __('QLED TV', 'hostpn'),
+        'led_tv' => __('LED TV', 'hostpn'),
+        'lcd_tv' => __('LCD TV', 'hostpn'),
+        'plasma_tv' => __('Plasma TV', 'hostpn'),
+        'crt_tv' => __('CRT TV', 'hostpn'),
+        'projector' => __('Projector', 'hostpn'),
+        'screen' => __('Screen', 'hostpn'),
+        'sound_system' => __('Sound system', 'hostpn'),
+      ];
+
+      // Generate audiovisual features using foreach
+      foreach ($audiovisual_features as $feature_id => $feature_label) {
+        $hostpn_fields_meta['hostpn_' . $feature_id] = [
+          'id' => 'hostpn_' . $feature_id,
+          'input' => 'input',
+          'type' => 'checkbox',
+          'class' => 'hostpn-input hostpn-width-100-percent  hostpn-audiovisual-feature',
+          'label' => esc_html($feature_label),
+        ];
+      }
+
+      // Accommodation features - Audiovisual additional items (html_multi)
+      $hostpn_fields_meta['hostpn_audiovisual_additional_features'] = [
+        'id' => 'hostpn_audiovisual_additional_features',
+        'input' => 'html_multi',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-audiovisual-additional-features',
+        'html_multi_fields' => [
+          [
+            'id' => 'hostpn_audiovisual_custom_name', 
+            'input' => 'input',
+            'type' => 'text', 
+            'multiple' => true,
+            'label' => esc_html(__('Custom audiovisual feature name', 'hostpn')),
+            'placeholder' => esc_html(__('Enter the name of the custom audiovisual feature', 'hostpn')),
+          ],
+        ],
+        'label' => esc_html(__('Additional Audiovisual Features', 'hostpn')),
+        'description' => esc_html(__('Add custom audiovisual features not listed above', 'hostpn')),
+      ];
+
+      // Accommodation features - Audiovisual Section End
+      $hostpn_fields_meta['hostpn_audiovisual_section_end'] = [
+        'id' => 'hostpn_audiovisual_section_end',
+        'section' => 'end',
+        'class' => 'hostpn-input hostpn-width-100-percent  hostpn-audiovisual-section',
+        'label' => esc_html(__('Audiovisual Equipment', 'hostpn')),
+      ];
+
     return $hostpn_fields_meta;
   }
 
@@ -149,11 +586,10 @@ class HOSTPN_Post_Type_Accommodation {
       'hierarchical'        => true,
       'public'              => false,
       'show_ui'             => true,
-      'show_in_menu'        => true,
+      'show_in_menu'        => false,
       'show_in_nav_menus'   => true,
       'show_in_admin_bar'   => true,
       'menu_position'       => 5,
-      'menu_icon'           => esc_url(HOSTPN_URL . 'assets/media/hostpn-accommodation-menu-icon.svg'),
       'can_export'          => true,
       'has_archive'         => false,
       'exclude_from_search' => true,

@@ -416,11 +416,10 @@ class HOSTPN_Post_Type_Part {
       'hierarchical'        => true,
       'public'              => false,
       'show_ui'             => true,
-      'show_in_menu'        => true,
+      'show_in_menu'        => false,
       'show_in_nav_menus'   => true,
       'show_in_admin_bar'   => true,
       'menu_position'       => 5,
-      'menu_icon'           => esc_url(HOSTPN_URL . 'assets/media/hostpn-part-menu-icon.svg'),
       'can_export'          => false,
       'has_archive'         => false,
       'exclude_from_search' => true,
@@ -1030,5 +1029,90 @@ class HOSTPN_Post_Type_Part {
     }
 
     return array_unique($hostpn_owners_array);
+  }
+
+  /**
+   * Customize admin columns for Part post type.
+   *
+   * @param array $columns The default columns.
+   * @return array Modified columns.
+   */
+  public function hostpn_part_custom_columns($columns) {
+    $new_columns = [];
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['part_info'] = esc_html(__('Part Information', 'hostpn'));
+    $new_columns['author_info'] = esc_html(__('Author', 'hostpn'));
+    $new_columns['creation_date'] = esc_html(__('Creation Date', 'hostpn'));
+    return $new_columns;
+  }
+
+  /**
+   * Customize admin column content for Part post type.
+   *
+   * @param string $column Column name.
+   * @param int $post_id Post ID.
+   */
+  public function hostpn_part_custom_column_content($column, $post_id) {
+    ob_start();
+
+    switch ($column) {
+      case 'part_info':
+        $part_title = get_the_title($post_id);
+        $part_description = get_post($post_id)->post_content;
+        $edit_link = get_edit_post_link($post_id);
+
+        ?>
+        <p>
+          <a href="<?php echo esc_url($edit_link); ?>" class="mailpn-color-main-0 mailpn-font-weight-bold mailpn-mr-10"
+              target="_blank">
+              <i class="material-icons-outlined mailpn-vertical-align-middle mailpn-font-size-20 mailpn-color-main-0">description</i>
+              #<?php echo esc_html($post_id); ?>                 <?php echo esc_html($part_title); ?>
+          </a>
+        </p>
+        <?php if (!empty($part_description)): ?>
+          <p class="description"><?php echo esc_html(wp_trim_words($part_description, 10)); ?></p>
+        <?php endif; ?>
+        <?php
+        break;
+
+      case 'author_info':
+        $post = get_post($post_id);
+        $author_id = $post->post_author;
+        $author = get_userdata($author_id);
+        $author_name = get_user_meta($author_id, 'first_name', true) . ' ' . get_user_meta($author_id, 'last_name', true);
+        $author_email = $author->user_email;
+        $edit_user_link = admin_url('user-edit.php?user_id=' . $author_id);
+        ?>
+        <p>
+          <a href="<?php echo esc_url($edit_user_link); ?>" class="mailpn-color-main-0 mailpn-font-weight-bold mailpn-mr-10"
+              target="_blank">
+              <i class="material-icons-outlined mailpn-vertical-align-middle mailpn-font-size-20 mailpn-color-main-0">person</i>
+              #<?php echo esc_html($author_id); ?>                 <?php echo esc_html($author_name); ?>
+          </a>
+
+          <?php if ($author_email): ?>
+              (<a href="mailto:<?php echo esc_attr($author_email); ?>" target="_blank"><?php echo esc_html($author_email); ?></a>)
+          <?php endif; ?>
+        </p>
+        <?php
+        break;
+
+      case 'creation_date':
+        $post = get_post($post_id);
+        $creation_date = $post->post_date;
+        $formatted_date = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($creation_date));
+
+        ?>
+        <p>
+          <i class="material-icons-outlined mailpn-vertical-align-middle mailpn-font-size-20 mailpn-color-main-0 mailpn-mr-10">calendar_today</i>
+          <?php echo esc_html($formatted_date); ?>
+        </p>
+        <?php
+        break;
+    }
+
+    $content = ob_get_contents();
+    ob_end_clean();
+    echo $content;
   }
 }

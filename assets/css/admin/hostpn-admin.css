@@ -1,3 +1,157 @@
-#adminmenu #menu-posts-hostpn_part .wp-menu-image img,#adminmenu #menu-posts-hostpn_accommodation .wp-menu-image img,#adminmenu #menu-posts-hostpn_accommodation .wp-menu-image img{
+#toplevel_page_hostpn .wp-menu-image img{
     padding:5px 0 0;
+}
+
+/* HostPN Features Two-Column Layout - Updated for existing HTML structure */
+.hostpn-section-wrapper {
+  margin-bottom: 30px;
+}
+
+/* Section headers */
+.hostpn-section-start {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #495057;
+  border-left: 4px solid #007cba;
+}
+
+.hostpn-section-end {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 15px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #495057;
+  border-left: 4px solid #28a745;
+}
+
+/* Content wrapper for two-column layout - ONLY for feature sections */
+.hostpn-section-wrapper .hostpn-toggle-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Individual feature input wrappers - ONLY for feature sections */
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper {
+  flex: 1;
+  min-width: 300px;
+  max-width: calc(50% - 10px);
+  margin-bottom: 15px !important;
+}
+
+/* Exclude additional features fields from two-column layout */
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_kitchen_additional_features,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_room_additional_features,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_bathroom_additional_features,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_living_area_additional_features,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_audiovisual_additional_features {
+  flex: none;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Feature styling - ONLY for feature sections */
+.hostpn-section-wrapper .hostpn-field {
+  transition: all 0.2s ease;
+}
+
+.hostpn-section-wrapper .hostpn-field:hover {
+  background: #f8f9fa;
+}
+
+/* Kitchen features */
+.hostpn-kitchen-feature {
+  border-left: 3px solid #ff6b6b;
+}
+
+.hostpn-kitchen-feature:hover {
+  border-left-color: #ff5252;
+}
+
+/* Room features */
+.hostpn-room-feature {
+  border-left: 3px solid #4ecdc4;
+}
+
+.hostpn-room-feature:hover {
+  border-left-color: #26a69a;
+}
+
+/* Bathroom features */
+.hostpn-bathroom-feature {
+  border-left: 3px solid #45b7d1;
+}
+
+.hostpn-bathroom-feature:hover {
+  border-left-color: #2196f3;
+}
+
+/* Living area features */
+.hostpn-living-area-feature {
+  border-left: 3px solid #96ceb4;
+}
+
+.hostpn-living-area-feature:hover {
+  border-left-color: #4caf50;
+}
+
+/* Audiovisual features */
+.hostpn-audiovisual-feature {
+  border-left: 3px solid #feca57;
+}
+
+.hostpn-audiovisual-feature:hover {
+  border-left-color: #ff9800;
+}
+
+/* Additional features sections */
+.hostpn-additional-features {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.hostpn-additional-features h4 {
+  margin: 0 0 10px 0;
+  color: #856404;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.hostpn-additional-features p {
+  margin: 0 0 15px 0;
+  color: #856404;
+  font-size: 13px;
+}
+
+/* Responsive design - ONLY for feature sections */
+@media (max-width: 768px) {
+  .hostpn-section-wrapper .hostpn-toggle-content {
+    flex-direction: column;
+  }
+  
+  .hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper {
+    max-width: 100%;
+  }
+}
+
+/* WordPress admin integration */
+.postbox .hostpn-section-start,
+.postbox .hostpn-section-end {
+  margin: 15px 0;
+}
+
+.postbox .hostpn-section-wrapper .hostpn-input-wrapper {
+  margin: 10px 0;
 }

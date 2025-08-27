@@ -52,7 +52,7 @@ class HOSTPN {
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.4';
+			$this->version = '1.0.7';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -331,6 +331,12 @@ class HOSTPN {
 		// Add hooks for customizing admin columns
 		$this->loader->hostpn_add_filter('manage_hostpn_guest_posts_columns', $plugin_post_type_guest, 'hostpn_guest_custom_columns');
 		$this->loader->hostpn_add_action('manage_hostpn_guest_posts_custom_column', $plugin_post_type_guest, 'hostpn_guest_custom_column_content', 10, 2);
+		
+		// Add hooks for customizing Part admin columns
+		$this->loader->hostpn_add_filter('manage_hostpn_part_posts_columns', $plugin_post_type_part, 'hostpn_part_custom_columns');
+		$this->loader->hostpn_add_action('manage_hostpn_part_posts_custom_column', $plugin_post_type_part, 'hostpn_part_custom_column_content', 10, 2);
+		
+
 	}
 
 	/**
@@ -390,6 +396,7 @@ class HOSTPN {
 	private function hostpn_load_settings() {
 		$plugin_settings = new HOSTPN_Settings();
 		$this->loader->hostpn_add_action('admin_menu', $plugin_settings, 'hostpn_admin_menu');
+		$this->loader->hostpn_add_action('admin_menu', $plugin_settings, 'hostpn_centralized_admin_menu', 20);
 		$this->loader->hostpn_add_filter('display_post_states', $plugin_settings, 'hostpn_display_post_state', 10, 2);
 		$this->loader->hostpn_add_action('activated_plugin', $plugin_settings, 'hostpn_activated_plugin');
 		$this->loader->hostpn_add_action('admin_init', $plugin_settings, 'hostpn_check_activation');
@@ -468,4 +475,6 @@ class HOSTPN {
 	public function hostpn_get_version() {
 		return $this->version;
 	}
+
+
 }

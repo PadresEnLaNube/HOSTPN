@@ -51,8 +51,84 @@ class HOSTPN_Settings {
 	 * @since    1.0.0
 	 */
 	public function hostpn_admin_menu() {
-    // add_menu_page(__('Users manager', 'userspn'), __('Users manager', 'userspn'), 'administrator', 'userspn_options', [$this, 'userspn_options'], esc_url(USERSPN_URL . 'assets/media/userspn-menu-icon.svg'));
-		add_submenu_page('edit.php?post_type=hostpn_guest', esc_html(__('Settings', 'hostpn')), esc_html(__('Settings', 'hostpn')), 'manage_hostpn_options', 'hostpn-options', [$this, 'hostpn_options'], );
+    // This method is no longer needed as the menu is now centralized in the main class
+    // The settings submenu is now added in the centralized admin menu
+	}
+
+	/**
+	 * Add the centralized admin menu.
+	 *
+	 * @since    1.0.0
+	 */
+	public function hostpn_centralized_admin_menu() {
+		// Add main menu page
+		add_menu_page(
+			__('HostPN', 'hostpn'),
+			__('HostPN', 'hostpn'),
+			'manage_options',
+			'hostpn',
+			array($this, 'hostpn_admin_page_callback'),
+			esc_url(HOSTPN_URL . 'assets/media/hostpn-part-menu-icon.svg'),
+			6
+		);
+
+		// Add submenu for Parts
+		add_submenu_page(
+			'hostpn',
+			__('Part of travelers', 'hostpn'),
+			__('Part of travelers', 'hostpn'),
+			'manage_options',
+			'edit.php?post_type=hostpn_part'
+		);
+
+		// Add submenu for Accommodations
+		add_submenu_page(
+			'hostpn',
+			__('Accommodations', 'hostpn'),
+			__('Accommodations', 'hostpn'),
+			'manage_options',
+			'edit.php?post_type=hostpn_accommodation'
+		);
+
+		// Add submenu for Guests
+		add_submenu_page(
+			'hostpn',
+			__('Guests', 'hostpn'),
+			__('Guests', 'hostpn'),
+			'manage_options',
+			'edit.php?post_type=hostpn_guest'
+		);
+
+		// Add submenu for Contract Generator
+		add_submenu_page(
+			'hostpn',
+			__('Contract Generator', 'hostpn'),
+			__('Contract Generator', 'hostpn'),
+			'manage_options',
+			'edit.php?post_type=hostpn_accommodation'
+		);
+
+		// Add submenu for Settings
+		add_submenu_page(
+			'hostpn',
+			__('Settings', 'hostpn'),
+			__('Settings', 'hostpn'),
+			'manage_hostpn_options',
+			'hostpn-options',
+			array($this, 'hostpn_options')
+		);
+	}
+
+	/**
+	 * Callback for the centralized admin menu.
+	 *
+	 * @since    1.0.0
+	 */
+	public function hostpn_admin_page_callback() {
+		echo '<div class="wrap">';
+		echo '<h1>' . esc_html__('HostPN Dashboard', 'hostpn') . '</h1>';
+		echo '<p>' . esc_html__('Welcome to the HostPN dashboard. Use the submenu to manage your content.', 'hostpn') . '</p>';
+		echo '</div>';
 	}
 
 	public function hostpn_options() {

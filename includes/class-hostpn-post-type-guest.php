@@ -286,11 +286,10 @@ class HOSTPN_Post_Type_Guest
             'hierarchical' => true,
             'public' => false,
             'show_ui' => true,
-            'show_in_menu' => true,
+            'show_in_menu' => false,
             'show_in_nav_menus' => true,
             'show_in_admin_bar' => true,
             'menu_position' => 5,
-            'menu_icon' => esc_url(HOSTPN_URL . 'assets/media/hostpn-guest-menu-icon.svg'),
             'can_export' => false,
             'has_archive' => false,
             'exclude_from_search' => true,
@@ -302,6 +301,9 @@ class HOSTPN_Post_Type_Guest
 
         register_post_type('hostpn_guest', $args);
         add_theme_support('post-thumbnails', ['page', 'hostpn_guest']);
+        
+        // Add hook to modify admin list order
+        add_action('pre_get_posts', [$this, 'hostpn_guest_admin_order']);
     }
 
     /**
@@ -941,5 +943,25 @@ class HOSTPN_Post_Type_Guest
         $content = ob_get_contents();
         ob_end_clean();
         echo $content;
+    }
+    
+    /**
+     * Modify admin list order for Guest post type.
+     * Orders posts by creation date, newest first.
+     *
+     * @param WP_Query $query The main query.
+     */
+    public function hostpn_guest_admin_order($query)
+    {
+        // Only modify queries in admin and for our post type
+        if (!is_admin() || !$query->is_main_query()) {
+            return;
+        }
+        
+        // Check if we're on the guest post type admin page
+        if (isset($_GET['post_type']) && $_GET['post_type'] === 'hostpn_guest') {
+            $query->set('orderby', 'date');
+            $query->set('order', 'DESC');
+        }
     }
 }
