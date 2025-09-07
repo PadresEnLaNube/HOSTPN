@@ -30,17 +30,17 @@ class HOSTPN_Shortcodes {
         ?>
           <div class="hostpn-navigation">
             <div class="hostpn-display-table hostpn-width-100-percent">
-              <div class="hostpn-display-inline-table hostpn-width-33-percent hostpn-img-hover-zoom">
+              <div class="hostpn-display-inline-table hostpn-width-33-percent hostpn-img-hover-zoom hostpn-tooltip" title="<?php echo esc_html(__('Accommodations', 'hostpn')); ?>">
                 <a href="<?php echo esc_url(get_permalink(HOSTPN_i18n::hostpn_get_post($hostpn_page_accommodation))); ?>">
                   <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-50 <?php echo ($post_id == $hostpn_page_accommodation) ? 'hostpn-color-main-0' : ''; ?>">hotel</i>
                 </a>
               </div>
-              <div class="hostpn-display-inline-table hostpn-width-33-percent hostpn-img-hover-zoom">
+              <div class="hostpn-display-inline-table hostpn-width-33-percent hostpn-img-hover-zoom hostpn-tooltip" title="<?php echo esc_html(__('Parts of travelers', 'hostpn')); ?>">
                 <a href="<?php echo esc_url(get_permalink(HOSTPN_i18n::hostpn_get_post($hostpn_page_part))); ?>">
                   <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-50 <?php echo ($post_id == $hostpn_page_part) ? 'hostpn-color-main-0' : ''; ?>">luggage</i>
                 </a>
               </div>
-              <div class="hostpn-display-inline-table hostpn-width-33-percent hostpn-img-hover-zoom">
+              <div class="hostpn-display-inline-table hostpn-width-33-percent hostpn-img-hover-zoom hostpn-tooltip" title="<?php echo esc_html(__('Guests', 'hostpn')); ?>">
                 <a href="<?php echo esc_url(get_permalink(HOSTPN_i18n::hostpn_get_post($hostpn_page_host))); ?>">
                   <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-50 <?php echo ($post_id == $hostpn_page_host) ? 'hostpn-color-main-0' : ''; ?>">account_circle</i>
                 </a>

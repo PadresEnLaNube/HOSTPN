@@ -58,5 +58,10 @@ class HOSTPN_Public {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script($this->plugin_name . '-public', HOSTPN_URL . 'assets/js/public/hostpn-public.js', ['jquery'], $this->version, false);
+		
+		// Enqueue accommodation-specific JavaScript if on accommodation pages
+		if (is_post_type_archive('hostpn_accommodation') || is_singular('hostpn_accommodation')) {
+			wp_enqueue_script($this->plugin_name . '-accommodation-public', HOSTPN_URL . 'assets/js/public/hostpn-accommodation-public.js', ['jquery'], $this->version, false);
+		}
 	}
 }

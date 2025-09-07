@@ -30,6 +30,9 @@
   }
 
   $(document).ready(function() {
+    // Initialize toggle sections - hide all by default
+    $('.hostpn-toggle-content').hide();
+    
     hostpn_select_country();
     hostpn_select_identity();
 

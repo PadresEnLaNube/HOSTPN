@@ -52,7 +52,7 @@ class HOSTPN {
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.7';
+			$this->version = '1.0.9';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -321,6 +321,12 @@ class HOSTPN {
 		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_accommodation, 'hostpn_accommodation_add_meta_box');
 		$this->loader->hostpn_add_action('save_post_hostpn_accommodation', $plugin_post_type_accommodation, 'hostpn_accommodation_save_post', 10, 3);
 		$this->loader->hostpn_add_shortcode('hostpn-accommodation-list', $plugin_post_type_accommodation, 'hostpn_accommodation_list_wrapper');
+		
+		// Add template filters for accommodation - register after init to ensure plugin is loaded
+		$this->loader->hostpn_add_action('init', $plugin_post_type_accommodation, 'hostpn_accommodation_register_template_filters', 20);
+		
+		// Add debug hook for development
+		$this->loader->hostpn_add_action('wp_loaded', $plugin_post_type_accommodation, 'hostpn_accommodation_debug');
 
 		$plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
 		$this->loader->hostpn_add_action('init', $plugin_post_type_guest, 'hostpn_guest_register_post_type');
@@ -335,8 +341,6 @@ class HOSTPN {
 		// Add hooks for customizing Part admin columns
 		$this->loader->hostpn_add_filter('manage_hostpn_part_posts_columns', $plugin_post_type_part, 'hostpn_part_custom_columns');
 		$this->loader->hostpn_add_action('manage_hostpn_part_posts_custom_column', $plugin_post_type_part, 'hostpn_part_custom_column_content', 10, 2);
-		
-
 	}
 
 	/**
