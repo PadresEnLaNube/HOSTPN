@@ -89,7 +89,7 @@ class HOSTPN_Ajax_Nopriv {
                 $unslashed_value, 
                 $hostpn_key['node'], 
                 $hostpn_key['type'],
-                $hostpn_key['field_config']
+                isset($hostpn_key['field_config']) ? $hostpn_key['field_config'] : ''
               ) : '';
             
               ${$hostpn_key['id']} = $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;

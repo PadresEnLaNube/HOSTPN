@@ -334,6 +334,13 @@ class HOSTPN_Post_Type_Guest
 
     public function hostpn_guest_save_post($post_id, $cpt, $update)
     {
+        // Skip this function if we're creating/editing a guest via AJAX form
+        // The hostpn_guest_form_save function will handle it properly
+        if ($cpt->post_type == 'hostpn_guest' && array_key_exists('hostpn_guest_form', $_POST) && 
+            array_key_exists('hostpn_form_subtype', $_POST)) {
+            return; // Skip this function, let hostpn_guest_form_save handle it
+        }
+        
         if ($cpt->post_type == 'hostpn_guest' && array_key_exists('hostpn_guest_form', $_POST)) {
             // Always require nonce verification
             if (!array_key_exists('hostpn_ajax_nonce', $_POST)) {
@@ -353,6 +360,53 @@ class HOSTPN_Post_Type_Guest
 
                 exit;
             }
+
+            // Determine the correct user for the guest post based on email
+            $guest_email = !empty($_POST['hostpn_email']) ? sanitize_email(wp_unslash($_POST['hostpn_email'])) : '';
+            $guest_user_id = get_current_user_id(); // Default to current user
+
+            if (!empty($guest_email)) {
+                // Check if a user with this email already exists
+                $existing_user = get_user_by('email', $guest_email);
+
+                if ($existing_user) {
+                    // Use existing user
+                    $guest_user_id = $existing_user->ID;
+                } else {
+                    // Get guest name and surname for new user creation
+                    $guest_name = !empty($_POST['hostpn_name']) ? sanitize_text_field(wp_unslash($_POST['hostpn_name'])) : '';
+                    $guest_surname = !empty($_POST['hostpn_surname']) ? sanitize_text_field(wp_unslash($_POST['hostpn_surname'])) : '';
+                    
+                    // Create new user with the guest email
+                    $user_functions = new HOSTPN_Functions_User();
+                    $display_name = trim($guest_name . ' ' . $guest_surname);
+                    $username = sanitize_user($guest_email);
+
+                    // Generate a random password for the new user
+                    $random_password = wp_generate_password(12, false);
+
+                    $guest_user_id = $user_functions->insert_user(
+                        $username,
+                        $random_password,
+                        $guest_email,
+                        $guest_name,
+                        $guest_surname,
+                        $display_name,
+                        '',
+                        '',
+                        '',
+                        ['hostpn_role_guest']
+                    );
+
+                    // If user creation failed, fall back to current user
+                    if (!$guest_user_id) {
+                        $guest_user_id = get_current_user_id();
+                    }
+                }
+            }
+
+            // Update the post author to the correct user
+            wp_update_post(['ID' => $post_id, 'post_author' => $guest_user_id]);
 
             if (!array_key_exists('hostpn_duplicate', $_POST)) {
                 foreach (array_merge(self::hostpn_guest_get_fields(), self::hostpn_guest_get_fields_meta()) as $hostpn_field) {
@@ -459,7 +513,7 @@ class HOSTPN_Post_Type_Guest
                                 foreach ($key_value as $key => $value) {
                                     if (strpos($key, 'hostpn_') !== false) {
                                         ${$key} = $value;
-                                        delete_post_meta($post_id, $key);
+                                        // Note: $post_id is not available in this context, skip delete_post_meta
                                     }
                                 }
                             }
@@ -509,7 +563,11 @@ class HOSTPN_Post_Type_Guest
                             }
 
                             $post_functions = new HOSTPN_Functions_Post();
-                            $guest_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', get_current_user_id());
+                            // Ensure title and description are defined
+                            $hostpn_title = !empty($hostpn_title) ? $hostpn_title : gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
+                            $hostpn_description = !empty($hostpn_description) ? $hostpn_description : __('Special needs, allergies, important situations to highlight...', 'hostpn');
+                            
+                            $guest_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', $guest_user_id);
 
                             if (!empty($key_value)) {
                                 foreach ($key_value as $key => $value) {
@@ -517,7 +575,7 @@ class HOSTPN_Post_Type_Guest
                                 }
                             }
 
-                            wp_update_post(['ID' => $guest_id, 'post_author' => get_current_user_id(),]);
+                            wp_update_post(['ID' => $guest_id, 'post_author' => $guest_user_id,]);
 
                             break;
                         case 'post_edit':
@@ -525,12 +583,16 @@ class HOSTPN_Post_Type_Guest
                                 foreach ($key_value as $key => $value) {
                                     if (strpos($key, 'hostpn_') !== false) {
                                         ${$key} = $value;
-                                        delete_post_meta($post_id, $key);
+                                        // Note: $post_id is not available in this context, skip delete_post_meta
                                     }
                                 }
                             }
 
                             $guest_id = $element_id;
+                            // Ensure title and description are defined
+                            $hostpn_title = !empty($hostpn_title) ? $hostpn_title : get_the_title($guest_id);
+                            $hostpn_description = !empty($hostpn_description) ? $hostpn_description : get_post_field('post_content', $guest_id);
+                            
                             wp_update_post(['ID' => $guest_id, 'post_title' => $hostpn_title, 'post_content' => $hostpn_description,]);
 
                             if (!empty($key_value)) {

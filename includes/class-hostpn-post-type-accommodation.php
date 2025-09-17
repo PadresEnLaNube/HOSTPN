@@ -690,6 +690,10 @@ class HOSTPN_Post_Type_Accommodation {
               }
 
               $post_functions = new HOSTPN_Functions_Post();
+              // Ensure title and description are defined
+              $hostpn_accommodation_title = !empty($hostpn_accommodation_title) ? $hostpn_accommodation_title : gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
+              $hostpn_accommodation_description = !empty($hostpn_accommodation_description) ? $hostpn_accommodation_description : __('Accommodation description...', 'hostpn');
+              
               $accommodation_id = $post_functions->hostpn_insert_post(esc_html($hostpn_accommodation_title), $hostpn_accommodation_description, '', sanitize_title(esc_html($hostpn_accommodation_title)), 'hostpn_accommodation', 'publish', get_current_user_id());
 
               if (!empty($key_value)) {
