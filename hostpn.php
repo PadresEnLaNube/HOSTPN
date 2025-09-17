@@ -32,7 +32,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('HOSTPN_VERSION', '1.0.9');
+define('HOSTPN_VERSION', '1.0.10');
 define('HOSTPN_DIR', plugin_dir_path(__FILE__));
 define('HOSTPN_URL', plugin_dir_url(__FILE__));
 define('HOSTPN_CPTS', [

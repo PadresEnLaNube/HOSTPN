@@ -263,6 +263,10 @@ class HOSTPN_Ajax {
         
             exit;
           break;
+        case 'hostpn_guest_get_user_data':
+            $plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
+            $plugin_post_type_guest->hostpn_guest_get_user_data();
+          break;
         case 'hostpn_guest_check':
           if (!empty($hostpn_guest_id)) {
             $plugin_post_type_guest = new HOSTPN_Post_Type_Guest();

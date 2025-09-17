@@ -29,12 +29,106 @@
     }
   }
 
+// Auto-fill user data functionality
+window.hostpn_auto_fill_user_data = function(user_id) {
+    $.ajax({
+      url: hostpn_ajax.ajax_url,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_guest_get_user_data',
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
+        user_id: user_id
+      },
+      success: function(response) {
+        // Force JSON parsing since jQuery isn't doing it automatically
+        if (typeof response === 'string') {
+          try {
+            response = JSON.parse(response);
+          } catch (e) {
+            console.error('Failed to parse JSON response:', e);
+            return;
+          }
+        }
+        
+        if (response.error_key === '') {
+          // Fill form fields with user data
+          $.each(response.user_data, function(field_id, field_value) {
+            var $field = $('#' + field_id);
+            if ($field.length) {
+              if ($field.is('select')) {
+                // For select fields, try multiple approaches
+                $field.val(field_value);
+                
+                // If the value didn't set, try finding by option text or value
+                if ($field.val() !== field_value) {
+                  // Try to find option by value
+                  var $option = $field.find('option[value="' + field_value + '"]');
+                  if ($option.length) {
+                    $option.prop('selected', true);
+                  } else {
+                    // Try to find option by text content
+                    $option = $field.find('option').filter(function() {
+                      return $(this).text().trim() === field_value;
+                    });
+                    if ($option.length) {
+                      $option.prop('selected', true);
+                    }
+                  }
+                }
+                
+                // Update custom selector display if it exists
+                var selectorInstance = $field.data('-selector');
+                if (selectorInstance && typeof selectorInstance.updateDisplay === 'function') {
+                  selectorInstance.updateDisplay();
+                }
+                
+                // Force refresh the select
+                $field.trigger('change');
+              } else if ($field.is('input[type="checkbox"]')) {
+                if (field_value === 'on' || field_value === '1' || field_value === true) {
+                  $field.prop('checked', true);
+                } else {
+                  $field.prop('checked', false);
+                }
+              } else {
+                $field.val(field_value);
+              }
+              
+              // Trigger change event to update dependent fields
+              $field.trigger('change');
+            }
+          });
+          
+          // Trigger country and identity selection functions to update dependent fields
+          hostpn_select_country();
+          hostpn_select_identity();
+        } else {
+          console.error('Error loading user data:', response.error_content);
+        }
+      },
+      error: function(xhr, status, error) {
+        console.error('AJAX error:', error);
+      }
+    });
+  };
+
   $(document).ready(function() {
     // Initialize toggle sections - hide all by default
     $('.hostpn-toggle-content').hide();
     
     hostpn_select_country();
     hostpn_select_identity();
+    
+    // Handle auto-fill button click
+    $(document).on('click', '.hostpn-auto-fill-user-data', function(e) {
+      e.preventDefault();
+      var user_id = $(this).data('user-id');
+      if (user_id) {
+        hostpn_auto_fill_user_data(user_id);
+      }
+    });
 
     if ($('.hostpn-password-checker').length) {
       var pass_view_state = false;

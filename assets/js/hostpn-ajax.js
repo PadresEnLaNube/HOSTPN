@@ -63,9 +63,6 @@
       });
 
       $.post(ajax_url, data, function(response) {
-        console.log('data');console.log(data);
-        console.log('response');console.log(response);
-
         var response_json = $.parseJSON(response);
 
         if (response_json['error_key'] == 'hostpn_form_save_error_unlogged') {
@@ -132,17 +129,12 @@
             hostpn_guest_id: hostpn_guest_id ? hostpn_guest_id : '',
           };
 
-          // Log the data being sent
-          console.log('HOSTPN AJAX - Sending request with data:', data);
-
           $.ajax({
             url: ajax_url,
             type: 'POST',
             data: data,
             success: function(response) {
-              try {
-                console.log('HOSTPN AJAX - Raw response received:', response);
-                
+              try {               
                 // Check if response is already an object (parsed JSON)
                 var response_json = typeof response === 'object' ? response : null;
                 
@@ -152,7 +144,6 @@
                     response_json = JSON.parse(response);
                   } catch (parseError) {
                     // If parsing fails, assume it's HTML content
-                    console.log('HOSTPN AJAX - Response appears to be HTML content');
                     hostpn_popup_element.find('.hostpn-popup-content').html(response);
                     
                     // Initialize media uploaders if function exists
@@ -173,7 +164,6 @@
 
                 // Handle JSON response
                 if (response_json.error_key) {
-                  console.log('HOSTPN AJAX - Server returned error:', response_json.error_key);
                   var errorMessage = response_json.error_message || hostpn_i18n.an_error_has_occurred;
                   hostpn_get_main_message(errorMessage);
                   return;
@@ -181,7 +171,6 @@
 
                 // Handle successful JSON response with HTML content
                 if (response_json.html) {
-                  console.log('HOSTPN AJAX - HTML content received in JSON response');
                   hostpn_popup_element.find('.hostpn-popup-content').html(response_json.html);
                   
                   // Initialize media uploaders if function exists
@@ -197,18 +186,13 @@
                     });
                   }
                 } else {
-                  console.log('HOSTPN AJAX - Response missing HTML content');
                   hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
                 }
               } catch (e) {
-                console.log('HOSTPN AJAX - Error processing response:', e);
-                console.log('Raw response:', response);
                 hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
               }
             },
             error: function(xhr, status, error) {
-              console.log('HOSTPN AJAX - Request failed:', status, error);
-              console.log('Response:', xhr.responseText);
               console.log(hostpn_i18n.an_error_has_occurred);
             }
           });
@@ -235,7 +219,6 @@
       };
 
       $.post(ajax_url, data, function(response) {
-        console.log('data');console.log(data);console.log('response');console.log(response);
         var response_json = $.parseJSON(response);
 
         if (response_json['error_key'] != '') {
@@ -264,7 +247,6 @@
       };
 
       $.post(ajax_url, data, function(response) {
-        console.log('data');console.log(data);console.log('response');console.log(response);
         var response_json = $.parseJSON(response);
        
         if (response_json['error_key'] != '') {
@@ -297,7 +279,6 @@
       };
 
       $.post(ajax_url, data, function(response) {
-        console.log('data');console.log(data);console.log('response');console.log(response);
         var response_json = $.parseJSON(response);
 
         if (response_json['error_key'] != '') {
@@ -326,7 +307,6 @@
       };
 
       $.post(ajax_url, data, function(response) {
-        console.log('data');console.log(data);console.log('response');console.log(response);
         var response_json = $.parseJSON(response);
        
         if (response_json['error_key'] != '') {
@@ -361,7 +341,6 @@
       };
 
       $.post(ajax_url, data, function(response) {
-        console.log('data');console.log(data);console.log('response');console.log(response);
         var response_json = $.parseJSON(response);
 
         if (response_json['error_key'] != '') {
@@ -390,7 +369,6 @@
       };
 
       $.post(ajax_url, data, function(response) {
-        console.log('data');console.log(data);console.log('response');console.log(response);
         var response_json = $.parseJSON(response);
        
         if (response_json['error_key'] != '') {

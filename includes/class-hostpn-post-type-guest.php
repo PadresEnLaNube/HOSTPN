@@ -802,6 +802,17 @@ class HOSTPN_Post_Type_Guest
             <h4 class="hostpn-mb-30"><?php esc_html_e('Add new Guest', 'hostpn'); ?></h4>
 
             <form action="" method="post" id="hostpn-form" class="hostpn-form">
+                <?php 
+                // Show "Create my own guest" button if user is logged in
+                if (is_user_logged_in()): ?>
+                    <div class="hostpn-mb-20">
+                        <button type="button" class="hostpn-btn hostpn-btn-secondary hostpn-auto-fill-user-data" 
+                                data-user-id="<?php echo esc_attr(get_current_user_id()); ?>">
+                            <?php esc_html_e('Create my own guest', 'hostpn'); ?>
+                        </button>
+                    </div>
+                <?php endif; ?>
+                
                 <?php foreach (self::hostpn_guest_get_fields() as $hostpn_field): ?>
                     <?php echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post'), HOSTPN_KSES); ?>
                 <?php endforeach ?>
@@ -963,5 +974,57 @@ class HOSTPN_Post_Type_Guest
             $query->set('orderby', 'date');
             $query->set('order', 'DESC');
         }
+    }
+
+    /**
+     * AJAX handler to get user data for auto-filling guest form.
+     *
+     * @since    1.0.0
+     */
+    public function hostpn_guest_get_user_data()
+    {
+        // Verify nonce
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_ajax_nonce'])), 'hostpn-nonce')) {
+            echo wp_json_encode([
+                'error_key' => 'hostpn_nonce_error_invalid',
+                'error_content' => esc_html(__('Security check failed: Invalid nonce.', 'hostpn')),
+            ]);
+            exit;
+        }
+
+        $user_id = !empty($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+        
+        if (empty($user_id) || !is_user_logged_in() || get_current_user_id() !== $user_id) {
+            echo wp_json_encode([
+                'error_key' => 'hostpn_user_error',
+                'error_content' => esc_html(__('Invalid user ID.', 'hostpn')),
+            ]);
+            exit;
+        }
+
+        $user_data = [];
+        $user = get_userdata($user_id);
+        
+        if ($user) {
+            // Get basic user info
+            $user_data['hostpn_name'] = get_user_meta($user_id, 'first_name', true);
+            $user_data['hostpn_surname'] = get_user_meta($user_id, 'last_name', true);
+            $user_data['hostpn_surname_alt'] = get_user_meta($user_id, 'hostpn_surname_alt', true);
+            $user_data['hostpn_email'] = $user->user_email;
+            
+            // Get all hostpn_ prefixed user meta fields
+            $user_meta = get_user_meta($user_id);
+            foreach ($user_meta as $meta_key => $meta_value) {
+                if (strpos($meta_key, 'hostpn_') === 0 && !empty($meta_value[0])) {
+                    $user_data[$meta_key] = $meta_value[0];
+                }
+            }
+        }
+
+        echo wp_json_encode([
+            'error_key' => '',
+            'user_data' => $user_data,
+        ]);
+        exit;
     }
 }
