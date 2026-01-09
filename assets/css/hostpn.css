@@ -1724,6 +1724,18 @@ header .wp-block-navigation .wp-block-navigation-item__content.wp-block-navigati
   .hostpn-section-wrapper label{
     color:var(--color-main);
   }
+
+  /* Section vertical line for code-folding style */
+  .hostpn-section-wrapper {
+    position: relative;
+  }
+
+  /* Vertical line for code folding style. We don't depend on JS: the block itself is hidden with display:none when closed, so the border only shows when open. */
+  .hostpn-section-wrapper > .hostpn-toggle-content {
+    position: relative;
+    border-left: 2px solid var(--hostpn-color-main);
+    padding-left: 18px; /* 20px original - 2px border */
+  }
 /* END HOSTPN FORMS */
 
 /* HOSTPN SWITCH */
