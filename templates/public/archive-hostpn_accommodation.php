@@ -8,7 +8,19 @@
  * @subpackage hostpn/templates/public
  */
 
-get_header(); ?>
+// Ensure WordPress is loaded
+if (!defined('ABSPATH')) {
+	exit;
+}
+
+if(wp_is_block_theme()) {
+    wp_head();
+    block_template_part('header');
+    get_header();
+} else {
+    get_header();
+}
+?>
 
 <div class="hostpn-accommodation-archive-wrapper">
     <div class="hostpn-container">
@@ -27,7 +39,6 @@ get_header(); ?>
                     $accommodation_country = get_post_meta($accommodation_id, 'hostpn_accommodation_country', true);
                     $thumbnail = get_the_post_thumbnail($accommodation_id, 'medium');
                     ?>
-                    
                     <article class="hostpn-accommodation-card" data-accommodation-id="<?php echo esc_attr($accommodation_id); ?>">
                         <div class="hostpn-accommodation-image">
                             <?php if ($thumbnail) : ?>
@@ -43,20 +54,6 @@ get_header(); ?>
                             <h2 class="hostpn-accommodation-title">
                                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                             </h2>
-                            
-                            <?php if ($accommodation_code) : ?>
-                                <div class="hostpn-accommodation-code">
-                                    <span class="hostpn-label"><?php esc_html_e('Code:', 'hostpn'); ?></span>
-                                    <span class="hostpn-value"><?php echo esc_html($accommodation_code); ?></span>
-                                </div>
-                            <?php endif; ?>
-                            
-                            <?php if ($accommodation_type) : ?>
-                                <div class="hostpn-accommodation-type">
-                                    <span class="hostpn-label"><?php esc_html_e('Type:', 'hostpn'); ?></span>
-                                    <span class="hostpn-value"><?php echo esc_html($accommodation_type); ?></span>
-                                </div>
-                            <?php endif; ?>
                             
                             <?php if ($accommodation_city || $accommodation_country) : ?>
                                 <div class="hostpn-accommodation-location">
@@ -76,8 +73,8 @@ get_header(); ?>
                             
                             <div class="hostpn-accommodation-features-preview">
                                 <?php
-                                // Use global features constant
-                                $accommodation_features = HOSTPN_ACCOMMODATION_FEATURES;
+                                // Use translated features
+                                $accommodation_features = HOSTPN_i18n::hostpn_get_accommodation_features();
                                 
                                 // Show featured features by category
                                 foreach ($accommodation_features as $category_key => $category_data) {
@@ -132,4 +129,10 @@ get_header(); ?>
     </div>
 </div>
 
-<?php get_footer(); ?>
+<?php 
+if(wp_is_block_theme()) {
+    block_template_part('footer');
+} else {
+    get_footer();
+} 
+?>

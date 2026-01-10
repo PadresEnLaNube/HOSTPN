@@ -244,7 +244,7 @@
                 '<i class="material-icons-outlined hostpn-icon-large">search</i>' +
                 '<h3>No accommodations found</h3>' +
                 '<p>No accommodations match your search for "' + searchTerm + '". Try different keywords.</p>' +
-                '<button class="hostpn-btn hostpn-btn-secondary hostpn-clear-search">Clear Search</button>' +
+                '<button class="hostpn-btn hostpn-clear-search">Clear Search</button>' +
                 '</div></div>');
             
             $('.hostpn-accommodation-grid').after($noResults);

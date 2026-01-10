@@ -32,7 +32,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('HOSTPN_VERSION', '1.0.11');
+define('HOSTPN_VERSION', '1.0.14');
 define('HOSTPN_DIR', plugin_dir_path(__FILE__));
 define('HOSTPN_URL', plugin_dir_url(__FILE__));
 define('HOSTPN_CPTS', [
@@ -43,6 +43,9 @@ define('HOSTPN_CPTS', [
 
 /**
  * Accommodation features configuration
+ * 
+ * This constant contains the base English strings.
+ * For translated versions, use HOSTPN_i18n::hostpn_get_accommodation_features()
  */
 define('HOSTPN_ACCOMMODATION_FEATURES', [
 	'kitchen' => [
@@ -215,6 +218,160 @@ define('HOSTPN_ACCOMMODATION_FEATURES', [
 		]
 	]
 ]);
+
+/**
+ * Register accommodation features strings for translation scanner
+ * This function is never called but helps translation scanners find the strings
+ */
+if (!function_exists('hostpn_register_accommodation_features_strings')) {
+	function hostpn_register_accommodation_features_strings() {
+		// Kitchen
+		__('Kitchen', 'hostpn');
+		__('Dining Table', 'hostpn');
+		__('Coffee Maker', 'hostpn');
+		__('Cleaning Products', 'hostpn');
+		__('Toaster', 'hostpn');
+		__('Stovetops', 'hostpn');
+		__('Oven', 'hostpn');
+		__('Kitchen Utensils', 'hostpn');
+		__('Electric Kettle', 'hostpn');
+		__('Washing Machine', 'hostpn');
+		__('Dishwasher', 'hostpn');
+		__('Microwave', 'hostpn');
+		__('Refrigerator', 'hostpn');
+		__('Kitchen Area', 'hostpn');
+		__('Blender', 'hostpn');
+		__('Food Processor', 'hostpn');
+		__('Juicer', 'hostpn');
+		__('Grill', 'hostpn');
+		__('Steamer', 'hostpn');
+		__('Slow Cooker', 'hostpn');
+		__('Air Fryer', 'hostpn');
+		__('Wine Cooler', 'hostpn');
+		__('Freezer', 'hostpn');
+		__('Kitchen Island', 'hostpn');
+		__('Pantry', 'hostpn');
+		__('Garbage Disposal', 'hostpn');
+		__('Water Filter', 'hostpn');
+		__('Ice Maker', 'hostpn');
+		__('Breakfast Bar', 'hostpn');
+		__('Wine Rack', 'hostpn');
+		__('Spice Rack', 'hostpn');
+		__('Knife Block', 'hostpn');
+		
+		// Room
+		__('Room', 'hostpn');
+		__('Bed Linen', 'hostpn');
+		__('Wardrobe', 'hostpn');
+		__('Nightstand', 'hostpn');
+		__('Dresser', 'hostpn');
+		__('Mirror', 'hostpn');
+		__('Armchair', 'hostpn');
+		__('Reading Lamp', 'hostpn');
+		__('Bedside Lamp', 'hostpn');
+		__('Ceiling Lamp', 'hostpn');
+		__('Floor Lamp', 'hostpn');
+		__('Table Lamp', 'hostpn');
+		__('Wall Lamp', 'hostpn');
+		__('Curtains', 'hostpn');
+		__('Blinds', 'hostpn');
+		__('Shutters', 'hostpn');
+		__('Blackout Curtains', 'hostpn');
+		__('Sheer Curtains', 'hostpn');
+		__('Thermal Curtains', 'hostpn');
+		__('Soundproofing', 'hostpn');
+		__('Air Conditioning', 'hostpn');
+		__('Heating', 'hostpn');
+		__('Ceiling Fan', 'hostpn');
+		__('Floor Fan', 'hostpn');
+		__('Table Fan', 'hostpn');
+		__('Wall Fan', 'hostpn');
+		__('Humidifier', 'hostpn');
+		__('Dehumidifier', 'hostpn');
+		__('Air Purifier', 'hostpn');
+		__('Ionizer', 'hostpn');
+		__('Ozone Generator', 'hostpn');
+		__('UV Sterilizer', 'hostpn');
+		__('HEPA Filter', 'hostpn');
+		__('Carbon Filter', 'hostpn');
+		__('Electrostatic Filter', 'hostpn');
+		__('Photocatalytic Filter', 'hostpn');
+		__('Plasma Filter', 'hostpn');
+		__('UV Filter', 'hostpn');
+		__('Ion Filter', 'hostpn');
+		__('Ozone Filter', 'hostpn');
+		
+		// Bathroom
+		__('Bathroom', 'hostpn');
+		__('Private Bathroom', 'hostpn');
+		__('Shared Bathroom', 'hostpn');
+		__('Hair Dryer', 'hostpn');
+		__('Shampoo', 'hostpn');
+		__('Conditioner', 'hostpn');
+		__('Body Wash', 'hostpn');
+		__('Soap', 'hostpn');
+		__('Toilet Paper', 'hostpn');
+		__('Towels', 'hostpn');
+		__('Bath Mat', 'hostpn');
+		__('Shower Curtain', 'hostpn');
+		__('Bath Tub', 'hostpn');
+		__('Shower', 'hostpn');
+		__('Bidet', 'hostpn');
+		__('Toilet', 'hostpn');
+		__('Sink', 'hostpn');
+		__('Medicine Cabinet', 'hostpn');
+		__('Vanity', 'hostpn');
+		__('Ventilation', 'hostpn');
+		
+		// Living Area
+		__('Living Area', 'hostpn');
+		__('Sofa', 'hostpn');
+		__('Coffee Table', 'hostpn');
+		__('Side Table', 'hostpn');
+		__('TV Stand', 'hostpn');
+		__('Bookcase', 'hostpn');
+		__('Magazine Rack', 'hostpn');
+		__('Throw Pillows', 'hostpn');
+		__('Blanket', 'hostpn');
+		__('Rug', 'hostpn');
+		__('Chandelier', 'hostpn');
+		__('Pendant Lamp', 'hostpn');
+		__('Track Lighting', 'hostpn');
+		__('Recessed Lighting', 'hostpn');
+		__('Sconces', 'hostpn');
+		__('Fireplace', 'hostpn');
+		__('Wood Stove', 'hostpn');
+		__('Pellet Stove', 'hostpn');
+		__('Gas Stove', 'hostpn');
+		__('Electric Stove', 'hostpn');
+		__('Propane Stove', 'hostpn');
+		__('Kerosene Stove', 'hostpn');
+		__('Ethanol Stove', 'hostpn');
+		__('Bioethanol Stove', 'hostpn');
+		__('Gel Stove', 'hostpn');
+		__('Paraffin Stove', 'hostpn');
+		__('Denatured Alcohol Stove', 'hostpn');
+		__('Methylated Spirits Stove', 'hostpn');
+		__('Isopropyl Alcohol Stove', 'hostpn');
+		__('Rubbing Alcohol Stove', 'hostpn');
+		
+		// Audiovisual
+		__('Audiovisual', 'hostpn');
+		__('TV', 'hostpn');
+		__('Smart TV', 'hostpn');
+		__('4K TV', 'hostpn');
+		__('8K TV', 'hostpn');
+		__('OLED TV', 'hostpn');
+		__('QLED TV', 'hostpn');
+		__('LED TV', 'hostpn');
+		__('LCD TV', 'hostpn');
+		__('Plasma TV', 'hostpn');
+		__('CRT TV', 'hostpn');
+		__('Projector', 'hostpn');
+		__('Screen', 'hostpn');
+		__('Sound System', 'hostpn');
+	}
+}
 
 /**
  * Plugin role capabilities

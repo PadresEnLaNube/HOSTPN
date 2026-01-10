@@ -167,8 +167,9 @@ class HOSTPN_Post_Type_Accommodation {
         'label' => esc_html(__('Kitchen Features', 'hostpn')),
       ];
 
-      // Generate kitchen features using global constant
-      foreach (HOSTPN_ACCOMMODATION_FEATURES['kitchen']['features'] as $meta_key => $feature_label) {
+      // Generate kitchen features using translated features
+      $accommodation_features = HOSTPN_i18n::hostpn_get_accommodation_features();
+      foreach ($accommodation_features['kitchen']['features'] as $meta_key => $feature_label) {
         $feature_id = str_replace('hostpn_', '', $meta_key);
         $hostpn_fields_meta[$meta_key] = [
           'id' => $meta_key,
@@ -217,8 +218,8 @@ class HOSTPN_Post_Type_Accommodation {
 
 
 
-      // Generate room features using global constant
-      foreach (HOSTPN_ACCOMMODATION_FEATURES['room']['features'] as $meta_key => $feature_label) {
+      // Generate room features using translated features
+      foreach ($accommodation_features['room']['features'] as $meta_key => $feature_label) {
         $feature_id = str_replace('hostpn_', '', $meta_key);
         $hostpn_fields_meta[$meta_key] = [
           'id' => $meta_key,
@@ -267,8 +268,8 @@ class HOSTPN_Post_Type_Accommodation {
 
 
 
-      // Generate bathroom features using global constant
-      foreach (HOSTPN_ACCOMMODATION_FEATURES['bathroom']['features'] as $meta_key => $feature_label) {
+      // Generate bathroom features using translated features
+      foreach ($accommodation_features['bathroom']['features'] as $meta_key => $feature_label) {
         $feature_id = str_replace('hostpn_', '', $meta_key);
         $hostpn_fields_meta[$meta_key] = [
           'id' => $meta_key,
@@ -317,8 +318,8 @@ class HOSTPN_Post_Type_Accommodation {
 
 
 
-      // Generate living area features using global constant
-      foreach (HOSTPN_ACCOMMODATION_FEATURES['living_area']['features'] as $meta_key => $feature_label) {
+      // Generate living area features using translated features
+      foreach ($accommodation_features['living_area']['features'] as $meta_key => $feature_label) {
         $feature_id = str_replace('hostpn_', '', $meta_key);
         $hostpn_fields_meta[$meta_key] = [
           'id' => $meta_key,
@@ -367,8 +368,8 @@ class HOSTPN_Post_Type_Accommodation {
 
 
 
-      // Generate audiovisual features using global constant
-      foreach (HOSTPN_ACCOMMODATION_FEATURES['audiovisual']['features'] as $meta_key => $feature_label) {
+      // Generate audiovisual features using translated features
+      foreach ($accommodation_features['audiovisual']['features'] as $meta_key => $feature_label) {
         $feature_id = str_replace('hostpn_', '', $meta_key);
         $hostpn_fields_meta[$meta_key] = [
           'id' => $meta_key,
@@ -495,6 +496,13 @@ class HOSTPN_Post_Type_Accommodation {
     
     // Check if we're on a single accommodation page
     if (is_singular('hostpn_accommodation') || (isset($post) && $post->post_type == 'hostpn_accommodation')) {
+      // First, check if theme has a template for this post type (theme override)
+      $theme_template = locate_template(['single-hostpn_accommodation.php', 'single.php']);
+      if ($theme_template) {
+        return $theme_template;
+      }
+      
+      // If no theme template, use plugin template
       // Try multiple path strategies
       $template_path = false;
       
@@ -531,6 +539,13 @@ class HOSTPN_Post_Type_Accommodation {
     
     // Check if we're on an accommodation archive page
     if (is_post_type_archive('hostpn_accommodation') || (isset($post) && $post->post_type == 'hostpn_accommodation')) {
+      // First, check if theme has a template for this post type (theme override)
+      $theme_template = locate_template(['archive-hostpn_accommodation.php', 'archive.php']);
+      if ($theme_template) {
+        return $theme_template;
+      }
+      
+      // If no theme template, use plugin template
       // Try multiple path strategies
       $template_path = false;
       
@@ -696,6 +711,14 @@ class HOSTPN_Post_Type_Accommodation {
               
               $accommodation_id = $post_functions->hostpn_insert_post(esc_html($hostpn_accommodation_title), $hostpn_accommodation_description, '', sanitize_title(esc_html($hostpn_accommodation_title)), 'hostpn_accommodation', 'publish', get_current_user_id());
 
+              // Set language for new accommodation if Polylang is active
+              if (class_exists('Polylang') && function_exists('pll_set_post_language')) {
+                $current_lang = function_exists('pll_current_language') ? pll_current_language('slug') : (function_exists('pll_default_language') ? pll_default_language() : '');
+                if (!empty($current_lang)) {
+                  pll_set_post_language($accommodation_id, $current_lang);
+                }
+              }
+
               if (!empty($key_value)) {
                 foreach ($key_value as $key => $value) {
                   update_post_meta($accommodation_id, $key, $value);
@@ -764,7 +787,92 @@ class HOSTPN_Post_Type_Accommodation {
     if (defined('HOSTPN_DIR') || defined('HOSTPN_URL')) {
       add_filter('single_template', [$this, 'hostpn_accommodation_single_template']);
       add_filter('archive_template', [$this, 'hostpn_accommodation_archive_template']);
+      
+      // Register block templates for Site Editor (block themes)
+      if (function_exists('wp_is_block_theme') && wp_is_block_theme()) {
+        add_filter('get_block_templates', [$this, 'hostpn_accommodation_register_block_templates'], 10, 3);
+      }
     }
+  }
+  
+  /**
+   * Register accommodation templates as block templates for Site Editor
+   *
+   * @param array $query_result Array of template objects.
+   * @param array $query Optional. Arguments to retrieve templates.
+   * @param string $template_type Optional. The template type (wp_template or wp_template_part).
+   * @return array Modified array of template objects.
+   */
+  public function hostpn_accommodation_register_block_templates($query_result, $query, $template_type) {
+    // Only add templates when querying for wp_template type
+    if ($template_type !== 'wp_template') {
+      return $query_result;
+    }
+    
+    // Get plugin block template paths
+    $single_template_path = false;
+    $archive_template_path = false;
+    
+    if (defined('HOSTPN_DIR')) {
+      $single_template_path = HOSTPN_DIR . 'block-templates/single-hostpn_accommodation.html';
+      $archive_template_path = HOSTPN_DIR . 'block-templates/archive-hostpn_accommodation.html';
+    }
+    
+    if (!$single_template_path || !file_exists($single_template_path)) {
+      $single_template_path = plugin_dir_path(dirname(__FILE__)) . 'block-templates/single-hostpn_accommodation.html';
+    }
+    
+    if (!$archive_template_path || !file_exists($archive_template_path)) {
+      $archive_template_path = plugin_dir_path(dirname(__FILE__)) . 'block-templates/archive-hostpn_accommodation.html';
+    }
+    
+    // Create template objects for Site Editor
+    $templates = [];
+    
+    // Single accommodation template
+    if ($single_template_path && file_exists($single_template_path)) {
+      $template_content = file_get_contents($single_template_path);
+      $templates[] = (object) [
+        'id' => 'hostpn//single-hostpn_accommodation',
+        'theme' => 'hostpn',
+        'content' => $template_content,
+        'slug' => 'single-hostpn_accommodation',
+        'source' => 'plugin',
+        'type' => 'wp_template',
+        'title' => __('Single Accommodation', 'hostpn'),
+        'description' => __('Template for displaying a single accommodation post.', 'hostpn'),
+        'status' => 'publish',
+        'wp_id' => 0,
+        'has_theme_file' => true,
+        'is_custom' => false,
+        'author' => 0,
+        'post_types' => ['hostpn_accommodation'],
+      ];
+    }
+    
+    // Archive accommodation template
+    if ($archive_template_path && file_exists($archive_template_path)) {
+      $template_content = file_get_contents($archive_template_path);
+      $templates[] = (object) [
+        'id' => 'hostpn//archive-hostpn_accommodation',
+        'theme' => 'hostpn',
+        'content' => $template_content,
+        'slug' => 'archive-hostpn_accommodation',
+        'source' => 'plugin',
+        'type' => 'wp_template',
+        'title' => __('Accommodation Archive', 'hostpn'),
+        'description' => __('Template for displaying the accommodation archive page.', 'hostpn'),
+        'status' => 'publish',
+        'wp_id' => 0,
+        'has_theme_file' => true,
+        'is_custom' => false,
+        'author' => 0,
+        'post_types' => ['hostpn_accommodation'],
+      ];
+    }
+    
+    // Merge with existing templates
+    return array_merge($query_result, $templates);
   }
   
   /**

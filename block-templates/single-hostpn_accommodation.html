@@ -1,0 +1,33 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group">
+	<!-- wp:group {"className":"hostpn-accommodation-single-wrapper","layout":{"type":"constrained"}} -->
+	<div class="wp-block-group hostpn-accommodation-single-wrapper">
+		<!-- wp:group {"className":"hostpn-container","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group hostpn-container">
+			<!-- wp:post-title {"level":1,"className":"hostpn-accommodation-title"} /-->
+			
+			<!-- wp:post-featured-image {"sizeSlug":"large","className":"hostpn-accommodation-hero-image"} /-->
+			
+			<!-- wp:post-content {"className":"hostpn-accommodation-description"} /-->
+			
+			<!-- wp:group {"className":"hostpn-accommodation-features","layout":{"type":"constrained"}} -->
+			<div class="wp-block-group hostpn-accommodation-features">
+				<!-- wp:heading {"level":3} -->
+				<h3 class="wp-block-heading">Accommodation Features</h3>
+				<!-- /wp:heading -->
+				
+				<!-- wp:shortcode -->
+				[hostpn-accommodation-features]
+				<!-- /wp:shortcode -->
+			</div>
+			<!-- /wp:group -->
+		</div>
+		<!-- /wp:group -->
+	</div>
+	<!-- /wp:group -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

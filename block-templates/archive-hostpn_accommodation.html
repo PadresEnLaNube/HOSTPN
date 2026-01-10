@@ -1,0 +1,61 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"}} -->
+<main class="wp-block-group">
+	<!-- wp:group {"className":"hostpn-accommodation-archive-wrapper","layout":{"type":"constrained"}} -->
+	<div class="wp-block-group hostpn-accommodation-archive-wrapper">
+		<!-- wp:group {"className":"hostpn-container","layout":{"type":"constrained"}} -->
+		<div class="wp-block-group hostpn-container">
+			<!-- wp:heading {"level":1,"className":"hostpn-archive-title"} -->
+			<h1 class="wp-block-heading hostpn-archive-title">Accommodations</h1>
+			<!-- /wp:heading -->
+			
+			<!-- wp:query {"queryId":0,"query":{"perPage":10,"pages":0,"offset":0,"postType":"hostpn_accommodation","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"layout":{"type":"constrained"}} -->
+			<div class="wp-block-query">
+				<!-- wp:post-template {"className":"hostpn-accommodation-grid"} -->
+					<!-- wp:group {"className":"hostpn-accommodation-card","layout":{"type":"constrained"}} -->
+					<div class="wp-block-group hostpn-accommodation-card">
+						<!-- wp:post-featured-image {"isLink":true,"sizeSlug":"medium","className":"hostpn-accommodation-image"} /-->
+						
+						<!-- wp:group {"className":"hostpn-accommodation-content","layout":{"type":"constrained"}} -->
+						<div class="wp-block-group hostpn-accommodation-content">
+							<!-- wp:post-title {"level":2,"isLink":true,"className":"hostpn-accommodation-title"} /-->
+							
+							<!-- wp:post-excerpt {"className":"hostpn-accommodation-excerpt"} /-->
+							
+							<!-- wp:buttons {"className":"hostpn-accommodation-actions"} -->
+							<div class="wp-block-buttons hostpn-accommodation-actions">
+								<!-- wp:button {"className":"hostpn-btn hostpn-btn-primary"} -->
+								<div class="wp-block-button hostpn-btn hostpn-btn-primary">
+									<a class="wp-block-button__link wp-element-button">View Details</a>
+								</div>
+								<!-- /wp:button -->
+							</div>
+							<!-- /wp:buttons -->
+						</div>
+						<!-- /wp:group -->
+					</div>
+					<!-- /wp:group -->
+				<!-- /wp:post-template -->
+				
+				<!-- wp:query-pagination -->
+					<!-- wp:query-pagination-previous /-->
+					<!-- wp:query-pagination-numbers /-->
+					<!-- wp:query-pagination-next /-->
+				<!-- /wp:query-pagination -->
+				
+				<!-- wp:query-no-results -->
+					<!-- wp:paragraph {"placeholder":"Add text or blocks that will display when a query returns no results."} -->
+					<p>No accommodations found</p>
+					<!-- /wp:paragraph -->
+				<!-- /wp:query-no-results -->
+			</div>
+			<!-- /wp:query -->
+		</div>
+		<!-- /wp:group -->
+	</div>
+	<!-- /wp:group -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

@@ -868,7 +868,7 @@ class HOSTPN_Post_Type_Guest
                 // Show "Create my own guest" button if user is logged in
                 if (is_user_logged_in()): ?>
                     <div class="hostpn-mb-20">
-                        <button type="button" class="hostpn-btn hostpn-btn-secondary hostpn-auto-fill-user-data" 
+                        <button type="button" class="hostpn-btn hostpn-auto-fill-user-data" 
                                 data-user-id="<?php echo esc_attr(get_current_user_id()); ?>">
                             <?php esc_html_e('Create my own guest', 'hostpn'); ?>
                         </button>

@@ -52,7 +52,7 @@ class HOSTPN {
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.11';
+			$this->version = '1.0.14';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -241,11 +241,10 @@ class HOSTPN {
 	 */
 	private function hostpn_load_i18n() {
 		$plugin_i18n = new HOSTPN_i18n();
-		$this->loader->hostpn_add_action('after_setup_theme', $plugin_i18n, 'hostpn_load_plugin_textdomain');
+		$this->loader->hostpn_add_action('init', $plugin_i18n, 'hostpn_load_plugin_textdomain');
 
-		if (class_exists('Polylang')) {
-			$this->loader->hostpn_add_filter('pll_get_post_types', $plugin_i18n, 'hostpn_pll_get_post_types', 10, 2);
-		}
+		// Register accommodation post type as translatable with Polylang
+		$this->loader->hostpn_add_filter('pll_get_post_types', $plugin_i18n, 'hostpn_pll_get_post_types', 10, 2);
 	}
 
 	/**

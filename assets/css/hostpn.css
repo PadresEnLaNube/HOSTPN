@@ -792,7 +792,6 @@ input:checked + .hostpn-slider:before{
 .hostpn-btn{
   background-color:var(--color-main);
   color:#fff;
-  text-shadow:0 0 20px var(--color-main);
   display:inline-block;
   margin:auto;
   font-weight:300;
@@ -826,7 +825,6 @@ input:checked + .hostpn-slider:before{
 .hostpn-btn-secondary:hover{
   background-color:var(--bg-color-main);
   color:#fff;
-  text-shadow:0 0 20px var(--color-main);
 }
 .hostpn-btn-mini{
   line-height:20px;

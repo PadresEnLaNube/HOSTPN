@@ -8,7 +8,19 @@
  * @subpackage hostpn/templates/public
  */
 
-get_header(); ?>
+// Ensure WordPress is loaded
+if (!defined('ABSPATH')) {
+	exit;
+}
+
+if(wp_is_block_theme()) {
+    wp_head();
+    block_template_part('header');
+    get_header();
+} else {
+    get_header();
+}
+?>
 
 <div class="hostpn-accommodation-single-wrapper">
     <div class="hostpn-container">
@@ -16,8 +28,8 @@ get_header(); ?>
             <?php
             $accommodation_id = get_the_ID();
             
-            // Use global features constant
-            $accommodation_features = HOSTPN_ACCOMMODATION_FEATURES;
+            // Use translated features
+            $accommodation_features = HOSTPN_i18n::hostpn_get_accommodation_features();
             
             $accommodation_code = get_post_meta($accommodation_id, 'hostpn_accommodation_code', true);
             $accommodation_type = get_post_meta($accommodation_id, 'hostpn_accommodation_type', true);
@@ -32,26 +44,6 @@ get_header(); ?>
                 <header class="hostpn-accommodation-header">
                     <div class="hostpn-accommodation-header-content">
                         <h1 class="hostpn-accommodation-title"><?php the_title(); ?></h1>
-                        
-                        <?php if ($accommodation_code || $accommodation_type) : ?>
-                            <div class="hostpn-accommodation-meta">
-                                <?php if ($accommodation_code) : ?>
-                                    <span class="hostpn-meta-item">
-                                        <i class="material-icons-outlined hostpn-icon-small">tag</i>
-                                        <span class="hostpn-label"><?php esc_html_e('Code:', 'hostpn'); ?></span>
-                                        <span class="hostpn-value"><?php echo esc_html($accommodation_code); ?></span>
-                                    </span>
-                                <?php endif; ?>
-                                
-                                <?php if ($accommodation_type) : ?>
-                                    <span class="hostpn-meta-item">
-                                        <i class="material-icons-outlined hostpn-icon-small">category</i>
-                                        <span class="hostpn-label"><?php esc_html_e('Type:', 'hostpn'); ?></span>
-                                        <span class="hostpn-value"><?php echo esc_html($accommodation_type); ?></span>
-                                    </span>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
                         
                         <?php if ($accommodation_city || $accommodation_country) : ?>
                             <div class="hostpn-accommodation-location">
@@ -231,8 +223,14 @@ get_header(); ?>
                 <nav class="hostpn-accommodation-navigation">
                     <div class="hostpn-nav-links">
                         <?php
-                        $prev_post = get_previous_post();
-                        $next_post = get_next_post();
+                        // Get previous/next posts respecting Polylang language if active
+                        if (class_exists('Polylang') && function_exists('pll_current_language')) {
+                            $prev_post = get_previous_post(false, '', pll_current_language('slug'));
+                            $next_post = get_next_post(false, '', pll_current_language('slug'));
+                        } else {
+                            $prev_post = get_previous_post();
+                            $next_post = get_next_post();
+                        }
                         ?>
                         
                         <?php if ($prev_post) : ?>
@@ -255,8 +253,7 @@ get_header(); ?>
                     </div>
                     
                     <div class="hostpn-back-to-archive">
-                        <a href="<?php echo esc_url(get_post_type_archive_link('hostpn_accommodation')); ?>" class="hostpn-btn hostpn-btn-secondary">
-                            <i class="material-icons-outlined">list</i>
+                        <a href="<?php echo esc_url(get_post_type_archive_link('hostpn_accommodation')); ?>" class="hostpn-btn">
                             <?php esc_html_e('Back to Accommodations', 'hostpn'); ?>
                         </a>
                     </div>
@@ -266,4 +263,10 @@ get_header(); ?>
     </div>
 </div>
 
-<?php get_footer(); ?>
+<?php 
+if(wp_is_block_theme()) {
+    block_template_part('footer');
+} else {
+    get_footer();
+} 
+?>
