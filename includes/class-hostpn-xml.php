@@ -122,6 +122,128 @@ class HOSTPN_XML {
     exit();
 	}
 
+  /**
+   * Genera un CSV con los hospedajes (Parts) de un año concreto.
+   *
+   * Formato: <NRUA>;<checkin>;<checkout>;<huéspedes>;<opcional código_finalidad 1-5>
+   *
+   * @param int $year Año para filtrar las estancias (por fecha de entrada).
+   */
+  public function hostpn_part_csv_download($year) {
+    $year = absint($year);
+    if (empty($year)) {
+      $year = (int) gmdate('Y', current_time('timestamp'));
+    }
+
+    $part_atts = [
+      'fields'      => 'ids',
+      'numberposts' => -1,
+      'post_type'   => 'hostpn_part',
+      'post_status' => 'any',
+      'orderby'     => 'date',
+      'order'       => 'DESC',
+    ];
+
+    // Si Polylang está activo, respetamos el idioma actual
+    if (class_exists('Polylang')) {
+      $part_atts['lang'] = pll_current_language('slug');
+    }
+
+    $parts  = get_posts($part_atts);
+    $lines  = [];
+
+    foreach ($parts as $part_id) {
+      $check_in_raw = get_post_meta($part_id, 'hostpn_check_in_date', true);
+      if (empty($check_in_raw)) {
+        continue;
+      }
+
+      $timestamp = strtotime($check_in_raw);
+      if (!$timestamp) {
+        continue;
+      }
+
+      if ((int) gmdate('Y', $timestamp) !== $year) {
+        continue;
+      }
+
+      $accommodation_id = get_post_meta($part_id, 'hostpn_accommodation_id', true);
+      $nrua             = $accommodation_id ? get_post_meta($accommodation_id, 'hostpn_nrua', true) : '';
+
+      $check_out_raw = get_post_meta($part_id, 'hostpn_check_out_date', true);
+      $guests        = get_post_meta($part_id, 'hostpn_people_number', true);
+      $purpose_code  = get_post_meta($part_id, 'hostpn_purpose_code', true);
+
+      $check_in  = $this->hostpn_format_csv_date($check_in_raw);
+      $check_out = $this->hostpn_format_csv_date($check_out_raw);
+
+      $line = [
+        $this->hostpn_csv_sanitize($nrua),
+        $this->hostpn_csv_sanitize($check_in),
+        $this->hostpn_csv_sanitize($check_out),
+        $this->hostpn_csv_sanitize($guests),
+        $this->hostpn_csv_sanitize($purpose_code),
+      ];
+
+      $lines[] = implode(';', $line);
+    }
+
+    $output = implode("\n", $lines);
+
+    // Limpiar cualquier output buffer previo
+    if (ob_get_level()) {
+      ob_end_clean();
+    }
+
+    // Cabeceras para forzar descarga del CSV
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename="hospedajes-' . $year . '.csv"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+
+    // BOM UTF-8 para Excel
+    echo "\xEF\xBB\xBF";
+    echo $output;
+    
+    // Asegurar que no haya nada más después
+    if (function_exists('fastcgi_finish_request')) {
+      fastcgi_finish_request();
+    }
+    exit();
+  }
+
+  /**
+   * Normaliza fechas a dd/MM/yyyy para el CSV.
+   *
+   * @param string $date_string
+   * @return string
+   */
+  protected function hostpn_format_csv_date($date_string) {
+    if (empty($date_string)) {
+      return '';
+    }
+
+    $timestamp = strtotime($date_string);
+    if (!$timestamp) {
+      return '';
+    }
+
+    return gmdate('d/m/Y', $timestamp);
+  }
+
+  /**
+   * Sanea valores para el CSV (elimina saltos de línea y puntos y coma).
+   *
+   * @param string $value
+   * @return string
+   */
+  protected function hostpn_csv_sanitize($value) {
+    $value = (string) $value;
+    $value = str_replace([';', "\r", "\n"], ' ', $value);
+    return trim($value);
+  }
+
   public function hostpn_timestamp_to_iso8601($timestamp, $date_only = false) {
     $date_time = new DateTime($timestamp, new DateTimeZone(wp_timezone_string()));
 

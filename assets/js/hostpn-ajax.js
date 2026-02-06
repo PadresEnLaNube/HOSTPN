@@ -413,5 +413,98 @@
         pom.click();
       });
     });
+
+    // Download CSV of stays (Parts) - DEBUG MODE
+    $(document).on('click', '.hostpn-part-csv-export-btn, #hostpn-part-csv-export-btn', function(e) {
+      e.preventDefault();
+
+      var HOSTPN_DEBUG = true; // Cambiar a false para desactivar logs
+      var log = function() {
+        if (HOSTPN_DEBUG && typeof console !== 'undefined' && console.log) {
+          console.log.apply(console, ['[HOSTPN CSV]'].concat(Array.prototype.slice.call(arguments)));
+        }
+      };
+      var err = function() {
+        if (typeof console !== 'undefined' && console.error) {
+          console.error.apply(console, ['[HOSTPN CSV ERROR]'].concat(Array.prototype.slice.call(arguments)));
+        }
+      };
+
+      log('1. Click detectado en botón CSV');
+
+      var yearInput = $('#hostpn-part-csv-year');
+      log('2. yearInput encontrado:', yearInput.length, 'valor:', yearInput.val());
+
+      var hostpn_year = parseInt(yearInput.val(), 10);
+      if (isNaN(hostpn_year) || hostpn_year < 2000 || hostpn_year > 2100) {
+        err('Año inválido:', hostpn_year);
+        if (typeof hostpn_get_main_message === 'function') {
+          hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
+        }
+        return;
+      }
+      log('3. Año válido:', hostpn_year);
+
+      if (typeof hostpn_ajax === 'undefined') {
+        err('hostpn_ajax NO está definido. ¿El script hostpn-ajax está cargado?');
+        return;
+      }
+      var ajax_url = hostpn_ajax.ajax_url;
+      var nonce = hostpn_ajax.hostpn_ajax_nonce;
+      log('4. ajax_url:', ajax_url);
+      log('5. nonce existe:', !!nonce, '(longitud:', nonce ? nonce.length : 0, ')');
+
+      var data = {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_part_csv_download',
+        hostpn_year: hostpn_year,
+        hostpn_ajax_nonce: nonce
+      };
+      log('6. Enviando petición AJAX:', JSON.stringify(data));
+
+      $.ajax({
+        url: ajax_url,
+        type: 'POST',
+        data: data,
+        success: function(response) {
+          log('7. SUCCESS - Respuesta recibida');
+          log('   - Tipo:', typeof response);
+          log('   - Longitud:', response ? (response.length || 'N/A') : 0);
+          log('   - Primeros 150 chars:', typeof response === 'string' ? response.substring(0, 150) : String(response).substring(0, 150));
+
+          var filename = 'hospedajes-' + hostpn_year + '.csv';
+          var pom = document.createElement('a');
+          var bb = new Blob([response], {type: 'text/csv;charset=utf-8;'});
+
+          pom.setAttribute('href', window.URL.createObjectURL(bb));
+          pom.setAttribute('download', filename);
+
+          pom.dataset.downloadurl = ['text/csv', pom.download, pom.href].join(':');
+          pom.draggable = true;
+          pom.classList.add('dragout');
+          pom.click();
+
+          log('8. Descarga disparada:', filename);
+          if (typeof hostpn_get_main_message === 'function') {
+            hostpn_get_main_message(hostpn_i18n.saved_successfully || 'CSV generado correctamente');
+          }
+        },
+        error: function(xhr, status, error) {
+          err('7. ERROR AJAX');
+          err('   - status:', status);
+          err('   - error:', error);
+          err('   - xhr.status:', xhr.status);
+          err('   - xhr.statusText:', xhr.statusText);
+          err('   - xhr.responseText (primeros 300):', xhr.responseText ? xhr.responseText.substring(0, 300) : 'vacío');
+          err('   - xhr objeto completo:', xhr);
+          if (typeof hostpn_get_main_message === 'function') {
+            hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
+          }
+        },
+        complete: function() {
+          log('9. Petición completada (success o error)');
+        }
+      });
+    });
   });
 })(jQuery);

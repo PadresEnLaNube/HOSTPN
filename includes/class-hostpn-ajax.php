@@ -445,6 +445,25 @@ class HOSTPN_Ajax {
               echo wp_json_encode(['error_key' => 'hostpn_part_download_error', 'error_' => esc_html(__('An error occurred while duplicating the part.', 'hostpn')), ]);exit();
             }
             break;
+        case 'hostpn_part_csv_export':
+          // Popup para configurar la exportación CSV
+          $plugin_post_type_part = new HOSTPN_Post_Type_Part();
+          echo wp_json_encode([
+            'error_key' => '',
+            'html'      => $plugin_post_type_part->hostpn_part_csv_export_popup(),
+          ]);
+          exit;
+          break;
+        case 'hostpn_part_csv_download':
+          // Descarga real del CSV de hospedajes por año
+          $hostpn_year = !empty($_POST['hostpn_year']) ? absint($_POST['hostpn_year']) : (int) gmdate('Y', current_time('timestamp'));
+
+          $plugin_xml = new HOSTPN_XML();
+          $plugin_xml->hostpn_part_csv_download($hostpn_year);
+
+          echo wp_json_encode(['error_key' => '']); // No debería alcanzarse por el exit() anterior
+          exit;
+          break;
       }
 
       echo wp_json_encode([

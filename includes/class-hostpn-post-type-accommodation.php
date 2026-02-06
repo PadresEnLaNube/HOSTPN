@@ -45,6 +45,16 @@ class HOSTPN_Post_Type_Accommodation {
         'label' => __('Accommodation code', 'hostpn'),
         'placeholder' => __('Accommodation code', 'hostpn'),
       ];
+      // NRUA genérico del alojamiento para exportaciones CSV
+      $hostpn_fields_meta['hostpn_nrua'] = [
+        'id' => 'hostpn_nrua',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'label' => __('NRUA (generic stay number)', 'hostpn'),
+        'placeholder' => __('NRUA used in CSV exports', 'hostpn'),
+        'description' => __('Generic NRUA number stored in the Accommodation metadata and used in police CSV exports.', 'hostpn'),
+      ];
       $hostpn_fields_meta['hostpn_accommodation_type'] = [
         'id' => 'hostpn_accommodation_type',
         'class' => 'hostpn-select hostpn-width-100-percent',
@@ -791,6 +801,8 @@ class HOSTPN_Post_Type_Accommodation {
       // Register block templates for Site Editor (block themes)
       if (function_exists('wp_is_block_theme') && wp_is_block_theme()) {
         add_filter('get_block_templates', [$this, 'hostpn_accommodation_register_block_templates'], 10, 3);
+        // Also handle get_block_template to prevent undefined array key warnings
+        add_filter('get_block_template', [$this, 'hostpn_accommodation_get_block_template'], 10, 3);
       }
     }
   }
@@ -807,6 +819,32 @@ class HOSTPN_Post_Type_Accommodation {
     // Only add templates when querying for wp_template type
     if ($template_type !== 'wp_template') {
       return $query_result;
+    }
+    
+    // Check if we should filter by slug (to avoid adding templates unnecessarily)
+    // But always include our templates to prevent undefined array key warnings
+    $should_add_templates = true;
+    if (isset($query['slug__in']) && is_array($query['slug__in']) && !empty($query['slug__in'])) {
+      $requested_slugs = $query['slug__in'];
+      $needed_slugs = ['single-hostpn_accommodation', 'archive-hostpn_accommodation'];
+      // Only skip if none of our templates are requested
+      if (!array_intersect($requested_slugs, $needed_slugs)) {
+        $should_add_templates = false;
+      }
+    }
+    
+    // Always add templates when query is empty or when our templates are needed
+    // This ensures WordPress can build its internal cache/index properly
+    if (!$should_add_templates && !empty($query)) {
+      return $query_result;
+    }
+    
+    // Check if templates are already in the result to avoid duplicates
+    $existing_slugs = [];
+    foreach ($query_result as $existing_template) {
+      if (isset($existing_template->slug)) {
+        $existing_slugs[] = $existing_template->slug;
+      }
     }
     
     // Get plugin block template paths
@@ -830,7 +868,7 @@ class HOSTPN_Post_Type_Accommodation {
     $templates = [];
     
     // Single accommodation template
-    if ($single_template_path && file_exists($single_template_path)) {
+    if ($single_template_path && file_exists($single_template_path) && !in_array('single-hostpn_accommodation', $existing_slugs)) {
       $template_content = file_get_contents($single_template_path);
       $templates[] = (object) [
         'id' => 'hostpn//single-hostpn_accommodation',
@@ -851,7 +889,7 @@ class HOSTPN_Post_Type_Accommodation {
     }
     
     // Archive accommodation template
-    if ($archive_template_path && file_exists($archive_template_path)) {
+    if ($archive_template_path && file_exists($archive_template_path) && !in_array('archive-hostpn_accommodation', $existing_slugs)) {
       $template_content = file_get_contents($archive_template_path);
       $templates[] = (object) [
         'id' => 'hostpn//archive-hostpn_accommodation',
@@ -873,6 +911,65 @@ class HOSTPN_Post_Type_Accommodation {
     
     // Merge with existing templates
     return array_merge($query_result, $templates);
+  }
+  
+  /**
+   * Get a specific block template to prevent undefined array key warnings
+   *
+   * @param WP_Block_Template|null $template The resolved template.
+   * @param string $id The template ID (e.g., 'hostpn//single-hostpn_accommodation').
+   * @param string $template_type The template type.
+   * @return WP_Block_Template|null The resolved template or null.
+   */
+  public function hostpn_accommodation_get_block_template($template, $id, $template_type) {
+    // Only handle wp_template type
+    if ($template_type !== 'wp_template') {
+      return $template;
+    }
+    
+    // Check if this is one of our templates
+    if (strpos($id, 'hostpn//') === 0) {
+      $slug = str_replace('hostpn//', '', $id);
+      
+      // Only handle our specific templates
+      if (!in_array($slug, ['single-hostpn_accommodation', 'archive-hostpn_accommodation'])) {
+        return $template;
+      }
+      
+      // Get the appropriate template path
+      $template_path = false;
+      if (defined('HOSTPN_DIR')) {
+        $template_path = HOSTPN_DIR . 'block-templates/' . $slug . '.html';
+      }
+      
+      if (!$template_path || !file_exists($template_path)) {
+        $template_path = plugin_dir_path(dirname(__FILE__)) . 'block-templates/' . $slug . '.html';
+      }
+      
+      if ($template_path && file_exists($template_path)) {
+        $template_content = file_get_contents($template_path);
+        
+        // Create template object
+        $template = (object) [
+          'id' => $id,
+          'theme' => 'hostpn',
+          'content' => $template_content,
+          'slug' => $slug,
+          'source' => 'plugin',
+          'type' => 'wp_template',
+          'title' => $slug === 'single-hostpn_accommodation' ? __('Single Accommodation', 'hostpn') : __('Accommodation Archive', 'hostpn'),
+          'description' => $slug === 'single-hostpn_accommodation' ? __('Template for displaying a single accommodation post.', 'hostpn') : __('Template for displaying the accommodation archive page.', 'hostpn'),
+          'status' => 'publish',
+          'wp_id' => 0,
+          'has_theme_file' => true,
+          'is_custom' => false,
+          'author' => 0,
+          'post_types' => ['hostpn_accommodation'],
+        ];
+      }
+    }
+    
+    return $template;
   }
   
   /**

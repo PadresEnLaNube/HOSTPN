@@ -58,3 +58,10 @@
   <?php endif; ?>
 <?php endforeach; ?>
 
+<?php
+// Popup específico para la exportación CSV de Parts
+?>
+<div id="hostpn-popup-part-csv-export" class="hostpn-popup hostpn-popup-size-medium hostpn-display-none-soft">
+  <?php HOSTPN_Data::hostpn_popup_loader(); ?>
+</div>
+

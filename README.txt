@@ -4,7 +4,7 @@ Donate link: https://padresenlanube.com/
 Tags: hospedajes España, Spain, hosting, check-in, host register
 Requires at least: 3.5
 Tested up to: 6.8
-Stable tag: 1.0.14
+Stable tag: 1.0.23
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

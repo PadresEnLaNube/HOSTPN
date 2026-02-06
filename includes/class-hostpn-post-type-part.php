@@ -215,6 +215,30 @@ class HOSTPN_Post_Type_Part {
       'label' => __('Number of people', 'hostpn'),
       'placeholder' => __('Number of people', 'hostpn'),
     ];
+
+    // Purpose code for purpose of stay (for police CSV)
+    // 1 - Vacational/Touristic
+    // 2 - Work
+    // 3 - Studies
+    // 4 - Medical reasons
+    // 5 - Others
+    $hostpn_fields_meta['hostpn_purpose_code'] = [
+      'id'    => 'hostpn_purpose_code',
+      'class' => 'hostpn-select hostpn-width-100-percent',
+      'input' => 'select',
+      'options' => [
+        ''  => __('Select purpose (optional)', 'hostpn'),
+        '1' => __('1 - Vacational/Touristic', 'hostpn'),
+        '2' => __('2 - Work', 'hostpn'),
+        '3' => __('3 - Studies', 'hostpn'),
+        '4' => __('4 - Medical reasons', 'hostpn'),
+        '5' => __('5 - Others', 'hostpn'),
+      ],
+      'value' => '1',
+      'label' => __('Stay purpose (for police CSV)', 'hostpn'),
+      'placeholder' => __('Stay purpose (optional)', 'hostpn'),
+      'description' => __('Optional code used in CSV export: 1-Vacacional/Turístico, 2-Laboral, 3-Estudios, 4-Causas médicas, 5-Otros.', 'hostpn'),
+    ];
     $hostpn_fields_meta['hostpn_rooms'] = [
       'id' => 'hostpn_rooms',
       'class' => 'hostpn-input hostpn-width-100-percent',
@@ -671,11 +695,55 @@ class HOSTPN_Post_Type_Part {
     }
   }
 
+  /**
+   * Encola scripts necesarios para el listado de Parts (popups, AJAX, CSV).
+   * Se llama cuando se renderiza el shortcode [hostpn-part-list].
+   */
+  public function hostpn_part_enqueue_list_scripts() {
+    wp_enqueue_style('hostpn', HOSTPN_URL . 'assets/css/hostpn.css', [], HOSTPN_VERSION);
+    wp_enqueue_style('hostpn-popups', HOSTPN_URL . 'assets/css/hostpn-popups.css', [], HOSTPN_VERSION);
+    wp_enqueue_style('material-icons-outlined', HOSTPN_URL . 'assets/css/material-icons-outlined.min.css', [], HOSTPN_VERSION);
+    wp_enqueue_style('tooltipster', HOSTPN_URL . 'assets/css/tooltipster.min.css', [], HOSTPN_VERSION);
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('hostpn', HOSTPN_URL . 'assets/js/hostpn.js', ['jquery'], HOSTPN_VERSION, true);
+    wp_enqueue_script('hostpn-popups', HOSTPN_URL . 'assets/js/hostpn-popups.js', ['jquery'], HOSTPN_VERSION, true);
+    wp_enqueue_script('hostpn-aux', HOSTPN_URL . 'assets/js/hostpn-aux.js', ['jquery'], HOSTPN_VERSION, true);
+    wp_enqueue_script('hostpn-selector', HOSTPN_URL . 'assets/js/hostpn-selector.js', ['jquery'], HOSTPN_VERSION, true);
+    wp_enqueue_script('hostpn-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', ['jquery'], HOSTPN_VERSION, true);
+    wp_enqueue_script('hostpn-ajax', HOSTPN_URL . 'assets/js/hostpn-ajax.js', ['jquery', 'hostpn-popups'], HOSTPN_VERSION, true);
+    wp_enqueue_script('hostpn-tooltipster', HOSTPN_URL . 'assets/js/tooltipster.min.js', ['jquery'], HOSTPN_VERSION, true);
+
+    wp_localize_script('hostpn-ajax', 'hostpn_ajax', [
+      'ajax_url' => admin_url('admin-ajax.php'),
+      'hostpn_ajax_nonce' => wp_create_nonce('hostpn-nonce'),
+    ]);
+
+    wp_localize_script('hostpn', 'hostpn_i18n', [
+      'an_error_has_occurred' => esc_html(__('An error has occurred. Please try again in a few minutes.', 'hostpn')),
+      'saved_successfully' => esc_html(__('Saved successfully', 'hostpn')),
+      'removed_successfully' => esc_html(__('Removed successfully', 'hostpn')),
+      'select_options' => esc_html(__('Select options', 'hostpn')),
+    ]);
+
+    wp_localize_script('hostpn', 'hostpn_action', [
+      'action' => '',
+      'btn_id' => '',
+      'popup' => '',
+      'tab' => '',
+      'hostpn_get_nonce' => wp_create_nonce('hostpn-get-nonce'),
+    ]);
+
+    wp_localize_script('hostpn', 'hostpn_cpts', HOSTPN_CPTS);
+  }
+
   public function hostpn_part_print_scripts() {
     wp_print_scripts(['hostpn-aux', 'hostpn-forms', 'hostpn-selector']);
   }
 
   public function hostpn_part_list_wrapper() {
+    // Asegurar que los scripts AJAX y popups se carguen cuando se muestra el listado
+    $this->hostpn_part_enqueue_list_scripts();
+
     ob_start();
 
     if(HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
@@ -685,6 +753,10 @@ class HOSTPN_Post_Type_Part {
             <div class="hostpn-part-search-wrapper">
               <input type="text" class="hostpn-part-search-input hostpn-input hostpn-display-none" placeholder="<?php esc_attr_e('Filter...', 'hostpn'); ?>" />
               <i class="material-icons-outlined hostpn-part-search-toggle hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Search Parts', 'hostpn'); ?>">search</i>
+
+              <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-csv-export" data-hostpn-ajax-type="hostpn_part_csv_export">
+                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Download stays CSV', 'hostpn'); ?>">file_download</i>
+              </a>
 
               <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-part-add" data-hostpn-ajax-type="hostpn_part_new">
                 <i class="material-icons-outlined hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Add new Part', 'hostpn'); ?>">add</i>
@@ -696,6 +768,80 @@ class HOSTPN_Post_Type_Part {
             <?php echo wp_kses(self::hostpn_part_list(), HOSTPN_KSES); ?>
           </div>
         </div>
+        <script>
+        (function() {
+          document.addEventListener('click', function(e) {
+            var btn = e.target.closest && e.target.closest('.hostpn-part-csv-download-btn');
+            if (!btn) return;
+            e.preventDefault();
+            var form = btn.closest('.hostpn-part-csv-export-form');
+            var yearInput = document.getElementById('hostpn-part-csv-year');
+            if (!form || !yearInput) return;
+            var ajaxUrl = form.getAttribute('data-hostpn-ajax-url');
+            var nonce = form.getAttribute('data-hostpn-nonce');
+            if (!ajaxUrl || !nonce) return;
+            var year = parseInt(yearInput.value, 10);
+            if (isNaN(year) || year < 2000 || year > 2100) {
+              alert('<?php echo esc_js( __( 'Please enter a valid year between 2000 and 2100.', 'hostpn' ) ); ?>');
+              return;
+            }
+            btn.disabled = true;
+            var btnText = btn.textContent;
+            btn.textContent = '<?php echo esc_js( __( 'Downloading...', 'hostpn' ) ); ?>';
+            var fd = new FormData();
+            fd.append('action', 'hostpn_ajax');
+            fd.append('hostpn_ajax_type', 'hostpn_part_csv_download');
+            fd.append('hostpn_year', year);
+            fd.append('hostpn_ajax_nonce', nonce);
+            fetch(ajaxUrl, { method: 'POST', body: fd, credentials: 'same-origin' })
+              .then(function(response) {
+                console.log('HOSTPN CSV: Response status:', response.status, 'Content-Type:', response.headers.get('content-type'));
+                if (!response.ok) {
+                  throw new Error('HTTP error! status: ' + response.status);
+                }
+                return response.text();
+              })
+              .then(function(csv) {
+                console.log('HOSTPN CSV: Response length:', csv ? csv.length : 0, 'First 100 chars:', csv ? csv.substring(0, 100) : 'empty');
+                if (!csv || csv.trim().length === 0) {
+                  throw new Error('Empty response from server');
+                }
+                // Si la respuesta empieza con {, probablemente es JSON de error
+                var trimmed = csv.trim();
+                if (trimmed.charAt(0) === '{') {
+                  try {
+                    var json = JSON.parse(csv);
+                    if (json.error_key) {
+                      throw new Error(json.error_content || 'Server error: ' + json.error_key);
+                    }
+                  } catch(e) {
+                    // No es JSON válido, continuar
+                  }
+                }
+                var blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'hospedajes-' + year + '.csv';
+                document.body.appendChild(a);
+                a.click();
+                console.log('HOSTPN CSV: Download triggered');
+                setTimeout(function() {
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                }, 100);
+              })
+              .catch(function(err) {
+                console.error('HOSTPN CSV download error:', err);
+                alert('<?php echo esc_js( __( 'An error has occurred. Please try again.', 'hostpn' ) ); ?>\n' + (err.message || err));
+              })
+              .finally(function() {
+                btn.disabled = false;
+                btn.textContent = btnText;
+              });
+          });
+        })();
+        </script>
       <?php
     }else{
       echo do_shortcode('[hostpn-call-to-action hostpn_call_to_action_icon="account_circle" hostpn_call_to_action_title="' . __('Account needed', 'hostpn') . '" hostpn_call_to_action_content="' . __('You need a valid account to see this content. Please', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\'>' . __('login', 'hostpn') . '</a>' . ' ' . __('or', 'hostpn') . ' ' . '<a href=\'#\' class=\'userspn-profile-popup-btn\' data-userspn-action=\'register\'>' . __('register', 'hostpn') . '</a>' . ' ' . __('to go ahead', 'hostpn') . '" hostpn_call_to_action_button_link="#" hostpn_call_to_action_button_text="' . __('Login', 'hostpn') . '" hostpn_call_to_action_button_class="userspn-profile-popup-btn" hostpn_call_to_action_class="hostpn-mb-100"]');
@@ -848,6 +994,57 @@ class HOSTPN_Post_Type_Part {
           </a>
         </li>
       </ul>
+    <?php
+    $hostpn_return_string = ob_get_contents(); 
+    ob_end_clean(); 
+    return $hostpn_return_string;
+  }
+
+  /**
+   * Popup for the download of the CSV of stays by year.
+   *
+   * @since 1.0.0
+   */
+  public function hostpn_part_csv_export_popup() {
+    ob_start();
+    ?>
+      <div class="hostpn-p-30">
+        <button type="button" class="hostpn-popup-close hostpn-close-icon">
+          <i class="material-icons-outlined">close</i>
+        </button>
+
+        <h3 class="hostpn-text-align-center"><?php esc_html_e('Download stays CSV', 'hostpn'); ?></h3>
+        <p><?php esc_html_e('Generate a CSV file with all stays (Parts) for the selected year, grouped by accommodation.', 'hostpn'); ?></p>
+
+        <p><?php esc_html_e('CSV format (UTF-8, semicolon separated):', 'hostpn'); ?></p>
+        <code>&lt;NRUA&gt;;&lt;checkin&gt;;&lt;checkout&gt;;&lt;huéspedes&gt;;&lt;opcional código_finalidad 1-5&gt;</code>
+
+        <ul>
+          <li><?php esc_html_e('Allowed date formats: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd', 'hostpn'); ?></li>
+          <li><?php esc_html_e('NRUA is taken from the Accommodation metadata.', 'hostpn'); ?></li>
+          <li><?php esc_html_e('The purpose code is taken from each Part (optional).', 'hostpn'); ?></li>
+        </ul>
+
+        <div class="hostpn-part-csv-export-form" data-hostpn-ajax-url="<?php echo esc_attr( admin_url( 'admin-ajax.php' ) ); ?>" data-hostpn-nonce="<?php echo esc_attr( wp_create_nonce( 'hostpn-nonce' ) ); ?>">
+          <div class="hostpn-mt-20">
+            <label for="hostpn-part-csv-year"><?php esc_html_e('Year', 'hostpn'); ?></label>
+            <input
+              type="number"
+              id="hostpn-part-csv-year"
+              class="hostpn-input hostpn-width-100-percent"
+              min="2000"
+              max="2100"
+              value="<?php echo esc_attr( gmdate( 'Y', current_time( 'timestamp' ) ) ); ?>"
+            />
+          </div>
+
+          <div class="hostpn-text-align-right hostpn-mt-30">
+            <button type="button" class="hostpn-btn hostpn-part-csv-download-btn">
+              <?php esc_html_e('Download CSV', 'hostpn'); ?>
+            </button>
+          </div>
+        </div>
+      </div>
     <?php
     $hostpn_return_string = ob_get_contents(); 
     ob_end_clean(); 
