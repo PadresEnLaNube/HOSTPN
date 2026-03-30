@@ -136,6 +136,15 @@ class HOSTPN_Ajax_Nopriv {
                     }
 
                     if (!empty($user_id)) {
+                      // Authorization: only the account owner or an admin may update user meta
+                      if (!is_user_logged_in() || (intval($user_id) !== get_current_user_id() && !HOSTPN_Functions_User::is_user_admin(get_current_user_id()))) {
+                        echo wp_json_encode([
+                          'error_key' => 'hostpn_form_save_error_unauthorized',
+                          'error_content' => esc_html(__('You are not authorized to perform this action.', 'hostpn')),
+                        ]);
+                        exit;
+                      }
+
                       foreach ($hostpn_key_value as $hostpn_key => $hostpn_value) {
                         // Skip action and ajax type keys
                         if (in_array($hostpn_key, ['action', 'hostpn_ajax_nopriv_type'])) {
@@ -167,6 +176,24 @@ class HOSTPN_Ajax_Nopriv {
                     }
 
                     if (!empty($post_id)) {
+                      // Authorization: only post owner or admin may update post meta
+                      if (!is_user_logged_in()) {
+                        echo wp_json_encode([
+                          'error_key' => 'hostpn_form_save_error_unauthorized',
+                          'error_content' => esc_html(__('You are not authorized to perform this action.', 'hostpn')),
+                        ]);
+                        exit;
+                      }
+
+                      $post_author_id = intval(get_post_field('post_author', $post_id));
+                      if (get_current_user_id() !== $post_author_id && !HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
+                        echo wp_json_encode([
+                          'error_key' => 'hostpn_form_save_error_unauthorized',
+                          'error_content' => esc_html(__('You are not authorized to perform this action.', 'hostpn')),
+                        ]);
+                        exit;
+                      }
+
                       foreach ($hostpn_key_value as $hostpn_key => $hostpn_value) {
                         if ($hostpn_key == $post_type . '_title') {
                           wp_update_post([
@@ -201,8 +228,8 @@ class HOSTPN_Ajax_Nopriv {
                   break;
                 case 'option':
                   if (HOSTPN_Functions_User::is_user_admin(get_current_user_id())) {
-                    $hostpn_settings = new hostpn_Settings();
-                    $hostpn_options = $hostpn_settings->hostpn_get_options();
+                    $hostpn_settings = new HOSTPN_Settings();
+                    $hostpn_options = $hostpn_settings->get_options();
                     $hostpn_allowed_options = array_keys($hostpn_options);
 
                     foreach ($hostpn_key_value as $hostpn_key => $hostpn_value) {
@@ -220,12 +247,10 @@ class HOSTPN_Ajax_Nopriv {
                       if (in_array($hostpn_key, $hostpn_allowed_options)) {
                         update_option($hostpn_key, $hostpn_value);
                       }
-                        
-                      update_option($hostpn_key, $hostpn_value);
                     }
                   }
 
-                  do_action('hostpn_form_save', 0, $hostpn_key_value, $hostpn_form_type, $hostpn_form_subtype);
+                  do_action('hostpn_form_save', 0, $hostpn_key_value, $hostpn_form_type, $hostpn_form_subtype, '');
                   break;
               }
 

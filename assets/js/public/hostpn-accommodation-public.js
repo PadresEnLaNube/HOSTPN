@@ -333,45 +333,10 @@
         });
     }
 
-    /**
-     * Initialize tooltips
-     */
-    function initTooltips() {
-        $('[title]').each(function() {
-            var $element = $(this);
-            var title = $element.attr('title');
-            
-            if (title) {
-                $element.removeAttr('title');
-                $element.attr('data-tooltip', title);
-            }
-        });
-
-        // Simple tooltip implementation
-        $('[data-tooltip]').on('mouseenter', function() {
-            var $element = $(this);
-            var tooltipText = $element.attr('data-tooltip');
-            
-            var $tooltip = $('<div class="hostpn-tooltip">' + tooltipText + '</div>');
-            $('body').append($tooltip);
-            
-            var elementRect = this.getBoundingClientRect();
-            $tooltip.css({
-                position: 'fixed',
-                top: elementRect.top - $tooltip.outerHeight() - 10,
-                left: elementRect.left + (elementRect.width / 2) - ($tooltip.outerWidth() / 2),
-                zIndex: 10000
-            });
-        }).on('mouseleave', function() {
-            $('.hostpn-tooltip').remove();
-        });
-    }
-
     // Initialize additional functionality when window loads
     $(window).on('load', function() {
         initLazyLoading();
         initSmoothScrolling();
-        initTooltips();
     });
 
     // Handle window resize

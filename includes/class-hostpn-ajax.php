@@ -464,10 +464,117 @@ class HOSTPN_Ajax {
           echo wp_json_encode(['error_key' => '']); // No debería alcanzarse por el exit() anterior
           exit;
           break;
+        case 'hostpn_update_user_role':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'hostpn_role_error', 'error_content' => esc_html__('Unauthorized access.', 'hostpn')]);
+            exit;
+          }
+
+          $role_action = !empty($_POST['role_action']) ? sanitize_text_field(wp_unslash($_POST['role_action'])) : '';
+          $role = !empty($_POST['role']) ? sanitize_text_field(wp_unslash($_POST['role'])) : '';
+          $user_ids = !empty($_POST['user_ids']) ? array_map('intval', wp_unslash($_POST['user_ids'])) : [];
+          $role_nonce = !empty($_POST['role_nonce']) ? sanitize_text_field(wp_unslash($_POST['role_nonce'])) : '';
+
+          if (!wp_verify_nonce($role_nonce, 'hostpn-role-assignment')) {
+            echo wp_json_encode(['error_key' => 'hostpn_role_nonce_error', 'error_content' => esc_html__('Security check failed.', 'hostpn')]);
+            exit;
+          }
+
+          $plugin_roles = ['hostpn_role_manager', 'hostpn_role_guest'];
+          $role_labels = ['hostpn_role_manager' => __('Host - HOSTPN', 'hostpn'), 'hostpn_role_guest' => __('Guest - HOSTPN', 'hostpn')];
+
+          if (!in_array($role, $plugin_roles)) {
+            echo wp_json_encode(['error_key' => 'hostpn_role_invalid', 'error_content' => esc_html__('Invalid role specified.', 'hostpn')]);
+            exit;
+          }
+
+          if (empty($user_ids)) {
+            echo wp_json_encode(['error_key' => 'hostpn_role_no_users', 'error_content' => esc_html__('No users selected.', 'hostpn')]);
+            exit;
+          }
+
+          $updated_count = 0;
+          foreach ($user_ids as $user_id) {
+            $user = get_user_by('id', $user_id);
+            if ($user) {
+              if ($role_action === 'assign') {
+                $user->add_role($role);
+                $updated_count++;
+              } elseif ($role_action === 'remove') {
+                $user->remove_role($role);
+                $updated_count++;
+              }
+            }
+          }
+
+          $role_label_text = isset($role_labels[$role]) ? $role_labels[$role] : $role;
+          if ($role_action === 'assign') {
+            $message = sprintf(__('%d user(s) have been assigned the %s role.', 'hostpn'), $updated_count, $role_label_text);
+          } else {
+            $message = sprintf(__('%d user(s) have been removed from the %s role.', 'hostpn'), $updated_count, $role_label_text);
+          }
+
+          echo wp_json_encode(['error_key' => '', 'error_content' => $message]);
+          exit;
+          break;
+        case 'hostpn_settings_export':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $settings  = new HOSTPN_Settings();
+          $options   = $settings->get_options();
+          $export    = [];
+
+          foreach ($options as $key => $config) {
+            if (!isset($config['input']) || in_array($config['input'], ['html_multi'])) continue;
+            if (isset($config['type']) && in_array($config['type'], ['nonce', 'submit'])) continue;
+            if (isset($config['section'])) continue;
+
+            $value = get_option($key, '');
+            if ($value !== '') {
+              $export[$key] = $value;
+            }
+          }
+
+          echo wp_json_encode(['error_key' => '', 'settings' => $export]);
+          exit;
+          break;
+
+        case 'hostpn_settings_import':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $raw = isset($_POST['settings']) ? wp_unslash($_POST['settings']) : '';
+          $import = json_decode($raw, true);
+
+          if (!is_array($import) || empty($import)) {
+            echo wp_json_encode(['error_key' => 'invalid_data', 'error_content' => 'Invalid settings data.']);
+            exit;
+          }
+
+          $settings  = new HOSTPN_Settings();
+          $options   = $settings->get_options();
+          $allowed   = array_keys($options);
+          $count     = 0;
+
+          foreach ($import as $key => $value) {
+            if (in_array($key, $allowed)) {
+              update_option($key, sanitize_text_field($value));
+              $count++;
+            }
+          }
+
+          echo wp_json_encode(['error_key' => '', 'count' => $count]);
+          exit;
+          break;
       }
 
       echo wp_json_encode([
-        'error_key' => 'hostpn_save_error', 
+        'error_key' => 'hostpn_save_error',
       ]);
 
       exit;

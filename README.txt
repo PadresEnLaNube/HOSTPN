@@ -3,8 +3,8 @@ Contributors: felixmartinez, hamlet237
 Donate link: https://padresenlanube.com/
 Tags: hospedajes España, Spain, hosting, check-in, host register
 Requires at least: 3.5
-Tested up to: 6.8
-Stable tag: 1.0.23
+Tested up to: 6.9.1
+Stable tag: 1.0.30
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,13 +17,6 @@ The Hospedajes España - HOSTPN application has been created to allow the sendin
 
 == Credits ==
 This plugin stands on the shoulders of giants
-
-Tooltipster v4.2.8 - A rockin' custom tooltip jQuery plugin
-Developed by Caleb Jacob and Louis Ameline
-MIT license
-https://calebjacob.github.io/tooltipster/
-https://github.com/calebjacob/tooltipster/blob/master/dist/js/tooltipster.main.js
-https://github.com/calebjacob/tooltipster/blob/master/dist/css/tooltipster.main.css
 
 Owl Carousel v2.3.4
 Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE

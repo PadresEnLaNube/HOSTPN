@@ -47,6 +47,14 @@
   margin-bottom: 15px !important;
 }
 
+/* Settings page: fields one per line */
+.hostpn-options .hostpn-section-wrapper .hostpn-toggle-content {
+  display: block;
+}
+.hostpn-options .hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper {
+  max-width: 100%;
+}
+
 /* Exclude additional features fields from two-column layout */
 .hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_kitchen_additional_features,
 .hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_room_additional_features,
@@ -155,3 +163,108 @@
 .postbox .hostpn-section-wrapper .hostpn-input-wrapper {
   margin: 10px 0;
 }
+
+/* User Role Selector */
+.hostpn-user-role-selector-wrapper {
+    padding: 10px 0;
+}
+.hostpn-users-with-role-box {
+    background: #f0f6fc;
+    border: 1px solid #c3d9ed;
+    border-radius: 6px;
+}
+.hostpn-users-with-role-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.hostpn-user-role-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 13px;
+}
+.hostpn-user-role-item i {
+    font-size: 16px;
+    color: #787c82;
+}
+.hostpn-role-badge {
+    display: inline-block;
+    background: #2271b1;
+    color: #fff;
+    border-radius: 10px;
+    padding: 1px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+.hostpn-user-role-select {
+    min-height: 200px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 4px;
+}
+.hostpn-user-role-select option {
+    padding: 4px 8px;
+}
+.hostpn-user-role-select option[data-has-role="true"] {
+    background: #f0f6fc;
+    font-weight: 600;
+}
+.hostpn-role-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+.hostpn-alert-warning {
+    background: #fcf9e8;
+    border: 1px solid #dba617;
+    border-radius: 6px;
+    color: #6e4b00;
+}
+.hostpn-alert-warning i {
+    color: #dba617;
+}
+.hostpn-color-success {
+    color: #00a32a;
+}
+.hostpn-color-error {
+    color: #d63638;
+}
+.hostpn-role-message p {
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin: 0;
+}
+.hostpn-role-message .hostpn-color-success {
+    background: #edfaef;
+    border: 1px solid #00a32a;
+}
+.hostpn-role-message .hostpn-color-error {
+    background: #fcf0f1;
+    border: 1px solid #d63638;
+}
+.hostpn-input-wrapper.hostpn-input-field-user_role_selector:has(input[type="hidden"]) {
+    display: block !important;
+}
+/* Settings sticky footer bar */
+.pn-cm-settings-pb-80{padding-bottom:80px}
+.pn-cm-settings-footer{position:fixed;bottom:0;left:160px;right:0;height:50px;background:#fff;z-index:99999;box-shadow:0 -2px 8px rgba(0,0,0,.08);border-top:1px solid #dcdcde;display:flex;align-items:center}
+body.folded .pn-cm-settings-footer{left:36px}
+@media screen and (max-width:960px){body.auto-fold .pn-cm-settings-footer{left:36px}}
+@media screen and (max-width:782px){.pn-cm-settings-footer{left:0;z-index:9989}.pn-cm-settings-footer-plugin-name{display:none}}
+.pn-cm-settings-footer-inner{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1000px;margin:0 auto;padding:0 20px}
+.pn-cm-settings-footer-left{display:flex;align-items:center;gap:10px}
+.pn-cm-settings-footer-plugin-name{color:#1d2327;font-size:12px;font-weight:600}
+.pn-cm-settings-footer-version{color:#787c82;font-size:12px;font-family:monospace}
+.pn-cm-settings-footer-right{display:flex;align-items:center;gap:8px}
+.pn-cm-settings-footer-icon-btn{background:none;border:1px solid #dcdcde;border-radius:6px;color:#787c82;cursor:pointer;width:34px;height:34px;display:flex;align-items:center;justify-content:center;padding:0;transition:all .2s ease}
+.pn-cm-settings-footer-icon-btn:hover{background:#f0f0f1;border-color:#8c8f94;color:#1d2327}
+.pn-cm-settings-footer-icon-btn .material-icons-outlined{font-size:20px}
+.pn-cm-settings-footer .hostpn-btn{margin:0}
+#hostpn_submit.pn-cm-settings-hidden-submit,#pn-cm-settings-import-file.pn-cm-settings-hidden-input{display:none !important}

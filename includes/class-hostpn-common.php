@@ -64,8 +64,8 @@ class HOSTPN_Common {
 			wp_enqueue_style($this->plugin_name . '-trumbowyg', HOSTPN_URL . 'assets/css/trumbowyg.min.css', [], $this->version, 'all');
     }
 
-    if (!wp_style_is($this->plugin_name . '-tooltipster', 'enqueued')) {
-			wp_enqueue_style($this->plugin_name . '-tooltipster', HOSTPN_URL . 'assets/css/tooltipster.min.css', [], $this->version, 'all');
+    if (!wp_style_is($this->plugin_name . '-tooltips', 'enqueued')) {
+			wp_enqueue_style($this->plugin_name . '-tooltips', HOSTPN_URL . 'assets/css/hostpn-tooltips.css', [], $this->version, 'all');
     }
 
     if (!wp_style_is($this->plugin_name . '-owl', 'enqueued')) {
@@ -101,8 +101,8 @@ class HOSTPN_Common {
       wp_enqueue_script($this->plugin_name . '-selector', HOSTPN_URL . 'assets/js/hostpn-selector.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
     }
 
-    if(!wp_script_is($this->plugin_name . '-tooltipster', 'enqueued')) {
-			wp_enqueue_script($this->plugin_name . '-tooltipster', HOSTPN_URL . 'assets/js/tooltipster.min.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+    if(!wp_script_is($this->plugin_name . '-tooltips', 'enqueued')) {
+			wp_enqueue_script($this->plugin_name . '-tooltips', HOSTPN_URL . 'assets/js/hostpn-tooltips.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
     }
 
     if(!wp_script_is($this->plugin_name . '-owl', 'enqueued')) {

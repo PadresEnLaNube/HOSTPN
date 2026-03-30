@@ -52,7 +52,7 @@ class HOSTPN {
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.23';
+			$this->version = '1.0.30';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -204,6 +204,11 @@ class HOSTPN {
 		require_once HOSTPN_DIR . 'includes/class-hostpn-xml.php';
 
 		/**
+		 * The class defining guest registration notifications.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-notifications.php';
+
+		/**
 		 * The class defining ajax functions.
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-ajax.php';
@@ -273,6 +278,9 @@ class HOSTPN {
 		$plugin_user = new HOSTPN_Functions_User();
 		$this->loader->hostpn_add_filter('userspn_register_fields', $plugin_user, 'hostpn_user_register_fields', 10, 2);
 		$this->loader->hostpn_add_action('user_register', $plugin_user, 'hostpn_user_register', 11, 1);
+
+		$plugin_notifications = new HOSTPN_Notifications();
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_notifications, 'hostpn_guest_notification', 1000, 5);
 	}
 
 	/**

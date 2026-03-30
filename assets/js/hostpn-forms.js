@@ -413,7 +413,6 @@ window.hostpn_auto_fill_user_data = function(user_id) {
             hostpn_audios_block.append('<div class="hostpn-audio hostpn-tooltip" title="' + $(this)[0].title + '"><i class="dashicons dashicons-media-audio"></i></div>');
           });
 
-          $('.hostpn-tooltip').tooltipster({maxWidth: 300,delayTouch:[0, 4000]});
           hostpn_input_btn.text((hostpn_audios_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_audios : hostpn_i18n.select_audio);
           hostpn_audios_input.val(ids);
         });
@@ -475,7 +474,6 @@ window.hostpn_auto_fill_user_data = function(user_id) {
             hostpn_videos_block.append('<div class="hostpn-video hostpn-tooltip" title="' + $(this)[0].title + '"><i class="dashicons dashicons-media-video"></i></div>');
           });
 
-          $('.hostpn-tooltip').tooltipster({maxWidth: 300,delayTouch:[0, 4000]});
           hostpn_input_btn.text((hostpn_videos_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_videos : hostpn_i18n.select_video);
           hostpn_videos_input.val(ids);
         });
@@ -706,5 +704,70 @@ window.hostpn_auto_fill_user_data = function(user_id) {
     }
 
     hostpn_toggle.siblings('.hostpn-toggle-content').fadeToggle();
+  });
+
+  // Role management functionality
+  function hostpn_handle_role_action(action, btn) {
+    var wrapper = btn.closest('.hostpn-user-role-selector-wrapper');
+    var select = wrapper.find('.hostpn-user-role-select');
+    var selectedUsers = select.val();
+    var role = select.data('role');
+    var roleLabel = select.data('role-label');
+    var nonce = wrapper.find('.hostpn-role-nonce').val();
+    var messageDiv = wrapper.find('.hostpn-role-message');
+
+    if (!selectedUsers || selectedUsers.length === 0) {
+      messageDiv.removeClass('hostpn-display-none-soft').html('<p class="hostpn-color-error"><i class="material-icons-outlined hostpn-vertical-align-middle">warning</i> Please select at least one user.</p>');
+      return;
+    }
+
+    var confirmMsg = action === 'assign'
+      ? 'Are you sure you want to assign the ' + roleLabel + ' role to ' + selectedUsers.length + ' user(s)?'
+      : 'Are you sure you want to remove the ' + roleLabel + ' role from ' + selectedUsers.length + ' user(s)?';
+
+    if (!confirm(confirmMsg)) return;
+
+    btn.prop('disabled', true);
+
+    $.ajax({
+      url: hostpn_ajax.ajax_url,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_update_user_role',
+        hostpn_ajax_nonce: hostpn_ajax.hostpn_ajax_nonce,
+        role_action: action,
+        role: role,
+        user_ids: selectedUsers,
+        role_nonce: nonce
+      },
+      success: function(response) {
+        if (typeof response === 'string') {
+          try { response = JSON.parse(response); } catch(e) { return; }
+        }
+        if (response.error_key === '') {
+          messageDiv.removeClass('hostpn-display-none-soft').html('<p class="hostpn-color-success"><i class="material-icons-outlined hostpn-vertical-align-middle">check_circle</i> ' + response.error_content + '</p>');
+          setTimeout(function() { location.reload(); }, 1500);
+        } else {
+          messageDiv.removeClass('hostpn-display-none-soft').html('<p class="hostpn-color-error"><i class="material-icons-outlined hostpn-vertical-align-middle">error</i> ' + response.error_content + '</p>');
+          btn.prop('disabled', false);
+        }
+      },
+      error: function() {
+        messageDiv.removeClass('hostpn-display-none-soft').html('<p class="hostpn-color-error"><i class="material-icons-outlined hostpn-vertical-align-middle">error</i> An error occurred. Please try again.</p>');
+        btn.prop('disabled', false);
+      }
+    });
+  }
+
+  $(document).on('click', '.hostpn-assign-role-btn', function(e) {
+    e.preventDefault();
+    hostpn_handle_role_action('assign', $(this));
+  });
+
+  $(document).on('click', '.hostpn-remove-role-btn', function(e) {
+    e.preventDefault();
+    hostpn_handle_role_action('remove', $(this));
   });
 })(jQuery);

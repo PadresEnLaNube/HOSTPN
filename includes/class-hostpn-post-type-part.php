@@ -703,7 +703,7 @@ class HOSTPN_Post_Type_Part {
     wp_enqueue_style('hostpn', HOSTPN_URL . 'assets/css/hostpn.css', [], HOSTPN_VERSION);
     wp_enqueue_style('hostpn-popups', HOSTPN_URL . 'assets/css/hostpn-popups.css', [], HOSTPN_VERSION);
     wp_enqueue_style('material-icons-outlined', HOSTPN_URL . 'assets/css/material-icons-outlined.min.css', [], HOSTPN_VERSION);
-    wp_enqueue_style('tooltipster', HOSTPN_URL . 'assets/css/tooltipster.min.css', [], HOSTPN_VERSION);
+    wp_enqueue_style('hostpn-tooltips', HOSTPN_URL . 'assets/css/hostpn-tooltips.css', [], HOSTPN_VERSION);
     wp_enqueue_script('jquery');
     wp_enqueue_script('hostpn', HOSTPN_URL . 'assets/js/hostpn.js', ['jquery'], HOSTPN_VERSION, true);
     wp_enqueue_script('hostpn-popups', HOSTPN_URL . 'assets/js/hostpn-popups.js', ['jquery'], HOSTPN_VERSION, true);
@@ -711,7 +711,7 @@ class HOSTPN_Post_Type_Part {
     wp_enqueue_script('hostpn-selector', HOSTPN_URL . 'assets/js/hostpn-selector.js', ['jquery'], HOSTPN_VERSION, true);
     wp_enqueue_script('hostpn-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', ['jquery'], HOSTPN_VERSION, true);
     wp_enqueue_script('hostpn-ajax', HOSTPN_URL . 'assets/js/hostpn-ajax.js', ['jquery', 'hostpn-popups'], HOSTPN_VERSION, true);
-    wp_enqueue_script('hostpn-tooltipster', HOSTPN_URL . 'assets/js/tooltipster.min.js', ['jquery'], HOSTPN_VERSION, true);
+    wp_enqueue_script('hostpn-tooltips', HOSTPN_URL . 'assets/js/hostpn-tooltips.js', ['jquery'], HOSTPN_VERSION, true);
 
     wp_localize_script('hostpn-ajax', 'hostpn_ajax', [
       'ajax_url' => admin_url('admin-ajax.php'),

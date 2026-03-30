@@ -417,7 +417,7 @@ class HOSTPN_Forms {
           <div class="hostpn-field hostpn-html-multi-wrapper hostpn-mb-50" <?php echo wp_kses_post($hostpn_parent_block); ?>>
             <?php if ($html_multi_fields_length): ?>
               <?php foreach (range(0, ($html_multi_fields_length - 1)) as $length_index): ?>
-                <div class="hostpn-html-multi-group hostpn-display-table hostpn-width-100-percent hostpn-mb-30">
+                <div class="hostpn-html-multi-group hostpn-display-table hostpn-width-100-percent">
                   <div class="hostpn-display-inline-table hostpn-width-90-percent">
                     <?php foreach ($hostpn_input['html_multi_fields'] as $index => $html_multi_field): ?>
                       <label><?php echo esc_html($html_multi_field['label']); ?></label>
@@ -457,6 +457,51 @@ class HOSTPN_Forms {
           </div>
         <?php
         break;
+      case 'user_role_selector':
+        if (!current_user_can('manage_options')) {
+          ?>
+          <div class="hostpn-field"><p class="hostpn-color-error"><?php esc_html_e('You do not have permission to manage user roles.', 'hostpn'); ?></p></div>
+          <?php
+          break;
+        }
+        $users = get_users(['orderby' => 'display_name', 'order' => 'ASC']);
+        $target_role = isset($hostpn_input['role']) ? $hostpn_input['role'] : 'hostpn_role_manager';
+        $role_label = isset($hostpn_input['role_label']) ? $hostpn_input['role_label'] : __('Host - HOSTPN', 'hostpn');
+        $users_with_role = array_filter($users, function ($user) use ($target_role) {
+          return in_array($target_role, (array) $user->roles);
+        });
+        ?>
+        <div class="hostpn-user-role-selector-wrapper" <?php echo wp_kses_post($hostpn_parent_block); ?>>
+          <?php if (!empty($users_with_role)): ?>
+            <div class="hostpn-mb-20 hostpn-p-15 hostpn-users-with-role-box">
+              <h4 class="hostpn-mb-10"><?php echo esc_html(sprintf(__('Users with %s Role', 'hostpn'), $role_label)); ?> <span class="hostpn-role-badge"><?php echo count($users_with_role); ?></span></h4>
+              <div class="hostpn-users-with-role-list">
+                <?php foreach ($users_with_role as $user): ?>
+                  <div class="hostpn-user-role-item"><i class="material-icons-outlined">person</i> <strong><?php echo esc_html($user->display_name); ?></strong> <span class="hostpn-color-gray">(<?php echo esc_html($user->user_email); ?>)</span></div>
+                <?php endforeach; ?>
+              </div>
+            </div>
+          <?php else: ?>
+            <div class="hostpn-mb-20 hostpn-p-15 hostpn-alert-warning"><p><i class="material-icons-outlined hostpn-vertical-align-middle">info</i> <?php echo esc_html(sprintf(__('No users currently have the %s role.', 'hostpn'), $role_label)); ?></p></div>
+          <?php endif; ?>
+          <div class="hostpn-mb-20">
+            <label for="hostpn_user_select_<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-mb-10 hostpn-display-block"><?php esc_html_e('Select Users', 'hostpn'); ?></label>
+            <select id="hostpn_user_select_<?php echo esc_attr($hostpn_input['id']); ?>" class="hostpn-select hostpn-width-100-percent hostpn-user-role-select" multiple size="10" data-role="<?php echo esc_attr($target_role); ?>" data-role-label="<?php echo esc_attr($role_label); ?>">
+              <?php foreach ($users as $user): $has_role = in_array($target_role, (array) $user->roles); ?>
+                <option value="<?php echo esc_attr($user->ID); ?>" <?php echo $has_role ? 'data-has-role="true"' : ''; ?>><?php echo esc_html($user->display_name . ' (' . $user->user_email . ')'); ?><?php if ($has_role): ?> ✓<?php endif; ?></option>
+              <?php endforeach; ?>
+            </select>
+            <p class="hostpn-font-size-small hostpn-color-gray hostpn-mt-5"><?php esc_html_e('Hold Ctrl (Windows) or Cmd (Mac) to select multiple users. Users with ✓ already have this role.', 'hostpn'); ?></p>
+          </div>
+          <div class="hostpn-role-actions hostpn-mb-20">
+            <input type="hidden" class="hostpn-role-nonce" value="<?php echo esc_attr(wp_create_nonce('hostpn-role-assignment')); ?>">
+            <div class="hostpn-display-inline-block hostpn-mr-10"><button type="button" class="hostpn-btn hostpn-btn-mini hostpn-assign-role-btn" data-input-id="<?php echo esc_attr($hostpn_input['id']); ?>"><i class="material-icons-outlined hostpn-vertical-align-middle">person_add</i> <?php echo esc_html(sprintf(__('Assign %s Role', 'hostpn'), $role_label)); ?></button></div>
+            <div class="hostpn-display-inline-block"><button type="button" class="hostpn-btn hostpn-btn-mini hostpn-remove-role-btn" data-input-id="<?php echo esc_attr($hostpn_input['id']); ?>"><i class="material-icons-outlined hostpn-vertical-align-middle">person_remove</i> <?php echo esc_html(sprintf(__('Remove %s Role', 'hostpn'), $role_label)); ?></button></div>
+          </div>
+          <div class="hostpn-role-message hostpn-mt-20 hostpn-display-none-soft"></div>
+        </div>
+        <?php
+        break;
     }
   }
 
@@ -464,10 +509,7 @@ class HOSTPN_Forms {
     ?>
       <?php if (array_key_exists('section', $input_array) && !empty($input_array['section'])): ?>      
         <?php if ($input_array['section'] == 'start'): ?>
-          <div class="hostpn-toggle-wrapper hostpn-section-wrapper hostpn-position-relative hostpn-mb-30 <?php echo array_key_exists('class', $input_array) ? esc_attr($input_array['class']) : ''; ?>" id="<?php echo array_key_exists('id', $input_array) ? esc_attr($input_array['id']) : ''; ?>">
-            <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
-              <i class="material-icons-outlined hostpn-section-helper hostpn-color-main-0 hostpn-tooltip" title="<?php echo wp_kses_post($input_array['description']); ?>">help</i>
-            <?php endif ?>
+          <div class="hostpn-toggle-wrapper hostpn-section-wrapper hostpn-position-relative <?php echo array_key_exists('class', $input_array) ? esc_attr($input_array['class']) : ''; ?>" id="<?php echo array_key_exists('id', $input_array) ? esc_attr($input_array['id']) : ''; ?>">
 
             <a href="#" class="hostpn-toggle hostpn-width-100-percent hostpn-text-decoration-none">
               <div class="hostpn-display-table hostpn-width-100-percent hostpn-mb-20">
@@ -481,12 +523,18 @@ class HOSTPN_Forms {
             </a>
 
             <div class="hostpn-content hostpn-pl-10 hostpn-toggle-content hostpn-mb-20 hostpn-display-none-soft">
+              <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
+                <div class="hostpn-section-info-block hostpn-mb-20">
+                  <i class="material-icons-outlined hostpn-section-info-icon">info_outline</i>
+                  <small><?php echo wp_kses_post($input_array['description']); ?></small>
+                </div>
+              <?php endif ?>
         <?php elseif ($input_array['section'] == 'end'): ?>
             </div>
           </div>
         <?php endif ?>
       <?php else: ?>
-        <div class="hostpn-input-wrapper <?php echo esc_attr($input_array['id']); ?> <?php echo !empty($input_array['tabs']) ? 'hostpn-input-tabbed' : ''; ?> hostpn-input-field-<?php echo esc_attr($input_array['input']); ?> <?php echo (!empty($input_array['required']) && $input_array['required'] == true) ? 'hostpn-input-field-required' : ''; ?> <?php echo ($disabled) ? 'hostpn-input-field-disabled' : ''; ?> hostpn-mb-30">
+        <div class="hostpn-input-wrapper <?php echo esc_attr($input_array['id']); ?> <?php echo !empty($input_array['tabs']) ? 'hostpn-input-tabbed' : ''; ?> hostpn-input-field-<?php echo esc_attr($input_array['input']); ?> <?php echo (!empty($input_array['required']) && $input_array['required'] == true) ? 'hostpn-input-field-required' : ''; ?> <?php echo ($disabled) ? 'hostpn-input-field-disabled' : ''; ?>">
           <?php if (array_key_exists('label', $input_array) && !empty($input_array['label'])): ?>
             <div class="hostpn-display-inline-table <?php echo (($hostpn_format == 'half' && !(array_key_exists('type', $input_array) && $input_array['type'] == 'submit')) ? 'hostpn-width-40-percent' : 'hostpn-width-100-percent'); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
               <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
@@ -527,10 +575,7 @@ class HOSTPN_Forms {
     ?>
     <?php if (array_key_exists('section', $input_array) && !empty($input_array['section'])): ?>      
       <?php if ($input_array['section'] == 'start'): ?>
-        <div class="hostpn-toggle-wrapper hostpn-section-wrapper hostpn-position-relative hostpn-mb-30 <?php echo array_key_exists('class', $input_array) ? esc_attr($input_array['class']) : ''; ?>" id="<?php echo array_key_exists('id', $input_array) ? esc_attr($input_array['id']) : ''; ?>">
-          <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
-            <i class="material-icons-outlined hostpn-section-helper hostpn-color-main-0 hostpn-tooltip" title="<?php echo wp_kses_post($input_array['description']); ?>">help</i>
-          <?php endif ?>
+        <div class="hostpn-toggle-wrapper hostpn-section-wrapper hostpn-position-relative <?php echo array_key_exists('class', $input_array) ? esc_attr($input_array['class']) : ''; ?>" id="<?php echo array_key_exists('id', $input_array) ? esc_attr($input_array['id']) : ''; ?>">
 
           <a href="#" class="hostpn-toggle hostpn-width-100-percent hostpn-text-decoration-none">
             <div class="hostpn-display-table hostpn-width-100-percent hostpn-mb-20">
@@ -544,12 +589,18 @@ class HOSTPN_Forms {
           </a>
 
           <div class="hostpn-content hostpn-pl-10 hostpn-toggle-content hostpn-mb-20 hostpn-display-none-soft">
+            <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
+              <div class="hostpn-section-info-block hostpn-mb-20">
+                <i class="material-icons-outlined hostpn-section-info-icon">info_outline</i>
+                <small><?php echo wp_kses_post($input_array['description']); ?></small>
+              </div>
+            <?php endif ?>
       <?php elseif ($input_array['section'] == 'end'): ?>
           </div>
         </div>
       <?php endif ?>
     <?php else: ?>
-      <div class="hostpn-input-wrapper <?php echo esc_attr($input_array['id']); ?> hostpn-input-display-<?php echo esc_attr($input_array['input']); ?> <?php echo (!empty($input_array['required']) && $input_array['required'] == true) ? 'hostpn-input-field-required' : ''; ?> hostpn-mb-30">
+      <div class="hostpn-input-wrapper <?php echo esc_attr($input_array['id']); ?> hostpn-input-display-<?php echo esc_attr($input_array['input']); ?> <?php echo (!empty($input_array['required']) && $input_array['required'] == true) ? 'hostpn-input-field-required' : ''; ?>">
         <?php if (array_key_exists('label', $input_array) && !empty($input_array['label'])): ?>
           <div class="hostpn-display-inline-table <?php echo ($hostpn_format == 'half' ? 'hostpn-width-40-percent' : 'hostpn-width-100-percent'); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
             <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
@@ -742,7 +793,7 @@ class HOSTPN_Forms {
               <div class="hostpn-html-multi-content">
                 <?php if ($html_multi_fields_length): ?>
                   <?php foreach (range(0, ($html_multi_fields_length - 1)) as $length_index): ?>
-                    <div class="hostpn-html-multi-group hostpn-display-table hostpn-width-100-percent hostpn-mb-30">
+                    <div class="hostpn-html-multi-group hostpn-display-table hostpn-width-100-percent">
                       <?php foreach ($hostpn_input['html_multi_fields'] as $index => $html_multi_field): ?>
                           <div class="hostpn-display-inline-table hostpn-width-60-percent">
                             <label><?php echo esc_html($html_multi_field['label']); ?></label>

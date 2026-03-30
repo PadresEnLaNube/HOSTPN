@@ -6,6 +6,8 @@
   --bg-color-main-alt:#232323;
   --border-color-main-alt:#232323;
   --color-main-blue:#6e6eff;
+  --hostpn-section-bg-odd:#ffffff;
+  --hostpn-section-bg-even:#f5f5f5;
 }
 
 /*Global styles*/
@@ -804,7 +806,7 @@ input:checked + .hostpn-slider:before{
   box-shadow:none;
   line-height:20px;
   border:none;
-  padding:5px 20px;
+  padding:15px 35px;
   -webkit-transition:all 0.5s ease-in-out;
   -moz-transition:all 0.5s ease-in-out;
   -ms-transition:all 0.5s ease-in-out;
@@ -815,6 +817,7 @@ input:checked + .hostpn-slider:before{
 }
 .hostpn-btn:hover{
   background-color:var(--bg-color-main-alt);
+  transform:translateY(-2px);
 }
 .hostpn-btn-secondary{
   background-color:transparent;
@@ -1460,11 +1463,19 @@ header .wp-block-navigation .wp-block-navigation-item__content.wp-block-navigati
 /* END OWL CAROUSEL */
 
 /* HOSTPN FORMS */
-  .hostpn-section-helper{
-    position:absolute;
-    left:-15px;
-    font-size:var(--wp--preset--font-size--normal);
-    cursor:help;
+  .hostpn-section-info-block{
+    margin-bottom:20px;
+  }
+  .hostpn-section-info-icon{
+    font-size:16px;
+    margin-right:3px;
+    vertical-align:middle!important;
+    color:var(--color-main);
+    display:inline-block;
+    width:50px!important;
+  }
+  .hostpn-section-info-block small{
+    vertical-align:middle!important;
   }
   .hostpn-toggle label{
     font-weight:bold;
@@ -1731,8 +1742,28 @@ header .wp-block-navigation .wp-block-navigation-item__content.wp-block-navigati
   /* Vertical line for code folding style. We don't depend on JS: the block itself is hidden with display:none when closed, so the border only shows when open. */
   .hostpn-section-wrapper > .hostpn-toggle-content {
     position: relative;
-    border-left: 2px solid var(--hostpn-color-main);
+    border-left: 2px solid var(--color-main);
     padding-left: 18px; /* 20px original - 2px border */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 10px;
+  }
+
+  /* Section hierarchy shading - alternating backgrounds */
+  /* Level 1 (odd) - white */
+  .hostpn-section-wrapper > .hostpn-toggle-content {
+    background-color: var(--hostpn-section-bg-odd);
+  }
+  /* Level 2, 4, 6... (even) - grey */
+  .hostpn-section-wrapper .hostpn-section-wrapper > .hostpn-toggle-content,
+  .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper > .hostpn-toggle-content,
+  .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper > .hostpn-toggle-content {
+    background-color: var(--hostpn-section-bg-even);
+  }
+  /* Level 3, 5, 7... (odd) - white */
+  .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper > .hostpn-toggle-content,
+  .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper .hostpn-section-wrapper > .hostpn-toggle-content {
+    background-color: var(--hostpn-section-bg-odd);
   }
 /* END HOSTPN FORMS */
 
@@ -1875,3 +1906,7 @@ header .wp-block-navigation .wp-block-navigation-item__content.wp-block-navigati
 }
 
 /* END accommodation FILTER */
+
+.hostpn-input-wrapper .hostpn-p-10:has(> label) {
+  padding-bottom: 0;
+}
