@@ -1565,7 +1565,7 @@ msgstr "Segundo apellido del huésped"
 
 #: includes/class-hostpn-settings.php:21 includes/class-hostpn-settings.php:22
 msgid "Guest slug"
-msgstr "Babosa invitada"
+msgstr "Slug de invitado"
 
 #: includes/class-hostpn-post-type-guest.php:34
 #: includes/class-hostpn-post-type-guest.php:35

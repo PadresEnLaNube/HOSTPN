@@ -252,19 +252,36 @@
 .hostpn-input-wrapper.hostpn-input-field-user_role_selector:has(input[type="hidden"]) {
     display: block !important;
 }
+/* Pages management section */
+.hostpn-options-pages{background:#fff;border:1px solid #dee2e6;border-radius:8px;padding:0 0 20px}
+.hostpn-options-pages .hostpn-section-start{margin-bottom:0;border-radius:8px 8px 0 0;border:none;border-bottom:1px solid #dee2e6}
+.hostpn-pages-description{padding:10px 20px 0;color:#646970;font-size:13px;margin:0}
+.hostpn-pages-table{width:100%;border-collapse:collapse;margin:10px 0 0}
+.hostpn-pages-table th{text-align:left;padding:10px 20px;font-size:13px;font-weight:600;color:#1d2327;border-bottom:1px solid #f0f0f1}
+.hostpn-pages-table td{padding:10px 20px;font-size:13px;color:#1d2327;border-bottom:1px solid #f0f0f1;vertical-align:middle}
+.hostpn-pages-table tr:last-child td{border-bottom:none}
+.hostpn-pages-table code{background:#f0f0f1;padding:2px 6px;border-radius:3px;font-size:12px}
+.hostpn-page-status{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:500}
+.hostpn-page-status .material-icons-outlined{font-size:18px}
+.hostpn-page-status-active{color:#00a32a}
+.hostpn-page-status-missing{color:#d63638}
+.hostpn-page-action-btn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid #dcdcde;border-radius:6px;color:#787c82;text-decoration:none;margin-right:4px;transition:all .2s ease}
+.hostpn-page-action-btn:hover{background:#f0f0f1;border-color:#8c8f94;color:#1d2327}
+.hostpn-page-action-btn .material-icons-outlined{font-size:18px}
+
 /* Settings sticky footer bar */
-.pn-cm-settings-pb-80{padding-bottom:80px}
-.pn-cm-settings-footer{position:fixed;bottom:0;left:160px;right:0;height:50px;background:#fff;z-index:99999;box-shadow:0 -2px 8px rgba(0,0,0,.08);border-top:1px solid #dcdcde;display:flex;align-items:center}
-body.folded .pn-cm-settings-footer{left:36px}
-@media screen and (max-width:960px){body.auto-fold .pn-cm-settings-footer{left:36px}}
-@media screen and (max-width:782px){.pn-cm-settings-footer{left:0;z-index:9989}.pn-cm-settings-footer-plugin-name{display:none}}
-.pn-cm-settings-footer-inner{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1000px;margin:0 auto;padding:0 20px}
-.pn-cm-settings-footer-left{display:flex;align-items:center;gap:10px}
-.pn-cm-settings-footer-plugin-name{color:#1d2327;font-size:12px;font-weight:600}
-.pn-cm-settings-footer-version{color:#787c82;font-size:12px;font-family:monospace}
-.pn-cm-settings-footer-right{display:flex;align-items:center;gap:8px}
-.pn-cm-settings-footer-icon-btn{background:none;border:1px solid #dcdcde;border-radius:6px;color:#787c82;cursor:pointer;width:34px;height:34px;display:flex;align-items:center;justify-content:center;padding:0;transition:all .2s ease}
-.pn-cm-settings-footer-icon-btn:hover{background:#f0f0f1;border-color:#8c8f94;color:#1d2327}
-.pn-cm-settings-footer-icon-btn .material-icons-outlined{font-size:20px}
-.pn-cm-settings-footer .hostpn-btn{margin:0}
-#hostpn_submit.pn-cm-settings-hidden-submit,#pn-cm-settings-import-file.pn-cm-settings-hidden-input{display:none !important}
+.hostpn-settings-pb-80{padding-bottom:80px}
+.hostpn-settings-footer{position:fixed;bottom:0;left:160px;right:0;height:50px;background:#fff;z-index:99999;box-shadow:0 -2px 8px rgba(0,0,0,.08);border-top:1px solid #dcdcde;display:flex;align-items:center}
+body.folded .hostpn-settings-footer{left:36px}
+@media screen and (max-width:960px){body.auto-fold .hostpn-settings-footer{left:36px}}
+@media screen and (max-width:782px){.hostpn-settings-footer{left:0;z-index:9989}.hostpn-settings-footer-plugin-name{display:none}}
+.hostpn-settings-footer-inner{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1000px;margin:0 auto;padding:0 20px}
+.hostpn-settings-footer-left{display:flex;align-items:center;gap:10px}
+.hostpn-settings-footer-plugin-name{color:#1d2327;font-size:12px;font-weight:600}
+.hostpn-settings-footer-version{color:#787c82;font-size:12px;font-family:monospace}
+.hostpn-settings-footer-right{display:flex;align-items:center;gap:8px}
+.hostpn-settings-footer-icon-btn{background:none;border:1px solid #dcdcde;border-radius:6px;color:#787c82;cursor:pointer;width:34px;height:34px;display:flex;align-items:center;justify-content:center;padding:0;transition:all .2s ease}
+.hostpn-settings-footer-icon-btn:hover{background:#f0f0f1;border-color:#8c8f94;color:#1d2327}
+.hostpn-settings-footer-icon-btn .material-icons-outlined{font-size:20px}
+.hostpn-settings-footer .hostpn-btn{margin:0}
+#hostpn_submit.hostpn-settings-hidden-submit,#hostpn-settings-import-file.hostpn-settings-hidden-input{display:none !important}

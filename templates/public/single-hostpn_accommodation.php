@@ -183,7 +183,7 @@ if(wp_is_block_theme()) {
                                             <i class="material-icons-outlined hostpn-icon-small"><?php echo esc_attr($category_data['icon']); ?></i>
                                             <?php echo esc_html($category_data['title']); ?>
                                         </h4>
-                                        <i class="material-icons-outlined hostpn-toggle-icon">expand_more</i>
+                                        <i class="material-icons-outlined hostpn-toggle-icon">sort</i>
                                     </div>
                                     <div class="hostpn-toggle-content hostpn-toggle-<?php echo esc_attr($category_key); ?>-features">
                                         <ul class="hostpn-feature-list">

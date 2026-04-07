@@ -513,7 +513,6 @@ class HOSTPN_Post_Type_Guest
                                 foreach ($key_value as $key => $value) {
                                     if (strpos($key, 'hostpn_') !== false) {
                                         ${$key} = $value;
-                                        // Note: $post_id is not available in this context, skip delete_post_meta
                                     }
                                 }
                             }
@@ -562,12 +561,18 @@ class HOSTPN_Post_Type_Guest
                                 }
                             }
 
-                            $post_functions = new HOSTPN_Functions_Post();
-                            // Ensure title and description are defined
-                            $hostpn_title = !empty($hostpn_title) ? $hostpn_title : gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
-                            $hostpn_description = !empty($hostpn_description) ? $hostpn_description : __('Special needs, allergies, important situations to highlight...', 'hostpn');
-                            
-                            $guest_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', $guest_user_id);
+                            // Use existing post if already created by AJAX handler, otherwise create new
+                            if (!empty($element_id) && get_post($element_id)) {
+                                $guest_id = $element_id;
+                                $hostpn_title = !empty($hostpn_title) ? $hostpn_title : get_the_title($guest_id);
+                                $hostpn_description = !empty($hostpn_description) ? $hostpn_description : get_post_field('post_content', $guest_id);
+                                wp_update_post(['ID' => $guest_id, 'post_title' => esc_html($hostpn_title), 'post_content' => $hostpn_description]);
+                            } else {
+                                $post_functions = new HOSTPN_Functions_Post();
+                                $hostpn_title = !empty($hostpn_title) ? $hostpn_title : gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
+                                $hostpn_description = !empty($hostpn_description) ? $hostpn_description : __('Special needs, allergies, important situations to highlight...', 'hostpn');
+                                $guest_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_description, '', sanitize_title(esc_html($hostpn_title)), $post_type, 'publish', $guest_user_id);
+                            }
 
                             if (!empty($key_value)) {
                                 foreach ($key_value as $key => $value) {
@@ -650,6 +655,19 @@ class HOSTPN_Post_Type_Guest
                         <i class="material-icons-outlined hostpn-guest-search-toggle hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip"
                             title="<?php esc_attr_e('Search Guests', 'hostpn'); ?>">search</i>
 
+                        <div class="hostpn-display-inline-block hostpn-position-relative">
+                            <i class="material-icons-outlined hostpn-sort-toggle hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip"
+                                title="<?php esc_attr_e('Sort', 'hostpn'); ?>">sort</i>
+                            <div class="hostpn-sort-menu hostpn-display-none-soft">
+                                <ul class="hostpn-list-style-none">
+                                    <li><a href="#" class="hostpn-sort-option hostpn-sort-active hostpn-text-decoration-none" data-hostpn-sort="date-desc"><?php esc_html_e('Newest first', 'hostpn'); ?></a></li>
+                                    <li><a href="#" class="hostpn-sort-option hostpn-text-decoration-none" data-hostpn-sort="date-asc"><?php esc_html_e('Oldest first', 'hostpn'); ?></a></li>
+                                    <li><a href="#" class="hostpn-sort-option hostpn-text-decoration-none" data-hostpn-sort="name-asc"><?php esc_html_e('Name A-Z', 'hostpn'); ?></a></li>
+                                    <li><a href="#" class="hostpn-sort-option hostpn-text-decoration-none" data-hostpn-sort="name-desc"><?php esc_html_e('Name Z-A', 'hostpn'); ?></a></li>
+                                </ul>
+                            </div>
+                        </div>
+
                         <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none"
                             data-hostpn-popup-id="hostpn-popup-guest-add" data-hostpn-ajax-type="hostpn_guest_new">
                             <i class="material-icons-outlined hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip"
@@ -703,7 +721,9 @@ class HOSTPN_Post_Type_Guest
                     $hostpn_guest_timed_checkbox = get_post_meta($guest_id, 'hostpn_guest_timed_checkbox', true);
                     ?>
 
-                    <li class="hostpn-guest hostpn-mb-10" data-hostpn_guest-id="<?php echo esc_attr($guest_id); ?>">
+                    <li class="hostpn-guest hostpn-mb-10" data-hostpn_guest-id="<?php echo esc_attr($guest_id); ?>"
+                        data-hostpn-sort-name="<?php echo esc_attr(strtolower(get_post_meta($guest_id, 'hostpn_name', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname', true))); ?>"
+                        data-hostpn-sort-date="<?php echo esc_attr(get_post_field('post_date', $guest_id)); ?>">
                         <div class="hostpn-display-table hostpn-width-100-percent">
                             <div class="hostpn-display-inline-table hostpn-width-60-percent">
                                 <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none"
@@ -868,7 +888,7 @@ class HOSTPN_Post_Type_Guest
                 // Show "Create my own guest" button if user is logged in
                 if (is_user_logged_in()): ?>
                     <div class="hostpn-mb-20">
-                        <button type="button" class="hostpn-btn hostpn-auto-fill-user-data" 
+                        <button type="button" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent hostpn-auto-fill-user-data" 
                                 data-user-id="<?php echo esc_attr(get_current_user_id()); ?>">
                             <?php esc_html_e('Create my own guest', 'hostpn'); ?>
                         </button>
@@ -941,6 +961,14 @@ class HOSTPN_Post_Type_Guest
         $new_columns['author_info'] = esc_html(__('Author', 'hostpn'));
         $new_columns['creation_date'] = esc_html(__('Fecha de creación', 'hostpn'));
         return $new_columns;
+    }
+
+    public function hostpn_guest_sortable_columns($columns)
+    {
+        $columns['guest_info'] = 'title';
+        $columns['author_info'] = 'author';
+        $columns['creation_date'] = 'date';
+        return $columns;
     }
 
     /**
@@ -1026,15 +1054,15 @@ class HOSTPN_Post_Type_Guest
      */
     public function hostpn_guest_admin_order($query)
     {
-        // Only modify queries in admin and for our post type
         if (!is_admin() || !$query->is_main_query()) {
             return;
         }
-        
-        // Check if we're on the guest post type admin page
+
         if (isset($_GET['post_type']) && $_GET['post_type'] === 'hostpn_guest') {
-            $query->set('orderby', 'date');
-            $query->set('order', 'DESC');
+            if (!isset($_GET['orderby'])) {
+                $query->set('orderby', 'date');
+                $query->set('order', 'DESC');
+            }
         }
     }
 

@@ -297,7 +297,7 @@ window.hostpn_auto_fill_user_data = function(user_id) {
       });
     }
 
-    if ($('.hostpn-image-btn').length) {
+    {
       var image_frame;
 
       $(document).on('click', '.hostpn-image-btn', function(e){
@@ -358,7 +358,7 @@ window.hostpn_auto_fill_user_data = function(user_id) {
       });
     }
 
-    if ($('.hostpn-audio-btn').length) {
+    {
       var audio_frame;
 
       $(document).on('click', '.hostpn-audio-btn', function(e){
@@ -419,7 +419,7 @@ window.hostpn_auto_fill_user_data = function(user_id) {
       });
     }
 
-    if ($('.hostpn-video-btn').length) {
+    {
       var video_frame;
 
       $(document).on('click', '.hostpn-video-btn', function(e){
@@ -480,7 +480,7 @@ window.hostpn_auto_fill_user_data = function(user_id) {
       });
     }
 
-    if ($('.hostpn-file-btn').length) {
+    {
       var file_frame;
 
       $(document).on('click', '.hostpn-file-btn', function(e){
@@ -572,7 +572,7 @@ window.hostpn_auto_fill_user_data = function(user_id) {
             var searchWrapper = searchToggle.closest(searchWrapperSelector);
             var list = searchToggle.closest(listSelector);
             var listWrapper = list.find(listWrapperSelector);
-            var itemsList = listWrapper.find('ul');
+            var itemsList = listWrapper.children('ul');
 
             if (searchInput.hasClass('hostpn-display-none')) {
               // Show search input
@@ -596,7 +596,7 @@ window.hostpn_auto_fill_user_data = function(user_id) {
             var searchTerm = searchInput.val().toLowerCase().trim();
             var list = searchInput.closest(listSelector);
             var listWrapper = list.find(listWrapperSelector);
-            var itemsList = listWrapper.find('ul');
+            var itemsList = listWrapper.children('ul');
             var items = itemsList.find('li:not(' + addNewSelector + ')');
 
             if (searchTerm === '') {
@@ -627,17 +627,77 @@ window.hostpn_auto_fill_user_data = function(user_id) {
               var searchWrapper = searchInput.closest(searchWrapperSelector);
               var list = searchInput.closest(listSelector);
               var listWrapper = list.find(listWrapperSelector);
-              var itemsList = listWrapper.find('ul');
+              var itemsList = listWrapper.children('ul');
 
               searchInput.addClass('hostpn-display-none').val('');
               searchToggle.text('search');
               searchWrapper.removeClass('hostpn-search-active');
-              
+
               // Show all items
               itemsList.find('li').show();
             }
           });
+
+          // Sort toggle handler - open/close dropdown
+          $(document).on('click', listSelector + ' .hostpn-sort-toggle', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var sortMenu = $(this).siblings('.hostpn-sort-menu');
+            $('.hostpn-sort-menu').not(sortMenu).fadeOut('fast');
+            sortMenu.fadeToggle('fast');
+          });
+
+          // Sort option handler - apply sort and close dropdown
+          $(document).on('click', listSelector + ' .hostpn-sort-option', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            var sortOption = $(this);
+            var sortMode = sortOption.attr('data-hostpn-sort');
+            var list = sortOption.closest(listSelector);
+            var listWrapper = list.find(listWrapperSelector);
+            var itemsList = listWrapper.children('ul');
+            var items = itemsList.children('li[data-hostpn-sort-date]');
+            var addNewItem = itemsList.children(addNewSelector);
+
+            // Update active state
+            sortOption.closest('.hostpn-sort-menu').find('.hostpn-sort-option').removeClass('hostpn-sort-active');
+            sortOption.addClass('hostpn-sort-active');
+
+            var sorted = items.toArray().sort(function(a, b) {
+              var $a = $(a), $b = $(b);
+              switch (sortMode) {
+                case 'date-desc':
+                  return ($b.attr('data-hostpn-sort-date') || '').localeCompare($a.attr('data-hostpn-sort-date') || '');
+                case 'date-asc':
+                  return ($a.attr('data-hostpn-sort-date') || '').localeCompare($b.attr('data-hostpn-sort-date') || '');
+                case 'name-asc':
+                  return ($a.attr('data-hostpn-sort-name') || '').localeCompare($b.attr('data-hostpn-sort-name') || '');
+                case 'name-desc':
+                  return ($b.attr('data-hostpn-sort-name') || '').localeCompare($a.attr('data-hostpn-sort-name') || '');
+                default:
+                  return 0;
+              }
+            });
+
+            $.each(sorted, function(i, li) {
+              itemsList.append(li);
+            });
+            if (addNewItem.length) {
+              itemsList.append(addNewItem);
+            }
+
+            // Close dropdown
+            sortOption.closest('.hostpn-sort-menu').fadeOut('fast');
+          });
                 }
+      });
+
+      // Close sort dropdown on click outside
+      $(document).on('click', function(e) {
+        if (!$(e.target).closest('.hostpn-sort-toggle, .hostpn-sort-menu').length) {
+          $('.hostpn-sort-menu').fadeOut('fast');
+        }
       });
 
       // Single unified click outside handler for all search wrappers

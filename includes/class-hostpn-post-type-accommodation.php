@@ -466,12 +466,14 @@ class HOSTPN_Post_Type_Accommodation {
 
     register_post_type('hostpn_accommodation', $args);
     add_theme_support('post-thumbnails', ['page', 'hostpn_accommodation']);
-    
+
     // Flush rewrite rules only once after registration
     if (get_option('hostpn_accommodation_rewrite_flushed') != 'yes') {
       flush_rewrite_rules();
       update_option('hostpn_accommodation_rewrite_flushed', 'yes');
     }
+
+    add_action('pre_get_posts', [$this, 'hostpn_accommodation_admin_order']);
   }
 
   /**
@@ -697,8 +699,11 @@ class HOSTPN_Post_Type_Accommodation {
     }
   }
 
-  public function hostpn_accommodation_form_save($element_id, $key_value, $hostpn_form_type, $hostpn_form_subtype) {
-    $post_type = !empty(get_post_type($element_id)) ? get_post_type($element_id) : 'hostpn_accommodation';
+  public function hostpn_accommodation_form_save($element_id, $key_value, $hostpn_form_type, $hostpn_form_subtype, $post_type = '') {
+    // Determine post type from parameter or existing post
+    if (empty($post_type) && !empty($element_id)) {
+      $post_type = get_post_type($element_id);
+    }
 
     if ($post_type == 'hostpn_accommodation') {
       switch ($hostpn_form_type) {
@@ -709,17 +714,22 @@ class HOSTPN_Post_Type_Accommodation {
                 foreach ($key_value as $key => $value) {
                   if (strpos($key, 'hostpn_') !== false) {
                     ${$key} = $value;
-                    delete_post_meta($element_id, $key);
                   }
                 }
               }
 
-              $post_functions = new HOSTPN_Functions_Post();
-              // Ensure title and description are defined
-              $hostpn_accommodation_title = !empty($hostpn_accommodation_title) ? $hostpn_accommodation_title : gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
-              $hostpn_accommodation_description = !empty($hostpn_accommodation_description) ? $hostpn_accommodation_description : __('Accommodation description...', 'hostpn');
-              
-              $accommodation_id = $post_functions->hostpn_insert_post(esc_html($hostpn_accommodation_title), $hostpn_accommodation_description, '', sanitize_title(esc_html($hostpn_accommodation_title)), 'hostpn_accommodation', 'publish', get_current_user_id());
+              // Use existing post if already created by AJAX handler, otherwise create new
+              if (!empty($element_id) && get_post($element_id)) {
+                $accommodation_id = $element_id;
+                $hostpn_accommodation_title = !empty($hostpn_accommodation_title) ? $hostpn_accommodation_title : get_the_title($accommodation_id);
+                $hostpn_accommodation_description = !empty($hostpn_accommodation_description) ? $hostpn_accommodation_description : get_post_field('post_content', $accommodation_id);
+                wp_update_post(['ID' => $accommodation_id, 'post_title' => esc_html($hostpn_accommodation_title), 'post_content' => $hostpn_accommodation_description]);
+              } else {
+                $post_functions = new HOSTPN_Functions_Post();
+                $hostpn_accommodation_title = !empty($hostpn_accommodation_title) ? $hostpn_accommodation_title : gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
+                $hostpn_accommodation_description = !empty($hostpn_accommodation_description) ? $hostpn_accommodation_description : __('Accommodation description...', 'hostpn');
+                $accommodation_id = $post_functions->hostpn_insert_post(esc_html($hostpn_accommodation_title), $hostpn_accommodation_description, '', sanitize_title(esc_html($hostpn_accommodation_title)), 'hostpn_accommodation', 'publish', get_current_user_id());
+              }
 
               // Set language for new accommodation if Polylang is active
               if (class_exists('Polylang') && function_exists('pll_set_post_language')) {
@@ -972,20 +982,15 @@ class HOSTPN_Post_Type_Accommodation {
     return $template;
   }
   
-  /**
-   * Debug function to check post type registration
-   */
-  public function hostpn_accommodation_debug() {
-    if (current_user_can('manage_options')) {
-      $post_type_obj = get_post_type_object('hostpn_accommodation');
-      if ($post_type_obj) {
-        error_log('HOSTPN Accommodation Post Type registered successfully');
-        error_log('Rewrite slug: ' . $post_type_obj->rewrite['slug']);
-        error_log('Public: ' . ($post_type_obj->public ? 'true' : 'false'));
-        error_log('Has archive: ' . ($post_type_obj->has_archive ? 'true' : 'false'));
-        error_log('Publicly queryable: ' . ($post_type_obj->publicly_queryable ? 'true' : 'false'));
-      } else {
-        error_log('HOSTPN Accommodation Post Type NOT registered');
+  public function hostpn_accommodation_admin_order($query) {
+    if (!is_admin() || !$query->is_main_query()) {
+      return;
+    }
+
+    if (isset($_GET['post_type']) && $_GET['post_type'] === 'hostpn_accommodation') {
+      if (!isset($_GET['orderby'])) {
+        $query->set('orderby', 'date');
+        $query->set('order', 'DESC');
       }
     }
   }
@@ -1004,6 +1009,18 @@ class HOSTPN_Post_Type_Accommodation {
             <div class="hostpn-accommodation-search-wrapper">
               <input type="text" class="hostpn-accommodation-search-input hostpn-input hostpn-display-none" placeholder="<?php esc_attr_e('Filter...', 'hostpn'); ?>" />
               <i class="material-icons-outlined hostpn-accommodation-search-toggle hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Search Accommodations', 'hostpn'); ?>">search</i>
+
+              <div class="hostpn-display-inline-block hostpn-position-relative">
+                <i class="material-icons-outlined hostpn-sort-toggle hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Sort', 'hostpn'); ?>">sort</i>
+                <div class="hostpn-sort-menu hostpn-display-none-soft">
+                  <ul class="hostpn-list-style-none">
+                    <li><a href="#" class="hostpn-sort-option hostpn-sort-active hostpn-text-decoration-none" data-hostpn-sort="date-desc"><?php esc_html_e('Newest first', 'hostpn'); ?></a></li>
+                    <li><a href="#" class="hostpn-sort-option hostpn-text-decoration-none" data-hostpn-sort="date-asc"><?php esc_html_e('Oldest first', 'hostpn'); ?></a></li>
+                    <li><a href="#" class="hostpn-sort-option hostpn-text-decoration-none" data-hostpn-sort="name-asc"><?php esc_html_e('Name A-Z', 'hostpn'); ?></a></li>
+                    <li><a href="#" class="hostpn-sort-option hostpn-text-decoration-none" data-hostpn-sort="name-desc"><?php esc_html_e('Name Z-A', 'hostpn'); ?></a></li>
+                  </ul>
+                </div>
+              </div>
 
               <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-accommodation-add" data-hostpn-ajax-type="hostpn_accommodation_new">
                 <i class="material-icons-outlined hostpn-cursor-pointer hostpn-font-size-30 hostpn-vertical-align-middle hostpn-tooltip" title="<?php esc_attr_e('Add new Accommodation', 'hostpn'); ?>">add</i>
@@ -1052,7 +1069,9 @@ class HOSTPN_Post_Type_Accommodation {
               $accommodation_title = get_post_meta($accommodation_id, 'hostpn_accommodation_title', true);
             ?>
 
-            <li class="hostpn-accommodation hostpn-mb-10" data-hostpn_accommodation-id="<?php echo esc_attr($accommodation_id); ?>">
+            <li class="hostpn-accommodation hostpn-mb-10" data-hostpn_accommodation-id="<?php echo esc_attr($accommodation_id); ?>"
+                data-hostpn-sort-name="<?php echo esc_attr(strtolower(get_post_meta($accommodation_id, 'hostpn_accommodation_title', true))); ?>"
+                data-hostpn-sort-date="<?php echo esc_attr(get_post_field('post_date', $accommodation_id)); ?>">
               <div class="hostpn-display-table hostpn-width-100-percent">
                 <div class="hostpn-display-inline-table hostpn-width-60-percent">
                   <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none" data-hostpn-popup-id="hostpn-popup-accommodation-view" data-hostpn-ajax-type="hostpn_accommodation_view">

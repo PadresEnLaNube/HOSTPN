@@ -3,7 +3,9 @@
     "allow": [
       "Bash(dir:*)",
       "Bash(del \"C:\\\\Users\\\\Fili\\\\Desktop\\\\WPH\\\\SVN\\\\WPH\\\\WPH PLUGINS\\\\userspn\\\\trunk\\\\assets\\\\js\\\\tooltipster.min.js\")",
-      "Bash(del:*)"
+      "Bash(del:*)",
+      "WebFetch(domain:fonts.googleapis.com)",
+      "WebFetch(domain:fonts.gstatic.com)"
     ]
   }
 }

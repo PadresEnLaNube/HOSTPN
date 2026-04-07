@@ -330,12 +330,17 @@ class HOSTPN_Functions_User {
   public function hostpn_user_register($user_id) {
     $user = new WP_User($user_id);
     $user->add_role('hostpn_role_guest');
+    update_user_meta($user_id, 'hostpn_user_to_guest', current_time('timestamp'));
+
+    // If called during a form save action, skip guest post creation and email
+    // hostpn_guest_form_save manages post creation, hostpn_guest_notification handles the email
+    if (doing_action('hostpn_form_save')) {
+      return;
+    }
 
     $post_functions = new HOSTPN_Functions_Post();
-    $guest_functions = new HOSTPN_Post_Type_Guest();
     $hostpn_title = gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
     $hostpn_post_content = __('Special needs, allergies, important situations to highlight...', 'hostpn');
-    update_user_meta($user_id, 'hostpn_user_to_guest', current_time('timestamp'));
 
     $hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'hostpn_guest', 'publish', $user_id);
 

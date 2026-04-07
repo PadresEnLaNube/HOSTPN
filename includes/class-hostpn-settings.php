@@ -243,14 +243,24 @@ class HOSTPN_Settings {
 	 * @since    1.0.0
 	 */
 	public function hostpn_centralized_admin_menu() {
-		// Add main menu page
+		// Add main menu page — points directly to Settings
 		add_menu_page(
 			__('HostPN', 'hostpn'),
 			__('HostPN', 'hostpn'),
 			'manage_options',
 			'hostpn',
-			array($this, 'hostpn_admin_page_callback'),
+			array($this, 'hostpn_options'),
 			esc_url(HOSTPN_URL . 'assets/media/hostpn-part-menu-icon.svg')
+		);
+
+		// Rename auto-generated first submenu item from "HostPN" to "Settings"
+		add_submenu_page(
+			'hostpn',
+			__('Settings', 'hostpn'),
+			__('Settings', 'hostpn'),
+			'manage_options',
+			'hostpn',
+			array($this, 'hostpn_options')
 		);
 
 		// Add submenu for Parts
@@ -288,60 +298,140 @@ class HOSTPN_Settings {
 			'manage_options',
 			'edit.php?post_type=hostpn_accommodation'
 		);
-
-		// Add submenu for Settings
-		add_submenu_page(
-			'hostpn',
-			__('Settings', 'hostpn'),
-			__('Settings', 'hostpn'),
-			'manage_hostpn_options',
-			'hostpn-options',
-			array($this, 'hostpn_options')
-		);
 	}
 
 	/**
-	 * Callback for the centralized admin menu.
+	 * Find a page containing a specific shortcode.
 	 *
-	 * @since    1.0.0
+	 * @param string $shortcode Shortcode name without brackets.
+	 * @return int|false Page ID if found, false otherwise.
 	 */
-	public function hostpn_admin_page_callback() {
-		echo '<div class="wrap">';
-		echo '<h1>' . esc_html__('HostPN Dashboard', 'hostpn') . '</h1>';
-		echo '<p>' . esc_html__('Welcome to the HostPN dashboard. Use the submenu to manage your content.', 'hostpn') . '</p>';
-		echo '</div>';
+	public static function hostpn_find_page($shortcode) {
+		$pages = get_posts([
+			'post_type'   => 'page',
+			'post_status' => ['publish', 'draft', 'private'],
+			'numberposts' => -1,
+			'fields'      => 'ids',
+		]);
+
+		foreach ($pages as $page_id) {
+			$content = get_post_field('post_content', $page_id);
+
+			if (has_shortcode($content, $shortcode)) {
+				return $page_id;
+			}
+		}
+
+		return false;
 	}
 
 	public function hostpn_options() {
+		$hostpn_pages_config = [
+			[
+				'key'       => 'accommodation',
+				'label'     => __('Accommodations', 'hostpn'),
+				'shortcode' => 'hostpn-accommodation-list',
+				'option'    => 'hostpn_pages_accommodation',
+			],
+			[
+				'key'       => 'guest',
+				'label'     => __('Guests', 'hostpn'),
+				'shortcode' => 'hostpn-guest-list',
+				'option'    => 'hostpn_pages_guest',
+			],
+			[
+				'key'       => 'part',
+				'label'     => __('Parts of travelers', 'hostpn'),
+				'shortcode' => 'hostpn-part-list',
+				'option'    => 'hostpn_pages_part',
+			],
+		];
 	  ?>
 	    <div class="hostpn-options hostpn-max-width-1000 hostpn-margin-auto hostpn-mt-50 hostpn-mb-50">
         <h1 class="hostpn-mb-30"><?php esc_html_e('Base - HOSTPN Options', 'hostpn'); ?></h1>
-        <div class="hostpn-options-fields hostpn-mb-30 pn-cm-settings-pb-80">
+
+        <!-- Pages section -->
+        <div class="hostpn-options-pages hostpn-mb-30">
+          <div class="hostpn-section-start"><?php esc_html_e('Pages', 'hostpn'); ?></div>
+          <p class="hostpn-pages-description">
+            <?php esc_html_e('Manage the pages used by the plugin. Each page contains the shortcode that renders the corresponding list.', 'hostpn'); ?>
+          </p>
+          <table class="hostpn-pages-table">
+            <thead>
+              <tr>
+                <th><?php esc_html_e('Page', 'hostpn'); ?></th>
+                <th><?php esc_html_e('Shortcode', 'hostpn'); ?></th>
+                <th><?php esc_html_e('Status', 'hostpn'); ?></th>
+                <th><?php esc_html_e('Actions', 'hostpn'); ?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($hostpn_pages_config as $page_config):
+                $page_id = self::hostpn_find_page($page_config['shortcode']);
+                $page_exists = !empty($page_id) && get_post($page_id);
+              ?>
+              <tr>
+                <td><strong><?php echo esc_html($page_config['label']); ?></strong></td>
+                <td><code>[<?php echo esc_html($page_config['shortcode']); ?>]</code></td>
+                <td>
+                  <?php if ($page_exists): ?>
+                    <span class="hostpn-page-status hostpn-page-status-active">
+                      <span class="material-icons-outlined">check_circle</span>
+                      <?php echo esc_html(get_post_status($page_id) === 'publish' ? __('Published', 'hostpn') : __('Draft', 'hostpn')); ?>
+                    </span>
+                  <?php else: ?>
+                    <span class="hostpn-page-status hostpn-page-status-missing">
+                      <span class="material-icons-outlined">error_outline</span>
+                      <?php esc_html_e('Not found', 'hostpn'); ?>
+                    </span>
+                  <?php endif; ?>
+                </td>
+                <td>
+                  <?php if ($page_exists): ?>
+                    <a href="<?php echo esc_url(get_edit_post_link($page_id)); ?>" class="hostpn-page-action-btn" title="<?php esc_attr_e('Edit', 'hostpn'); ?>">
+                      <span class="material-icons-outlined">edit</span>
+                    </a>
+                    <a href="<?php echo esc_url(get_permalink($page_id)); ?>" class="hostpn-page-action-btn" target="_blank" title="<?php esc_attr_e('View', 'hostpn'); ?>">
+                      <span class="material-icons-outlined">visibility</span>
+                    </a>
+                  <?php else: ?>
+                    <button type="button" class="hostpn-btn hostpn-btn-mini hostpn-create-page-btn" data-hostpn-page-type="<?php echo esc_attr($page_config['key']); ?>">
+                      <?php esc_html_e('Create page', 'hostpn'); ?>
+                    </button>
+                  <?php endif; ?>
+                </td>
+              </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="hostpn-options-fields hostpn-mb-30 hostpn-settings-pb-80">
           <form action="" method="post" id="hostpn_form" class="hostpn-form">
             <?php foreach ($this->get_options() as $hostpn_option): ?>
               <?php HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_option, 'option', 0, 0, 'half'); ?>
             <?php endforeach ?>
-          <input type="submit" name="hostpn_submit" id="hostpn_submit" class="pn-cm-settings-hidden-submit" data-hostpn-type="option" value="<?php esc_attr_e('Save options', 'hostpn'); ?>">
+          <input type="submit" name="hostpn_submit" id="hostpn_submit" class="hostpn-settings-hidden-submit" data-hostpn-type="option" value="<?php esc_attr_e('Save options', 'hostpn'); ?>">
           </form>
         </div>
       </div>
 
       <!-- Sticky settings footer bar -->
-      <div id="pn-cm-settings-footer" class="pn-cm-settings-footer">
-        <div class="pn-cm-settings-footer-inner">
-          <div class="pn-cm-settings-footer-left">
-            <span class="pn-cm-settings-footer-plugin-name">Host Manager - PN</span>
-            <span class="pn-cm-settings-footer-version">v<?php echo esc_html(HOSTPN_VERSION); ?></span>
+      <div id="hostpn-settings-footer" class="hostpn-settings-footer">
+        <div class="hostpn-settings-footer-inner">
+          <div class="hostpn-settings-footer-left">
+            <span class="hostpn-settings-footer-plugin-name">Host Manager - PN</span>
+            <span class="hostpn-settings-footer-version">v<?php echo esc_html(HOSTPN_VERSION); ?></span>
           </div>
-          <div class="pn-cm-settings-footer-right">
-            <input type="file" id="pn-cm-settings-import-file" class="pn-cm-settings-hidden-input" accept=".json">
-            <button type="button" id="pn-cm-settings-import" class="pn-cm-settings-footer-icon-btn" title="<?php esc_attr_e('Import settings', 'hostpn'); ?>">
+          <div class="hostpn-settings-footer-right">
+            <input type="file" id="hostpn-settings-import-file" class="hostpn-settings-hidden-input" accept=".json">
+            <button type="button" id="hostpn-settings-import" class="hostpn-settings-footer-icon-btn" title="<?php esc_attr_e('Import settings', 'hostpn'); ?>">
               <span class="material-icons-outlined">file_upload</span>
             </button>
-            <button type="button" id="pn-cm-settings-export" class="pn-cm-settings-footer-icon-btn" title="<?php esc_attr_e('Export settings', 'hostpn'); ?>">
+            <button type="button" id="hostpn-settings-export" class="hostpn-settings-footer-icon-btn" title="<?php esc_attr_e('Export settings', 'hostpn'); ?>">
               <span class="material-icons-outlined">file_download</span>
             </button>
-            <button type="button" id="pn-cm-settings-save" class="hostpn-btn hostpn-btn-mini">
+            <button type="button" id="hostpn-settings-save" class="hostpn-btn hostpn-btn-mini">
               <?php esc_html_e('Save options', 'hostpn'); ?>
             </button>
           </div>
@@ -357,15 +447,18 @@ class HOSTPN_Settings {
         true
       );
 
-      wp_localize_script('hostpn-settings-footer', 'pnCmSettingsFooter', [
+      wp_localize_script('hostpn-settings-footer', 'hostpnSettingsFooter', [
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce'   => wp_create_nonce('hostpn-nonce'),
         'i18n'    => [
-          'confirmImport'  => __('This will overwrite your current settings. Continue?', 'hostpn'),
-          'importSuccess'  => __('Settings imported successfully. Reloading...', 'hostpn'),
-          'importError'    => __('Error importing settings.', 'hostpn'),
-          'invalidFile'    => __('Invalid JSON file.', 'hostpn'),
-          'exportError'    => __('Error exporting settings.', 'hostpn'),
+          'confirmImport'    => __('This will overwrite your current settings. Continue?', 'hostpn'),
+          'importSuccess'    => __('Settings imported successfully. Reloading...', 'hostpn'),
+          'importError'      => __('Error importing settings.', 'hostpn'),
+          'invalidFile'      => __('Invalid JSON file.', 'hostpn'),
+          'exportError'      => __('Error exporting settings.', 'hostpn'),
+          'creatingPage'     => __('Creating page...', 'hostpn'),
+          'createPage'       => __('Create page', 'hostpn'),
+          'errorCreatingPage' => __('An error occurred while creating the page.', 'hostpn'),
         ],
       ]);
       ?>

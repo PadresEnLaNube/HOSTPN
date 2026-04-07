@@ -185,6 +185,10 @@ class HOSTPN_Common {
 			'select_option' => esc_html(__('Select option', 'hostpn')),
 			'select_options' => esc_html(__('Select options', 'hostpn')),
 			'copied' => esc_html(__('Copied', 'hostpn')),
+			'sort_newest' => esc_html(__('Sort: Newest first', 'hostpn')),
+			'sort_oldest' => esc_html(__('Sort: Oldest first', 'hostpn')),
+			'sort_name_az' => esc_html(__('Sort: A-Z', 'hostpn')),
+			'sort_name_za' => esc_html(__('Sort: Z-A', 'hostpn')),
 		]);
 
 		// Pass CPTs to JavaScript

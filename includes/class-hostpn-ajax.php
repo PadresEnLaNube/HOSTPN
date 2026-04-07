@@ -517,6 +517,87 @@ class HOSTPN_Ajax {
           echo wp_json_encode(['error_key' => '', 'error_content' => $message]);
           exit;
           break;
+        case 'hostpn_create_page':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_create_page_error',
+              'error_content' => esc_html(__('You do not have permission to perform this action.', 'hostpn')),
+            ]);
+            exit;
+          }
+
+          $page_type = !empty($_POST['hostpn_page_type']) ? sanitize_key(wp_unslash($_POST['hostpn_page_type'])) : '';
+
+          $page_types = [
+            'accommodation' => [
+              'title'     => __('Accommodations', 'hostpn'),
+              'shortcode' => 'hostpn-accommodation-list',
+              'option'    => 'hostpn_pages_accommodation',
+            ],
+            'guest' => [
+              'title'     => __('Guests', 'hostpn'),
+              'shortcode' => 'hostpn-guest-list',
+              'option'    => 'hostpn_pages_guest',
+            ],
+            'part' => [
+              'title'     => __('Parts of travelers', 'hostpn'),
+              'shortcode' => 'hostpn-part-list',
+              'option'    => 'hostpn_pages_part',
+            ],
+          ];
+
+          if (!isset($page_types[$page_type])) {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_create_page_error',
+              'error_content' => esc_html(__('Invalid page type.', 'hostpn')),
+            ]);
+            exit;
+          }
+
+          $config = $page_types[$page_type];
+
+          // Check if page already exists
+          $existing_page = HOSTPN_Settings::hostpn_find_page($config['shortcode']);
+          if ($existing_page) {
+            echo wp_json_encode([
+              'error_key'    => '',
+              'redirect_url' => get_edit_post_link($existing_page, 'raw'),
+            ]);
+            exit;
+          }
+
+          // Create the page
+          $page_id = wp_insert_post([
+            'post_title'   => $config['title'],
+            'post_content' => '<!-- wp:shortcode -->[' . $config['shortcode'] . ']<!-- /wp:shortcode -->',
+            'post_status'  => 'draft',
+            'post_type'    => 'page',
+          ]);
+
+          if (is_wp_error($page_id)) {
+            echo wp_json_encode([
+              'error_key'     => 'hostpn_create_page_error',
+              'error_content' => esc_html($page_id->get_error_message()),
+            ]);
+            exit;
+          }
+
+          // Store page reference
+          update_option($config['option'], $page_id);
+          $hostpn_pages = get_option('hostpn_pages', []);
+          if (!is_array($hostpn_pages)) {
+            $hostpn_pages = [];
+          }
+          $hostpn_pages[] = $page_id;
+          update_option('hostpn_pages', array_unique($hostpn_pages));
+
+          echo wp_json_encode([
+            'error_key'    => '',
+            'redirect_url' => get_edit_post_link($page_id, 'raw'),
+          ]);
+          exit;
+          break;
+
         case 'hostpn_settings_export':
           if (!current_user_can('manage_options')) {
             echo wp_json_encode(['error_key' => 'permission_denied']);

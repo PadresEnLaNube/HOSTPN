@@ -161,7 +161,7 @@ class HOSTPN_Ajax_Nopriv {
                     }
                   }
 
-                  do_action('hostpn_form_save', $user_id, $hostpn_key_value, $hostpn_form_type, $hostpn_form_subtype);
+                  do_action('hostpn_form_save', $user_id, $hostpn_key_value, $hostpn_form_type, $hostpn_form_subtype, '');
                   break;
                 case 'post':
                   if (empty($hostpn_form_subtype) || in_array($hostpn_form_subtype, ['post_new', 'post_edit'])) {

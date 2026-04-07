@@ -182,6 +182,10 @@ class HOSTPN_Validation {
      * @return mixed Sanitized value
      */
     public static function hostpn_sanitize($value, $node = '', $type = '') {
+        if ( is_null( $value ) ) {
+            return '';
+        }
+
         switch (strtolower($node)) {
             case 'input':
                 switch (strtolower($type)) {
