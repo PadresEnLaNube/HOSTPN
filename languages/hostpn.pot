@@ -513,7 +513,7 @@ msgid "Barbados"
 msgstr ""
 
 #: includes/class-hostpn-settings.php:137
-msgid "Base - HOSTPN Options"
+msgid "HOSTPN Options"
 msgstr ""
 
 #: includes/class-hostpn-data.php:380
@@ -3813,5 +3813,641 @@ msgid "Zimbabwe"
 msgstr ""
 
 #: includes/class-hostpn-data.php:476
+msgid "Zimbabwean"
+msgstr ""
+msgid "%d user(s) have been assigned the %s role."
+msgstr ""
+
+msgid "%d user(s) have been removed from the %s role."
+msgstr ""
+
+msgid "1 - Vacational/Touristic"
+msgstr ""
+
+msgid "2 - Work"
+msgstr ""
+
+msgid "3 - Studies"
+msgstr ""
+
+msgid "4 - Medical reasons"
+msgstr ""
+
+msgid "5 - Others"
+msgstr ""
+
+msgid "A new guest has been registered on your platform."
+msgstr ""
+
+msgid "Accommodation Archive"
+msgstr ""
+
+msgid "Accommodation Features"
+msgstr ""
+
+msgid "Accommodation description..."
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Add email addresses for people who are not registered on the platform but should receive guest registration notifications."
+msgstr ""
+
+msgid "Air Conditioning"
+msgstr ""
+
+msgid "Air Fryer"
+msgstr ""
+
+msgid "Air Purifier"
+msgstr ""
+
+msgid "Allowed date formats: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
+msgstr ""
+
+msgid "Alternative background color"
+msgstr ""
+
+msgid "Alternative background color used across the plugin."
+msgstr ""
+
+msgid "Alternative border color"
+msgstr ""
+
+msgid "Alternative border color used across the plugin."
+msgstr ""
+
+msgid "Alternative color"
+msgstr ""
+
+msgid "Alternative color used across the plugin."
+msgstr ""
+
+msgid "An error has occurred. Please try again."
+msgstr ""
+
+msgid "An error occurred while creating the page."
+msgstr ""
+
+msgid "Assign %s Role"
+msgstr ""
+
+msgid "Audiovisual"
+msgstr ""
+
+msgid "Back to Accommodations"
+msgstr ""
+
+msgid "Bath Mat"
+msgstr ""
+
+msgid "Bath Tub"
+msgstr ""
+
+msgid "Bathroom"
+msgstr ""
+
+msgid "Bed Linen"
+msgstr ""
+
+msgid "Bedside Lamp"
+msgstr ""
+
+msgid "Bioethanol Stove"
+msgstr ""
+
+msgid "Blackout Curtains"
+msgstr ""
+
+msgid "Blue accent color"
+msgstr ""
+
+msgid "Blue accent color used across the plugin."
+msgstr ""
+
+msgid "Body Wash"
+msgstr ""
+
+msgid "Breakfast Bar"
+msgstr ""
+
+msgid "Button text"
+msgstr ""
+
+msgid "CSV format (UTF-8, semicolon separated):"
+msgstr ""
+
+msgid "Carbon Filter"
+msgstr ""
+
+msgid "Ceiling Fan"
+msgstr ""
+
+msgid "Ceiling Lamp"
+msgstr ""
+
+msgid "Cleaning Products"
+msgstr ""
+
+msgid "Coffee Maker"
+msgstr ""
+
+msgid "Coffee Table"
+msgstr ""
+
+msgid "Configure email notifications when new guests are registered."
+msgstr ""
+
+msgid "Configure system options for the plugin."
+msgstr ""
+
+msgid "Configure the design of the plugin."
+msgstr ""
+
+msgid "Create my own guest"
+msgstr ""
+
+msgid "Create page"
+msgstr ""
+
+msgid "Creating page..."
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Default content"
+msgstr ""
+
+msgid "Default title"
+msgstr ""
+
+msgid "Denatured Alcohol Stove"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Design"
+msgstr ""
+
+msgid "Dining Table"
+msgstr ""
+
+msgid "Download CSV"
+msgstr ""
+
+msgid "Download stays CSV"
+msgstr ""
+
+msgid "Downloading..."
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Electric Kettle"
+msgstr ""
+
+msgid "Electric Stove"
+msgstr ""
+
+msgid "Electrostatic Filter"
+msgstr ""
+
+msgid "Enable guest registration notifications"
+msgstr ""
+
+msgid "Error exporting settings."
+msgstr ""
+
+msgid "Error importing settings."
+msgstr ""
+
+msgid "Ethanol Stove"
+msgstr ""
+
+msgid "Export settings"
+msgstr ""
+
+msgid "External email recipients"
+msgstr ""
+
+msgid "Floor Fan"
+msgstr ""
+
+msgid "Floor Lamp"
+msgstr ""
+
+msgid "Food Processor"
+msgstr ""
+
+msgid "Garbage Disposal"
+msgstr ""
+
+msgid "Gas Stove"
+msgstr ""
+
+msgid "Gel Stove"
+msgstr ""
+
+msgid "Generate a CSV file with all stays (Parts) for the selected year, grouped by accommodation."
+msgstr ""
+
+msgid "Generic NRUA number stored in the Accommodation metadata and used in police CSV exports."
+msgstr ""
+
+msgid "Grey accent color"
+msgstr ""
+
+msgid "Grey accent color used across the plugin."
+msgstr ""
+
+msgid "Guest - HOSTPN Role"
+msgstr ""
+
+msgid "HEPA Filter"
+msgstr ""
+
+msgid "Hair Dryer"
+msgstr ""
+
+msgid "Hold Ctrl (Windows) or Cmd (Mac) to select multiple users. Users with ✓ already have this role."
+msgstr ""
+
+msgid "Host - HOSTPN Role"
+msgstr ""
+
+msgid "Ice Maker"
+msgstr ""
+
+msgid "Import settings"
+msgstr ""
+
+msgid "Internet"
+msgstr ""
+
+msgid "Invalid JSON file."
+msgstr ""
+
+msgid "Invalid page type."
+msgstr ""
+
+msgid "Invalid role specified."
+msgstr ""
+
+msgid "Invalid user ID."
+msgstr ""
+
+msgid "Ion Filter"
+msgstr ""
+
+msgid "Isopropyl Alcohol Stove"
+msgstr ""
+
+msgid "Kerosene Stove"
+msgstr ""
+
+msgid "Kitchen Area"
+msgstr ""
+
+msgid "Kitchen Island"
+msgstr ""
+
+msgid "Kitchen Utensils"
+msgstr ""
+
+msgid "Knife Block"
+msgstr ""
+
+msgid "Living Area"
+msgstr ""
+
+msgid "Magazine Rack"
+msgstr ""
+
+msgid "Main background color"
+msgstr ""
+
+msgid "Main background color used across the plugin."
+msgstr ""
+
+msgid "Main border color"
+msgstr ""
+
+msgid "Main border color used across the plugin."
+msgstr ""
+
+msgid "Main color"
+msgstr ""
+
+msgid "Main color used across the plugin."
+msgstr ""
+
+msgid "Manage the pages used by the plugin. Each page contains the shortcode that renders the corresponding list."
+msgstr ""
+
+msgid "Manage which users have the Host and Guest roles. Users with these roles can access the corresponding features."
+msgstr ""
+
+msgid "Medicine Cabinet"
+msgstr ""
+
+msgid "Methylated Spirits Stove"
+msgstr ""
+
+msgid "NRUA (generic stay number)"
+msgstr ""
+
+msgid "NRUA is taken from the Accommodation metadata."
+msgstr ""
+
+msgid "NRUA used in CSV exports"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Name A-Z"
+msgstr ""
+
+msgid "Name Z-A"
+msgstr ""
+
+msgid "New Guest Registration"
+msgstr ""
+
+msgid "New guest registered: %1$s - %2$s"
+msgstr ""
+
+msgid "Newest first"
+msgstr ""
+
+msgid "No accommodations found"
+msgstr ""
+
+msgid "No users currently have the %s role."
+msgstr ""
+
+msgid "No users selected."
+msgstr ""
+
+msgid "Not found"
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "Notify platform users"
+msgstr ""
+
+msgid "Oldest first"
+msgstr ""
+
+msgid "Optional code used in CSV export: 1-Vacacional/Turístico, 2-Laboral, 3-Estudios, 4-Causas médicas, 5-Otros."
+msgstr ""
+
+msgid "Ozone Filter"
+msgstr ""
+
+msgid "Ozone Generator"
+msgstr ""
+
+msgid "Page"
+msgstr ""
+
+msgid "Pages"
+msgstr ""
+
+msgid "Paraffin Stove"
+msgstr ""
+
+msgid "Parking"
+msgstr ""
+
+msgid "Pellet Stove"
+msgstr ""
+
+msgid "Pendant Lamp"
+msgstr ""
+
+msgid "Photocatalytic Filter"
+msgstr ""
+
+msgid "Plasma Filter"
+msgstr ""
+
+msgid "Please enter a valid year between 2000 and 2100."
+msgstr ""
+
+msgid "Private Bathroom"
+msgstr ""
+
+msgid "Propane Stove"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+msgid "Reading Lamp"
+msgstr ""
+
+msgid "Recessed Lighting"
+msgstr ""
+
+msgid "Remove %s Role"
+msgstr ""
+
+msgid "Room"
+msgstr ""
+
+msgid "Rubbing Alcohol Stove"
+msgstr ""
+
+msgid "Rules & Conditions"
+msgstr ""
+
+msgid "Security check failed."
+msgstr ""
+
+msgid "Select Users"
+msgstr ""
+
+msgid "Select purpose (optional)"
+msgstr ""
+
+msgid "Select registered users who will receive notification emails when a new guest is registered."
+msgstr ""
+
+msgid "Select users..."
+msgstr ""
+
+msgid "Send email notifications when a new guest is registered."
+msgstr ""
+
+msgid "Services & Amenities"
+msgstr ""
+
+msgid "Settings imported successfully. Reloading..."
+msgstr ""
+
+msgid "Shared Bathroom"
+msgstr ""
+
+msgid "Sheer Curtains"
+msgstr ""
+
+msgid "Shortcode"
+msgstr ""
+
+msgid "Shower Curtain"
+msgstr ""
+
+msgid "Side Table"
+msgstr ""
+
+msgid "Single Accommodation"
+msgstr ""
+
+msgid "Slow Cooker"
+msgstr ""
+
+msgid "Sorry, no accommodations match your criteria. Please try again later."
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Sort: A-Z"
+msgstr ""
+
+msgid "Sort: Newest first"
+msgstr ""
+
+msgid "Sort: Oldest first"
+msgstr ""
+
+msgid "Sort: Z-A"
+msgstr ""
+
+msgid "Sound System"
+msgstr ""
+
+msgid "Spice Rack"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Stay purpose (for police CSV)"
+msgstr ""
+
+msgid "Stay purpose (optional)"
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+msgid "TV Stand"
+msgstr ""
+
+msgid "Table Fan"
+msgstr ""
+
+msgid "Table Lamp"
+msgstr ""
+
+msgid "Template for displaying a single accommodation post."
+msgstr ""
+
+msgid "Template for displaying the accommodation archive page."
+msgstr ""
+
+msgid "The number/ID of the document that you set on \"Document type\" field just above."
+msgstr ""
+
+msgid "The purpose code is taken from each Part (optional)."
+msgstr ""
+
+msgid "Thermal Curtains"
+msgstr ""
+
+msgid "This will overwrite your current settings. Continue?"
+msgstr ""
+
+msgid "Throw Pillows"
+msgstr ""
+
+msgid "Toilet Paper"
+msgstr ""
+
+msgid "Track Lighting"
+msgstr ""
+
+msgid "UV Filter"
+msgstr ""
+
+msgid "UV Sterilizer"
+msgstr ""
+
+msgid "Unauthorized access."
+msgstr ""
+
+msgid "User Role Management"
+msgstr ""
+
+msgid "Users with %s Role"
+msgstr ""
+
+msgid "View"
+msgstr ""
+
+msgid "View Details"
+msgstr ""
+
+msgid "View guest in dashboard"
+msgstr ""
+
+msgid "Wall Fan"
+msgstr ""
+
+msgid "Wall Lamp"
+msgstr ""
+
+msgid "Washing Machine"
+msgstr ""
+
+msgid "Water Filter"
+msgstr ""
+
+msgid "Wine Cooler"
+msgstr ""
+
+msgid "Wine Rack"
+msgstr ""
+
+msgid "Wood Stove"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "You are not authorized to perform this action."
+msgstr ""
+
+msgid "You do not have permission to manage user roles."
+msgstr ""
+
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+msgid "email@example.com"
+msgstr ""
+
+
 msgid "Zimbabwean"
 msgstr ""

@@ -516,7 +516,7 @@ msgid "Barbados"
 msgstr "Barbados"
 
 #: includes/class-hostpn-settings.php:137
-msgid "Base - HOSTPN Options"
+msgid "HOSTPN Options"
 msgstr "Oinarria - HOSTPN aukerak"
 
 #: includes/class-hostpn-data.php:380
@@ -3857,3 +3857,639 @@ msgstr "Zimbabwe"
 #: includes/class-hostpn-data.php:476
 msgid "Zimbabwean"
 msgstr "Zimbabweko"
+msgid "%d user(s) have been assigned the %s role."
+msgstr "%d erabiltzaileri %s rola esleitu zaie."
+
+msgid "%d user(s) have been removed from the %s role."
+msgstr "%d erabiltzaileri %s rola kendu zaie."
+
+msgid "1 - Vacational/Touristic"
+msgstr "1 - Oporraldia/Turismoa"
+
+msgid "2 - Work"
+msgstr "2 - Lana"
+
+msgid "3 - Studies"
+msgstr "3 - Ikasketak"
+
+msgid "4 - Medical reasons"
+msgstr "4 - Arrazoi medikoak"
+
+msgid "5 - Others"
+msgstr "5 - Beste batzuk"
+
+msgid "A new guest has been registered on your platform."
+msgstr "Gonbidatu berri bat erregistratu da zure plataforman."
+
+msgid "Accommodation Archive"
+msgstr "Ostatuen artxiboa"
+
+msgid "Accommodation Features"
+msgstr "Ostatuaren ezaugarriak"
+
+msgid "Accommodation description..."
+msgstr "Ostatuaren deskribapena..."
+
+msgid "Actions"
+msgstr "Ekintzak"
+
+msgid "Add email addresses for people who are not registered on the platform but should receive guest registration notifications."
+msgstr "Gehitu plataforman erregistratuta ez dauden baina gonbidatuen erregistro-jakinarazpenak jaso behar dituzten pertsonen helbide elektronikoak."
+
+msgid "Air Conditioning"
+msgstr "Aire girotua"
+
+msgid "Air Fryer"
+msgstr "Aire-frijigailua"
+
+msgid "Air Purifier"
+msgstr "Aire-arazlea"
+
+msgid "Allowed date formats: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
+msgstr "Onartutako data-formatuak: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
+
+msgid "Alternative background color"
+msgstr "Atzeko planoaren kolore alternatiboa"
+
+msgid "Alternative background color used across the plugin."
+msgstr "Plugin osoan erabilitako atzeko planoaren kolore alternatiboa."
+
+msgid "Alternative border color"
+msgstr "Ertzaren kolore alternatiboa"
+
+msgid "Alternative border color used across the plugin."
+msgstr "Plugin osoan erabilitako ertzaren kolore alternatiboa."
+
+msgid "Alternative color"
+msgstr "Kolore alternatiboa"
+
+msgid "Alternative color used across the plugin."
+msgstr "Plugin osoan erabilitako kolore alternatiboa."
+
+msgid "An error has occurred. Please try again."
+msgstr "Errore bat gertatu da. Mesedez, saiatu berriro."
+
+msgid "An error occurred while creating the page."
+msgstr "Errore bat gertatu da orria sortzean."
+
+msgid "Assign %s Role"
+msgstr "Esleitu %s rola"
+
+msgid "Audiovisual"
+msgstr "Ikus-entzunezkoa"
+
+msgid "Back to Accommodations"
+msgstr "Itzuli ostatuetara"
+
+msgid "Bath Mat"
+msgstr "Bainugelako alfonbra"
+
+msgid "Bath Tub"
+msgstr "Bainuontzia"
+
+msgid "Bathroom"
+msgstr "Bainugela"
+
+msgid "Bed Linen"
+msgstr "Ohe-arropa"
+
+msgid "Bedside Lamp"
+msgstr "Gaueko mahaiko lanpara"
+
+msgid "Bioethanol Stove"
+msgstr "Bioetanol-berogailua"
+
+msgid "Blackout Curtains"
+msgstr "Oihal opakuak"
+
+msgid "Blue accent color"
+msgstr "Azentuko kolore urdina"
+
+msgid "Blue accent color used across the plugin."
+msgstr "Plugin osoan erabilitako azentuko kolore urdina."
+
+msgid "Body Wash"
+msgstr "Gorputz-gela"
+
+msgid "Breakfast Bar"
+msgstr "Gosari-barra"
+
+msgid "Button text"
+msgstr "Botoiaren testua"
+
+msgid "CSV format (UTF-8, semicolon separated):"
+msgstr "CSV formatua (UTF-8, puntu eta komaz bereizita):"
+
+msgid "Carbon Filter"
+msgstr "Ikatz-iragazkia"
+
+msgid "Ceiling Fan"
+msgstr "Sabaiko haizagailua"
+
+msgid "Ceiling Lamp"
+msgstr "Sabaiko lanpara"
+
+msgid "Cleaning Products"
+msgstr "Garbiketa-produktuak"
+
+msgid "Coffee Maker"
+msgstr "Kafetegailua"
+
+msgid "Coffee Table"
+msgstr "Erdiko mahaia"
+
+msgid "Configure email notifications when new guests are registered."
+msgstr "Konfiguratu posta elektronikoko jakinarazpenak gonbidatu berriak erregistratzen direnean."
+
+msgid "Configure system options for the plugin."
+msgstr "Konfiguratu pluginaren sistemaren aukerak."
+
+msgid "Configure the design of the plugin."
+msgstr "Konfiguratu pluginaren diseinua."
+
+msgid "Create my own guest"
+msgstr "Nire gonbidatua sortu"
+
+msgid "Create page"
+msgstr "Orria sortu"
+
+msgid "Creating page..."
+msgstr "Orria sortzen..."
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Default content"
+msgstr "Eduki lehenetsia"
+
+msgid "Default title"
+msgstr "Izenburu lehenetsia"
+
+msgid "Denatured Alcohol Stove"
+msgstr "Alkohol desnaturalizatuko berogailua"
+
+msgid "Description"
+msgstr "Deskribapena"
+
+msgid "Design"
+msgstr "Diseinua"
+
+msgid "Dining Table"
+msgstr "Jangela-mahaia"
+
+msgid "Download CSV"
+msgstr "CSV deskargatu"
+
+msgid "Download stays CSV"
+msgstr "Egonaldien CSV-a deskargatu"
+
+msgid "Downloading..."
+msgstr "Deskargatzen..."
+
+msgid "Draft"
+msgstr "Zirriborroa"
+
+msgid "Edit"
+msgstr "Editatu"
+
+msgid "Electric Kettle"
+msgstr "Ur-irakingailu elektrikoa"
+
+msgid "Electric Stove"
+msgstr "Berogailu elektrikoa"
+
+msgid "Electrostatic Filter"
+msgstr "Iragazki elektrostatikoa"
+
+msgid "Enable guest registration notifications"
+msgstr "Gaitu gonbidatuen erregistro-jakinarazpenak"
+
+msgid "Error exporting settings."
+msgstr "Errorea ezarpenak esportatzean."
+
+msgid "Error importing settings."
+msgstr "Errorea ezarpenak inportatzean."
+
+msgid "Ethanol Stove"
+msgstr "Etanol-berogailua"
+
+msgid "Export settings"
+msgstr "Ezarpenak esportatu"
+
+msgid "External email recipients"
+msgstr "Kanpoko posta elektronikoko hartzaileak"
+
+msgid "Floor Fan"
+msgstr "Lurreko haizagailua"
+
+msgid "Floor Lamp"
+msgstr "Lurreko lanpara"
+
+msgid "Food Processor"
+msgstr "Janari-prozesadorea"
+
+msgid "Garbage Disposal"
+msgstr "Zabor-birringailua"
+
+msgid "Gas Stove"
+msgstr "Gas-berogailua"
+
+msgid "Gel Stove"
+msgstr "Gel-berogailua"
+
+msgid "Generate a CSV file with all stays (Parts) for the selected year, grouped by accommodation."
+msgstr "Sortu CSV fitxategi bat hautatutako urteko egonaldi (parte) guztiekin, ostatuaren arabera taldekatuta."
+
+msgid "Generic NRUA number stored in the Accommodation metadata and used in police CSV exports."
+msgstr "NRUA zenbaki generikoa ostatuaren metadatuetan gordeta eta polizia CSV esportazioetan erabilia."
+
+msgid "Grey accent color"
+msgstr "Azentuko kolore grisa"
+
+msgid "Grey accent color used across the plugin."
+msgstr "Plugin osoan erabilitako azentuko kolore grisa."
+
+msgid "Guest - HOSTPN Role"
+msgstr "Gonbidatua - HOSTPN Rola"
+
+msgid "HEPA Filter"
+msgstr "HEPA iragazkia"
+
+msgid "Hair Dryer"
+msgstr "Ile-lehorgailua"
+
+msgid "Hold Ctrl (Windows) or Cmd (Mac) to select multiple users. Users with ✓ already have this role."
+msgstr "Sakatu Ctrl (Windows) edo Cmd (Mac) hainbat erabiltzaile hautatzeko. ✓ duten erabiltzaileek dagoeneko dute rol hau."
+
+msgid "Host - HOSTPN Role"
+msgstr "Ostatuemaiilea - HOSTPN Rola"
+
+msgid "Ice Maker"
+msgstr "Izotz-makina"
+
+msgid "Import settings"
+msgstr "Ezarpenak inportatu"
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Invalid JSON file."
+msgstr "JSON fitxategi baliogabea."
+
+msgid "Invalid page type."
+msgstr "Orri mota baliogabea."
+
+msgid "Invalid role specified."
+msgstr "Zehaztutako rola baliogabea."
+
+msgid "Invalid user ID."
+msgstr "Erabiltzaile ID baliogabea."
+
+msgid "Ion Filter"
+msgstr "Ioi-iragazkia"
+
+msgid "Isopropyl Alcohol Stove"
+msgstr "Alkohol isopropiliko-berogailua"
+
+msgid "Kerosene Stove"
+msgstr "Keroseno-berogailua"
+
+msgid "Kitchen Area"
+msgstr "Sukalde-eremua"
+
+msgid "Kitchen Island"
+msgstr "Sukaldeko uhartea"
+
+msgid "Kitchen Utensils"
+msgstr "Sukaldeko tresnak"
+
+msgid "Knife Block"
+msgstr "Labana-euskarria"
+
+msgid "Living Area"
+msgstr "Egongela-eremua"
+
+msgid "Magazine Rack"
+msgstr "Aldizkari-euskarria"
+
+msgid "Main background color"
+msgstr "Atzeko planoaren kolore nagusia"
+
+msgid "Main background color used across the plugin."
+msgstr "Plugin osoan erabilitako atzeko planoaren kolore nagusia."
+
+msgid "Main border color"
+msgstr "Ertzaren kolore nagusia"
+
+msgid "Main border color used across the plugin."
+msgstr "Plugin osoan erabilitako ertzaren kolore nagusia."
+
+msgid "Main color"
+msgstr "Kolore nagusia"
+
+msgid "Main color used across the plugin."
+msgstr "Plugin osoan erabilitako kolore nagusia."
+
+msgid "Manage the pages used by the plugin. Each page contains the shortcode that renders the corresponding list."
+msgstr "Kudeatu pluginak erabilitako orriak. Orri bakoitzak dagokion zerrenda erakusten duen shortcode-a dauka."
+
+msgid "Manage which users have the Host and Guest roles. Users with these roles can access the corresponding features."
+msgstr "Kudeatu zein erabiltzailek dituzten Ostatuemaile eta Gonbidatu rolak. Rol hauek dituzten erabiltzaileek dagozkien funtzioetara sar daitezke."
+
+msgid "Medicine Cabinet"
+msgstr "Sendagaien armairua"
+
+msgid "Methylated Spirits Stove"
+msgstr "Alkohol metilatuko berogailua"
+
+msgid "NRUA (generic stay number)"
+msgstr "NRUA (egonaldiaren zenbaki generikoa)"
+
+msgid "NRUA is taken from the Accommodation metadata."
+msgstr "NRUA ostatuaren metadatuetatik hartzen da."
+
+msgid "NRUA used in CSV exports"
+msgstr "CSV esportazioetan erabilitako NRUA"
+
+msgid "Name"
+msgstr "Izena"
+
+msgid "Name A-Z"
+msgstr "Izena A-Z"
+
+msgid "Name Z-A"
+msgstr "Izena Z-A"
+
+msgid "New Guest Registration"
+msgstr "Gonbidatu berriaren erregistroa"
+
+msgid "New guest registered: %1$s - %2$s"
+msgstr "Gonbidatu berria erregistratuta: %1$s - %2$s"
+
+msgid "Newest first"
+msgstr "Berrienak lehenik"
+
+msgid "No accommodations found"
+msgstr "Ez da ostaturik aurkitu"
+
+msgid "No users currently have the %s role."
+msgstr "Gaur egun ez du inongo erabiltzailek %s rola."
+
+msgid "No users selected."
+msgstr "Ez da erabiltzailerik hautatu."
+
+msgid "Not found"
+msgstr "Ez da aurkitu"
+
+msgid "Notifications"
+msgstr "Jakinarazpenak"
+
+msgid "Notify platform users"
+msgstr "Jakinarazi plataformako erabiltzaileei"
+
+msgid "Oldest first"
+msgstr "Zaharrenak lehenik"
+
+msgid "Optional code used in CSV export: 1-Vacacional/Turístico, 2-Laboral, 3-Estudios, 4-Causas médicas, 5-Otros."
+msgstr "CSV esportazioan erabilitako aukerako kodea: 1-Oporraldia/Turismoa, 2-Lana, 3-Ikasketak, 4-Arrazoi medikoak, 5-Beste batzuk."
+
+msgid "Ozone Filter"
+msgstr "Ozono-iragazkia"
+
+msgid "Ozone Generator"
+msgstr "Ozono-sortzailea"
+
+msgid "Page"
+msgstr "Orria"
+
+msgid "Pages"
+msgstr "Orriak"
+
+msgid "Paraffin Stove"
+msgstr "Parafina-berogailua"
+
+msgid "Parking"
+msgstr "Aparkalekua"
+
+msgid "Pellet Stove"
+msgstr "Pellet-berogailua"
+
+msgid "Pendant Lamp"
+msgstr "Zintzilikarioko lanpara"
+
+msgid "Photocatalytic Filter"
+msgstr "Iragazki fotokatalitikoa"
+
+msgid "Plasma Filter"
+msgstr "Plasma-iragazkia"
+
+msgid "Please enter a valid year between 2000 and 2100."
+msgstr "Mesedez, sartu 2000 eta 2100 arteko urte baliogarri bat."
+
+msgid "Private Bathroom"
+msgstr "Bainugela pribatua"
+
+msgid "Propane Stove"
+msgstr "Propano-berogailua"
+
+msgid "Published"
+msgstr "Argitaratua"
+
+msgid "Reading Lamp"
+msgstr "Irakurketa-lanpara"
+
+msgid "Recessed Lighting"
+msgstr "Argiztapen txertatua"
+
+msgid "Remove %s Role"
+msgstr "Kendu %s rola"
+
+msgid "Room"
+msgstr "Gela"
+
+msgid "Rubbing Alcohol Stove"
+msgstr "Alkohol-berogailua"
+
+msgid "Rules & Conditions"
+msgstr "Arauak eta baldintzak"
+
+msgid "Security check failed."
+msgstr "Segurtasun-egiaztapenak huts egin du."
+
+msgid "Select Users"
+msgstr "Hautatu erabiltzaileak"
+
+msgid "Select purpose (optional)"
+msgstr "Hautatu helburua (aukerakoa)"
+
+msgid "Select registered users who will receive notification emails when a new guest is registered."
+msgstr "Hautatu jakinarazpen-mezuak jasoko dituzten erabiltzaile erregistratuak gonbidatu berri bat erregistratzen denean."
+
+msgid "Select users..."
+msgstr "Hautatu erabiltzaileak..."
+
+msgid "Send email notifications when a new guest is registered."
+msgstr "Bidali posta elektronikoko jakinarazpenak gonbidatu berri bat erregistratzen denean."
+
+msgid "Services & Amenities"
+msgstr "Zerbitzuak eta erosotasunak"
+
+msgid "Settings imported successfully. Reloading..."
+msgstr "Ezarpenak ongi inportatu dira. Birkargatzen..."
+
+msgid "Shared Bathroom"
+msgstr "Bainugela partekatua"
+
+msgid "Sheer Curtains"
+msgstr "Oihal gardenak"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "Shower Curtain"
+msgstr "Dutxako oihala"
+
+msgid "Side Table"
+msgstr "Albo-mahaia"
+
+msgid "Single Accommodation"
+msgstr "Ostatu bakarra"
+
+msgid "Slow Cooker"
+msgstr "Egospen geldo-ontzia"
+
+msgid "Sorry, no accommodations match your criteria. Please try again later."
+msgstr "Barkatu, ez da zure irizpideekin bat datorren ostaturik aurkitu. Mesedez, saiatu berriro geroago."
+
+msgid "Sort"
+msgstr "Ordenatu"
+
+msgid "Sort: A-Z"
+msgstr "Ordenatu: A-Z"
+
+msgid "Sort: Newest first"
+msgstr "Ordenatu: Berrienak lehenik"
+
+msgid "Sort: Oldest first"
+msgstr "Ordenatu: Zaharrenak lehenik"
+
+msgid "Sort: Z-A"
+msgstr "Ordenatu: Z-A"
+
+msgid "Sound System"
+msgstr "Soinu-sistema"
+
+msgid "Spice Rack"
+msgstr "Espezia-euskarria"
+
+msgid "Status"
+msgstr "Egoera"
+
+msgid "Stay purpose (for police CSV)"
+msgstr "Egonaldiaren helburua (polizia CSV-rako)"
+
+msgid "Stay purpose (optional)"
+msgstr "Egonaldiaren helburua (aukerakoa)"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "TV Stand"
+msgstr "Telebista-altzaria"
+
+msgid "Table Fan"
+msgstr "Mahaiko haizagailua"
+
+msgid "Table Lamp"
+msgstr "Mahaiko lanpara"
+
+msgid "Template for displaying a single accommodation post."
+msgstr "Ostatu-sarrera bakarra bistaratzeko txantiloia."
+
+msgid "Template for displaying the accommodation archive page."
+msgstr "Ostatuen artxibo-orria bistaratzeko txantiloia."
+
+msgid "The number/ID of the document that you set on \"Document type\" field just above."
+msgstr "Goiko \"Dokumentu mota\" eremuan ezarri duzun dokumentuaren zenbakia/IDa."
+
+msgid "The purpose code is taken from each Part (optional)."
+msgstr "Helburu-kodea parte bakoitzetik hartzen da (aukerakoa)."
+
+msgid "Thermal Curtains"
+msgstr "Oihal termikoak"
+
+msgid "This will overwrite your current settings. Continue?"
+msgstr "Honek zure uneko ezarpenak gainidatziko ditu. Jarraitu?"
+
+msgid "Throw Pillows"
+msgstr "Kuxin dekoratiboak"
+
+msgid "Toilet Paper"
+msgstr "Paper higienikoa"
+
+msgid "Track Lighting"
+msgstr "Errailen gaineko argiztapena"
+
+msgid "UV Filter"
+msgstr "UV iragazkia"
+
+msgid "UV Sterilizer"
+msgstr "UV esterilizatzailea"
+
+msgid "Unauthorized access."
+msgstr "Baimenik gabeko sarbidea."
+
+msgid "User Role Management"
+msgstr "Erabiltzaile-rolen kudeaketa"
+
+msgid "Users with %s Role"
+msgstr "%s rola duten erabiltzaileak"
+
+msgid "View"
+msgstr "Ikusi"
+
+msgid "View Details"
+msgstr "Ikusi xehetasunak"
+
+msgid "View guest in dashboard"
+msgstr "Ikusi gonbidatua panelean"
+
+msgid "Wall Fan"
+msgstr "Hormako haizagailua"
+
+msgid "Wall Lamp"
+msgstr "Hormako lanpara"
+
+msgid "Washing Machine"
+msgstr "Garbigailua"
+
+msgid "Water Filter"
+msgstr "Ur-iragazkia"
+
+msgid "Wine Cooler"
+msgstr "Ardo-hozgailua"
+
+msgid "Wine Rack"
+msgstr "Ardo-euskarria"
+
+msgid "Wood Stove"
+msgstr "Egur-berogailua"
+
+msgid "Year"
+msgstr "Urtea"
+
+msgid "You are not authorized to perform this action."
+msgstr "Ez duzu ekintza hau burutzeko baimenik."
+
+msgid "You do not have permission to manage user roles."
+msgstr "Ez duzu erabiltzaile-rolak kudeatzeko baimenik."
+
+msgid "You do not have permission to perform this action."
+msgstr "Ez duzu ekintza hau burutzeko baimenik."
+
+msgid "email@example.com"
+msgstr "helbidea@adibidea.com"
+
+
+msgid "Zimbabwean"
+msgstr "Zimbabwetarra"

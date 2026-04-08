@@ -5,7 +5,8 @@
       "Bash(del \"C:\\\\Users\\\\Fili\\\\Desktop\\\\WPH\\\\SVN\\\\WPH\\\\WPH PLUGINS\\\\userspn\\\\trunk\\\\assets\\\\js\\\\tooltipster.min.js\")",
       "Bash(del:*)",
       "WebFetch(domain:fonts.googleapis.com)",
-      "WebFetch(domain:fonts.gstatic.com)"
+      "WebFetch(domain:fonts.gstatic.com)",
+      "Bash(python3:*)"
     ]
   }
 }

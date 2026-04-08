@@ -523,7 +523,7 @@ msgid "Barbados"
 msgstr "Barbados"
 
 #: includes/class-hostpn-settings.php:137
-msgid "Base - HOSTPN Options"
+msgid "HOSTPN Options"
 msgstr "Base - Opcions de HOSTPN"
 
 #: includes/class-hostpn-data.php:380
@@ -3864,3 +3864,639 @@ msgstr "Zimbàbue"
 #: includes/class-hostpn-data.php:476
 msgid "Zimbabwean"
 msgstr "zimbabuès"
+msgid "%d user(s) have been assigned the %s role."
+msgstr "S'ha assignat el rol %s a %d usuari(s)."
+
+msgid "%d user(s) have been removed from the %s role."
+msgstr "S'ha eliminat el rol %s de %d usuari(s)."
+
+msgid "1 - Vacational/Touristic"
+msgstr "1 - Vacacional/Turístic"
+
+msgid "2 - Work"
+msgstr "2 - Laboral"
+
+msgid "3 - Studies"
+msgstr "3 - Estudis"
+
+msgid "4 - Medical reasons"
+msgstr "4 - Causes mèdiques"
+
+msgid "5 - Others"
+msgstr "5 - Altres"
+
+msgid "A new guest has been registered on your platform."
+msgstr "S'ha registrat un nou hoste a la teva plataforma."
+
+msgid "Accommodation Archive"
+msgstr "Arxiu d'allotjaments"
+
+msgid "Accommodation Features"
+msgstr "Característiques de l'allotjament"
+
+msgid "Accommodation description..."
+msgstr "Descripció de l'allotjament..."
+
+msgid "Actions"
+msgstr "Accions"
+
+msgid "Add email addresses for people who are not registered on the platform but should receive guest registration notifications."
+msgstr "Afegeix adreces de correu electrònic de persones que no estan registrades a la plataforma però que han de rebre notificacions de registre d'hostes."
+
+msgid "Air Conditioning"
+msgstr "Aire condicionat"
+
+msgid "Air Fryer"
+msgstr "Fregidora d'aire"
+
+msgid "Air Purifier"
+msgstr "Purificador d'aire"
+
+msgid "Allowed date formats: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
+msgstr "Formats de data permesos: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
+
+msgid "Alternative background color"
+msgstr "Color de fons alternatiu"
+
+msgid "Alternative background color used across the plugin."
+msgstr "Color de fons alternatiu utilitzat a tot el plugin."
+
+msgid "Alternative border color"
+msgstr "Color de vora alternatiu"
+
+msgid "Alternative border color used across the plugin."
+msgstr "Color de vora alternatiu utilitzat a tot el plugin."
+
+msgid "Alternative color"
+msgstr "Color alternatiu"
+
+msgid "Alternative color used across the plugin."
+msgstr "Color alternatiu utilitzat a tot el plugin."
+
+msgid "An error has occurred. Please try again."
+msgstr "S'ha produït un error. Si us plau, torneu-ho a intentar."
+
+msgid "An error occurred while creating the page."
+msgstr "S'ha produït un error en crear la pàgina."
+
+msgid "Assign %s Role"
+msgstr "Assignar rol %s"
+
+msgid "Audiovisual"
+msgstr "Audiovisual"
+
+msgid "Back to Accommodations"
+msgstr "Tornar a allotjaments"
+
+msgid "Bath Mat"
+msgstr "Estora de bany"
+
+msgid "Bath Tub"
+msgstr "Banyera"
+
+msgid "Bathroom"
+msgstr "Bany"
+
+msgid "Bed Linen"
+msgstr "Roba de llit"
+
+msgid "Bedside Lamp"
+msgstr "Llum de tauleta de nit"
+
+msgid "Bioethanol Stove"
+msgstr "Estufa de bioetanol"
+
+msgid "Blackout Curtains"
+msgstr "Cortines opaques"
+
+msgid "Blue accent color"
+msgstr "Color d'accent blau"
+
+msgid "Blue accent color used across the plugin."
+msgstr "Color d'accent blau utilitzat a tot el plugin."
+
+msgid "Body Wash"
+msgstr "Gel de dutxa"
+
+msgid "Breakfast Bar"
+msgstr "Barra d'esmorzar"
+
+msgid "Button text"
+msgstr "Text del botó"
+
+msgid "CSV format (UTF-8, semicolon separated):"
+msgstr "Format CSV (UTF-8, separat per punt i coma):"
+
+msgid "Carbon Filter"
+msgstr "Filtre de carbó"
+
+msgid "Ceiling Fan"
+msgstr "Ventilador de sostre"
+
+msgid "Ceiling Lamp"
+msgstr "Llum de sostre"
+
+msgid "Cleaning Products"
+msgstr "Productes de neteja"
+
+msgid "Coffee Maker"
+msgstr "Cafetera"
+
+msgid "Coffee Table"
+msgstr "Tauleta de centre"
+
+msgid "Configure email notifications when new guests are registered."
+msgstr "Configura les notificacions per correu electrònic quan es registren nous hostes."
+
+msgid "Configure system options for the plugin."
+msgstr "Configura les opcions del sistema del plugin."
+
+msgid "Configure the design of the plugin."
+msgstr "Configura el disseny del plugin."
+
+msgid "Create my own guest"
+msgstr "Crear el meu propi hoste"
+
+msgid "Create page"
+msgstr "Crear pàgina"
+
+msgid "Creating page..."
+msgstr "Creant pàgina..."
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Default content"
+msgstr "Contingut predeterminat"
+
+msgid "Default title"
+msgstr "Títol predeterminat"
+
+msgid "Denatured Alcohol Stove"
+msgstr "Estufa d'alcohol desnaturalitzat"
+
+msgid "Description"
+msgstr "Descripció"
+
+msgid "Design"
+msgstr "Disseny"
+
+msgid "Dining Table"
+msgstr "Taula de menjador"
+
+msgid "Download CSV"
+msgstr "Descarregar CSV"
+
+msgid "Download stays CSV"
+msgstr "Descarregar CSV d'estades"
+
+msgid "Downloading..."
+msgstr "Descarregant..."
+
+msgid "Draft"
+msgstr "Esborrany"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Electric Kettle"
+msgstr "Bullidor elèctric"
+
+msgid "Electric Stove"
+msgstr "Estufa elèctrica"
+
+msgid "Electrostatic Filter"
+msgstr "Filtre electrostàtic"
+
+msgid "Enable guest registration notifications"
+msgstr "Activar notificacions de registre d'hostes"
+
+msgid "Error exporting settings."
+msgstr "Error en exportar la configuració."
+
+msgid "Error importing settings."
+msgstr "Error en importar la configuració."
+
+msgid "Ethanol Stove"
+msgstr "Estufa d'etanol"
+
+msgid "Export settings"
+msgstr "Exportar configuració"
+
+msgid "External email recipients"
+msgstr "Destinataris de correu externs"
+
+msgid "Floor Fan"
+msgstr "Ventilador de peu"
+
+msgid "Floor Lamp"
+msgstr "Llum de peu"
+
+msgid "Food Processor"
+msgstr "Processador d'aliments"
+
+msgid "Garbage Disposal"
+msgstr "Triturador d'escombraries"
+
+msgid "Gas Stove"
+msgstr "Estufa de gas"
+
+msgid "Gel Stove"
+msgstr "Estufa de gel"
+
+msgid "Generate a CSV file with all stays (Parts) for the selected year, grouped by accommodation."
+msgstr "Genera un fitxer CSV amb totes les estades (parts) de l'any seleccionat, agrupades per allotjament."
+
+msgid "Generic NRUA number stored in the Accommodation metadata and used in police CSV exports."
+msgstr "Número NRUA genèric emmagatzemat a les metadades de l'allotjament i utilitzat a les exportacions CSV policials."
+
+msgid "Grey accent color"
+msgstr "Color d'accent gris"
+
+msgid "Grey accent color used across the plugin."
+msgstr "Color d'accent gris utilitzat a tot el plugin."
+
+msgid "Guest - HOSTPN Role"
+msgstr "Hoste - Rol HOSTPN"
+
+msgid "HEPA Filter"
+msgstr "Filtre HEPA"
+
+msgid "Hair Dryer"
+msgstr "Assecador de cabells"
+
+msgid "Hold Ctrl (Windows) or Cmd (Mac) to select multiple users. Users with ✓ already have this role."
+msgstr "Manteniu premut Ctrl (Windows) o Cmd (Mac) per seleccionar diversos usuaris. Els usuaris amb ✓ ja tenen aquest rol."
+
+msgid "Host - HOSTPN Role"
+msgstr "Amfitrió - Rol HOSTPN"
+
+msgid "Ice Maker"
+msgstr "Màquina de gel"
+
+msgid "Import settings"
+msgstr "Importar configuració"
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Invalid JSON file."
+msgstr "Fitxer JSON no vàlid."
+
+msgid "Invalid page type."
+msgstr "Tipus de pàgina no vàlid."
+
+msgid "Invalid role specified."
+msgstr "Rol especificat no vàlid."
+
+msgid "Invalid user ID."
+msgstr "ID d'usuari no vàlid."
+
+msgid "Ion Filter"
+msgstr "Filtre d'ions"
+
+msgid "Isopropyl Alcohol Stove"
+msgstr "Estufa d'alcohol isopropílic"
+
+msgid "Kerosene Stove"
+msgstr "Estufa de querosè"
+
+msgid "Kitchen Area"
+msgstr "Zona de cuina"
+
+msgid "Kitchen Island"
+msgstr "Illa de cuina"
+
+msgid "Kitchen Utensils"
+msgstr "Utensilis de cuina"
+
+msgid "Knife Block"
+msgstr "Bloc de ganivets"
+
+msgid "Living Area"
+msgstr "Zona d'estar"
+
+msgid "Magazine Rack"
+msgstr "Revister"
+
+msgid "Main background color"
+msgstr "Color de fons principal"
+
+msgid "Main background color used across the plugin."
+msgstr "Color de fons principal utilitzat a tot el plugin."
+
+msgid "Main border color"
+msgstr "Color de vora principal"
+
+msgid "Main border color used across the plugin."
+msgstr "Color de vora principal utilitzat a tot el plugin."
+
+msgid "Main color"
+msgstr "Color principal"
+
+msgid "Main color used across the plugin."
+msgstr "Color principal utilitzat a tot el plugin."
+
+msgid "Manage the pages used by the plugin. Each page contains the shortcode that renders the corresponding list."
+msgstr "Gestiona les pàgines utilitzades pel plugin. Cada pàgina conté el shortcode que mostra la llista corresponent."
+
+msgid "Manage which users have the Host and Guest roles. Users with these roles can access the corresponding features."
+msgstr "Gestiona quins usuaris tenen els rols d'Amfitrió i Hoste. Els usuaris amb aquests rols poden accedir a les funcions corresponents."
+
+msgid "Medicine Cabinet"
+msgstr "Farmaciola"
+
+msgid "Methylated Spirits Stove"
+msgstr "Estufa d'alcohol metílic"
+
+msgid "NRUA (generic stay number)"
+msgstr "NRUA (número genèric d'estada)"
+
+msgid "NRUA is taken from the Accommodation metadata."
+msgstr "El NRUA s'obté de les metadades de l'allotjament."
+
+msgid "NRUA used in CSV exports"
+msgstr "NRUA utilitzat en exportacions CSV"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Name A-Z"
+msgstr "Nom A-Z"
+
+msgid "Name Z-A"
+msgstr "Nom Z-A"
+
+msgid "New Guest Registration"
+msgstr "Nou registre d'hoste"
+
+msgid "New guest registered: %1$s - %2$s"
+msgstr "Nou hoste registrat: %1$s - %2$s"
+
+msgid "Newest first"
+msgstr "Més recents primer"
+
+msgid "No accommodations found"
+msgstr "No s'han trobat allotjaments"
+
+msgid "No users currently have the %s role."
+msgstr "Actualment cap usuari té el rol %s."
+
+msgid "No users selected."
+msgstr "No s'han seleccionat usuaris."
+
+msgid "Not found"
+msgstr "No trobat"
+
+msgid "Notifications"
+msgstr "Notificacions"
+
+msgid "Notify platform users"
+msgstr "Notificar els usuaris de la plataforma"
+
+msgid "Oldest first"
+msgstr "Més antics primer"
+
+msgid "Optional code used in CSV export: 1-Vacacional/Turístico, 2-Laboral, 3-Estudios, 4-Causas médicas, 5-Otros."
+msgstr "Codi opcional usat en l'exportació CSV: 1-Vacacional/Turístic, 2-Laboral, 3-Estudis, 4-Causes mèdiques, 5-Altres."
+
+msgid "Ozone Filter"
+msgstr "Filtre d'ozó"
+
+msgid "Ozone Generator"
+msgstr "Generador d'ozó"
+
+msgid "Page"
+msgstr "Pàgina"
+
+msgid "Pages"
+msgstr "Pàgines"
+
+msgid "Paraffin Stove"
+msgstr "Estufa de parafina"
+
+msgid "Parking"
+msgstr "Aparcament"
+
+msgid "Pellet Stove"
+msgstr "Estufa de pèl·lets"
+
+msgid "Pendant Lamp"
+msgstr "Llum penjant"
+
+msgid "Photocatalytic Filter"
+msgstr "Filtre fotocatalític"
+
+msgid "Plasma Filter"
+msgstr "Filtre de plasma"
+
+msgid "Please enter a valid year between 2000 and 2100."
+msgstr "Si us plau, introduïu un any vàlid entre 2000 i 2100."
+
+msgid "Private Bathroom"
+msgstr "Bany privat"
+
+msgid "Propane Stove"
+msgstr "Estufa de propà"
+
+msgid "Published"
+msgstr "Publicat"
+
+msgid "Reading Lamp"
+msgstr "Llum de lectura"
+
+msgid "Recessed Lighting"
+msgstr "Il·luminació encastada"
+
+msgid "Remove %s Role"
+msgstr "Eliminar rol %s"
+
+msgid "Room"
+msgstr "Habitació"
+
+msgid "Rubbing Alcohol Stove"
+msgstr "Estufa d'alcohol"
+
+msgid "Rules & Conditions"
+msgstr "Normes i condicions"
+
+msgid "Security check failed."
+msgstr "La verificació de seguretat ha fallat."
+
+msgid "Select Users"
+msgstr "Seleccionar usuaris"
+
+msgid "Select purpose (optional)"
+msgstr "Seleccionar motiu (opcional)"
+
+msgid "Select registered users who will receive notification emails when a new guest is registered."
+msgstr "Selecciona els usuaris registrats que rebran correus de notificació quan es registri un nou hoste."
+
+msgid "Select users..."
+msgstr "Seleccionar usuaris..."
+
+msgid "Send email notifications when a new guest is registered."
+msgstr "Enviar notificacions per correu electrònic quan es registri un nou hoste."
+
+msgid "Services & Amenities"
+msgstr "Serveis i comoditats"
+
+msgid "Settings imported successfully. Reloading..."
+msgstr "Configuració importada correctament. Recarregant..."
+
+msgid "Shared Bathroom"
+msgstr "Bany compartit"
+
+msgid "Sheer Curtains"
+msgstr "Cortines translúcides"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "Shower Curtain"
+msgstr "Cortina de dutxa"
+
+msgid "Side Table"
+msgstr "Tauleta auxiliar"
+
+msgid "Single Accommodation"
+msgstr "Allotjament individual"
+
+msgid "Slow Cooker"
+msgstr "Olla de cocció lenta"
+
+msgid "Sorry, no accommodations match your criteria. Please try again later."
+msgstr "Ho sentim, cap allotjament coincideix amb els teus criteris. Si us plau, torna-ho a intentar més tard."
+
+msgid "Sort"
+msgstr "Ordenar"
+
+msgid "Sort: A-Z"
+msgstr "Ordenar: A-Z"
+
+msgid "Sort: Newest first"
+msgstr "Ordenar: Més recents primer"
+
+msgid "Sort: Oldest first"
+msgstr "Ordenar: Més antics primer"
+
+msgid "Sort: Z-A"
+msgstr "Ordenar: Z-A"
+
+msgid "Sound System"
+msgstr "Sistema de so"
+
+msgid "Spice Rack"
+msgstr "Especier"
+
+msgid "Status"
+msgstr "Estat"
+
+msgid "Stay purpose (for police CSV)"
+msgstr "Motiu d'estada (per a CSV policial)"
+
+msgid "Stay purpose (optional)"
+msgstr "Motiu d'estada (opcional)"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "TV Stand"
+msgstr "Moble de televisió"
+
+msgid "Table Fan"
+msgstr "Ventilador de taula"
+
+msgid "Table Lamp"
+msgstr "Llum de taula"
+
+msgid "Template for displaying a single accommodation post."
+msgstr "Plantilla per mostrar una entrada d'allotjament individual."
+
+msgid "Template for displaying the accommodation archive page."
+msgstr "Plantilla per mostrar la pàgina d'arxiu d'allotjaments."
+
+msgid "The number/ID of the document that you set on \"Document type\" field just above."
+msgstr "El número/ID del document que has establert al camp \"Tipus de document\" just a dalt."
+
+msgid "The purpose code is taken from each Part (optional)."
+msgstr "El codi de motiu s'obté de cada part (opcional)."
+
+msgid "Thermal Curtains"
+msgstr "Cortines tèrmiques"
+
+msgid "This will overwrite your current settings. Continue?"
+msgstr "Això sobreescriurà la teva configuració actual. Continuar?"
+
+msgid "Throw Pillows"
+msgstr "Coixins decoratius"
+
+msgid "Toilet Paper"
+msgstr "Paper higiènic"
+
+msgid "Track Lighting"
+msgstr "Il·luminació en rail"
+
+msgid "UV Filter"
+msgstr "Filtre UV"
+
+msgid "UV Sterilizer"
+msgstr "Esterilitzador UV"
+
+msgid "Unauthorized access."
+msgstr "Accés no autoritzat."
+
+msgid "User Role Management"
+msgstr "Gestió de rols d'usuari"
+
+msgid "Users with %s Role"
+msgstr "Usuaris amb rol %s"
+
+msgid "View"
+msgstr "Veure"
+
+msgid "View Details"
+msgstr "Veure detalls"
+
+msgid "View guest in dashboard"
+msgstr "Veure hoste al tauler"
+
+msgid "Wall Fan"
+msgstr "Ventilador de paret"
+
+msgid "Wall Lamp"
+msgstr "Llum de paret"
+
+msgid "Washing Machine"
+msgstr "Rentadora"
+
+msgid "Water Filter"
+msgstr "Filtre d'aigua"
+
+msgid "Wine Cooler"
+msgstr "Vinoteca"
+
+msgid "Wine Rack"
+msgstr "Ampollera"
+
+msgid "Wood Stove"
+msgstr "Estufa de llenya"
+
+msgid "Year"
+msgstr "Any"
+
+msgid "You are not authorized to perform this action."
+msgstr "No estàs autoritzat per realitzar aquesta acció."
+
+msgid "You do not have permission to manage user roles."
+msgstr "No tens permís per gestionar els rols d'usuari."
+
+msgid "You do not have permission to perform this action."
+msgstr "No tens permís per realitzar aquesta acció."
+
+msgid "email@example.com"
+msgstr "correu@exemple.com"
+
+
+msgid "Zimbabwean"
+msgstr "Zimbabuenc"

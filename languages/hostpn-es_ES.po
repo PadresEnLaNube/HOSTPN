@@ -520,7 +520,7 @@ msgid "Barbados"
 msgstr "Barbados"
 
 #: includes/class-hostpn-settings.php:137
-msgid "Base - HOSTPN Options"
+msgid "HOSTPN Options"
 msgstr "Base - Opciones de HOSTPN"
 
 #: includes/class-hostpn-data.php:380
@@ -3865,3 +3865,639 @@ msgstr "Zimbabue"
 #: includes/class-hostpn-data.php:476
 msgid "Zimbabwean"
 msgstr "zimbabuo"
+msgid "%d user(s) have been assigned the %s role."
+msgstr "Se ha asignado el rol %s a %d usuario(s)."
+
+msgid "%d user(s) have been removed from the %s role."
+msgstr "Se ha eliminado el rol %s de %d usuario(s)."
+
+msgid "1 - Vacational/Touristic"
+msgstr "1 - Vacacional/Turístico"
+
+msgid "2 - Work"
+msgstr "2 - Laboral"
+
+msgid "3 - Studies"
+msgstr "3 - Estudios"
+
+msgid "4 - Medical reasons"
+msgstr "4 - Causas médicas"
+
+msgid "5 - Others"
+msgstr "5 - Otros"
+
+msgid "A new guest has been registered on your platform."
+msgstr "Se ha registrado un nuevo huésped en tu plataforma."
+
+msgid "Accommodation Archive"
+msgstr "Archivo de alojamientos"
+
+msgid "Accommodation Features"
+msgstr "Características del alojamiento"
+
+msgid "Accommodation description..."
+msgstr "Descripción del alojamiento..."
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Add email addresses for people who are not registered on the platform but should receive guest registration notifications."
+msgstr "Añade direcciones de correo electrónico de personas que no están registradas en la plataforma pero que deben recibir notificaciones de registro de huéspedes."
+
+msgid "Air Conditioning"
+msgstr "Aire acondicionado"
+
+msgid "Air Fryer"
+msgstr "Freidora de aire"
+
+msgid "Air Purifier"
+msgstr "Purificador de aire"
+
+msgid "Allowed date formats: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
+msgstr "Formatos de fecha permitidos: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
+
+msgid "Alternative background color"
+msgstr "Color de fondo alternativo"
+
+msgid "Alternative background color used across the plugin."
+msgstr "Color de fondo alternativo utilizado en todo el plugin."
+
+msgid "Alternative border color"
+msgstr "Color de borde alternativo"
+
+msgid "Alternative border color used across the plugin."
+msgstr "Color de borde alternativo utilizado en todo el plugin."
+
+msgid "Alternative color"
+msgstr "Color alternativo"
+
+msgid "Alternative color used across the plugin."
+msgstr "Color alternativo utilizado en todo el plugin."
+
+msgid "An error has occurred. Please try again."
+msgstr "Se ha producido un error. Por favor, inténtelo de nuevo."
+
+msgid "An error occurred while creating the page."
+msgstr "Se produjo un error al crear la página."
+
+msgid "Assign %s Role"
+msgstr "Asignar rol %s"
+
+msgid "Audiovisual"
+msgstr "Audiovisual"
+
+msgid "Back to Accommodations"
+msgstr "Volver a alojamientos"
+
+msgid "Bath Mat"
+msgstr "Alfombrilla de baño"
+
+msgid "Bath Tub"
+msgstr "Bañera"
+
+msgid "Bathroom"
+msgstr "Baño"
+
+msgid "Bed Linen"
+msgstr "Ropa de cama"
+
+msgid "Bedside Lamp"
+msgstr "Lámpara de mesilla"
+
+msgid "Bioethanol Stove"
+msgstr "Estufa de bioetanol"
+
+msgid "Blackout Curtains"
+msgstr "Cortinas opacas"
+
+msgid "Blue accent color"
+msgstr "Color de acento azul"
+
+msgid "Blue accent color used across the plugin."
+msgstr "Color de acento azul utilizado en todo el plugin."
+
+msgid "Body Wash"
+msgstr "Gel de ducha"
+
+msgid "Breakfast Bar"
+msgstr "Barra de desayuno"
+
+msgid "Button text"
+msgstr "Texto del botón"
+
+msgid "CSV format (UTF-8, semicolon separated):"
+msgstr "Formato CSV (UTF-8, separado por punto y coma):"
+
+msgid "Carbon Filter"
+msgstr "Filtro de carbón"
+
+msgid "Ceiling Fan"
+msgstr "Ventilador de techo"
+
+msgid "Ceiling Lamp"
+msgstr "Lámpara de techo"
+
+msgid "Cleaning Products"
+msgstr "Productos de limpieza"
+
+msgid "Coffee Maker"
+msgstr "Cafetera"
+
+msgid "Coffee Table"
+msgstr "Mesa de centro"
+
+msgid "Configure email notifications when new guests are registered."
+msgstr "Configura las notificaciones por correo electrónico cuando se registran nuevos huéspedes."
+
+msgid "Configure system options for the plugin."
+msgstr "Configura las opciones del sistema del plugin."
+
+msgid "Configure the design of the plugin."
+msgstr "Configura el diseño del plugin."
+
+msgid "Create my own guest"
+msgstr "Crear mi propio huésped"
+
+msgid "Create page"
+msgstr "Crear página"
+
+msgid "Creating page..."
+msgstr "Creando página..."
+
+msgid "Date"
+msgstr "Fecha"
+
+msgid "Default content"
+msgstr "Contenido predeterminado"
+
+msgid "Default title"
+msgstr "Título predeterminado"
+
+msgid "Denatured Alcohol Stove"
+msgstr "Estufa de alcohol desnaturalizado"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Design"
+msgstr "Diseño"
+
+msgid "Dining Table"
+msgstr "Mesa de comedor"
+
+msgid "Download CSV"
+msgstr "Descargar CSV"
+
+msgid "Download stays CSV"
+msgstr "Descargar CSV de estancias"
+
+msgid "Downloading..."
+msgstr "Descargando..."
+
+msgid "Draft"
+msgstr "Borrador"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Electric Kettle"
+msgstr "Hervidor eléctrico"
+
+msgid "Electric Stove"
+msgstr "Estufa eléctrica"
+
+msgid "Electrostatic Filter"
+msgstr "Filtro electrostático"
+
+msgid "Enable guest registration notifications"
+msgstr "Activar notificaciones de registro de huéspedes"
+
+msgid "Error exporting settings."
+msgstr "Error al exportar la configuración."
+
+msgid "Error importing settings."
+msgstr "Error al importar la configuración."
+
+msgid "Ethanol Stove"
+msgstr "Estufa de etanol"
+
+msgid "Export settings"
+msgstr "Exportar configuración"
+
+msgid "External email recipients"
+msgstr "Destinatarios de correo externos"
+
+msgid "Floor Fan"
+msgstr "Ventilador de pie"
+
+msgid "Floor Lamp"
+msgstr "Lámpara de pie"
+
+msgid "Food Processor"
+msgstr "Procesador de alimentos"
+
+msgid "Garbage Disposal"
+msgstr "Triturador de basura"
+
+msgid "Gas Stove"
+msgstr "Estufa de gas"
+
+msgid "Gel Stove"
+msgstr "Estufa de gel"
+
+msgid "Generate a CSV file with all stays (Parts) for the selected year, grouped by accommodation."
+msgstr "Genera un archivo CSV con todas las estancias (partes) del año seleccionado, agrupadas por alojamiento."
+
+msgid "Generic NRUA number stored in the Accommodation metadata and used in police CSV exports."
+msgstr "Número NRUA genérico almacenado en los metadatos del alojamiento y utilizado en las exportaciones CSV policiales."
+
+msgid "Grey accent color"
+msgstr "Color de acento gris"
+
+msgid "Grey accent color used across the plugin."
+msgstr "Color de acento gris utilizado en todo el plugin."
+
+msgid "Guest - HOSTPN Role"
+msgstr "Huésped - Rol HOSTPN"
+
+msgid "HEPA Filter"
+msgstr "Filtro HEPA"
+
+msgid "Hair Dryer"
+msgstr "Secador de pelo"
+
+msgid "Hold Ctrl (Windows) or Cmd (Mac) to select multiple users. Users with ✓ already have this role."
+msgstr "Mantén pulsado Ctrl (Windows) o Cmd (Mac) para seleccionar varios usuarios. Los usuarios con ✓ ya tienen este rol."
+
+msgid "Host - HOSTPN Role"
+msgstr "Anfitrión - Rol HOSTPN"
+
+msgid "Ice Maker"
+msgstr "Máquina de hielo"
+
+msgid "Import settings"
+msgstr "Importar configuración"
+
+msgid "Internet"
+msgstr "Internet"
+
+msgid "Invalid JSON file."
+msgstr "Archivo JSON no válido."
+
+msgid "Invalid page type."
+msgstr "Tipo de página no válido."
+
+msgid "Invalid role specified."
+msgstr "Rol especificado no válido."
+
+msgid "Invalid user ID."
+msgstr "ID de usuario no válido."
+
+msgid "Ion Filter"
+msgstr "Filtro de iones"
+
+msgid "Isopropyl Alcohol Stove"
+msgstr "Estufa de alcohol isopropílico"
+
+msgid "Kerosene Stove"
+msgstr "Estufa de queroseno"
+
+msgid "Kitchen Area"
+msgstr "Zona de cocina"
+
+msgid "Kitchen Island"
+msgstr "Isla de cocina"
+
+msgid "Kitchen Utensils"
+msgstr "Utensilios de cocina"
+
+msgid "Knife Block"
+msgstr "Bloque de cuchillos"
+
+msgid "Living Area"
+msgstr "Zona de estar"
+
+msgid "Magazine Rack"
+msgstr "Revistero"
+
+msgid "Main background color"
+msgstr "Color de fondo principal"
+
+msgid "Main background color used across the plugin."
+msgstr "Color de fondo principal utilizado en todo el plugin."
+
+msgid "Main border color"
+msgstr "Color de borde principal"
+
+msgid "Main border color used across the plugin."
+msgstr "Color de borde principal utilizado en todo el plugin."
+
+msgid "Main color"
+msgstr "Color principal"
+
+msgid "Main color used across the plugin."
+msgstr "Color principal utilizado en todo el plugin."
+
+msgid "Manage the pages used by the plugin. Each page contains the shortcode that renders the corresponding list."
+msgstr "Gestiona las páginas utilizadas por el plugin. Cada página contiene el shortcode que muestra la lista correspondiente."
+
+msgid "Manage which users have the Host and Guest roles. Users with these roles can access the corresponding features."
+msgstr "Gestiona qué usuarios tienen los roles de Anfitrión y Huésped. Los usuarios con estos roles pueden acceder a las funciones correspondientes."
+
+msgid "Medicine Cabinet"
+msgstr "Botiquín"
+
+msgid "Methylated Spirits Stove"
+msgstr "Estufa de alcohol metílico"
+
+msgid "NRUA (generic stay number)"
+msgstr "NRUA (número genérico de estancia)"
+
+msgid "NRUA is taken from the Accommodation metadata."
+msgstr "El NRUA se obtiene de los metadatos del alojamiento."
+
+msgid "NRUA used in CSV exports"
+msgstr "NRUA utilizado en exportaciones CSV"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Name A-Z"
+msgstr "Nombre A-Z"
+
+msgid "Name Z-A"
+msgstr "Nombre Z-A"
+
+msgid "New Guest Registration"
+msgstr "Nuevo registro de huésped"
+
+msgid "New guest registered: %1$s - %2$s"
+msgstr "Nuevo huésped registrado: %1$s - %2$s"
+
+msgid "Newest first"
+msgstr "Más recientes primero"
+
+msgid "No accommodations found"
+msgstr "No se encontraron alojamientos"
+
+msgid "No users currently have the %s role."
+msgstr "Actualmente ningún usuario tiene el rol %s."
+
+msgid "No users selected."
+msgstr "No se han seleccionado usuarios."
+
+msgid "Not found"
+msgstr "No encontrado"
+
+msgid "Notifications"
+msgstr "Notificaciones"
+
+msgid "Notify platform users"
+msgstr "Notificar a usuarios de la plataforma"
+
+msgid "Oldest first"
+msgstr "Más antiguos primero"
+
+msgid "Optional code used in CSV export: 1-Vacacional/Turístico, 2-Laboral, 3-Estudios, 4-Causas médicas, 5-Otros."
+msgstr "Código opcional usado en la exportación CSV: 1-Vacacional/Turístico, 2-Laboral, 3-Estudios, 4-Causas médicas, 5-Otros."
+
+msgid "Ozone Filter"
+msgstr "Filtro de ozono"
+
+msgid "Ozone Generator"
+msgstr "Generador de ozono"
+
+msgid "Page"
+msgstr "Página"
+
+msgid "Pages"
+msgstr "Páginas"
+
+msgid "Paraffin Stove"
+msgstr "Estufa de parafina"
+
+msgid "Parking"
+msgstr "Aparcamiento"
+
+msgid "Pellet Stove"
+msgstr "Estufa de pellets"
+
+msgid "Pendant Lamp"
+msgstr "Lámpara colgante"
+
+msgid "Photocatalytic Filter"
+msgstr "Filtro fotocatalítico"
+
+msgid "Plasma Filter"
+msgstr "Filtro de plasma"
+
+msgid "Please enter a valid year between 2000 and 2100."
+msgstr "Por favor, introduce un año válido entre 2000 y 2100."
+
+msgid "Private Bathroom"
+msgstr "Baño privado"
+
+msgid "Propane Stove"
+msgstr "Estufa de propano"
+
+msgid "Published"
+msgstr "Publicado"
+
+msgid "Reading Lamp"
+msgstr "Lámpara de lectura"
+
+msgid "Recessed Lighting"
+msgstr "Iluminación empotrada"
+
+msgid "Remove %s Role"
+msgstr "Eliminar rol %s"
+
+msgid "Room"
+msgstr "Habitación"
+
+msgid "Rubbing Alcohol Stove"
+msgstr "Estufa de alcohol"
+
+msgid "Rules & Conditions"
+msgstr "Normas y condiciones"
+
+msgid "Security check failed."
+msgstr "La verificación de seguridad ha fallado."
+
+msgid "Select Users"
+msgstr "Seleccionar usuarios"
+
+msgid "Select purpose (optional)"
+msgstr "Seleccionar motivo (opcional)"
+
+msgid "Select registered users who will receive notification emails when a new guest is registered."
+msgstr "Selecciona los usuarios registrados que recibirán correos de notificación cuando se registre un nuevo huésped."
+
+msgid "Select users..."
+msgstr "Seleccionar usuarios..."
+
+msgid "Send email notifications when a new guest is registered."
+msgstr "Enviar notificaciones por correo electrónico cuando se registre un nuevo huésped."
+
+msgid "Services & Amenities"
+msgstr "Servicios y comodidades"
+
+msgid "Settings imported successfully. Reloading..."
+msgstr "Configuración importada correctamente. Recargando..."
+
+msgid "Shared Bathroom"
+msgstr "Baño compartido"
+
+msgid "Sheer Curtains"
+msgstr "Cortinas translúcidas"
+
+msgid "Shortcode"
+msgstr "Shortcode"
+
+msgid "Shower Curtain"
+msgstr "Cortina de ducha"
+
+msgid "Side Table"
+msgstr "Mesa auxiliar"
+
+msgid "Single Accommodation"
+msgstr "Alojamiento individual"
+
+msgid "Slow Cooker"
+msgstr "Olla de cocción lenta"
+
+msgid "Sorry, no accommodations match your criteria. Please try again later."
+msgstr "Lo sentimos, ningún alojamiento coincide con tus criterios. Por favor, inténtalo más tarde."
+
+msgid "Sort"
+msgstr "Ordenar"
+
+msgid "Sort: A-Z"
+msgstr "Ordenar: A-Z"
+
+msgid "Sort: Newest first"
+msgstr "Ordenar: Más recientes primero"
+
+msgid "Sort: Oldest first"
+msgstr "Ordenar: Más antiguos primero"
+
+msgid "Sort: Z-A"
+msgstr "Ordenar: Z-A"
+
+msgid "Sound System"
+msgstr "Sistema de sonido"
+
+msgid "Spice Rack"
+msgstr "Especiero"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Stay purpose (for police CSV)"
+msgstr "Motivo de estancia (para CSV policial)"
+
+msgid "Stay purpose (optional)"
+msgstr "Motivo de estancia (opcional)"
+
+msgid "System"
+msgstr "Sistema"
+
+msgid "TV Stand"
+msgstr "Mueble de televisión"
+
+msgid "Table Fan"
+msgstr "Ventilador de mesa"
+
+msgid "Table Lamp"
+msgstr "Lámpara de mesa"
+
+msgid "Template for displaying a single accommodation post."
+msgstr "Plantilla para mostrar una entrada de alojamiento individual."
+
+msgid "Template for displaying the accommodation archive page."
+msgstr "Plantilla para mostrar la página de archivo de alojamientos."
+
+msgid "The number/ID of the document that you set on \"Document type\" field just above."
+msgstr "El número/ID del documento que has establecido en el campo \"Tipo de documento\" justo arriba."
+
+msgid "The purpose code is taken from each Part (optional)."
+msgstr "El código de motivo se obtiene de cada parte (opcional)."
+
+msgid "Thermal Curtains"
+msgstr "Cortinas térmicas"
+
+msgid "This will overwrite your current settings. Continue?"
+msgstr "Esto sobrescribirá tu configuración actual. ¿Continuar?"
+
+msgid "Throw Pillows"
+msgstr "Cojines decorativos"
+
+msgid "Toilet Paper"
+msgstr "Papel higiénico"
+
+msgid "Track Lighting"
+msgstr "Iluminación en riel"
+
+msgid "UV Filter"
+msgstr "Filtro UV"
+
+msgid "UV Sterilizer"
+msgstr "Esterilizador UV"
+
+msgid "Unauthorized access."
+msgstr "Acceso no autorizado."
+
+msgid "User Role Management"
+msgstr "Gestión de roles de usuario"
+
+msgid "Users with %s Role"
+msgstr "Usuarios con rol %s"
+
+msgid "View"
+msgstr "Ver"
+
+msgid "View Details"
+msgstr "Ver detalles"
+
+msgid "View guest in dashboard"
+msgstr "Ver huésped en el panel"
+
+msgid "Wall Fan"
+msgstr "Ventilador de pared"
+
+msgid "Wall Lamp"
+msgstr "Lámpara de pared"
+
+msgid "Washing Machine"
+msgstr "Lavadora"
+
+msgid "Water Filter"
+msgstr "Filtro de agua"
+
+msgid "Wine Cooler"
+msgstr "Vinoteca"
+
+msgid "Wine Rack"
+msgstr "Botellero"
+
+msgid "Wood Stove"
+msgstr "Estufa de leña"
+
+msgid "Year"
+msgstr "Año"
+
+msgid "You are not authorized to perform this action."
+msgstr "No estás autorizado para realizar esta acción."
+
+msgid "You do not have permission to manage user roles."
+msgstr "No tienes permiso para gestionar los roles de usuario."
+
+msgid "You do not have permission to perform this action."
+msgstr "No tienes permiso para realizar esta acción."
+
+msgid "email@example.com"
+msgstr "correo@ejemplo.com"
+
+
+msgid "Zimbabwean"
+msgstr "Zimbabuense"

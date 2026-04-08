@@ -29,6 +29,77 @@ class HOSTPN_Settings {
   public function get_options() {
     $hostpn_options = [];
 
+    // ── PAGES SECTION ─────────────────────────────────────────────────
+    $hostpn_options['hostpn_pages_section_start'] = [
+      'section' => 'start',
+      'label' => __('Pages', 'hostpn'),
+      'description' => __('Manage the pages used by the plugin. Each page contains the shortcode that renders the corresponding list.', 'hostpn'),
+    ];
+      $hostpn_options['hostpn_pages_table'] = [
+        'id' => 'hostpn_pages_table',
+        'input' => 'pages_table',
+      ];
+    $hostpn_options['hostpn_pages_section_end'] = [
+      'section' => 'end',
+    ];
+
+    // ── NOTIFICATIONS SECTION ────────────────────────────────────────
+    $hostpn_options['hostpn_notifications_section_start'] = [
+      'section' => 'start',
+      'label' => __('Notifications', 'hostpn'),
+      'description' => __('Configure email notifications when new guests are registered.', 'hostpn'),
+    ];
+      $hostpn_options['hostpn_notifications_enabled'] = [
+        'id' => 'hostpn_notifications_enabled',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'checkbox',
+        'parent' => 'this',
+        'label' => __('Enable guest registration notifications', 'hostpn'),
+        'description' => __('Send email notifications when a new guest is registered.', 'hostpn'),
+      ];
+      $hostpn_options['hostpn_notifications_users'] = [
+        'id' => 'hostpn_notifications_users',
+        'class' => 'hostpn-select hostpn-width-100-percent',
+        'input' => 'select',
+        'multiple' => true,
+        'parent' => 'hostpn_notifications_enabled',
+        'parent_option' => 'on',
+        'options' => self::get_users_for_select(),
+        'label' => __('Notify platform users', 'hostpn'),
+        'description' => __('Select registered users who will receive notification emails when a new guest is registered.', 'hostpn'),
+        'placeholder' => __('Select users...', 'hostpn'),
+      ];
+      $hostpn_options['hostpn_notifications_external_emails'] = [
+        'id' => 'hostpn_notifications_external_emails',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'html_multi',
+        'parent' => 'hostpn_notifications_enabled',
+        'parent_option' => 'on',
+        'label' => __('External email recipients', 'hostpn'),
+        'description' => __('Add email addresses for people who are not registered on the platform but should receive guest registration notifications.', 'hostpn'),
+        'html_multi_fields' => [
+          [
+            'id' => 'hostpn_notifications_external_email',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'email',
+            'label' => __('Email', 'hostpn'),
+            'placeholder' => __('email@example.com', 'hostpn'),
+          ],
+        ],
+      ];
+      // Internal entry so the html_multi sub-field value is in the allowed options list for saving
+      $hostpn_options['hostpn_notifications_external_email'] = [
+        'id' => 'hostpn_notifications_external_email',
+        'input' => 'input',
+        'type' => 'hidden',
+        'multiple' => true,
+      ];
+    $hostpn_options['hostpn_notifications_section_end'] = [
+      'section' => 'end',
+    ];
+
     // ── DESIGN SECTION ───────────────────────────────────────────────
     $hostpn_options['hostpn_design_section_start'] = [
       'section' => 'start',
@@ -108,63 +179,6 @@ class HOSTPN_Settings {
         'description' => __('Grey accent color used across the plugin.', 'hostpn'),
       ];
     $hostpn_options['hostpn_design_section_end'] = [
-      'section' => 'end',
-    ];
-
-    // ── NOTIFICATIONS SECTION ────────────────────────────────────────
-    $hostpn_options['hostpn_notifications_section_start'] = [
-      'section' => 'start',
-      'label' => __('Notifications', 'hostpn'),
-      'description' => __('Configure email notifications when new guests are registered.', 'hostpn'),
-    ];
-      $hostpn_options['hostpn_notifications_enabled'] = [
-        'id' => 'hostpn_notifications_enabled',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'input',
-        'type' => 'checkbox',
-        'parent' => 'this',
-        'label' => __('Enable guest registration notifications', 'hostpn'),
-        'description' => __('Send email notifications when a new guest is registered.', 'hostpn'),
-      ];
-      $hostpn_options['hostpn_notifications_users'] = [
-        'id' => 'hostpn_notifications_users',
-        'class' => 'hostpn-select hostpn-width-100-percent',
-        'input' => 'select',
-        'multiple' => true,
-        'parent' => 'hostpn_notifications_enabled',
-        'parent_option' => 'on',
-        'options' => self::get_users_for_select(),
-        'label' => __('Notify platform users', 'hostpn'),
-        'description' => __('Select registered users who will receive notification emails when a new guest is registered.', 'hostpn'),
-        'placeholder' => __('Select users...', 'hostpn'),
-      ];
-      $hostpn_options['hostpn_notifications_external_emails'] = [
-        'id' => 'hostpn_notifications_external_emails',
-        'class' => 'hostpn-input hostpn-width-100-percent',
-        'input' => 'html_multi',
-        'parent' => 'hostpn_notifications_enabled',
-        'parent_option' => 'on',
-        'label' => __('External email recipients', 'hostpn'),
-        'description' => __('Add email addresses for people who are not registered on the platform but should receive guest registration notifications.', 'hostpn'),
-        'html_multi_fields' => [
-          [
-            'id' => 'hostpn_notifications_external_email',
-            'class' => 'hostpn-input hostpn-width-100-percent',
-            'input' => 'input',
-            'type' => 'email',
-            'label' => __('Email', 'hostpn'),
-            'placeholder' => __('email@example.com', 'hostpn'),
-          ],
-        ],
-      ];
-      // Internal entry so the html_multi sub-field value is in the allowed options list for saving
-      $hostpn_options['hostpn_notifications_external_email'] = [
-        'id' => 'hostpn_notifications_external_email',
-        'input' => 'input',
-        'type' => 'hidden',
-        'multiple' => true,
-      ];
-    $hostpn_options['hostpn_notifications_section_end'] = [
       'section' => 'end',
     ];
 
@@ -325,6 +339,59 @@ class HOSTPN_Settings {
 		return false;
 	}
 
+	private function render_pages_table($pages_config) {
+		?>
+		<table class="hostpn-pages-table">
+			<thead>
+				<tr>
+					<th><?php esc_html_e('Page', 'hostpn'); ?></th>
+					<th><?php esc_html_e('Shortcode', 'hostpn'); ?></th>
+					<th><?php esc_html_e('Status', 'hostpn'); ?></th>
+					<th><?php esc_html_e('Actions', 'hostpn'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($pages_config as $page_config):
+					$page_id = self::hostpn_find_page($page_config['shortcode']);
+					$page_exists = !empty($page_id) && get_post($page_id);
+				?>
+				<tr>
+					<td><strong><?php echo esc_html($page_config['label']); ?></strong></td>
+					<td><code>[<?php echo esc_html($page_config['shortcode']); ?>]</code></td>
+					<td>
+						<?php if ($page_exists): ?>
+							<span class="hostpn-page-status hostpn-page-status-active">
+								<span class="material-icons-outlined">check_circle</span>
+								<?php echo esc_html(get_post_status($page_id) === 'publish' ? __('Published', 'hostpn') : __('Draft', 'hostpn')); ?>
+							</span>
+						<?php else: ?>
+							<span class="hostpn-page-status hostpn-page-status-missing">
+								<span class="material-icons-outlined">error_outline</span>
+								<?php esc_html_e('Not found', 'hostpn'); ?>
+							</span>
+						<?php endif; ?>
+					</td>
+					<td>
+						<?php if ($page_exists): ?>
+							<a href="<?php echo esc_url(get_edit_post_link($page_id)); ?>" class="hostpn-page-action-btn" title="<?php esc_attr_e('Edit', 'hostpn'); ?>">
+								<span class="material-icons-outlined">edit</span>
+							</a>
+							<a href="<?php echo esc_url(get_permalink($page_id)); ?>" class="hostpn-page-action-btn" target="_blank" title="<?php esc_attr_e('View', 'hostpn'); ?>">
+								<span class="material-icons-outlined">visibility</span>
+							</a>
+						<?php else: ?>
+							<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-create-page-btn" data-hostpn-page-type="<?php echo esc_attr($page_config['key']); ?>">
+								<?php esc_html_e('Create page', 'hostpn'); ?>
+							</button>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php
+	}
+
 	public function hostpn_options() {
 		$hostpn_pages_config = [
 			[
@@ -348,68 +415,16 @@ class HOSTPN_Settings {
 		];
 	  ?>
 	    <div class="hostpn-options hostpn-max-width-1000 hostpn-margin-auto hostpn-mt-50 hostpn-mb-50">
-        <h1 class="hostpn-mb-30"><?php esc_html_e('Base - HOSTPN Options', 'hostpn'); ?></h1>
-
-        <!-- Pages section -->
-        <div class="hostpn-options-pages hostpn-mb-30">
-          <div class="hostpn-section-start"><?php esc_html_e('Pages', 'hostpn'); ?></div>
-          <p class="hostpn-pages-description">
-            <?php esc_html_e('Manage the pages used by the plugin. Each page contains the shortcode that renders the corresponding list.', 'hostpn'); ?>
-          </p>
-          <table class="hostpn-pages-table">
-            <thead>
-              <tr>
-                <th><?php esc_html_e('Page', 'hostpn'); ?></th>
-                <th><?php esc_html_e('Shortcode', 'hostpn'); ?></th>
-                <th><?php esc_html_e('Status', 'hostpn'); ?></th>
-                <th><?php esc_html_e('Actions', 'hostpn'); ?></th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($hostpn_pages_config as $page_config):
-                $page_id = self::hostpn_find_page($page_config['shortcode']);
-                $page_exists = !empty($page_id) && get_post($page_id);
-              ?>
-              <tr>
-                <td><strong><?php echo esc_html($page_config['label']); ?></strong></td>
-                <td><code>[<?php echo esc_html($page_config['shortcode']); ?>]</code></td>
-                <td>
-                  <?php if ($page_exists): ?>
-                    <span class="hostpn-page-status hostpn-page-status-active">
-                      <span class="material-icons-outlined">check_circle</span>
-                      <?php echo esc_html(get_post_status($page_id) === 'publish' ? __('Published', 'hostpn') : __('Draft', 'hostpn')); ?>
-                    </span>
-                  <?php else: ?>
-                    <span class="hostpn-page-status hostpn-page-status-missing">
-                      <span class="material-icons-outlined">error_outline</span>
-                      <?php esc_html_e('Not found', 'hostpn'); ?>
-                    </span>
-                  <?php endif; ?>
-                </td>
-                <td>
-                  <?php if ($page_exists): ?>
-                    <a href="<?php echo esc_url(get_edit_post_link($page_id)); ?>" class="hostpn-page-action-btn" title="<?php esc_attr_e('Edit', 'hostpn'); ?>">
-                      <span class="material-icons-outlined">edit</span>
-                    </a>
-                    <a href="<?php echo esc_url(get_permalink($page_id)); ?>" class="hostpn-page-action-btn" target="_blank" title="<?php esc_attr_e('View', 'hostpn'); ?>">
-                      <span class="material-icons-outlined">visibility</span>
-                    </a>
-                  <?php else: ?>
-                    <button type="button" class="hostpn-btn hostpn-btn-mini hostpn-create-page-btn" data-hostpn-page-type="<?php echo esc_attr($page_config['key']); ?>">
-                      <?php esc_html_e('Create page', 'hostpn'); ?>
-                    </button>
-                  <?php endif; ?>
-                </td>
-              </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
+        <h1 class="hostpn-mb-30"><?php esc_html_e('HOSTPN Options', 'hostpn'); ?></h1>
 
         <div class="hostpn-options-fields hostpn-mb-30 hostpn-settings-pb-80">
           <form action="" method="post" id="hostpn_form" class="hostpn-form">
             <?php foreach ($this->get_options() as $hostpn_option): ?>
-              <?php HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_option, 'option', 0, 0, 'half'); ?>
+              <?php if (isset($hostpn_option['input']) && $hostpn_option['input'] === 'pages_table'): ?>
+                <?php $this->render_pages_table($hostpn_pages_config); ?>
+              <?php else: ?>
+                <?php HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_option, 'option', 0, 0, 'half'); ?>
+              <?php endif; ?>
             <?php endforeach ?>
           <input type="submit" name="hostpn_submit" id="hostpn_submit" class="hostpn-settings-hidden-submit" data-hostpn-type="option" value="<?php esc_attr_e('Save options', 'hostpn'); ?>">
           </form>
