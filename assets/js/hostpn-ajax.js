@@ -414,97 +414,89 @@
       });
     });
 
-    // Download CSV of stays (Parts) - DEBUG MODE
-    $(document).on('click', '.hostpn-part-csv-export-btn, #hostpn-part-csv-export-btn', function(e) {
+    // Download CSV of stays (Parts)
+    // Using event delegation to handle dynamically loaded popup content
+    // Using form submission approach for reliable browser download
+    $(document).on('click', '.hostpn-part-csv-download-btn', function(e) {
       e.preventDefault();
+      console.log('[HOSTPN CSV] Button clicked');
 
-      var HOSTPN_DEBUG = true; // Cambiar a false para desactivar logs
-      var log = function() {
-        if (HOSTPN_DEBUG && typeof console !== 'undefined' && console.log) {
-          console.log.apply(console, ['[HOSTPN CSV]'].concat(Array.prototype.slice.call(arguments)));
-        }
-      };
-      var err = function() {
-        if (typeof console !== 'undefined' && console.error) {
-          console.error.apply(console, ['[HOSTPN CSV ERROR]'].concat(Array.prototype.slice.call(arguments)));
-        }
-      };
-
-      log('1. Click detectado en botón CSV');
-
+      var btn = $(this);
+      var form = btn.closest('.hostpn-part-csv-export-form');
       var yearInput = $('#hostpn-part-csv-year');
-      log('2. yearInput encontrado:', yearInput.length, 'valor:', yearInput.val());
+      var includeNameCheck = $('#hostpn-csv-include-name');
+      var includeDocTypeCheck = $('#hostpn-csv-include-doc-type');
+      var includeDocNumberCheck = $('#hostpn-csv-include-doc-number');
 
-      var hostpn_year = parseInt(yearInput.val(), 10);
-      if (isNaN(hostpn_year) || hostpn_year < 2000 || hostpn_year > 2100) {
-        err('Año inválido:', hostpn_year);
-        if (typeof hostpn_get_main_message === 'function') {
-          hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
-        }
+      if (!form.length || !yearInput.length) {
+        console.error('[HOSTPN CSV] Form or year input not found');
         return;
       }
-      log('3. Año válido:', hostpn_year);
 
-      if (typeof hostpn_ajax === 'undefined') {
-        err('hostpn_ajax NO está definido. ¿El script hostpn-ajax está cargado?');
+      var ajaxUrl = form.attr('data-hostpn-ajax-url');
+      var nonce = form.attr('data-hostpn-nonce');
+
+      console.log('[HOSTPN CSV] Ajax URL:', ajaxUrl);
+      console.log('[HOSTPN CSV] Nonce exists:', !!nonce);
+
+      if (!ajaxUrl || !nonce) {
+        console.error('[HOSTPN CSV] Missing ajax URL or nonce');
         return;
       }
-      var ajax_url = hostpn_ajax.ajax_url;
-      var nonce = hostpn_ajax.hostpn_ajax_nonce;
-      log('4. ajax_url:', ajax_url);
-      log('5. nonce existe:', !!nonce, '(longitud:', nonce ? nonce.length : 0, ')');
 
-      var data = {
-        action: 'hostpn_ajax',
-        hostpn_ajax_type: 'hostpn_part_csv_download',
-        hostpn_year: hostpn_year,
-        hostpn_ajax_nonce: nonce
-      };
-      log('6. Enviando petición AJAX:', JSON.stringify(data));
+      var year = parseInt(yearInput.val(), 10);
+      if (isNaN(year) || year < 2000 || year > 2100) {
+        alert(hostpn_i18n.an_error_has_occurred || 'Please enter a valid year between 2000 and 2100.');
+        return;
+      }
 
-      $.ajax({
-        url: ajax_url,
-        type: 'POST',
-        data: data,
-        success: function(response) {
-          log('7. SUCCESS - Respuesta recibida');
-          log('   - Tipo:', typeof response);
-          log('   - Longitud:', response ? (response.length || 'N/A') : 0);
-          log('   - Primeros 150 chars:', typeof response === 'string' ? response.substring(0, 150) : String(response).substring(0, 150));
+      console.log('[HOSTPN CSV] Year:', year);
+      console.log('[HOSTPN CSV] Include name:', includeNameCheck.length && includeNameCheck.is(':checked'));
+      console.log('[HOSTPN CSV] Include doc type:', includeDocTypeCheck.length && includeDocTypeCheck.is(':checked'));
+      console.log('[HOSTPN CSV] Include doc number:', includeDocNumberCheck.length && includeDocNumberCheck.is(':checked'));
 
-          var filename = 'hospedajes-' + hostpn_year + '.csv';
-          var pom = document.createElement('a');
-          var bb = new Blob([response], {type: 'text/csv;charset=utf-8;'});
+      // Create a hidden form and submit it to trigger download
+      console.log('[HOSTPN CSV] Creating form for download...');
 
-          pom.setAttribute('href', window.URL.createObjectURL(bb));
-          pom.setAttribute('download', filename);
-
-          pom.dataset.downloadurl = ['text/csv', pom.download, pom.href].join(':');
-          pom.draggable = true;
-          pom.classList.add('dragout');
-          pom.click();
-
-          log('8. Descarga disparada:', filename);
-          if (typeof hostpn_get_main_message === 'function') {
-            hostpn_get_main_message(hostpn_i18n.saved_successfully || 'CSV generado correctamente');
-          }
-        },
-        error: function(xhr, status, error) {
-          err('7. ERROR AJAX');
-          err('   - status:', status);
-          err('   - error:', error);
-          err('   - xhr.status:', xhr.status);
-          err('   - xhr.statusText:', xhr.statusText);
-          err('   - xhr.responseText (primeros 300):', xhr.responseText ? xhr.responseText.substring(0, 300) : 'vacío');
-          err('   - xhr objeto completo:', xhr);
-          if (typeof hostpn_get_main_message === 'function') {
-            hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
-          }
-        },
-        complete: function() {
-          log('9. Petición completada (success o error)');
-        }
+      var downloadForm = $('<form>', {
+        method: 'POST',
+        action: ajaxUrl,
+        style: 'display:none;'
       });
+
+      // Add form fields
+      downloadForm.append($('<input>', { type: 'hidden', name: 'action', value: 'hostpn_ajax' }));
+      downloadForm.append($('<input>', { type: 'hidden', name: 'hostpn_ajax_type', value: 'hostpn_part_csv_download' }));
+      downloadForm.append($('<input>', { type: 'hidden', name: 'hostpn_year', value: year }));
+      downloadForm.append($('<input>', { type: 'hidden', name: 'hostpn_ajax_nonce', value: nonce }));
+      downloadForm.append($('<input>', {
+        type: 'hidden',
+        name: 'include_guest_name',
+        value: includeNameCheck.length && includeNameCheck.is(':checked') ? '1' : '0'
+      }));
+      downloadForm.append($('<input>', {
+        type: 'hidden',
+        name: 'include_doc_type',
+        value: includeDocTypeCheck.length && includeDocTypeCheck.is(':checked') ? '1' : '0'
+      }));
+      downloadForm.append($('<input>', {
+        type: 'hidden',
+        name: 'include_doc_number',
+        value: includeDocNumberCheck.length && includeDocNumberCheck.is(':checked') ? '1' : '0'
+      }));
+
+      // Append form to body and submit
+      $('body').append(downloadForm);
+      console.log('[HOSTPN CSV] Submitting form...');
+      downloadForm.submit();
+
+      console.log('[HOSTPN CSV] Form submitted, download should start');
+
+      // Clean up form after a short delay
+      setTimeout(function() {
+        downloadForm.remove();
+        console.log('[HOSTPN CSV] Form removed from DOM');
+      }, 1000);
     });
   });
 })(jQuery);

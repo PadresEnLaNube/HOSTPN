@@ -536,4 +536,20 @@ class HOSTPN_Data {
 		// HOSTPN_Data::hostpn_relationships();
 		return ['ab' => esc_html(__('Grandfather / Grandmother', 'hostpn')), 'ba' => esc_html(__('Great-Grandfather / Great-Grandmother', 'hostpn')), 'bn' => esc_html(__('Great-Grandson / Great-Granddaughter', 'hostpn')), 'cd' => esc_html(__('Brother', 'hostpn')), 'cy' => esc_html(__('Spouse', 'hostpn')), 'hj' => esc_html(__('Son', 'hostpn')), 'hr' => esc_html(__('Brother', 'hostpn')), 'ni' => esc_html(__('Grandson / Granddaughter', 'hostpn')), 'pm' => esc_html(__('Father / Mother', 'hostpn')), 'sb' => esc_html(__('Nephew', 'hostpn')), 'sg' => esc_html(__('Father-in-Law', 'hostpn')), 'ti' => esc_html(__('Uncle', 'hostpn')), 'yn' => esc_html(__('Son-in-Law / Daughter-in-Law', 'hostpn')), 'tu' => esc_html(__('Guardian', 'hostpn')), 'ot' => esc_html(__('Other', 'hostpn')),];
 	}
+
+	/**
+	 * Load document identity types.
+	 *
+	 * @since    1.0.0
+	 */
+	public static function hostpn_identity_types() {
+		// HOSTPN_Data::hostpn_identity_types();
+		return [
+			'nif' => esc_html(__('NIF', 'hostpn')),
+			'nie' => esc_html(__('NIE', 'hostpn')),
+			'pas' => esc_html(__('Passport', 'hostpn')),
+			'cif' => esc_html(__('CIF', 'hostpn')),
+			'otro' => esc_html(__('Other', 'hostpn'))
+		];
+	}
 }

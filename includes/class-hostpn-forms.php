@@ -491,7 +491,6 @@ class HOSTPN_Forms {
                 <option value="<?php echo esc_attr($user->ID); ?>" <?php echo $has_role ? 'data-has-role="true"' : ''; ?>><?php echo esc_html($user->display_name . ' (' . $user->user_email . ')'); ?><?php if ($has_role): ?> ✓<?php endif; ?></option>
               <?php endforeach; ?>
             </select>
-            <p class="hostpn-font-size-small hostpn-color-gray hostpn-mt-5"><?php esc_html_e('Hold Ctrl (Windows) or Cmd (Mac) to select multiple users. Users with ✓ already have this role.', 'hostpn'); ?></p>
           </div>
           <div class="hostpn-role-actions hostpn-mb-20">
             <input type="hidden" class="hostpn-role-nonce" value="<?php echo esc_attr(wp_create_nonce('hostpn-role-assignment')); ?>">
@@ -525,7 +524,7 @@ class HOSTPN_Forms {
             <div class="hostpn-content hostpn-pl-10 hostpn-toggle-content hostpn-mb-20 hostpn-display-none-soft">
               <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
                 <div class="hostpn-section-info-block hostpn-mb-20">
-                  <i class="material-icons-outlined hostpn-section-info-icon">info_outline</i>
+                  <i class="material-icons-outlined hostpn-section-info-icon">info</i>
                   <small><?php echo wp_kses_post($input_array['description']); ?></small>
                 </div>
               <?php endif ?>
@@ -591,7 +590,7 @@ class HOSTPN_Forms {
           <div class="hostpn-content hostpn-pl-10 hostpn-toggle-content hostpn-mb-20 hostpn-display-none-soft">
             <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
               <div class="hostpn-section-info-block hostpn-mb-20">
-                <i class="material-icons-outlined hostpn-section-info-icon">info_outline</i>
+                <i class="material-icons-outlined hostpn-section-info-icon">info</i>
                 <small><?php echo wp_kses_post($input_array['description']); ?></small>
               </div>
             <?php endif ?>

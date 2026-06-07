@@ -72,7 +72,7 @@ class HOSTPN_Post_Type_Guest
             'input' => 'select',
             'parent' => 'this',
             'required' => true,
-            'options' => ['nif' => esc_html(__('NIF', 'hostpn')), 'nie' => esc_html(__('NIE', 'hostpn')), 'pas' => esc_html(__('Passport', 'hostpn')), 'cif' => esc_html(__('CIF', 'hostpn')), 'otro' => esc_html(__('Other', 'hostpn'))],
+            'options' => HOSTPN_Data::hostpn_identity_types(),
             'xml' => 'tipoDocumento',
             'label' => esc_html(__('Document type', 'hostpn')),
             'placeholder' => esc_html(__('Document type', 'hostpn')),
@@ -361,51 +361,20 @@ class HOSTPN_Post_Type_Guest
                 exit;
             }
 
-            // Determine the correct user for the guest post based on email
+            // The author of the guest post is always the logged-in user who creates it
+            // This ensures guests appear in the creator's list
+            $guest_user_id = get_current_user_id();
+
+            // Store the guest's WordPress user ID in meta if they have an account
             $guest_email = !empty($_POST['hostpn_email']) ? sanitize_email(wp_unslash($_POST['hostpn_email'])) : '';
-            $guest_user_id = get_current_user_id(); // Default to current user
-
             if (!empty($guest_email)) {
-                // Check if a user with this email already exists
                 $existing_user = get_user_by('email', $guest_email);
-
                 if ($existing_user) {
-                    // Use existing user
-                    $guest_user_id = $existing_user->ID;
-                } else {
-                    // Get guest name and surname for new user creation
-                    $guest_name = !empty($_POST['hostpn_name']) ? sanitize_text_field(wp_unslash($_POST['hostpn_name'])) : '';
-                    $guest_surname = !empty($_POST['hostpn_surname']) ? sanitize_text_field(wp_unslash($_POST['hostpn_surname'])) : '';
-                    
-                    // Create new user with the guest email
-                    $user_functions = new HOSTPN_Functions_User();
-                    $display_name = trim($guest_name . ' ' . $guest_surname);
-                    $username = sanitize_user($guest_email);
-
-                    // Generate a random password for the new user
-                    $random_password = wp_generate_password(12, false);
-
-                    $guest_user_id = $user_functions->insert_user(
-                        $username,
-                        $random_password,
-                        $guest_email,
-                        $guest_name,
-                        $guest_surname,
-                        $display_name,
-                        '',
-                        '',
-                        '',
-                        ['hostpn_role_guest']
-                    );
-
-                    // If user creation failed, fall back to current user
-                    if (!$guest_user_id) {
-                        $guest_user_id = get_current_user_id();
-                    }
+                    update_post_meta($post_id, 'hostpn_guest_wp_user_id', $existing_user->ID);
                 }
             }
 
-            // Update the post author to the correct user
+            // Update the post author to the logged-in user
             wp_update_post(['ID' => $post_id, 'post_author' => $guest_user_id]);
 
             if (!array_key_exists('hostpn_duplicate', $_POST)) {
@@ -499,6 +468,11 @@ class HOSTPN_Post_Type_Guest
                     }
                 }
             }
+
+            // Clear caches to ensure guest is immediately available in frontend
+            clean_post_cache($post_id);
+            wp_cache_delete('last_changed', 'posts');
+            wp_cache_flush();
         }
     }
 
@@ -522,42 +496,16 @@ class HOSTPN_Post_Type_Guest
                             $guest_name = !empty($hostpn_name) ? $hostpn_name : '';
                             $guest_surname = !empty($hostpn_surname) ? $hostpn_surname : '';
 
-                            // Determine the user ID for the guest post
-                            $guest_user_id = get_current_user_id(); // Default to current user
+                            // The author of the guest post is always the logged-in user who creates it
+                            // This ensures guests appear in the creator's list
+                            $guest_user_id = get_current_user_id();
 
+                            // Store the guest's user ID in meta if they have a WordPress account
+                            $guest_wp_user_id = 0;
                             if (!empty($guest_email)) {
-                                // Check if a user with this email already exists
                                 $existing_user = get_user_by('email', $guest_email);
-
                                 if ($existing_user) {
-                                    // Use existing user
-                                    $guest_user_id = $existing_user->ID;
-                                } else {
-                                    // Create new user with the guest email
-                                    $user_functions = new HOSTPN_Functions_User();
-                                    $display_name = trim($guest_name . ' ' . $guest_surname);
-                                    $username = sanitize_user($guest_email);
-
-                                    // Generate a random password for the new user
-                                    $random_password = wp_generate_password(12, false);
-
-                                    $guest_user_id = $user_functions->insert_user(
-                                        $username,
-                                        $random_password,
-                                        $guest_email,
-                                        $guest_name,
-                                        $guest_surname,
-                                        $display_name,
-                                        '',
-                                        '',
-                                        '',
-                                        ['hostpn_role_guest']
-                                    );
-
-                                    // If user creation failed, fall back to current user
-                                    if (!$guest_user_id) {
-                                        $guest_user_id = get_current_user_id();
-                                    }
+                                    $guest_wp_user_id = $existing_user->ID;
                                 }
                             }
 
@@ -580,7 +528,23 @@ class HOSTPN_Post_Type_Guest
                                 }
                             }
 
+                            // Store the guest's WordPress user ID if they have an account
+                            if ($guest_wp_user_id > 0) {
+                                update_post_meta($guest_id, 'hostpn_guest_wp_user_id', $guest_wp_user_id);
+                            }
+
+                            // Build title from form data
+                            $guest_name = !empty($key_value['hostpn_name']) ? $key_value['hostpn_name'] : '';
+                            $guest_surname = !empty($key_value['hostpn_surname']) ? $key_value['hostpn_surname'] : '';
+                            $guest_surname_alt = !empty($key_value['hostpn_surname_alt']) ? $key_value['hostpn_surname_alt'] : '';
+                            update_post_meta($guest_id, 'hostpn_title', trim($guest_name . ' ' . $guest_surname . ' ' . $guest_surname_alt));
+
                             wp_update_post(['ID' => $guest_id, 'post_author' => $guest_user_id,]);
+
+                            // Clear caches to ensure guest is immediately available
+                            clean_post_cache($guest_id);
+                            wp_cache_delete('last_changed', 'posts');
+                            wp_cache_flush();
 
                             break;
                         case 'post_edit':

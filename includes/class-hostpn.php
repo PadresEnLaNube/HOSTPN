@@ -52,7 +52,7 @@ class HOSTPN {
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.35';
+			$this->version = '1.0.46';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -233,6 +233,14 @@ class HOSTPN {
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-selector.php';
 
+		/**
+		 * Financial management classes.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-post-type-financial-record.php';
+		require_once HOSTPN_DIR . 'includes/class-hostpn-financial-csv-parser.php';
+		require_once HOSTPN_DIR . 'includes/class-hostpn-financial-importer.php';
+		require_once HOSTPN_DIR . 'includes/class-hostpn-financial.php';
+
 		$this->loader = new HOSTPN_Loader();
 	}
 
@@ -278,6 +286,7 @@ class HOSTPN {
 		$plugin_user = new HOSTPN_Functions_User();
 		$this->loader->hostpn_add_filter('userspn_register_fields', $plugin_user, 'hostpn_user_register_fields', 10, 2);
 		$this->loader->hostpn_add_action('user_register', $plugin_user, 'hostpn_user_register', 11, 1);
+		$this->loader->hostpn_add_action('userspn_profile_create', $plugin_user, 'hostpn_user_register', 11, 1);
 
 		$plugin_notifications = new HOSTPN_Notifications();
 		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_notifications, 'hostpn_guest_notification', 1000, 5);
@@ -347,6 +356,12 @@ class HOSTPN {
 		$this->loader->hostpn_add_filter('manage_hostpn_part_posts_columns', $plugin_post_type_part, 'hostpn_part_custom_columns');
 		$this->loader->hostpn_add_action('manage_hostpn_part_posts_custom_column', $plugin_post_type_part, 'hostpn_part_custom_column_content', 10, 2);
 		$this->loader->hostpn_add_filter('manage_edit-hostpn_part_sortable_columns', $plugin_post_type_part, 'hostpn_part_sortable_columns');
+
+		// Financial record post type
+		$plugin_post_type_financial_record = new HOSTPN_Post_Type_Financial_Record();
+		$this->loader->hostpn_add_action('init', $plugin_post_type_financial_record, 'hostpn_financial_record_register_post_type');
+		$this->loader->hostpn_add_action('add_meta_boxes', $plugin_post_type_financial_record, 'hostpn_financial_record_add_meta_boxes');
+		$this->loader->hostpn_add_action('save_post_hostpn_financial_record', $plugin_post_type_financial_record, 'hostpn_financial_record_save_post', 10, 3);
 	}
 
 	/**

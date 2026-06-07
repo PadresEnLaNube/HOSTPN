@@ -125,11 +125,14 @@ class HOSTPN_XML {
   /**
    * Genera un CSV con los hospedajes (Parts) de un año concreto.
    *
-   * Formato: <NRUA>;<checkin>;<checkout>;<huéspedes>;<opcional código_finalidad 1-5>
+   * Formato: <NRUA>;<checkin>;<checkout>;<huéspedes>;<código_finalidad>;<opcionales>
    *
    * @param int $year Año para filtrar las estancias (por fecha de entrada).
+   * @param bool $include_guest_name Incluir nombre y apellidos del titular del contrato.
+   * @param bool $include_doc_type Incluir tipo de documento del titular.
+   * @param bool $include_doc_number Incluir número de documento del titular.
    */
-  public function hostpn_part_csv_download($year) {
+  public function hostpn_part_csv_download($year, $include_guest_name = false, $include_doc_type = false, $include_doc_number = false) {
     $year = absint($year);
     if (empty($year)) {
       $year = (int) gmdate('Y', current_time('timestamp'));
@@ -177,6 +180,7 @@ class HOSTPN_XML {
       $check_in  = $this->hostpn_format_csv_date($check_in_raw);
       $check_out = $this->hostpn_format_csv_date($check_out_raw);
 
+      // Campos básicos
       $line = [
         $this->hostpn_csv_sanitize($nrua),
         $this->hostpn_csv_sanitize($check_in),
@@ -184,6 +188,41 @@ class HOSTPN_XML {
         $this->hostpn_csv_sanitize($guests),
         $this->hostpn_csv_sanitize($purpose_code),
       ];
+
+      // Obtener el titular del contrato (contract holder)
+      $contract_holder_id = get_post_meta($part_id, 'hostpn_contract_holder', true);
+
+      // Campos opcionales del huésped titular
+      if ($include_guest_name) {
+        $guest_name = '';
+        $guest_surname = '';
+        $guest_surname_alt = '';
+
+        if ($contract_holder_id) {
+          $guest_name = get_post_meta($contract_holder_id, 'hostpn_name', true);
+          $guest_surname = get_post_meta($contract_holder_id, 'hostpn_surname', true);
+          $guest_surname_alt = get_post_meta($contract_holder_id, 'hostpn_surname_alt', true);
+        }
+
+        $full_name = trim($guest_name . ' ' . $guest_surname . ' ' . $guest_surname_alt);
+        $line[] = $this->hostpn_csv_sanitize($full_name);
+      }
+
+      if ($include_doc_type) {
+        $doc_type = '';
+        if ($contract_holder_id) {
+          $doc_type = strtoupper(get_post_meta($contract_holder_id, 'hostpn_identity', true));
+        }
+        $line[] = $this->hostpn_csv_sanitize($doc_type);
+      }
+
+      if ($include_doc_number) {
+        $doc_number = '';
+        if ($contract_holder_id) {
+          $doc_number = get_post_meta($contract_holder_id, 'hostpn_identity_number', true);
+        }
+        $line[] = $this->hostpn_csv_sanitize($doc_number);
+      }
 
       $lines[] = implode(';', $line);
     }
@@ -205,7 +244,7 @@ class HOSTPN_XML {
     // BOM UTF-8 para Excel
     echo "\xEF\xBB\xBF";
     echo $output;
-    
+
     // Asegurar que no haya nada más después
     if (function_exists('fastcgi_finish_request')) {
       fastcgi_finish_request();

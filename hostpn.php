@@ -13,7 +13,10 @@
  * Plugin Name:       Hospedajes España - HOSTPN
  * Plugin URI:        https://padresenlanube.com/plugins/hostpn/
  * Description:       Allow you to ask for, save and send the information required by spanish Royal Decree 933/2021, of October 26.
- * Version:           1.0.35
+ * Version:           1.0.46
+ * Requires at least: 3.5
+ * Tested up to:      7.0
+ * Requires PHP:      7.2
  * Author:            Padres en la Nube
  * Author URI:        https://padresenlanube.com/
  * Author UNotificationsRI:        https://padresenlanube.com/
@@ -33,7 +36,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('HOSTPN_VERSION', '1.0.35');
+define('HOSTPN_VERSION', '1.0.46');
 define('HOSTPN_DIR', plugin_dir_path(__FILE__));
 define('HOSTPN_URL', plugin_dir_url(__FILE__));
 define('HOSTPN_CPTS', [

@@ -78,6 +78,113 @@ class HOSTPN_Notifications {
   }
 
   /**
+   * Send guest notification by post ID.
+   *
+   * Collects data from post meta and sends notification email.
+   * Can be called directly when a guest post is created.
+   *
+   * @param int $guest_post_id The guest post ID.
+   * @return bool True if notification was sent, false otherwise.
+   */
+  public static function send_guest_notification_by_post_id( $guest_post_id ) {
+    // Check if notifications are enabled
+    $notifications_enabled = get_option( 'hostpn_notifications_enabled' );
+    if ( $notifications_enabled !== 'on' ) {
+      error_log( 'HOSTPN Notification: skipped — notifications not enabled (value: ' . var_export( $notifications_enabled, true ) . ')' );
+      return false;
+    }
+
+    // Gather recipients
+    $recipients = self::get_notification_recipients();
+    if ( empty( $recipients ) ) {
+      error_log( 'HOSTPN Notification: skipped — no recipients configured' );
+      return false;
+    }
+
+    // Get post author (the user)
+    $post = get_post( $guest_post_id );
+    if ( ! $post || $post->post_type !== 'hostpn_guest' ) {
+      error_log( 'HOSTPN Notification: skipped — invalid guest post ID: ' . $guest_post_id );
+      return false;
+    }
+
+    $user_id = $post->post_author;
+
+    // Collect data from post meta AND user meta
+    $key_value = [];
+
+    // Get all post meta
+    $post_meta = get_post_meta( $guest_post_id );
+    foreach ( $post_meta as $key => $values ) {
+      if ( strpos( $key, 'hostpn_' ) === 0 && ! empty( $values[0] ) ) {
+        $key_value[ $key ] = $values[0];
+      }
+    }
+
+    // Also check user meta for fields that might not be in post meta yet
+    $user_meta = get_user_meta( $user_id );
+    foreach ( $user_meta as $key => $values ) {
+      if ( strpos( $key, 'hostpn_' ) === 0 && ! isset( $key_value[ $key ] ) && ! empty( $values[0] ) ) {
+        $key_value[ $key ] = $values[0];
+      }
+    }
+
+    // Get name from post meta or user meta
+    if ( empty( $key_value['hostpn_name'] ) ) {
+      $first_name = get_user_meta( $user_id, 'first_name', true );
+      if ( ! empty( $first_name ) ) {
+        $key_value['hostpn_name'] = $first_name;
+      }
+    }
+
+    if ( empty( $key_value['hostpn_surname'] ) ) {
+      $last_name = get_user_meta( $user_id, 'last_name', true );
+      if ( ! empty( $last_name ) ) {
+        $key_value['hostpn_surname'] = $last_name;
+      }
+    }
+
+    // Get email from post meta or user
+    if ( empty( $key_value['hostpn_email'] ) ) {
+      $user = get_userdata( $user_id );
+      if ( $user && ! empty( $user->user_email ) ) {
+        $key_value['hostpn_email'] = $user->user_email;
+      }
+    }
+
+    // Build full name
+    $guest_name        = ! empty( $key_value['hostpn_name'] ) ? $key_value['hostpn_name'] : '';
+    $guest_surname     = ! empty( $key_value['hostpn_surname'] ) ? $key_value['hostpn_surname'] : '';
+    $guest_surname_alt = ! empty( $key_value['hostpn_surname_alt'] ) ? $key_value['hostpn_surname_alt'] : '';
+    $full_name = trim( $guest_name . ' ' . $guest_surname . ' ' . $guest_surname_alt );
+
+    $subject = sprintf(
+      /* translators: %1$s: guest full name, %2$s: site name */
+      __( 'New guest registered: %1$s - %2$s', 'hostpn' ),
+      $full_name,
+      get_bloginfo( 'name' )
+    );
+
+    $content = self::build_notification_content( $key_value, $full_name, $guest_post_id );
+
+    // Send to each recipient
+    $labels = array_map( function( $r ) {
+      return $r['type'] === 'user_id' ? 'user:' . $r['value'] : $r['value'];
+    }, $recipients );
+    error_log( 'HOSTPN Notification: sending to ' . count( $recipients ) . ' recipient(s): ' . implode( ', ', $labels ) );
+
+    foreach ( $recipients as $recipient ) {
+      if ( $recipient['type'] === 'user_id' ) {
+        self::send_notification_to_user( (int) $recipient['value'], $subject, $content );
+      } else {
+        self::send_notification( $recipient['value'], $subject, $content );
+      }
+    }
+
+    return true;
+  }
+
+  /**
    * Collect all notification recipients as structured data.
    *
    * @return array List of [ 'type' => 'user_id'|'email', 'value' => int|string ].

@@ -303,7 +303,7 @@
     if($('.hostpn-popup-close').length){
       $(document).on('click', '.hostpn-popup-close', function(e){
         e.preventDefault();
-        hostpn_popups.closepopup();
+        HOSTPN_Popups.close();
       });
     }
 
@@ -361,11 +361,21 @@
 
       if (hostpn_action.popup != '') {
         $(window).on('load', function(e) {
+          // Verificar si el usuario está logueado y se solicita tab register
+          var isLoggedIn = $('body').hasClass('hostpn-body-logged-in');
+          var requestedTab = hostpn_action.tab;
+
+          // Si el usuario está logueado y solicita tab register, no abrir popup
+          if (requestedTab === 'register' && isLoggedIn) {
+            return;
+          }
+
+          // Abrir popup normalmente
           HOSTPN_Popups.open($('#' + hostpn_action.popup));
 
-          if (typeof hostpn_action.tab != '') {
-            $('.userspn-tab-links[data-userspn-id="userspn-tab-' + hostpn_action.tab + '"]').click();
-            $('#userspn-' + hostpn_action.tab + ' input#userspn_email').focus();
+          if (requestedTab && requestedTab != '') {
+            $('.userspn-tab-links[data-userspn-id="userspn-tab-' + requestedTab + '"]').click();
+            $('#userspn-' + requestedTab + ' input#userspn_email').focus();
           } else {
             $('.userspn-tab-links[data-userspn-id="userspn-tab-login"]').click();
             $('#userspn-login input#user_login').focus();

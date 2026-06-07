@@ -73,6 +73,11 @@ class HOSTPN_Common {
     }
 
 		wp_enqueue_style($this->plugin_name, HOSTPN_URL . 'assets/css/hostpn.css', [], $this->version, 'all');
+
+		// Enqueue financial management styles (admin only)
+		if (is_admin()) {
+			wp_enqueue_style($this->plugin_name . '-financial', HOSTPN_URL . 'assets/css/admin/hostpn-financial.css', [$this->plugin_name], $this->version, 'all');
+		}
 	}
 
 	/**
@@ -114,9 +119,18 @@ class HOSTPN_Common {
 		wp_enqueue_script($this->plugin_name . '-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
 		wp_enqueue_script($this->plugin_name . '-ajax', HOSTPN_URL . 'assets/js/hostpn-ajax.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
 
+		// Enqueue financial management script
+		wp_enqueue_script($this->plugin_name . '-financial', HOSTPN_URL . 'assets/js/hostpn-financial.js', ['jquery', $this->plugin_name . '-ajax'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+
 		wp_localize_script($this->plugin_name . '-ajax', 'hostpn_ajax', [
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'hostpn_ajax_nonce' => wp_create_nonce('hostpn-nonce'),
+			'plugin_url' => HOSTPN_URL,
+			'translations' => [
+				'loading' => esc_html__('Loading...', 'hostpn'),
+				'confirm_delete' => esc_html__('Are you sure you want to delete this record?', 'hostpn'),
+				'confirm_batch_delete' => esc_html__('Are you sure you want to delete all records from this import batch?', 'hostpn'),
+			],
 		]);
 
 		if (class_exists('USERSPN')) {

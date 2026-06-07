@@ -417,6 +417,45 @@ class HOSTPN_Post_Type_Accommodation {
         'label' => esc_html(__('Audiovisual Equipment', 'hostpn')),
       ];
 
+      // Financial Management Section Start
+      $hostpn_fields_meta['hostpn_financial_section_start'] = [
+        'id' => 'hostpn_financial_section_start',
+        'section' => 'start',
+        'class' => 'hostpn-financial-section',
+        'label' => esc_html(__('Financial Management', 'hostpn')),
+        'description' => esc_html(__('Import and manage financial data from booking platforms (Airbnb, Booking.com)', 'hostpn')),
+      ];
+
+      // Import button
+      $hostpn_fields_meta['hostpn_financial_import_btn'] = [
+        'id' => 'hostpn_financial_import_btn',
+        'input' => 'html',
+        'html_content' => '<button type="button" class="hostpn-btn hostpn-financial-import-btn hostpn-mb-20" data-accommodation-id="' . get_the_ID() . '">
+          <i class="material-icons-outlined hostpn-vertical-align-middle">upload_file</i>
+          <span class="hostpn-vertical-align-middle">' . esc_html(__('Import CSV', 'hostpn')) . '</span>
+        </button>',
+      ];
+
+      // Dashboard container (loaded via AJAX)
+      $hostpn_fields_meta['hostpn_financial_dashboard'] = [
+        'id' => 'hostpn_financial_dashboard',
+        'input' => 'html',
+        'html_content' => '<div id="hostpn-financial-dashboard" data-accommodation-id="' . get_the_ID() . '">
+          <div class="hostpn-loader-circle-wrapper hostpn-text-align-center hostpn-p-30">
+            <div class="hostpn-loader-circle"></div>
+            <p>' . esc_html(__('Loading financial data...', 'hostpn')) . '</p>
+          </div>
+        </div>',
+      ];
+
+      // Financial Section End
+      $hostpn_fields_meta['hostpn_financial_section_end'] = [
+        'id' => 'hostpn_financial_section_end',
+        'section' => 'end',
+        'class' => 'hostpn-financial-section',
+        'label' => esc_html(__('Financial Management', 'hostpn')),
+      ];
+
     return $hostpn_fields_meta;
   }
 
@@ -1144,6 +1183,22 @@ class HOSTPN_Post_Type_Accommodation {
                           </div>
                         </a>
                       </li>
+                      <?php if (current_user_can('manage_options')) : ?>
+                        <li>
+                          <a href="#" class="hostpn-popup-open-ajax hostpn-text-decoration-none"
+                             data-hostpn-popup-id="hostpn-popup-financial-view"
+                             data-hostpn-ajax-type="hostpn_financial_view">
+                            <div class="hostpn-display-table hostpn-width-100-percent">
+                              <div class="hostpn-display-inline-table hostpn-width-70-percent">
+                                <p><?php esc_html_e('Financial Data', 'hostpn'); ?></p>
+                              </div>
+                              <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
+                                <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">account_balance</i>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      <?php endif; ?>
                       <li>
                         <a href="#" class="hostpn-popup-open" data-hostpn-popup-id="hostpn-popup-accommodation-remove">
                           <div class="hostpn-display-table hostpn-width-100-percent">

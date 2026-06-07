@@ -155,7 +155,7 @@ class HOSTPN_Functions_User {
         'class' => 'hostpn-select hostpn-width-100-percent',
         'input' => 'select',
         'parent' => 'this',
-        'options' => ['pas' => esc_html(__('Passport', 'hostpn')), 'nif' => esc_html(__('NIF', 'hostpn')), 'nie' => esc_html(__('NIE', 'hostpn')), 'cif' => esc_html(__('CIF', 'hostpn')), 'otro' => esc_html(__('Other', 'hostpn'))],
+        'options' => HOSTPN_Data::hostpn_identity_types(),
         'required' => true,
         'xml' => 'tipoDocumento',
         'label' => esc_html(__('Document type', 'hostpn')),
@@ -338,29 +338,112 @@ class HOSTPN_Functions_User {
       return;
     }
 
+    // If we're in the middle of creating a guest via AJAX, skip auto-creation
+    // The guest will be created properly by hostpn_guest_form_save
+    if (isset($_POST['hostpn_guest_form']) || isset($_POST['hostpn_form_type'])) {
+      return;
+    }
+
+    // Check if user data has been populated yet (prevent creating empty guest)
+    // During auto-registration: first hook (user_register) fires BEFORE data is saved
+    // Second hook (userspn_profile_create) fires AFTER data is saved
+    // Only create guest when we have actual user data
+    $first_name = get_user_meta($user_id, 'first_name', true);
+    $user_email = get_userdata($user_id)->user_email;
+    $has_hostpn_data = false;
+
+    $user_meta = get_user_meta($user_id);
+    if (!empty($user_meta)) {
+      foreach ($user_meta as $key => $value) {
+        if (strpos($key, 'hostpn_') === 0 && !empty($value[0])) {
+          $has_hostpn_data = true;
+          break;
+        }
+      }
+    }
+
+    // If no meaningful data exists yet, skip guest creation
+    // The next hook execution (userspn_profile_create) will have the data
+    if (empty($first_name) && !$has_hostpn_data) {
+      return;
+    }
+
+    // Check if guest already exists for this user to prevent duplicates
+    $existing_guest = get_posts(array(
+      'post_type' => 'hostpn_guest',
+      'author' => $user_id,
+      'posts_per_page' => 1,
+      'post_status' => 'publish',
+      'fields' => 'ids'
+    ));
+
+    if (!empty($existing_guest)) {
+      // Guest already exists, skip creation
+      return;
+    }
+
     $post_functions = new HOSTPN_Functions_Post();
     $hostpn_title = gmdate('Y-m-d H:i:s', current_time('timestamp')) . ' - ' . bin2hex(openssl_random_pseudo_bytes(4));
     $hostpn_post_content = __('Special needs, allergies, important situations to highlight...', 'hostpn');
 
     $hostpn_id = $post_functions->hostpn_insert_post(esc_html($hostpn_title), $hostpn_post_content, '', sanitize_title(esc_html($hostpn_title)), 'hostpn_guest', 'publish', $user_id);
 
-    if ($hostpn_id && class_exists('MAILPN')) {
-      $email_contents = [];
+    if ($hostpn_id) {
+      // Copy user meta to post meta immediately so it's available for notification
+      $user_meta = get_user_meta($user_id);
+      if (!empty($user_meta)) {
+        foreach ($user_meta as $user_meta_key => $user_meta_value) {
+          if (strpos($user_meta_key, 'hostpn_') !== false && !empty($user_meta_value[0])) {
+            update_post_meta($hostpn_id, $user_meta_key, $user_meta_value[0]);
+          }
+        }
+      }
 
-      ob_start();
-      ?>
-        <h2><?php esc_html_e('Dear guest', 'hostpn'); ?></h2>
-        <p><?php esc_html_e('We have successfully received your registration and application.', 'hostpn'); ?></p>
-        <p><?php esc_html_e('You can now add more guests by yourself or share the link to other companions to allow them fulfill their own form.', 'hostpn'); ?></p>
-        
-        <div class="hostpn-text-align-center hostpn-mt-30 hostpn-mb-50">
-          <a href="<?php echo esc_url(home_url('guests')); ?>" class="hostpn-btn"><?php esc_html_e('Guests page', 'hostpn'); ?></a>
-        </div>
-      <?php
-      $mail_content = ob_get_contents(); 
-      ob_end_clean(); 
+      // Copy first_name and last_name to hostpn_name and hostpn_surname
+      $first_name = get_user_meta($user_id, 'first_name', true);
+      if (!empty($first_name)) {
+        update_post_meta($hostpn_id, 'hostpn_name', $first_name);
+      }
 
-      do_shortcode('[mailpn-sender mailpn_user_to="' . $user_id . '" mailpn_subject="' . esc_html(__('Application received', 'hostpn')) . '"]' . $mail_content . '[/mailpn-sender]');
+      $last_name = get_user_meta($user_id, 'last_name', true);
+      if (!empty($last_name)) {
+        update_post_meta($hostpn_id, 'hostpn_surname', $last_name);
+      }
+
+      $hostpn_surname_alt = get_user_meta($user_id, 'hostpn_surname_alt', true);
+      update_post_meta($hostpn_id, 'hostpn_title', $first_name . ' ' . $last_name . ' ' . $hostpn_surname_alt);
+      update_post_meta($hostpn_id, 'hostpn_description', __('Special needs, allergies, important situations to highlight...', 'hostpn'));
+
+      // Clear caches to ensure guest is immediately available
+      clean_post_cache($hostpn_id);
+      wp_cache_delete($user_id, 'user_meta');
+      wp_cache_delete('last_changed', 'posts');
+
+      // Force WordPress to refresh post queries
+      wp_cache_flush();
+
+      // Send admin notification with guest data table
+      if (class_exists('HOSTPN_Notifications')) {
+        HOSTPN_Notifications::send_guest_notification_by_post_id($hostpn_id);
+      }
+
+      // Send confirmation email to user
+      if (class_exists('MAILPN')) {
+        ob_start();
+        ?>
+          <h2><?php esc_html_e('Dear guest', 'hostpn'); ?></h2>
+          <p><?php esc_html_e('We have successfully received your registration and application.', 'hostpn'); ?></p>
+          <p><?php esc_html_e('You can now add more guests by yourself or share the link to other companions to allow them fulfill their own form.', 'hostpn'); ?></p>
+
+          <div class="hostpn-text-align-center hostpn-mt-30 hostpn-mb-50">
+            <a href="<?php echo esc_url(home_url('guests')); ?>" class="hostpn-btn"><?php esc_html_e('Guests page', 'hostpn'); ?></a>
+          </div>
+        <?php
+        $mail_content = ob_get_contents();
+        ob_end_clean();
+
+        do_shortcode('[mailpn-sender mailpn_user_to="' . $user_id . '" mailpn_subject="' . esc_html(__('Application received', 'hostpn')) . '"]' . $mail_content . '[/mailpn-sender]');
+      }
     }
   }
 
@@ -422,4 +505,5 @@ class HOSTPN_Functions_User {
       }
     }
   }
+
 }
