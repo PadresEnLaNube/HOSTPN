@@ -52,7 +52,7 @@ class HOSTPN {
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.50';
+			$this->version = '1.0.51';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -290,6 +290,7 @@ class HOSTPN {
 
 		$plugin_notifications = new HOSTPN_Notifications();
 		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_notifications, 'hostpn_guest_notification', 1000, 5);
+		$this->loader->hostpn_add_action('hostpn_send_delayed_guest_notification', $plugin_notifications, 'hostpn_send_delayed_guest_notification', 10, 1);
 	}
 
 	/**
@@ -436,6 +437,9 @@ class HOSTPN {
 	private function hostpn_load_ajax() {
 		$plugin_ajax = new HOSTPN_Ajax();
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_ajax', $plugin_ajax, 'hostpn_ajax_server');
+
+		$plugin_guest = new HOSTPN_Post_Type_Guest();
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_guest_resend_notification', $plugin_guest, 'hostpn_guest_resend_notification');
 	}
 
 	/**

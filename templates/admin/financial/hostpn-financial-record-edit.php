@@ -176,10 +176,7 @@ $meta = $record_data['meta'];
     </form>
 
     <div class="hostpn-financial-edit-loading" style="display: none;">
-      <div class="hostpn-loader-circle-wrapper hostpn-text-align-center">
-        <div class="hostpn-loader-circle"></div>
-        <p><?php esc_html_e('Saving changes...', 'hostpn'); ?></p>
-      </div>
+      <?php HOSTPN_Data::hostpn_popup_loader(); ?>
     </div>
   </div>
 </div>

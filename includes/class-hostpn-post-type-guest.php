@@ -924,6 +924,7 @@ class HOSTPN_Post_Type_Guest
         $new_columns['guest_info'] = esc_html(__('Guest Information', 'hostpn'));
         $new_columns['author_info'] = esc_html(__('Author', 'hostpn'));
         $new_columns['creation_date'] = esc_html(__('Fecha de creación', 'hostpn'));
+        $new_columns['resend_notification'] = esc_html(__('Notificación', 'hostpn'));
         return $new_columns;
     }
 
@@ -1003,6 +1004,49 @@ class HOSTPN_Post_Type_Guest
                 </p>
                 <?php
                 break;
+
+            case 'resend_notification':
+                // Get notification recipients for tooltip
+                $recipients = [];
+                $user_ids = get_option('hostpn_notifications_users', []);
+                if (!empty($user_ids) && is_array($user_ids)) {
+                    foreach ($user_ids as $user_id) {
+                        $user = get_userdata((int) $user_id);
+                        if ($user && !empty($user->user_email)) {
+                            $recipients[] = $user->user_email;
+                        }
+                    }
+                }
+
+                $external_emails = get_option('hostpn_notifications_external_email', []);
+                if (!empty($external_emails) && is_array($external_emails)) {
+                    foreach ($external_emails as $email) {
+                        if (is_email($email)) {
+                            $recipients[] = $email;
+                        }
+                    }
+                }
+
+                $tooltip_text = !empty($recipients)
+                    ? sprintf(__('Se enviará a: %s', 'hostpn'), implode(', ', $recipients))
+                    : __('No hay destinatarios configurados en Settings', 'hostpn');
+
+                $notifications_enabled = get_option('hostpn_notifications_enabled');
+                $button_disabled = ($notifications_enabled !== 'on' || empty($recipients)) ? 'disabled' : '';
+
+                ?>
+                <button
+                    type="button"
+                    class="button button-secondary hostpn-resend-notification hostpn-tooltip"
+                    data-post-id="<?php echo esc_attr($post_id); ?>"
+                    data-hostpn-tooltip="<?php echo esc_attr($tooltip_text); ?>"
+                    <?php echo $button_disabled; ?>
+                    style="display: flex; align-items: center; gap: 5px;">
+                    <i class="material-icons-outlined" style="font-size: 18px;">email</i>
+                    <?php echo esc_html(__('Reenviar', 'hostpn')); ?>
+                </button>
+                <?php
+                break;
         }
 
         $content = ob_get_contents();
@@ -1080,5 +1124,62 @@ class HOSTPN_Post_Type_Guest
             'user_data' => $user_data,
         ]);
         exit;
+    }
+
+    /**
+     * AJAX handler to resend guest notification email.
+     *
+     * @since    1.0.50
+     */
+    public function hostpn_guest_resend_notification()
+    {
+        // Verify nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'hostpn-admin-nonce')) {
+            wp_send_json_error([
+                'message' => esc_html(__('Security check failed: Invalid nonce.', 'hostpn')),
+            ]);
+        }
+
+        // Check user capabilities
+        if (!current_user_can('edit_posts')) {
+            wp_send_json_error([
+                'message' => esc_html(__('No tienes permisos para realizar esta acción.', 'hostpn')),
+            ]);
+        }
+
+        $post_id = !empty($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+
+        if (empty($post_id)) {
+            wp_send_json_error([
+                'message' => esc_html(__('ID de huésped inválido.', 'hostpn')),
+            ]);
+        }
+
+        // Verify post exists and is a guest
+        $post = get_post($post_id);
+        if (!$post || $post->post_type !== 'hostpn_guest') {
+            wp_send_json_error([
+                'message' => esc_html(__('El huésped no existe.', 'hostpn')),
+            ]);
+        }
+
+        // Send notification using the existing method
+        if (class_exists('HOSTPN_Notifications')) {
+            $result = HOSTPN_Notifications::send_guest_notification_by_post_id($post_id);
+
+            if ($result) {
+                wp_send_json_success([
+                    'message' => esc_html(__('Notificación reenviada correctamente.', 'hostpn')),
+                ]);
+            } else {
+                wp_send_json_error([
+                    'message' => esc_html(__('Error al enviar la notificación. Verifica la configuración.', 'hostpn')),
+                ]);
+            }
+        } else {
+            wp_send_json_error([
+                'message' => esc_html(__('El sistema de notificaciones no está disponible.', 'hostpn')),
+            ]);
+        }
     }
 }

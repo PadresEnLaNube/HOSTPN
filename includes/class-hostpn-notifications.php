@@ -31,57 +31,28 @@ class HOSTPN_Notifications {
       return;
     }
 
-    // Check if notifications are enabled
-    $notifications_enabled = get_option( 'hostpn_notifications_enabled' );
-    if ( $notifications_enabled !== 'on' ) {
-      error_log( 'HOSTPN Notification: skipped — notifications not enabled (value: ' . var_export( $notifications_enabled, true ) . ')' );
-      return;
-    }
+    // Schedule the notification to be sent after a short delay to ensure data is fully saved
+    // This prevents the email from being sent with incomplete data
+    wp_schedule_single_event( time() + 2, 'hostpn_send_delayed_guest_notification', [ $element_id ] );
+  }
 
-    // Gather recipients (user IDs + external emails)
-    $recipients = self::get_notification_recipients();
-
-    if ( empty( $recipients ) ) {
-      error_log( 'HOSTPN Notification: skipped — no recipients configured (users: ' . var_export( get_option( 'hostpn_notifications_users', [] ), true ) . ', external: ' . var_export( get_option( 'hostpn_notifications_external_email', [] ), true ) . ')' );
-      return;
-    }
-
-    // Build email content from submitted data
-    $guest_name        = ! empty( $key_value['hostpn_name'] ) ? $key_value['hostpn_name'] : '';
-    $guest_surname     = ! empty( $key_value['hostpn_surname'] ) ? $key_value['hostpn_surname'] : '';
-    $guest_surname_alt = ! empty( $key_value['hostpn_surname_alt'] ) ? $key_value['hostpn_surname_alt'] : '';
-
-    $full_name = trim( $guest_name . ' ' . $guest_surname . ' ' . $guest_surname_alt );
-
-    $subject = sprintf(
-      /* translators: %1$s: guest full name, %2$s: site name */
-      __( 'New guest registered: %1$s - %2$s', 'hostpn' ),
-      $full_name,
-      get_bloginfo( 'name' )
-    );
-
-    $content = self::build_notification_content( $key_value, $full_name, $element_id );
-
-    // Send to each recipient
-    $labels = array_map( function( $r ) {
-      return $r['type'] === 'user_id' ? 'user:' . $r['value'] : $r['value'];
-    }, $recipients );
-    error_log( 'HOSTPN Notification: sending to ' . count( $recipients ) . ' recipient(s): ' . implode( ', ', $labels ) );
-
-    foreach ( $recipients as $recipient ) {
-      if ( $recipient['type'] === 'user_id' ) {
-        self::send_notification_to_user( (int) $recipient['value'], $subject, $content );
-      } else {
-        self::send_notification( $recipient['value'], $subject, $content );
-      }
-    }
+  /**
+   * Handle delayed guest notification after data has been saved.
+   *
+   * This is called via wp_schedule_single_event to ensure all post meta
+   * is fully saved before sending the notification email.
+   *
+   * @param int $guest_post_id The guest post ID.
+   */
+  public function hostpn_send_delayed_guest_notification( $guest_post_id ) {
+    self::send_guest_notification_by_post_id( $guest_post_id );
   }
 
   /**
    * Send guest notification by post ID.
    *
    * Collects data from post meta and sends notification email.
-   * Can be called directly when a guest post is created.
+   * Can be called directly when a guest post is created or to resend notifications.
    *
    * @param int $guest_post_id The guest post ID.
    * @return bool True if notification was sent, false otherwise.

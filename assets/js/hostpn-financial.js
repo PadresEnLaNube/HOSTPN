@@ -164,12 +164,7 @@
       };
 
       // Show loading
-      $dashboard.html(
-        '<div class="hostpn-loader-circle-wrapper hostpn-text-align-center hostpn-p-30">' +
-        '<div class="hostpn-loader-circle"></div>' +
-        '<p>' + (hostpn_ajax.translations.loading || 'Loading...') + '</p>' +
-        '</div>'
-      );
+      $dashboard.html(hostpn_ajax.popup_loader);
 
       $.ajax({
         url: hostpn_ajax.ajax_url,
@@ -435,11 +430,7 @@
       var $modal = $('#hostpn-popup-financial-edit');
 
       // Show loading
-      $modal.html(
-        '<div class="hostpn-loader-circle-wrapper hostpn-text-align-center hostpn-p-30">' +
-        '<div class="hostpn-loader-circle"></div>' +
-        '</div>'
-      ).fadeIn();
+      $modal.html(hostpn_ajax.popup_loader).fadeIn();
 
       $.ajax({
         url: hostpn_ajax.ajax_url,

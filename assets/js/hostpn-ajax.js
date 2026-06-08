@@ -198,7 +198,7 @@
           });
         },
         afterClose: function() {
-          hostpn_popup_element.find('.hostpn-popup-content').html('<div class="hostpn-loader-circle-wrapper"><div class="hostpn-text-align-center"><div class="hostpn-loader-circle"><div></div><div></div><div></div><div></div></div></div></div>');
+          hostpn_popup_element.find('.hostpn-popup-content').html(hostpn_ajax.popup_loader);
         },
       });
     });

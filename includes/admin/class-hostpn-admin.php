@@ -59,5 +59,11 @@ class HOSTPN_Admin {
 	public function enqueue_scripts() {
 		wp_enqueue_media();
 		wp_enqueue_script($this->plugin_name . '-admin', HOSTPN_URL . 'assets/js/admin/hostpn-admin.js', ['jquery'], $this->version, false);
+
+		// Localize script with nonce for AJAX requests
+		wp_localize_script($this->plugin_name . '-admin', 'hostpn_admin', [
+			'nonce' => wp_create_nonce('hostpn-admin-nonce'),
+			'ajaxurl' => admin_url('admin-ajax.php')
+		]);
 	}
 }

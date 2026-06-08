@@ -437,15 +437,15 @@ class HOSTPN_Post_Type_Accommodation {
       ];
 
       // Dashboard container (loaded via AJAX)
+      // Get loader HTML from HOSTPN_Data
+      ob_start();
+      HOSTPN_Data::hostpn_popup_loader();
+      $loader_html = ob_get_clean();
+
       $hostpn_fields_meta['hostpn_financial_dashboard'] = [
         'id' => 'hostpn_financial_dashboard',
         'input' => 'html',
-        'html_content' => '<div id="hostpn-financial-dashboard" data-accommodation-id="' . get_the_ID() . '">
-          <div class="hostpn-loader-circle-wrapper hostpn-text-align-center hostpn-p-30">
-            <div class="hostpn-loader-circle"></div>
-            <p>' . esc_html(__('Loading financial data...', 'hostpn')) . '</p>
-          </div>
-        </div>',
+        'html_content' => '<div id="hostpn-financial-dashboard" data-accommodation-id="' . get_the_ID() . '">' . $loader_html . '</div>',
       ];
 
       // Financial Section End
@@ -901,16 +901,16 @@ class HOSTPN_Post_Type_Accommodation {
     $archive_template_path = false;
     
     if (defined('HOSTPN_DIR')) {
-      $single_template_path = HOSTPN_DIR . 'block-templates/single-hostpn_accommodation.html';
-      $archive_template_path = HOSTPN_DIR . 'block-templates/archive-hostpn_accommodation.html';
+      $single_template_path = HOSTPN_DIR . 'templates/block-templates/single-hostpn_accommodation.html';
+      $archive_template_path = HOSTPN_DIR . 'templates/block-templates/archive-hostpn_accommodation.html';
     }
-    
+
     if (!$single_template_path || !file_exists($single_template_path)) {
-      $single_template_path = plugin_dir_path(dirname(__FILE__)) . 'block-templates/single-hostpn_accommodation.html';
+      $single_template_path = plugin_dir_path(dirname(__FILE__)) . 'templates/block-templates/single-hostpn_accommodation.html';
     }
-    
+
     if (!$archive_template_path || !file_exists($archive_template_path)) {
-      $archive_template_path = plugin_dir_path(dirname(__FILE__)) . 'block-templates/archive-hostpn_accommodation.html';
+      $archive_template_path = plugin_dir_path(dirname(__FILE__)) . 'templates/block-templates/archive-hostpn_accommodation.html';
     }
     
     // Create template objects for Site Editor
@@ -988,11 +988,11 @@ class HOSTPN_Post_Type_Accommodation {
       // Get the appropriate template path
       $template_path = false;
       if (defined('HOSTPN_DIR')) {
-        $template_path = HOSTPN_DIR . 'block-templates/' . $slug . '.html';
+        $template_path = HOSTPN_DIR . 'templates/block-templates/' . $slug . '.html';
       }
-      
+
       if (!$template_path || !file_exists($template_path)) {
-        $template_path = plugin_dir_path(dirname(__FILE__)) . 'block-templates/' . $slug . '.html';
+        $template_path = plugin_dir_path(dirname(__FILE__)) . 'templates/block-templates/' . $slug . '.html';
       }
       
       if ($template_path && file_exists($template_path)) {

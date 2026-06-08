@@ -64,10 +64,7 @@ $accommodation_id = !empty($hostpn_accommodation_id) ? $hostpn_accommodation_id 
       </form>
 
       <div class="hostpn-financial-upload-progress" style="display: none;">
-        <div class="hostpn-loader-circle-wrapper hostpn-text-align-center">
-          <div class="hostpn-loader-circle"></div>
-          <p><?php esc_html_e('Uploading and analyzing file...', 'hostpn'); ?></p>
-        </div>
+        <?php HOSTPN_Data::hostpn_popup_loader(); ?>
       </div>
     </div>
 
@@ -101,12 +98,7 @@ $accommodation_id = !empty($hostpn_accommodation_id) ? $hostpn_accommodation_id 
 
     <!-- Step 3: Import Progress -->
     <div class="hostpn-financial-import-step hostpn-financial-import-step-3" style="display: none;">
-      <div class="hostpn-loader-circle-wrapper hostpn-text-align-center">
-        <div class="hostpn-loader-circle"></div>
-        <p id="hostpn-financial-import-progress-text">
-          <?php esc_html_e('Importing records...', 'hostpn'); ?>
-        </p>
-      </div>
+      <?php HOSTPN_Data::hostpn_popup_loader(); ?>
     </div>
 
     <!-- Step 4: Import Results -->

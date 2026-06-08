@@ -285,3 +285,13 @@ body.folded .hostpn-settings-footer{left:36px}
 .hostpn-settings-footer-icon-btn .material-icons-outlined{font-size:20px}
 .hostpn-settings-footer .hostpn-btn{margin:0}
 #hostpn_submit.hostpn-settings-hidden-submit,#hostpn-settings-import-file.hostpn-settings-hidden-input{display:none !important}
+
+/* Guest notification resend button spinner animation */
+@keyframes hostpn-icon-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.hostpn-icon-spin {
+  animation: hostpn-icon-spin 1s linear infinite;
+  display: inline-block;
+}
