@@ -13,7 +13,7 @@
  * Plugin Name:       Hospedajes España - HOSTPN
  * Plugin URI:        https://padresenlanube.com/plugins/hostpn/
  * Description:       Allow you to ask for, save and send the information required by spanish Royal Decree 933/2021, of October 26.
- * Version:           1.0.51
+ * Version:           1.0.80
  * Requires at least: 3.5
  * Tested up to:      7.0
  * Requires PHP:      7.2
@@ -36,7 +36,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('HOSTPN_VERSION', '1.0.51');
+define('HOSTPN_VERSION', '1.0.80');
 define('HOSTPN_DIR', plugin_dir_path(__FILE__));
 define('HOSTPN_URL', plugin_dir_url(__FILE__));
 define('HOSTPN_CPTS', [
@@ -228,7 +228,8 @@ define('HOSTPN_ACCOMMODATION_FEATURES', [
  * This function is never called but helps translation scanners find the strings
  */
 if (!function_exists('hostpn_register_accommodation_features_strings')) {
-	function hostpn_register_accommodation_features_strings() {
+	function hostpn_register_accommodation_features_strings()
+	{
 		// Kitchen
 		__('Kitchen', 'hostpn');
 		__('Dining Table', 'hostpn');
@@ -262,7 +263,7 @@ if (!function_exists('hostpn_register_accommodation_features_strings')) {
 		__('Wine Rack', 'hostpn');
 		__('Spice Rack', 'hostpn');
 		__('Knife Block', 'hostpn');
-		
+
 		// Room
 		__('Room', 'hostpn');
 		__('Bed Linen', 'hostpn');
@@ -304,7 +305,7 @@ if (!function_exists('hostpn_register_accommodation_features_strings')) {
 		__('UV Filter', 'hostpn');
 		__('Ion Filter', 'hostpn');
 		__('Ozone Filter', 'hostpn');
-		
+
 		// Bathroom
 		__('Bathroom', 'hostpn');
 		__('Private Bathroom', 'hostpn');
@@ -326,7 +327,7 @@ if (!function_exists('hostpn_register_accommodation_features_strings')) {
 		__('Medicine Cabinet', 'hostpn');
 		__('Vanity', 'hostpn');
 		__('Ventilation', 'hostpn');
-		
+
 		// Living Area
 		__('Living Area', 'hostpn');
 		__('Sofa', 'hostpn');
@@ -358,7 +359,7 @@ if (!function_exists('hostpn_register_accommodation_features_strings')) {
 		__('Methylated Spirits Stove', 'hostpn');
 		__('Isopropyl Alcohol Stove', 'hostpn');
 		__('Rubbing Alcohol Stove', 'hostpn');
-		
+
 		// Audiovisual
 		__('Audiovisual', 'hostpn');
 		__('TV', 'hostpn');
@@ -388,27 +389,27 @@ define('HOSTPN_ROLE_CAPABILITIES', [
 	'edit_published_posts' => 'edit_published_hostpn_basecpt',
 	'edit_others_posts' => 'edit_others_hostpn_basecpt',
 	'publish_posts' => 'publish_hostpn_basecpt',
-	
+
 	// Post reading capabilities
 	'read_post' => 'read_hostpn_basecpt',
 	'read_private_posts' => 'read_private_hostpn_basecpt',
-	
+
 	// Post deletion capabilities
 	'delete_post' => 'delete_hostpn_basecpt',
 	'delete_posts' => 'delete_hostpn_basecpt',
 	'delete_private_posts' => 'delete_private_hostpn_basecpt',
 	'delete_published_posts' => 'delete_published_hostpn_basecpt',
 	'delete_others_posts' => 'delete_others_hostpn_basecpt',
-	
+
 	// Media capabilities
 	'upload_files' => 'upload_files',
-	
+
 	// Taxonomy capabilities
 	'manage_terms' => 'manage_hostpn_category',
 	'edit_terms' => 'edit_hostpn_category',
 	'delete_terms' => 'delete_hostpn_category',
 	'assign_terms' => 'assign_hostpn_category',
-	
+
 	// Options capabilities
 	'manage_options' => 'manage_hostpn_options'
 ]);
@@ -555,13 +556,14 @@ define('HOSTPN_KSES', $hostpn_kses);
  * The code that runs during plugin activation.
  * This action is documented in includes/class-hostpn-activator.php
  */
-function hostpn_activation_hook() {
+function hostpn_activation_hook()
+{
 	require_once plugin_dir_path(__FILE__) . 'includes/class-hostpn-activator.php';
 	HOSTPN_Activator::hostpn_activate();
-	
+
 	// Clear any previous state
 	delete_option('hostpn_redirecting');
-	
+
 	// Set transient only if it doesn't exist
 	if (!get_transient('hostpn_just_activated')) {
 		set_transient('hostpn_just_activated', true, 30);
@@ -575,7 +577,8 @@ register_activation_hook(__FILE__, 'hostpn_activation_hook');
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-hostpn-deactivator.php
  */
-function hostpn_deactivation_cleanup() {
+function hostpn_deactivation_cleanup()
+{
 	delete_option('hostpn_redirecting');
 }
 register_deactivation_hook(__FILE__, 'hostpn_deactivation_cleanup');
@@ -592,7 +595,8 @@ require plugin_dir_path(__FILE__) . 'includes/class-hostpn.php';
  *
  * @since    1.0.0
  */
-function hostpn_run() {
+function hostpn_run()
+{
 	$plugin = new HOSTPN();
 	$plugin->hostpn_run();
 }

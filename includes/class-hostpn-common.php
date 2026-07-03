@@ -68,8 +68,8 @@ class HOSTPN_Common {
 			wp_enqueue_style($this->plugin_name . '-tooltips', HOSTPN_URL . 'assets/css/hostpn-tooltips.css', [], $this->version, 'all');
     }
 
-    if (!wp_style_is($this->plugin_name . '-owl', 'enqueued')) {
-			wp_enqueue_style($this->plugin_name . '-owl', HOSTPN_URL . 'assets/css/owl.min.css', [], $this->version, 'all');
+    if (!wp_style_is($this->plugin_name . '-carousel', 'enqueued')) {
+			wp_enqueue_style($this->plugin_name . '-carousel', HOSTPN_URL . 'assets/css/hostpn-carousel.css', [], $this->version, 'all');
     }
 
 		wp_enqueue_style($this->plugin_name, HOSTPN_URL . 'assets/css/hostpn.css', [], $this->version, 'all');
@@ -110,13 +110,13 @@ class HOSTPN_Common {
 			wp_enqueue_script($this->plugin_name . '-tooltips', HOSTPN_URL . 'assets/js/hostpn-tooltips.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
     }
 
-    if(!wp_script_is($this->plugin_name . '-owl', 'enqueued')) {
-			wp_enqueue_script($this->plugin_name . '-owl', HOSTPN_URL . 'assets/js/owl.min.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+    if(!wp_script_is($this->plugin_name . '-carousel', 'enqueued')) {
+			wp_enqueue_script($this->plugin_name . '-carousel', HOSTPN_URL . 'assets/js/hostpn-carousel.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
     }
 
 		wp_enqueue_script($this->plugin_name, HOSTPN_URL . 'assets/js/hostpn.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
 		wp_enqueue_script($this->plugin_name . '-aux', HOSTPN_URL . 'assets/js/hostpn-aux.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
-		wp_enqueue_script($this->plugin_name . '-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+		wp_enqueue_script($this->plugin_name . '-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', ['jquery', 'jquery-ui-sortable'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
 		wp_enqueue_script($this->plugin_name . '-ajax', HOSTPN_URL . 'assets/js/hostpn-ajax.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
 
 		// Enqueue financial management script
@@ -190,22 +190,33 @@ class HOSTPN_Common {
 			'user_unlogged' => esc_html(__('Please create a new user or login to save the information.', 'hostpn')),
 			'saved_successfully' => esc_html(__('Saved successfully', 'hostpn')),
 			'removed_successfully' => esc_html(__('Removed successfully', 'hostpn')),
+			'sending' => esc_html(__('Sending...', 'hostpn')),
+			'notification_sent' => esc_html(__('Notification sent successfully', 'hostpn')),
 			'edit_image' => esc_html(__('Edit image', 'hostpn')),
 			'edit_images' => esc_html(__('Edit images', 'hostpn')),
 			'select_image' => esc_html(__('Select image', 'hostpn')),
 			'select_images' => esc_html(__('Select images', 'hostpn')),
+			'use_image' => esc_html(__('Use image', 'hostpn')),
+			'use_images' => esc_html(__('Use images', 'hostpn')),
+			'remove' => esc_html(__('Remove', 'hostpn')),
 			'edit_video' => esc_html(__('Edit video', 'hostpn')),
 			'edit_videos' => esc_html(__('Edit videos', 'hostpn')),
 			'select_video' => esc_html(__('Select video', 'hostpn')),
 			'select_videos' => esc_html(__('Select videos', 'hostpn')),
+			'use_video' => esc_html(__('Use video', 'hostpn')),
+			'use_videos' => esc_html(__('Use videos', 'hostpn')),
 			'edit_audio' => esc_html(__('Edit audio', 'hostpn')),
 			'edit_audios' => esc_html(__('Edit audios', 'hostpn')),
 			'select_audio' => esc_html(__('Select audio', 'hostpn')),
 			'select_audios' => esc_html(__('Select audios', 'hostpn')),
+			'use_audio' => esc_html(__('Use audio', 'hostpn')),
+			'use_audios' => esc_html(__('Use audios', 'hostpn')),
 			'edit_file' => esc_html(__('Edit file', 'hostpn')),
 			'edit_files' => esc_html(__('Edit files', 'hostpn')),
 			'select_file' => esc_html(__('Select file', 'hostpn')),
 			'select_files' => esc_html(__('Select files', 'hostpn')),
+			'use_file' => esc_html(__('Use file', 'hostpn')),
+			'use_files' => esc_html(__('Use files', 'hostpn')),
 			'ordered_element' => esc_html(__('Ordered element', 'hostpn')),
 			'select_option' => esc_html(__('Select option', 'hostpn')),
 			'select_options' => esc_html(__('Select options', 'hostpn')),

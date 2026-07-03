@@ -31,9 +31,9 @@ class HOSTPN_Notifications {
       return;
     }
 
-    // Schedule the notification to be sent after a short delay to ensure data is fully saved
-    // This prevents the email from being sent with incomplete data
-    wp_schedule_single_event( time() + 2, 'hostpn_send_delayed_guest_notification', [ $element_id ] );
+    // Schedule the notification to be sent after a delay to ensure data is fully saved
+    // Increased to 5 seconds to prevent the email from being sent with incomplete data
+    wp_schedule_single_event( time() + 5, 'hostpn_send_delayed_guest_notification', [ $element_id ] );
   }
 
   /**
@@ -84,7 +84,7 @@ class HOSTPN_Notifications {
     // Collect data from post meta AND user meta
     $key_value = [];
 
-    // Get all post meta
+    // Get all post meta - this is the primary source for guest data
     $post_meta = get_post_meta( $guest_post_id );
     foreach ( $post_meta as $key => $values ) {
       if ( strpos( $key, 'hostpn_' ) === 0 && ! empty( $values[0] ) ) {
@@ -92,7 +92,19 @@ class HOSTPN_Notifications {
       }
     }
 
-    // Also check user meta for fields that might not be in post meta yet
+    // If this guest has an associated WordPress user ID, check their user meta
+    $guest_wp_user_id = get_post_meta( $guest_post_id, 'hostpn_guest_wp_user_id', true );
+    if ( ! empty( $guest_wp_user_id ) ) {
+      $guest_user_meta = get_user_meta( $guest_wp_user_id );
+      foreach ( $guest_user_meta as $key => $values ) {
+        if ( strpos( $key, 'hostpn_' ) === 0 && ! isset( $key_value[ $key ] ) && ! empty( $values[0] ) ) {
+          $key_value[ $key ] = $values[0];
+        }
+      }
+    }
+
+    // Also check post author's user meta for fields that might not be in post meta yet
+    // This is a fallback for cases where the post author is the guest themselves
     $user_meta = get_user_meta( $user_id );
     foreach ( $user_meta as $key => $values ) {
       if ( strpos( $key, 'hostpn_' ) === 0 && ! isset( $key_value[ $key ] ) && ! empty( $values[0] ) ) {
@@ -100,26 +112,56 @@ class HOSTPN_Notifications {
       }
     }
 
-    // Get name from post meta or user meta
+    // Get name from post meta, then try user meta as fallback
     if ( empty( $key_value['hostpn_name'] ) ) {
-      $first_name = get_user_meta( $user_id, 'first_name', true );
-      if ( ! empty( $first_name ) ) {
-        $key_value['hostpn_name'] = $first_name;
+      // Try guest's user if they have an account
+      if ( ! empty( $guest_wp_user_id ) ) {
+        $first_name = get_user_meta( $guest_wp_user_id, 'first_name', true );
+        if ( ! empty( $first_name ) ) {
+          $key_value['hostpn_name'] = $first_name;
+        }
+      }
+      // Fallback to post author's name
+      if ( empty( $key_value['hostpn_name'] ) ) {
+        $first_name = get_user_meta( $user_id, 'first_name', true );
+        if ( ! empty( $first_name ) ) {
+          $key_value['hostpn_name'] = $first_name;
+        }
       }
     }
 
     if ( empty( $key_value['hostpn_surname'] ) ) {
-      $last_name = get_user_meta( $user_id, 'last_name', true );
-      if ( ! empty( $last_name ) ) {
-        $key_value['hostpn_surname'] = $last_name;
+      // Try guest's user if they have an account
+      if ( ! empty( $guest_wp_user_id ) ) {
+        $last_name = get_user_meta( $guest_wp_user_id, 'last_name', true );
+        if ( ! empty( $last_name ) ) {
+          $key_value['hostpn_surname'] = $last_name;
+        }
+      }
+      // Fallback to post author's name
+      if ( empty( $key_value['hostpn_surname'] ) ) {
+        $last_name = get_user_meta( $user_id, 'last_name', true );
+        if ( ! empty( $last_name ) ) {
+          $key_value['hostpn_surname'] = $last_name;
+        }
       }
     }
 
     // Get email from post meta or user
     if ( empty( $key_value['hostpn_email'] ) ) {
-      $user = get_userdata( $user_id );
-      if ( $user && ! empty( $user->user_email ) ) {
-        $key_value['hostpn_email'] = $user->user_email;
+      // Try guest's user if they have an account
+      if ( ! empty( $guest_wp_user_id ) ) {
+        $guest_user = get_userdata( $guest_wp_user_id );
+        if ( $guest_user && ! empty( $guest_user->user_email ) ) {
+          $key_value['hostpn_email'] = $guest_user->user_email;
+        }
+      }
+      // Fallback to post author's email
+      if ( empty( $key_value['hostpn_email'] ) ) {
+        $user = get_userdata( $user_id );
+        if ( $user && ! empty( $user->user_email ) ) {
+          $key_value['hostpn_email'] = $user->user_email;
+        }
       }
     }
 
@@ -188,6 +230,97 @@ class HOSTPN_Notifications {
   }
 
   /**
+   * Get stay information for a guest (check-in/check-out dates from parts).
+   *
+   * @param int $guest_post_id The guest post ID.
+   * @return array Array with check_in_display, check_out_display, and accommodation_name.
+   */
+  private static function get_guest_stay_info( $guest_post_id ) {
+    $info = [
+      'check_in_display' => '',
+      'check_out_display' => '',
+      'accommodation_name' => '',
+    ];
+
+    // Find parts where this guest is included
+    $args = [
+      'post_type' => 'hostpn_part',
+      'post_status' => 'publish',
+      'posts_per_page' => -1,
+      'meta_query' => [
+        [
+          'key' => 'hostpn_people',
+          'value' => serialize( (string) $guest_post_id ),
+          'compare' => 'LIKE',
+        ],
+      ],
+      'orderby' => 'meta_value',
+      'meta_key' => 'hostpn_check_in_date',
+      'order' => 'ASC',
+    ];
+
+    $parts = get_posts( $args );
+
+    if ( ! empty( $parts ) ) {
+      $today = current_time( 'Y-m-d' );
+      $selected_part = null;
+
+      // First, try to find an active or upcoming stay
+      foreach ( $parts as $part ) {
+        $check_in_date = get_post_meta( $part->ID, 'hostpn_check_in_date', true );
+        $check_out_date = get_post_meta( $part->ID, 'hostpn_check_out_date', true );
+
+        // If stay is active (today is between check-in and check-out) or upcoming
+        if ( ! empty( $check_in_date ) && $check_in_date >= $today ) {
+          $selected_part = $part;
+          break;
+        } elseif ( ! empty( $check_out_date ) && $check_out_date >= $today ) {
+          $selected_part = $part;
+          break;
+        }
+      }
+
+      // If no active/upcoming stay found, use the most recent one
+      if ( ! $selected_part && ! empty( $parts ) ) {
+        $selected_part = end( $parts );
+      }
+
+      if ( $selected_part ) {
+        $check_in_date = get_post_meta( $selected_part->ID, 'hostpn_check_in_date', true );
+        $check_in_time = get_post_meta( $selected_part->ID, 'hostpn_check_in_time', true );
+        $check_out_date = get_post_meta( $selected_part->ID, 'hostpn_check_out_date', true );
+        $check_out_time = get_post_meta( $selected_part->ID, 'hostpn_check_out_time', true );
+        $accommodation_id = get_post_meta( $selected_part->ID, 'hostpn_accommodation_id', true );
+
+        // Format check-in display
+        if ( ! empty( $check_in_date ) ) {
+          $check_in_display = wp_date( get_option( 'date_format' ), strtotime( $check_in_date ) );
+          if ( ! empty( $check_in_time ) ) {
+            $check_in_display .= ' ' . $check_in_time;
+          }
+          $info['check_in_display'] = $check_in_display;
+        }
+
+        // Format check-out display
+        if ( ! empty( $check_out_date ) ) {
+          $check_out_display = wp_date( get_option( 'date_format' ), strtotime( $check_out_date ) );
+          if ( ! empty( $check_out_time ) ) {
+            $check_out_display .= ' ' . $check_out_time;
+          }
+          $info['check_out_display'] = $check_out_display;
+        }
+
+        // Get accommodation name
+        if ( ! empty( $accommodation_id ) ) {
+          $info['accommodation_name'] = get_the_title( $accommodation_id );
+        }
+      }
+    }
+
+    return $info;
+  }
+
+  /**
    * Build the HTML body for the notification email.
    *
    * @param array  $key_value     Submitted form key-value pairs.
@@ -240,6 +373,9 @@ class HOSTPN_Notifications {
 
     $admin_link = admin_url( 'post.php?post=' . (int) $guest_post_id . '&action=edit' );
 
+    // Get stay information (check-in/check-out dates)
+    $stay_info = self::get_guest_stay_info( $guest_post_id );
+
     // Build rows: [ label, value, condition ]
     $rows = [
       [ __( 'Name', 'hostpn' ),                          $full_name,        true ],
@@ -256,6 +392,9 @@ class HOSTPN_Notifications {
       [ __( 'Country', 'hostpn' ),                        $country_label,    ! empty( $country ) ],
       [ __( 'Postal code', 'hostpn' ),                    $postal_code,      ! empty( $postal_code ) ],
       [ __( 'City', 'hostpn' ),                            $city,             ! empty( $city ) ],
+      [ __( 'Check-in date', 'hostpn' ),                  $stay_info['check_in_display'], ! empty( $stay_info['check_in_display'] ) ],
+      [ __( 'Check-out date', 'hostpn' ),                 $stay_info['check_out_display'], ! empty( $stay_info['check_out_display'] ) ],
+      [ __( 'Accommodation', 'hostpn' ),                  $stay_info['accommodation_name'], ! empty( $stay_info['accommodation_name'] ) ],
       [ __( 'Relationship with contract holder', 'hostpn' ), $relationship_label, $contract_holder_check === 'on' && ! empty( $relationship ) ],
       [ __( 'Date', 'hostpn' ),                            wp_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ) ), true ],
     ];

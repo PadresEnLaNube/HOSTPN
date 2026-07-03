@@ -113,6 +113,17 @@ class HOSTPN_Post_Type_Accommodation {
         'placeholder' => esc_html(__('Accommodation city', 'hostpn')),
       ];
 
+      $hostpn_fields_meta['hostpn_accommodation_gallery'] = [
+        'id' => 'hostpn_accommodation_gallery',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'attachment',
+        'type' => 'image',
+        'multiple' => true,
+        'label' => esc_html(__('Photo Gallery', 'hostpn')),
+        'placeholder' => esc_html(__('Select images', 'hostpn')),
+        'description' => esc_html(__('Upload multiple images to create a photo gallery for this accommodation.', 'hostpn')),
+      ];
+
       $hostpn_fields_meta['hostpn_accommodation_form'] = [
         'id' => 'hostpn_accommodation_form',
         'class' => 'hostpn-input hostpn-width-100-percent',

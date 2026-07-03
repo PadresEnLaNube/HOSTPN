@@ -103,4 +103,115 @@
         });
     });
   });
+
+  // ── Recommended plugins ──────────────────────────────────────
+
+  var rpBtn   = document.getElementById('hostpn-settings-recommended');
+  var rpPopup = document.getElementById('hostpn-recommended-plugins');
+
+  if (rpBtn && rpPopup) {
+    rpBtn.addEventListener('click', function () {
+      if (window.HOSTPN_Popups) {
+        HOSTPN_Popups.open('hostpn-recommended-plugins');
+      }
+    });
+
+    rpPopup.addEventListener('click', function (e) {
+      var installBtn  = e.target.closest('.pn-cm-rp-install');
+      var activateBtn = e.target.closest('.pn-cm-rp-activate');
+
+      if (installBtn)  handleRpInstall(installBtn);
+      if (activateBtn) handleRpActivate(activateBtn);
+    });
+  }
+
+  function handleRpInstall(btn) {
+    var slug      = btn.getAttribute('data-slug');
+    var card      = btn.closest('.pn-cm-rp-card');
+    var actionDiv = card.querySelector('.pn-cm-rp-action');
+    var i18n      = hostpnSettingsFooter.i18n;
+
+    btn.disabled    = true;
+    btn.textContent = i18n.installing;
+
+    var fd = new FormData();
+    fd.append('action', 'hostpn_ajax');
+    fd.append('hostpn_ajax_type', 'hostpn_install_plugin');
+    fd.append('hostpn_ajax_nonce', hostpnSettingsFooter.nonce);
+    fd.append('slug', slug);
+
+    fetch(hostpnSettingsFooter.ajaxUrl, { method: 'POST', body: fd })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.error_key) {
+          btn.disabled    = false;
+          btn.textContent = 'Install';
+          if (typeof hostpn_get_main_message === 'function') {
+            hostpn_get_main_message(res.error_content || i18n.installError, 'red');
+          }
+          return;
+        }
+        actionDiv.innerHTML = '<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent pn-cm-rp-activate" data-slug="' + slug + '">' + i18n.activate + '</button>';
+        updateRpBadge(-1);
+      })
+      .catch(function () {
+        btn.disabled    = false;
+        btn.textContent = 'Install';
+        if (typeof hostpn_get_main_message === 'function') {
+          hostpn_get_main_message(i18n.installError, 'red');
+        }
+      });
+  }
+
+  function handleRpActivate(btn) {
+    var slug      = btn.getAttribute('data-slug');
+    var card      = btn.closest('.pn-cm-rp-card');
+    var actionDiv = card.querySelector('.pn-cm-rp-action');
+    var i18n      = hostpnSettingsFooter.i18n;
+
+    btn.disabled    = true;
+    btn.textContent = i18n.activating;
+
+    var fd = new FormData();
+    fd.append('action', 'hostpn_ajax');
+    fd.append('hostpn_ajax_type', 'hostpn_activate_plugin');
+    fd.append('hostpn_ajax_nonce', hostpnSettingsFooter.nonce);
+    fd.append('slug', slug);
+
+    fetch(hostpnSettingsFooter.ajaxUrl, { method: 'POST', body: fd })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.error_key) {
+          btn.disabled    = false;
+          btn.textContent = i18n.activate;
+          if (typeof hostpn_get_main_message === 'function') {
+            hostpn_get_main_message(res.error_content || i18n.activateError, 'red');
+          }
+          return;
+        }
+        actionDiv.innerHTML = '<span class="pn-cm-rp-active-badge">' + i18n.active + '</span>';
+        var settingsUrl = (hostpnSettingsFooter.settingsPages || {})[slug];
+        if (settingsUrl) {
+          window.open(settingsUrl, '_blank');
+        }
+      })
+      .catch(function () {
+        btn.disabled    = false;
+        btn.textContent = i18n.activate;
+        if (typeof hostpn_get_main_message === 'function') {
+          hostpn_get_main_message(i18n.activateError, 'red');
+        }
+      });
+  }
+
+  function updateRpBadge(delta) {
+    var badge = document.querySelector('.pn-cm-rp-badge');
+    if (!badge) return;
+    var count = parseInt(badge.textContent, 10) + delta;
+    if (count <= 0) {
+      badge.remove();
+    } else {
+      badge.textContent = count;
+    }
+  }
 })();

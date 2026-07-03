@@ -244,14 +244,12 @@ window.hostpn_auto_fill_user_data = function(user_id) {
       $(this).siblings('.hostpn-input-stars').find('.hostpn-input-star').slice(0, $(this).val()).text('star');
     });
 
-    // Register event listener unconditionally (delegated events work for dynamic content)
-    $(document).on('change', '.hostpn-field[data-hostpn-parent~="this"]', function(e) {
-      hostpn_form_update();
-    });
-
-    // Call form update on document ready if fields exist
     if ($('.hostpn-field[data-hostpn-parent]').length) {
       hostpn_form_update();
+
+      $(document).on('change', '.hostpn-field[data-hostpn-parent~="this"]', function(e) {
+        hostpn_form_update();
+      });
     }
 
     if ($('.hostpn-html-multi-group').length) {
@@ -300,619 +298,243 @@ window.hostpn_auto_fill_user_data = function(user_id) {
     }
 
     {
+      var image_frame;
+
       $(document).on('click', '.hostpn-image-btn', function(e){
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
 
-        var hostpn_input_btn = $(this);
-        var hostpn_images_block_wrapper = hostpn_input_btn.closest('.hostpn-images-block');
-        var hostpn_images_block = hostpn_images_block_wrapper.find('.hostpn-images');
-        var hostpn_images_input = hostpn_images_block_wrapper.find('.hostpn-image-input');
-        var is_multiple = hostpn_images_block_wrapper.attr('data-hostpn-multiple') == 'true';
-
-        // Get current selection
-        var current_ids = hostpn_images_input.val();
-        var selection_array = current_ids ? current_ids.split(',').map(function(id) {
-          return parseInt(id.trim());
-        }) : [];
-
-        var image_frame;
-
-        if (is_multiple) {
-          // For multiple images with ordering support
-          image_frame = wp.media({
-            title: hostpn_i18n.select_images || 'Select Images',
-            button: {
-              text: hostpn_i18n.use_images || 'Use Images'
-            },
-            library: {
-              type: 'image'
-            },
-            multiple: 'add'  // 'add' enables the "Edit Selection" workflow
-          });
-
-        } else {
-          // For single image
-          image_frame = wp.media({
-            title: hostpn_i18n.select_image || 'Select Image',
-            button: {
-              text: hostpn_i18n.use_image || 'Use Image'
-            },
-            library: {
-              type: 'image'
-            },
-            multiple: false
-          });
+        if (image_frame){
+          image_frame.open();
+          return;
         }
 
-        // Pre-select current images/image
-        image_frame.on('open', function() {
-          var selection = image_frame.state().get('selection');
+        var hostpn_input_btn = $(this);
+        var hostpn_images_block = hostpn_input_btn.closest('.hostpn-images-block').find('.hostpn-images');
+        var hostpn_images_input = hostpn_input_btn.closest('.hostpn-images-block').find('.hostpn-image-input');
 
-          if (selection_array.length > 0) {
-            selection_array.forEach(function(id) {
-              var attachment = wp.media.attachment(id);
-              attachment.fetch();
-              selection.add(attachment ? [attachment] : []);
-            });
-          }
+        var image_frame = wp.media({
+          title: (hostpn_images_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_images : hostpn_i18n.select_image,
+          library: {
+            type: 'image'
+          },
+          multiple: (hostpn_images_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
         });
 
-        // Handle final selection
-        image_frame.on('select', function() {
-          var selection = image_frame.state().get('selection');
-          var ids = [];
-
-          hostpn_images_block.html('');
-
-          // Get attachments in order
-          selection.each(function(attachment) {
-            var attachment_data = attachment.toJSON();
-            ids.push(attachment_data.id);
-
-            // Use thumbnail or medium size
-            var img_url = attachment_data.sizes && attachment_data.sizes.medium
-              ? attachment_data.sizes.medium.url
-              : attachment_data.url;
-
-            // Create image wrapper with delete button
-            var img_wrapper = $('<div class="hostpn-gallery-item" data-id="' + attachment_data.id + '"></div>');
-            img_wrapper.append('<img src="' + img_url + '" class="hostpn-gallery-thumb">');
-
-            if (is_multiple) {
-              img_wrapper.append('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-            }
-
-            hostpn_images_block.append(img_wrapper);
-          });
-
-          hostpn_images_input.val(ids.join(','));
-
-          if (is_multiple) {
-            hostpn_input_btn.text(hostpn_i18n.edit_images || 'Edit Images');
-            // Make images sortable if multiple
-            hostpn_make_gallery_sortable(hostpn_images_block, hostpn_images_input);
-          } else {
-            hostpn_input_btn.text(hostpn_i18n.edit_image || 'Edit Image');
-          }
-        });
+        image_frame.states.add([
+          new wp.media.controller.Library({
+            id: 'post-gallery',
+            title: (hostpn_images_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.edit_images : hostpn_i18n.edit_image,
+            priority: 20,
+            toolbar: 'main-gallery',
+            filterable: 'uploaded',
+            library: wp.media.query(image_frame.options.library),
+            multiple: (hostpn_images_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
+            editable: true,
+            allowLocalEdits: true,
+            displaySettings: true,
+            displayUserSettings: true
+          })
+        ]);
 
         image_frame.open();
-      });
 
-      // Function to make gallery sortable
-      function hostpn_make_gallery_sortable($container, $input) {
-        if (typeof $container.sortable === 'function') {
-          $container.sortable({
-            items: '.hostpn-gallery-item',
-            cursor: 'move',
-            placeholder: 'hostpn-gallery-placeholder',
-            update: function(event, ui) {
-              // Update input value with new order
-              var ids = [];
-              $container.find('.hostpn-gallery-item').each(function() {
-                ids.push($(this).data('id'));
-              });
-              $input.val(ids.join(','));
-            }
-          });
-        }
-      }
+        image_frame.on('select', function() {
+          var ids = '', attachments_arr = [];
 
-      // Initialize existing galleries on page load
-      function hostpn_init_existing_galleries() {
-        // Image galleries
-        $('.hostpn-images-block').each(function() {
-          var $block = $(this);
-          var $container = $block.find('.hostpn-images');
-          var $input = $block.find('.hostpn-image-input');
-          var $btn = $block.find('.hostpn-image-btn');
-          var is_multiple = $block.attr('data-hostpn-multiple') == 'true';
+          attachments_arr = image_frame.state().get('selection').toJSON();
+          hostpn_images_block.html('');
 
-          var current_ids = $input.val();
-          if (!current_ids) return;
-
-          var id_array = current_ids.split(',').map(function(id) {
-            return id.trim();
+          $(attachments_arr).each(function(e){
+            sep = (e != (attachments_arr.length - 1))  ? ',' : '';
+            ids += $(this)[0].id + sep;
+            hostpn_images_block.append('<img src="' + $(this)[0].url + '" class="">');
           });
 
-          var $existingImages = $container.find('img').not('.hostpn-gallery-item img');
-
-          if ($existingImages.length > 0) {
-            $existingImages.each(function(index) {
-              var $img = $(this);
-              var img_id = id_array[index] || '';
-
-              $img.addClass('hostpn-gallery-thumb');
-              var $wrapper = $('<div class="hostpn-gallery-item" data-id="' + img_id + '"></div>');
-              $img.wrap($wrapper);
-
-              if (is_multiple) {
-                $img.after('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-              }
-            });
-
-            if ($existingImages.length > 0) {
-              $btn.text(is_multiple ? (hostpn_i18n.edit_images || 'Edit Images') : (hostpn_i18n.edit_image || 'Edit Image'));
-            }
-
-            if (is_multiple) {
-              hostpn_make_gallery_sortable($container, $input);
-            }
-          }
-        });
-
-        // Audio galleries
-        $('.hostpn-audios-block').each(function() {
-          var $block = $(this);
-          var $container = $block.find('.hostpn-audios');
-          var $input = $block.find('.hostpn-audio-input');
-          var $btn = $block.find('.hostpn-audio-btn');
-          var is_multiple = $block.attr('data-hostpn-multiple') == 'true';
-
-          var current_ids = $input.val();
-          if (!current_ids) return;
-
-          var id_array = current_ids.split(',').map(function(id) {
-            return id.trim();
-          });
-
-          var $existingItems = $container.find('.hostpn-audio').not('.hostpn-gallery-item .hostpn-audio');
-
-          if ($existingItems.length > 0) {
-            $existingItems.each(function(index) {
-              var $item = $(this);
-              var item_id = id_array[index] || '';
-
-              $item.addClass('hostpn-gallery-thumb');
-              var $wrapper = $('<div class="hostpn-gallery-item" data-id="' + item_id + '"></div>');
-              $item.wrap($wrapper);
-
-              if (is_multiple) {
-                $item.after('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-              }
-            });
-
-            if ($existingItems.length > 0) {
-              $btn.text(is_multiple ? (hostpn_i18n.edit_audios || 'Edit Audios') : (hostpn_i18n.edit_audio || 'Edit Audio'));
-            }
-
-            if (is_multiple) {
-              hostpn_make_gallery_sortable($container, $input);
-            }
-          }
-        });
-
-        // Video galleries
-        $('.hostpn-videos-block').each(function() {
-          var $block = $(this);
-          var $container = $block.find('.hostpn-videos');
-          var $input = $block.find('.hostpn-video-input');
-          var $btn = $block.find('.hostpn-video-btn');
-          var is_multiple = $block.attr('data-hostpn-multiple') == 'true';
-
-          var current_ids = $input.val();
-          if (!current_ids) return;
-
-          var id_array = current_ids.split(',').map(function(id) {
-            return id.trim();
-          });
-
-          var $existingItems = $container.find('.hostpn-video').not('.hostpn-gallery-item .hostpn-video');
-
-          if ($existingItems.length > 0) {
-            $existingItems.each(function(index) {
-              var $item = $(this);
-              var item_id = id_array[index] || '';
-
-              $item.addClass('hostpn-gallery-thumb');
-              var $wrapper = $('<div class="hostpn-gallery-item" data-id="' + item_id + '"></div>');
-              $item.wrap($wrapper);
-
-              if (is_multiple) {
-                $item.after('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-              }
-            });
-
-            if ($existingItems.length > 0) {
-              $btn.text(is_multiple ? (hostpn_i18n.edit_videos || 'Edit Videos') : (hostpn_i18n.edit_video || 'Edit Video'));
-            }
-
-            if (is_multiple) {
-              hostpn_make_gallery_sortable($container, $input);
-            }
-          }
-        });
-
-        // File galleries
-        $('.hostpn-files-block').each(function() {
-          var $block = $(this);
-          var $container = $block.find('.hostpn-files');
-          var $input = $block.find('.hostpn-file-input');
-          var $btn = $block.find('.hostpn-file-btn');
-          var is_multiple = $block.attr('data-hostpn-multiple') == 'true';
-
-          var current_ids = $input.val();
-          if (!current_ids) return;
-
-          var id_array = current_ids.split(',').map(function(id) {
-            return id.trim();
-          });
-
-          var $existingItems = $container.find('embed').not('.hostpn-gallery-item embed');
-
-          if ($existingItems.length > 0) {
-            $existingItems.each(function(index) {
-              var $item = $(this);
-              var item_id = id_array[index] || '';
-
-              var $fileDiv = $('<div class="hostpn-file hostpn-gallery-thumb"><i class="material-icons-outlined">insert_drive_file</i><span>File</span></div>');
-              var $wrapper = $('<div class="hostpn-gallery-item" data-id="' + item_id + '"></div>');
-
-              $item.replaceWith($wrapper);
-              $wrapper.append($fileDiv);
-
-              if (is_multiple) {
-                $fileDiv.after('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-              }
-            });
-
-            if ($existingItems.length > 0) {
-              $btn.text(is_multiple ? (hostpn_i18n.edit_files || 'Edit Files') : (hostpn_i18n.edit_file || 'Edit File'));
-            }
-
-            if (is_multiple) {
-              hostpn_make_gallery_sortable($container, $input);
-            }
-          }
-        });
-      }
-
-      // Run initialization when document is ready and after a short delay to ensure DOM is fully loaded
-      $(document).ready(function() {
-        // Run immediately
-        hostpn_init_existing_galleries();
-
-        // Also run after a short delay to catch any dynamically loaded content
-        setTimeout(function() {
-          hostpn_init_existing_galleries();
-        }, 500);
-      });
-
-      // Handle remove click for all attachment types
-      $(document).on('click', '.hostpn-gallery-remove', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        var $item = $(this).closest('.hostpn-gallery-item');
-        var $block = $item.closest('[class*="-block"]');
-        var $container = $item.parent();
-
-        // Determine the type and find appropriate input and button
-        var $input, $btn, emptyText;
-
-        if ($block.hasClass('hostpn-images-block')) {
-          $input = $block.find('.hostpn-image-input');
-          $btn = $block.find('.hostpn-image-btn');
-          emptyText = hostpn_i18n.select_images || 'Add Images';
-        } else if ($block.hasClass('hostpn-audios-block')) {
-          $input = $block.find('.hostpn-audio-input');
-          $btn = $block.find('.hostpn-audio-btn');
-          emptyText = hostpn_i18n.select_audios || 'Add Audios';
-        } else if ($block.hasClass('hostpn-videos-block')) {
-          $input = $block.find('.hostpn-video-input');
-          $btn = $block.find('.hostpn-video-btn');
-          emptyText = hostpn_i18n.select_videos || 'Add Videos';
-        } else if ($block.hasClass('hostpn-files-block')) {
-          $input = $block.find('.hostpn-file-input');
-          $btn = $block.find('.hostpn-file-btn');
-          emptyText = hostpn_i18n.select_files || 'Add Files';
-        }
-
-        // Remove the item
-        $item.fadeOut(200, function() {
-          $(this).remove();
-
-          // Update input value
-          var ids = [];
-          $container.find('.hostpn-gallery-item').each(function() {
-            ids.push($(this).data('id'));
-          });
-          $input.val(ids.join(','));
-
-          // Update button text if no items left
-          if (ids.length === 0) {
-            $btn.text(emptyText);
-          }
+          hostpn_input_btn.text((hostpn_images_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_images : hostpn_i18n.select_image);
+          hostpn_images_input.val(ids);
         });
       });
     }
 
     {
+      var audio_frame;
+
       $(document).on('click', '.hostpn-audio-btn', function(e){
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
 
-        var hostpn_input_btn = $(this);
-        var hostpn_audios_block_wrapper = hostpn_input_btn.closest('.hostpn-audios-block');
-        var hostpn_audios_block = hostpn_audios_block_wrapper.find('.hostpn-audios');
-        var hostpn_audios_input = hostpn_audios_block_wrapper.find('.hostpn-audio-input');
-        var is_multiple = hostpn_audios_block_wrapper.attr('data-hostpn-multiple') == 'true';
-
-        // Get current selection
-        var current_ids = hostpn_audios_input.val();
-        var selection_array = current_ids ? current_ids.split(',').map(function(id) {
-          return parseInt(id.trim());
-        }) : [];
-
-        var audio_frame;
-
-        if (is_multiple) {
-          audio_frame = wp.media({
-            title: hostpn_i18n.select_audios || 'Select Audios',
-            button: {
-              text: hostpn_i18n.use_audios || 'Use Audios'
-            },
-            library: {
-              type: 'audio'
-            },
-            multiple: 'add'
-          });
-        } else {
-          audio_frame = wp.media({
-            title: hostpn_i18n.select_audio || 'Select Audio',
-            button: {
-              text: hostpn_i18n.use_audio || 'Use Audio'
-            },
-            library: {
-              type: 'audio'
-            },
-            multiple: false
-          });
+        if (audio_frame){
+          audio_frame.open();
+          return;
         }
 
-        // Pre-select current audios
-        audio_frame.on('open', function() {
-          var selection = audio_frame.state().get('selection');
-          if (selection_array.length > 0) {
-            selection_array.forEach(function(id) {
-              var attachment = wp.media.attachment(id);
-              attachment.fetch();
-              selection.add(attachment ? [attachment] : []);
-            });
-          }
+        var hostpn_input_btn = $(this);
+        var hostpn_audios_block = hostpn_input_btn.closest('.hostpn-audios-block').find('.hostpn-audios');
+        var hostpn_audios_input = hostpn_input_btn.closest('.hostpn-audios-block').find('.hostpn-audio-input');
+
+        var audio_frame = wp.media({
+          title: (hostpn_audios_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_audios : hostpn_i18n.select_audio,
+          library : {
+            type : 'audio'
+          },
+          multiple: (hostpn_audios_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
         });
 
-        // Handle final selection
-        audio_frame.on('select', function() {
-          var selection = audio_frame.state().get('selection');
-          var ids = [];
-
-          hostpn_audios_block.html('');
-
-          selection.each(function(attachment) {
-            var attachment_data = attachment.toJSON();
-            ids.push(attachment_data.id);
-
-            var audio_wrapper = $('<div class="hostpn-gallery-item" data-id="' + attachment_data.id + '"></div>');
-            audio_wrapper.append('<div class="hostpn-audio hostpn-gallery-thumb"><i class="material-icons-outlined">audiotrack</i><span>' + attachment_data.title + '</span></div>');
-
-            if (is_multiple) {
-              audio_wrapper.append('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-            }
-
-            hostpn_audios_block.append(audio_wrapper);
-          });
-
-          hostpn_audios_input.val(ids.join(','));
-
-          if (is_multiple) {
-            hostpn_input_btn.text(hostpn_i18n.edit_audios || 'Edit Audios');
-            hostpn_make_gallery_sortable(hostpn_audios_block, hostpn_audios_input);
-          } else {
-            hostpn_input_btn.text(hostpn_i18n.edit_audio || 'Edit Audio');
-          }
-        });
+        audio_frame.states.add([
+          new wp.media.controller.Library({
+            id: 'post-gallery',
+            title: (hostpn_audios_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_audios : hostpn_i18n.select_audio,
+            priority: 20,
+            toolbar: 'main-gallery',
+            filterable: 'uploaded',
+            library: wp.media.query(audio_frame.options.library),
+            multiple: (hostpn_audios_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
+            editable: true,
+            allowLocalEdits: true,
+            displaySettings: true,
+            displayUserSettings: true
+          })
+        ]);
 
         audio_frame.open();
+
+        audio_frame.on('select', function() {
+          var ids = '', attachments_arr = [];
+
+          attachments_arr = audio_frame.state().get('selection').toJSON();
+          hostpn_audios_block.html('');
+
+          $(attachments_arr).each(function(e){
+            sep = (e != (attachments_arr.length - 1))  ? ',' : '';
+            ids += $(this)[0].id + sep;
+            hostpn_audios_block.append('<div class="hostpn-audio hostpn-tooltip" title="' + $(this)[0].title + '"><i class="dashicons dashicons-media-audio"></i></div>');
+          });
+
+          hostpn_input_btn.text((hostpn_audios_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_audios : hostpn_i18n.select_audio);
+          hostpn_audios_input.val(ids);
+        });
       });
     }
 
     {
+      var video_frame;
+
       $(document).on('click', '.hostpn-video-btn', function(e){
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
 
-        var hostpn_input_btn = $(this);
-        var hostpn_videos_block_wrapper = hostpn_input_btn.closest('.hostpn-videos-block');
-        var hostpn_videos_block = hostpn_videos_block_wrapper.find('.hostpn-videos');
-        var hostpn_videos_input = hostpn_videos_block_wrapper.find('.hostpn-video-input');
-        var is_multiple = hostpn_videos_block_wrapper.attr('data-hostpn-multiple') == 'true';
-
-        // Get current selection
-        var current_ids = hostpn_videos_input.val();
-        var selection_array = current_ids ? current_ids.split(',').map(function(id) {
-          return parseInt(id.trim());
-        }) : [];
-
-        var video_frame;
-
-        if (is_multiple) {
-          video_frame = wp.media({
-            title: hostpn_i18n.select_videos || 'Select Videos',
-            button: {
-              text: hostpn_i18n.use_videos || 'Use Videos'
-            },
-            library: {
-              type: 'video'
-            },
-            multiple: 'add'
-          });
-        } else {
-          video_frame = wp.media({
-            title: hostpn_i18n.select_video || 'Select Video',
-            button: {
-              text: hostpn_i18n.use_video || 'Use Video'
-            },
-            library: {
-              type: 'video'
-            },
-            multiple: false
-          });
+        if (video_frame){
+          video_frame.open();
+          return;
         }
 
-        // Pre-select current videos
-        video_frame.on('open', function() {
-          var selection = video_frame.state().get('selection');
-          if (selection_array.length > 0) {
-            selection_array.forEach(function(id) {
-              var attachment = wp.media.attachment(id);
-              attachment.fetch();
-              selection.add(attachment ? [attachment] : []);
-            });
-          }
+        var hostpn_input_btn = $(this);
+        var hostpn_videos_block = hostpn_input_btn.closest('.hostpn-videos-block').find('.hostpn-videos');
+        var hostpn_videos_input = hostpn_input_btn.closest('.hostpn-videos-block').find('.hostpn-video-input');
+
+        var video_frame = wp.media({
+          title: (hostpn_videos_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_videos : hostpn_i18n.select_video,
+          library : {
+            type : 'video'
+          },
+          multiple: (hostpn_videos_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
         });
 
-        // Handle final selection
-        video_frame.on('select', function() {
-          var selection = video_frame.state().get('selection');
-          var ids = [];
-
-          hostpn_videos_block.html('');
-
-          selection.each(function(attachment) {
-            var attachment_data = attachment.toJSON();
-            ids.push(attachment_data.id);
-
-            var video_wrapper = $('<div class="hostpn-gallery-item" data-id="' + attachment_data.id + '"></div>');
-            video_wrapper.append('<div class="hostpn-video hostpn-gallery-thumb"><i class="material-icons-outlined">videocam</i><span>' + attachment_data.title + '</span></div>');
-
-            if (is_multiple) {
-              video_wrapper.append('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-            }
-
-            hostpn_videos_block.append(video_wrapper);
-          });
-
-          hostpn_videos_input.val(ids.join(','));
-
-          if (is_multiple) {
-            hostpn_input_btn.text(hostpn_i18n.edit_videos || 'Edit Videos');
-            hostpn_make_gallery_sortable(hostpn_videos_block, hostpn_videos_input);
-          } else {
-            hostpn_input_btn.text(hostpn_i18n.edit_video || 'Edit Video');
-          }
-        });
+        video_frame.states.add([
+          new wp.media.controller.Library({
+            id: 'post-gallery',
+            title: (hostpn_videos_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_videos : hostpn_i18n.select_video,
+            priority: 20,
+            toolbar: 'main-gallery',
+            filterable: 'uploaded',
+            library: wp.media.query(video_frame.options.library),
+            multiple: (hostpn_videos_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
+            editable: true,
+            allowLocalEdits: true,
+            displaySettings: true,
+            displayUserSettings: true
+          })
+        ]);
 
         video_frame.open();
+
+        video_frame.on('select', function() {
+          var ids = '', attachments_arr = [];
+
+          attachments_arr = video_frame.state().get('selection').toJSON();
+          hostpn_videos_block.html('');
+
+          $(attachments_arr).each(function(e){
+            sep = (e != (attachments_arr.length - 1))  ? ',' : '';
+            ids += $(this)[0].id + sep;
+            hostpn_videos_block.append('<div class="hostpn-video hostpn-tooltip" title="' + $(this)[0].title + '"><i class="dashicons dashicons-media-video"></i></div>');
+          });
+
+          hostpn_input_btn.text((hostpn_videos_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_videos : hostpn_i18n.select_video);
+          hostpn_videos_input.val(ids);
+        });
       });
     }
 
     {
+      var file_frame;
+
       $(document).on('click', '.hostpn-file-btn', function(e){
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
 
-        var hostpn_input_btn = $(this);
-        var hostpn_files_block_wrapper = hostpn_input_btn.closest('.hostpn-files-block');
-        var hostpn_files_block = hostpn_files_block_wrapper.find('.hostpn-files');
-        var hostpn_files_input = hostpn_files_block_wrapper.find('.hostpn-file-input');
-        var is_multiple = hostpn_files_block_wrapper.attr('data-hostpn-multiple') == 'true';
-
-        // Get current selection
-        var current_ids = hostpn_files_input.val();
-        var selection_array = current_ids ? current_ids.split(',').map(function(id) {
-          return parseInt(id.trim());
-        }) : [];
-
-        var file_frame;
-
-        if (is_multiple) {
-          file_frame = wp.media({
-            title: hostpn_i18n.select_files || 'Select Files',
-            button: {
-              text: hostpn_i18n.use_files || 'Use Files'
-            },
-            multiple: 'add'
-          });
-        } else {
-          file_frame = wp.media({
-            title: hostpn_i18n.select_file || 'Select File',
-            button: {
-              text: hostpn_i18n.use_file || 'Use File'
-            },
-            multiple: false
-          });
+        if (file_frame){
+          file_frame.open();
+          return;
         }
 
-        // Pre-select current files
-        file_frame.on('open', function() {
-          var selection = file_frame.state().get('selection');
-          if (selection_array.length > 0) {
-            selection_array.forEach(function(id) {
-              var attachment = wp.media.attachment(id);
-              attachment.fetch();
-              selection.add(attachment ? [attachment] : []);
-            });
-          }
+        var hostpn_input_btn = $(this);
+        var hostpn_files_block = hostpn_input_btn.closest('.hostpn-files-block').find('.hostpn-files');
+        var hostpn_files_input = hostpn_input_btn.closest('.hostpn-files-block').find('.hostpn-file-input');
+
+        var file_frame = wp.media({
+          title: (hostpn_files_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_files : hostpn_i18n.select_file,
+          multiple: (hostpn_files_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
         });
 
-        // Handle final selection
-        file_frame.on('select', function() {
-          var selection = file_frame.state().get('selection');
-          var ids = [];
-
-          hostpn_files_block.html('');
-
-          selection.each(function(attachment) {
-            var attachment_data = attachment.toJSON();
-            ids.push(attachment_data.id);
-
-            var file_wrapper = $('<div class="hostpn-gallery-item" data-id="' + attachment_data.id + '"></div>');
-            file_wrapper.append('<div class="hostpn-file hostpn-gallery-thumb"><i class="material-icons-outlined">insert_drive_file</i><span>' + attachment_data.title + '</span></div>');
-
-            if (is_multiple) {
-              file_wrapper.append('<span class="hostpn-gallery-remove" title="' + (hostpn_i18n.remove || 'Remove') + '"><i class="material-icons-outlined">delete_outline</i></span>');
-            }
-
-            hostpn_files_block.append(file_wrapper);
-          });
-
-          hostpn_files_input.val(ids.join(','));
-
-          if (is_multiple) {
-            hostpn_input_btn.text(hostpn_i18n.edit_files || 'Edit Files');
-            hostpn_make_gallery_sortable(hostpn_files_block, hostpn_files_input);
-          } else {
-            hostpn_input_btn.text(hostpn_i18n.edit_file || 'Edit File');
-          }
-        });
+        file_frame.states.add([
+          new wp.media.controller.Library({
+            id: 'post-gallery',
+            title: (hostpn_files_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.select_files : hostpn_i18n.select_file,
+            priority: 20,
+            toolbar: 'main-gallery',
+            filterable: 'uploaded',
+            library: wp.media.query(file_frame.options.library),
+            multiple: (hostpn_files_block.attr('data-hostpn-multiple') == 'true') ? 'true' : 'false',
+            editable: true,
+            allowLocalEdits: true,
+            displaySettings: true,
+            displayUserSettings: true
+          })
+        ]);
 
         file_frame.open();
+
+        file_frame.on('select', function() {
+          var ids = '', attachments_arr = [];
+
+          attachments_arr = file_frame.state().get('selection').toJSON();
+          hostpn_files_block.html('');
+
+          $(attachments_arr).each(function(e){
+            sep = (e != (attachments_arr.length - 1))  ? ',' : '';
+            ids += $(this)[0].id + sep;
+            hostpn_files_block.append('<embed src="' + $(this)[0].url + '" type="application/pdf" class="hostpn-embed-file"/>');
+          });
+
+          hostpn_input_btn.text((hostpn_files_block.attr('data-hostpn-multiple') == 'true') ? hostpn_i18n.edit_files : hostpn_i18n.edit_file);
+          hostpn_files_input.val(ids);
+        });
       });
     }
 

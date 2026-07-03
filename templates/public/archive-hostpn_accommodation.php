@@ -40,16 +40,18 @@ if(wp_is_block_theme()) {
                     $thumbnail = get_the_post_thumbnail($accommodation_id, 'medium');
                     ?>
                     <article class="hostpn-accommodation-card" data-accommodation-id="<?php echo esc_attr($accommodation_id); ?>">
-                        <div class="hostpn-accommodation-image">
-                            <?php if ($thumbnail) : ?>
-                                <?php echo wp_kses_post($thumbnail); ?>
-                            <?php else : ?>
-                                <div class="hostpn-accommodation-placeholder">
-                                    <i class="material-icons-outlined">home</i>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        
+                        <a href="<?php the_permalink(); ?>" class="hostpn-accommodation-image-link">
+                            <div class="hostpn-accommodation-image">
+                                <?php if ($thumbnail) : ?>
+                                    <?php echo wp_kses_post($thumbnail); ?>
+                                <?php else : ?>
+                                    <div class="hostpn-accommodation-placeholder">
+                                        <i class="material-icons-outlined">home</i>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                        </a>
+
                         <div class="hostpn-accommodation-content">
                             <h2 class="hostpn-accommodation-title">
                                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>

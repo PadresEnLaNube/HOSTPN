@@ -13,7 +13,8 @@
  * @author     Padres en la Nube <info@padresenlanube.com>
  */
 
-class HOSTPN {
+class HOSTPN
+{
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power the plugin.
 	 *
@@ -48,11 +49,12 @@ class HOSTPN {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.51';
+			$this->version = '1.0.80';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -70,8 +72,9 @@ class HOSTPN {
 		$this->hostpn_load_templates();
 		$this->hostpn_load_settings();
 		$this->hostpn_load_shortcodes();
+		$this->hostpn_load_blocks();
 	}
-			
+
 	/**
 	 * Load the required dependencies for this plugin.
 	 *
@@ -102,7 +105,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_dependencies() {
+	private function hostpn_load_dependencies()
+	{
 		/**
 		 * The class responsible for orchestrating the actions and filters of the core plugin.
 		 */
@@ -224,6 +228,11 @@ class HOSTPN {
 		require_once HOSTPN_DIR . 'includes/class-hostpn-shortcodes.php';
 
 		/**
+		 * The class defining Gutenberg blocks.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-blocks.php';
+
+		/**
 		 * The class defining popups.
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-popups.php';
@@ -232,14 +241,6 @@ class HOSTPN {
 		 * The class defining selectors.
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-selector.php';
-
-		/**
-		 * Financial management classes.
-		 */
-		require_once HOSTPN_DIR . 'includes/class-hostpn-post-type-financial-record.php';
-		require_once HOSTPN_DIR . 'includes/class-hostpn-financial-csv-parser.php';
-		require_once HOSTPN_DIR . 'includes/class-hostpn-financial-importer.php';
-		require_once HOSTPN_DIR . 'includes/class-hostpn-financial.php';
 
 		$this->loader = new HOSTPN_Loader();
 	}
@@ -252,7 +253,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_i18n() {
+	private function hostpn_load_i18n()
+	{
 		$plugin_i18n = new HOSTPN_i18n();
 		$this->loader->hostpn_add_action('init', $plugin_i18n, 'hostpn_load_plugin_textdomain');
 
@@ -266,7 +268,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_define_common_hooks() {
+	private function hostpn_define_common_hooks()
+	{
 		$plugin_common = new HOSTPN_Common($this->hostpn_get_plugin_name(), $this->hostpn_get_version());
 		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_common, 'hostpn_enqueue_styles');
 		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_common, 'hostpn_enqueue_scripts');
@@ -275,13 +278,13 @@ class HOSTPN {
 		$this->loader->hostpn_add_filter('body_class', $plugin_common, 'hostpn_body_classes');
 
 		$plugin_post_type_accommodation = new HOSTPN_Post_Type_Accommodation();
-		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_accommodation, 'hostpn_accommodation_form_save',  999, 5);
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_accommodation, 'hostpn_accommodation_form_save', 999, 5);
 
 		$plugin_post_type_part = new HOSTPN_Post_Type_Part();
-		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_part, 'hostpn_part_form_save',  999, 5);
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_part, 'hostpn_part_form_save', 999, 5);
 
 		$plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
-		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_guest, 'hostpn_guest_form_save',  999, 5);
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_guest, 'hostpn_guest_form_save', 999, 5);
 
 		$plugin_user = new HOSTPN_Functions_User();
 		$this->loader->hostpn_add_filter('userspn_register_fields', $plugin_user, 'hostpn_user_register_fields', 10, 2);
@@ -299,7 +302,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_define_admin_hooks() {
+	private function hostpn_define_admin_hooks()
+	{
 		$plugin_admin = new HOSTPN_Admin($this->hostpn_get_plugin_name(), $this->hostpn_get_version());
 		$this->loader->hostpn_add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_styles');
 		$this->loader->hostpn_add_action('admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts');
@@ -311,7 +315,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_define_public_hooks() {
+	private function hostpn_define_public_hooks()
+	{
 		$plugin_public = new HOSTPN_Public($this->hostpn_get_plugin_name(), $this->hostpn_get_version());
 		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
 		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
@@ -326,28 +331,29 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_define_post_types() {
+	private function hostpn_define_post_types()
+	{
 		$plugin_post_type_part = new HOSTPN_Post_Type_Part();
 		$this->loader->hostpn_add_action('init', $plugin_post_type_part, 'hostpn_part_register_post_type');
 		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_part, 'hostpn_part_add_meta_box');
 		$this->loader->hostpn_add_action('save_post_hostpn_part', $plugin_post_type_part, 'hostpn_part_save_post', 10, 3);
 		$this->loader->hostpn_add_shortcode('hostpn-part-list', $plugin_post_type_part, 'hostpn_part_list_wrapper');
-	
+
 		$plugin_post_type_accommodation = new HOSTPN_Post_Type_Accommodation();
 		$this->loader->hostpn_add_action('init', $plugin_post_type_accommodation, 'hostpn_accommodation_register_post_type');
 		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_accommodation, 'hostpn_accommodation_add_meta_box');
 		$this->loader->hostpn_add_action('save_post_hostpn_accommodation', $plugin_post_type_accommodation, 'hostpn_accommodation_save_post', 10, 3);
 		$this->loader->hostpn_add_shortcode('hostpn-accommodation-list', $plugin_post_type_accommodation, 'hostpn_accommodation_list_wrapper');
-		
+
 		// Add template filters for accommodation - register after init to ensure plugin is loaded
 		$this->loader->hostpn_add_action('init', $plugin_post_type_accommodation, 'hostpn_accommodation_register_template_filters', 20);
-		
+
 		$plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
 		$this->loader->hostpn_add_action('init', $plugin_post_type_guest, 'hostpn_guest_register_post_type');
 		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_guest, 'hostpn_guest_add_meta_box');
 		$this->loader->hostpn_add_action('save_post_hostpn_guest', $plugin_post_type_guest, 'hostpn_guest_save_post', 10, 3);
 		$this->loader->hostpn_add_shortcode('hostpn-guest-list', $plugin_post_type_guest, 'hostpn_guest_list_wrapper');
-		
+
 		// Add hooks for customizing admin columns
 		$this->loader->hostpn_add_filter('manage_hostpn_guest_posts_columns', $plugin_post_type_guest, 'hostpn_guest_custom_columns');
 		$this->loader->hostpn_add_action('manage_hostpn_guest_posts_custom_column', $plugin_post_type_guest, 'hostpn_guest_custom_column_content', 10, 2);
@@ -357,12 +363,6 @@ class HOSTPN {
 		$this->loader->hostpn_add_filter('manage_hostpn_part_posts_columns', $plugin_post_type_part, 'hostpn_part_custom_columns');
 		$this->loader->hostpn_add_action('manage_hostpn_part_posts_custom_column', $plugin_post_type_part, 'hostpn_part_custom_column_content', 10, 2);
 		$this->loader->hostpn_add_filter('manage_edit-hostpn_part_sortable_columns', $plugin_post_type_part, 'hostpn_part_sortable_columns');
-
-		// Financial record post type
-		$plugin_post_type_financial_record = new HOSTPN_Post_Type_Financial_Record();
-		$this->loader->hostpn_add_action('init', $plugin_post_type_financial_record, 'hostpn_financial_record_register_post_type');
-		$this->loader->hostpn_add_action('add_meta_boxes', $plugin_post_type_financial_record, 'hostpn_financial_record_add_meta_boxes');
-		$this->loader->hostpn_add_action('save_post_hostpn_financial_record', $plugin_post_type_financial_record, 'hostpn_financial_record_save_post', 10, 3);
 	}
 
 	/**
@@ -371,7 +371,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_define_taxonomies() {
+	private function hostpn_define_taxonomies()
+	{
 		$plugin_taxonomies_host = new HOSTPN_Taxonomies_Host();
 		$this->loader->hostpn_add_action('init', $plugin_taxonomies_host, 'register_taxonomies');
 	}
@@ -382,18 +383,19 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_data() {
+	private function hostpn_load_data()
+	{
 		$plugin_data = new HOSTPN_Data();
 
 		if (is_admin()) {
 			$this->loader->hostpn_add_action('init', $plugin_data, 'hostpn_load_plugin_data');
-		}else{
+		} else {
 			$this->loader->hostpn_add_action('wp_footer', $plugin_data, 'hostpn_load_plugin_data');
 		}
 
 		$this->loader->hostpn_add_action('wp_footer', $plugin_data, 'hostpn_flush_rewrite_rules');
 		$this->loader->hostpn_add_action('admin_footer', $plugin_data, 'hostpn_flush_rewrite_rules');
-		
+
 		$plugin_user = new HOSTPN_Functions_User();
 		$this->loader->hostpn_add_action('wp_footer', $plugin_user, 'hostpn_user_to_guest');
 		$this->loader->hostpn_add_action('admin_footer', $plugin_user, 'hostpn_user_to_guest');
@@ -405,7 +407,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_templates() {
+	private function hostpn_load_templates()
+	{
 		if (!defined('DOING_AJAX')) {
 			$plugin_templates = new HOSTPN_Templates();
 			$this->loader->hostpn_add_action('wp_footer', $plugin_templates, 'load_plugin_templates');
@@ -419,7 +422,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_settings() {
+	private function hostpn_load_settings()
+	{
 		$plugin_settings = new HOSTPN_Settings();
 		$this->loader->hostpn_add_action('admin_menu', $plugin_settings, 'hostpn_admin_menu');
 		$this->loader->hostpn_add_action('admin_menu', $plugin_settings, 'hostpn_centralized_admin_menu', 20);
@@ -434,7 +438,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_ajax() {
+	private function hostpn_load_ajax()
+	{
 		$plugin_ajax = new HOSTPN_Ajax();
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_ajax', $plugin_ajax, 'hostpn_ajax_server');
 
@@ -448,7 +453,8 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_ajax_nopriv() {
+	private function hostpn_load_ajax_nopriv()
+	{
 		$plugin_ajax_nopriv = new HOSTPN_Ajax_Nopriv();
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_ajax_nopriv', $plugin_ajax_nopriv, 'hostpn_ajax_nopriv_server');
 		$this->loader->hostpn_add_action('wp_ajax_nopriv_hostpn_ajax_nopriv', $plugin_ajax_nopriv, 'hostpn_ajax_nopriv_server');
@@ -460,10 +466,25 @@ class HOSTPN {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function hostpn_load_shortcodes() {
+	private function hostpn_load_shortcodes()
+	{
 		$plugin_shortcodes = new HOSTPN_Shortcodes();
 		$this->loader->hostpn_add_shortcode('hostpn-navigation', $plugin_shortcodes, 'hostpn_navigation');
 		$this->loader->hostpn_add_shortcode('hostpn-call-to-action', $plugin_shortcodes, 'hostpn_call_to_action');
+		$this->loader->hostpn_add_shortcode('hostpn-carousel', $plugin_shortcodes, 'hostpn_carousel');
+	}
+
+	/**
+	 * Load Gutenberg blocks
+	 *
+	 * @since    1.0.51
+	 * @access   private
+	 */
+	private function hostpn_load_blocks()
+	{
+		$plugin_blocks = new HOSTPN_Blocks();
+		$this->loader->hostpn_add_action('init', $plugin_blocks, 'register_blocks');
+		$this->loader->hostpn_add_action('enqueue_block_editor_assets', $plugin_blocks, 'enqueue_block_editor_assets');
 	}
 
 	/**
@@ -471,7 +492,8 @@ class HOSTPN {
 	 *
 	 * @since    1.0.0
 	 */
-	public function hostpn_run() {
+	public function hostpn_run()
+	{
 		$this->loader->hostpn_run();
 	}
 
@@ -481,7 +503,8 @@ class HOSTPN {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function hostpn_get_plugin_name() {
+	public function hostpn_get_plugin_name()
+	{
 		return $this->plugin_name;
 	}
 
@@ -491,7 +514,8 @@ class HOSTPN {
 	 * @since     1.0.0
 	 * @return    HOSTPN_Loader    Orchestrates the hooks of the plugin.
 	 */
-	public function hostpn_get_loader() {
+	public function hostpn_get_loader()
+	{
 		return $this->loader;
 	}
 
@@ -501,7 +525,8 @@ class HOSTPN {
 	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
 	 */
-	public function hostpn_get_version() {
+	public function hostpn_get_version()
+	{
 		return $this->version;
 	}
 

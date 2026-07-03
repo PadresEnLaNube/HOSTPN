@@ -78,7 +78,7 @@ class HOSTPN_Shortcodes {
         </div>
 
         <h4 class="hostpn-call-to-action-title hostpn-text-align-center hostpn-mt-10 hostpn-mb-20"><?php echo esc_html($hostpn_call_to_action_title); ?></h4>
-        
+
         <?php if (!empty($hostpn_call_to_action_content)): ?>
           <p class="hostpn-text-align-center"><?php echo wp_kses_post($hostpn_call_to_action_content); ?></p>
         <?php endif ?>
@@ -89,9 +89,84 @@ class HOSTPN_Shortcodes {
           </div>
         <?php endif ?>
       </div>
-    <?php 
-    $hostpn_return_string = ob_get_contents(); 
-    ob_end_clean(); 
+    <?php
+    $hostpn_return_string = ob_get_contents();
+    ob_end_clean();
     return $hostpn_return_string;
+  }
+
+  /**
+   * Carousel shortcode
+   *
+   * Usage: [hostpn-carousel post_id="123" show_nav="true" show_dots="true" show_counter="false" show_autoplay="false" autoplay="false" autoplay_speed="5000" speed="500"]
+   *
+   * @param array $atts Shortcode attributes
+   * @return string HTML output
+   */
+  public function hostpn_carousel($atts) {
+    $a = extract(shortcode_atts(array(
+      'post_id' => get_the_ID(),
+      'show_nav' => 'true',
+      'show_dots' => 'true',
+      'show_counter' => 'false',
+      'show_autoplay' => 'false',
+      'autoplay' => 'false',
+      'autoplay_speed' => '5000',
+      'speed' => '500',
+      'loop' => 'true',
+      'items_desktop' => '1',
+      'items_mobile' => '1',
+      'class' => ''
+    ), $atts));
+
+    $post_id = intval($post_id);
+    if (!$post_id) {
+      return '';
+    }
+
+    // Get gallery images
+    $gallery_ids = get_post_meta($post_id, 'hostpn_accommodation_gallery', true);
+    if (empty($gallery_ids)) {
+      return '';
+    }
+
+    $gallery_ids = explode(',', $gallery_ids);
+
+    // Convert string booleans to actual booleans
+    $show_nav_bool = filter_var($show_nav, FILTER_VALIDATE_BOOLEAN);
+    $show_dots_bool = filter_var($show_dots, FILTER_VALIDATE_BOOLEAN);
+    $show_counter_bool = filter_var($show_counter, FILTER_VALIDATE_BOOLEAN);
+    $show_autoplay_bool = filter_var($show_autoplay, FILTER_VALIDATE_BOOLEAN);
+    $autoplay_bool = filter_var($autoplay, FILTER_VALIDATE_BOOLEAN);
+    $loop_bool = filter_var($loop, FILTER_VALIDATE_BOOLEAN);
+
+    ob_start();
+    ?>
+    <div class="hostpn-carousel <?php echo esc_attr($class); ?>"
+         data-auto-init="true"
+         data-autoplay="<?php echo $autoplay_bool ? 'true' : 'false'; ?>"
+         data-autoplay-speed="<?php echo esc_attr($autoplay_speed); ?>"
+         data-speed="<?php echo esc_attr($speed); ?>"
+         data-loop="<?php echo $loop_bool ? 'true' : 'false'; ?>"
+         data-dots="<?php echo $show_dots_bool ? 'true' : 'false'; ?>"
+         data-nav="<?php echo $show_nav_bool ? 'true' : 'false'; ?>"
+         data-counter="<?php echo $show_counter_bool ? 'true' : 'false'; ?>"
+         data-items-desktop="<?php echo esc_attr($items_desktop); ?>"
+         data-items-mobile="<?php echo esc_attr($items_mobile); ?>">
+      <?php foreach ($gallery_ids as $image_id): ?>
+        <?php
+        $image_id = intval($image_id);
+        if (!$image_id) continue;
+
+        $image_url = wp_get_attachment_image_url($image_id, 'large');
+        $image_alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
+        ?>
+        <div>
+          <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_alt); ?>">
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <?php
+    return ob_get_clean();
   }
 }

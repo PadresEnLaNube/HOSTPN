@@ -760,6 +760,20 @@ class HOSTPN_Post_Type_Guest
                                             </a>
                                         </li>
                                         <li>
+                                            <a href="#" class="hostpn-guest-resend-notification hostpn-text-decoration-none">
+                                                <div class="hostpn-display-table hostpn-width-100-percent">
+                                                    <div class="hostpn-display-inline-table hostpn-width-70-percent">
+                                                        <p><?php esc_html_e('Resend Notification', 'hostpn'); ?></p>
+                                                    </div>
+                                                    <div
+                                                        class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
+                                                        <i
+                                                            class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">send</i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
                                             <a href="#" class="hostpn-popup-open" data-hostpn-popup-id="hostpn-popup-guest-remove">
                                                 <div class="hostpn-display-table hostpn-width-100-percent">
                                                     <div class="hostpn-display-inline-table hostpn-width-70-percent">
@@ -1133,17 +1147,30 @@ class HOSTPN_Post_Type_Guest
      */
     public function hostpn_guest_resend_notification()
     {
-        // Verify nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'hostpn-admin-nonce')) {
+        // Verify nonce - accept both admin and frontend nonces
+        $nonce_verified = false;
+        if (isset($_POST['nonce'])) {
+            $nonce = sanitize_text_field(wp_unslash($_POST['nonce']));
+            // Try admin nonce first
+            if (wp_verify_nonce($nonce, 'hostpn-admin-nonce')) {
+                $nonce_verified = true;
+            }
+            // Try frontend ajax nonce (hostpn-nonce is used in frontend)
+            elseif (wp_verify_nonce($nonce, 'hostpn-nonce')) {
+                $nonce_verified = true;
+            }
+        }
+
+        if (!$nonce_verified) {
             wp_send_json_error([
                 'message' => esc_html(__('Security check failed: Invalid nonce.', 'hostpn')),
             ]);
         }
 
-        // Check user capabilities
-        if (!current_user_can('edit_posts')) {
+        // Check user is logged in
+        if (!is_user_logged_in()) {
             wp_send_json_error([
-                'message' => esc_html(__('No tienes permisos para realizar esta acción.', 'hostpn')),
+                'message' => esc_html(__('Debes iniciar sesión para realizar esta acción.', 'hostpn')),
             ]);
         }
 
@@ -1160,6 +1187,17 @@ class HOSTPN_Post_Type_Guest
         if (!$post || $post->post_type !== 'hostpn_guest') {
             wp_send_json_error([
                 'message' => esc_html(__('El huésped no existe.', 'hostpn')),
+            ]);
+        }
+
+        // Check user permissions: must be admin, manager, or the author of the guest
+        $current_user_id = get_current_user_id();
+        $is_author = $post->post_author == $current_user_id;
+        $is_admin = current_user_can('edit_posts') || HOSTPN_Functions_User::is_user_admin($current_user_id);
+
+        if (!$is_author && !$is_admin) {
+            wp_send_json_error([
+                'message' => esc_html(__('No tienes permisos para reenviar la notificación de este huésped.', 'hostpn')),
             ]);
         }
 

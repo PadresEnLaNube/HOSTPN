@@ -387,6 +387,88 @@ class HOSTPN_Forms {
           </div>
         <?php
         break;
+      case 'attachment':
+        // Generic attachment handler - supports multiple file types based on 'type' parameter
+        $attachment_type = isset($hostpn_input['type']) ? $hostpn_input['type'] : 'file';
+        $is_multiple = (array_key_exists('multiple', $hostpn_input) && $hostpn_input['multiple']);
+
+        // Set appropriate class and button text based on type
+        $type_config = [
+          'image' => [
+            'class' => 'hostpn-images-block',
+            'btn_class' => 'hostpn-image-btn',
+            'container_class' => 'hostpn-images',
+            'input_class' => 'hostpn-image-input',
+            'add_text' => $is_multiple ? __('Add images', 'hostpn') : __('Add image', 'hostpn'),
+            'edit_text' => $is_multiple ? __('Edit images', 'hostpn') : __('Edit image', 'hostpn'),
+          ],
+          'video' => [
+            'class' => 'hostpn-videos-block',
+            'btn_class' => 'hostpn-video-btn',
+            'container_class' => 'hostpn-videos',
+            'input_class' => 'hostpn-video-input',
+            'add_text' => $is_multiple ? __('Add videos', 'hostpn') : __('Add video', 'hostpn'),
+            'edit_text' => $is_multiple ? __('Edit videos', 'hostpn') : __('Edit video', 'hostpn'),
+          ],
+          'audio' => [
+            'class' => 'hostpn-audios-block',
+            'btn_class' => 'hostpn-audio-btn',
+            'container_class' => 'hostpn-audios',
+            'input_class' => 'hostpn-audio-input',
+            'add_text' => $is_multiple ? __('Add audios', 'hostpn') : __('Add audio', 'hostpn'),
+            'edit_text' => $is_multiple ? __('Edit audios', 'hostpn') : __('Edit audio', 'hostpn'),
+          ],
+          'file' => [
+            'class' => 'hostpn-files-block',
+            'btn_class' => 'hostpn-file-btn',
+            'container_class' => 'hostpn-files',
+            'input_class' => 'hostpn-file-input',
+            'add_text' => $is_multiple ? __('Add files', 'hostpn') : __('Add file', 'hostpn'),
+            'edit_text' => $is_multiple ? __('Edit files', 'hostpn') : __('Edit file', 'hostpn'),
+          ],
+        ];
+
+        $config = isset($type_config[$attachment_type]) ? $type_config[$attachment_type] : $type_config['file'];
+        ?>
+          <div class="hostpn-field <?php echo esc_attr($config['class']); ?>" <?php echo wp_kses_post($hostpn_parent_block); ?> data-hostpn-multiple="<?php echo $is_multiple ? 'true' : 'false'; ?>">
+            <?php if (!empty($hostpn_value)): ?>
+              <div class="<?php echo esc_attr($config['container_class']); ?>">
+                <?php foreach (explode(',', $hostpn_value) as $attachment_id): ?>
+                  <?php if ($attachment_type === 'image'): ?>
+                    <?php echo wp_get_attachment_image($attachment_id, 'medium'); ?>
+                  <?php elseif ($attachment_type === 'video'): ?>
+                    <div class="hostpn-video hostpn-tooltip" title="<?php echo esc_html(get_the_title($attachment_id)); ?>"><i class="dashicons dashicons-media-video"></i></div>
+                  <?php elseif ($attachment_type === 'audio'): ?>
+                    <div class="hostpn-audio hostpn-tooltip" title="<?php echo esc_html(get_the_title($attachment_id)); ?>"><i class="dashicons dashicons-media-audio"></i></div>
+                  <?php else: ?>
+                    <embed src="<?php echo esc_url(wp_get_attachment_url($attachment_id)); ?>" type="application/pdf" class="hostpn-embed-file"/>
+                  <?php endif; ?>
+                <?php endforeach; ?>
+              </div>
+
+              <div class="hostpn-text-align-center hostpn-position-relative">
+                <a href="#" class="hostpn-btn hostpn-btn-mini <?php echo esc_attr($config['btn_class']); ?>">
+                  <?php echo esc_html($config['edit_text']); ?>
+                </a>
+              </div>
+            <?php else: ?>
+              <div class="<?php echo esc_attr($config['container_class']); ?>"></div>
+
+              <div class="hostpn-text-align-center hostpn-position-relative">
+                <a href="#" class="hostpn-btn hostpn-btn-mini <?php echo esc_attr($config['btn_class']); ?>">
+                  <?php echo esc_html($config['add_text']); ?>
+                </a>
+              </div>
+            <?php endif; ?>
+
+            <input id="<?php echo esc_attr($hostpn_input['id']); ?>"
+                   name="<?php echo esc_attr($hostpn_input['id']); ?>"
+                   class="hostpn-display-none <?php echo esc_attr($config['input_class']); ?>"
+                   type="text"
+                   value="<?php echo esc_attr($hostpn_value); ?>"/>
+          </div>
+        <?php
+        break;
       case 'editor':
         ?>
           <div class="hostpn-field" <?php echo wp_kses_post($hostpn_parent_block); ?>>

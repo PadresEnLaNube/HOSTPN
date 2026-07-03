@@ -286,8 +286,52 @@
         }else{
           $('.hostpn-guests').html(response_json['html']);
         }
-        
+
         $('.hostpn-guests').fadeIn('slow');
+        $('.hostpn-menu-more-overlay').fadeOut('fast');
+      });
+    });
+
+    $(document).on('click', '.hostpn-guest-resend-notification', function(e) {
+      e.preventDefault();
+
+      var hostpn_btn = $(this);
+      // Get guest ID from the parent .hostpn-guest element
+      var hostpn_guest_id = hostpn_btn.closest('.hostpn-guest').attr('data-hostpn_guest-id');
+
+      // Add loading indicator
+      var original_html = hostpn_btn.html();
+      hostpn_btn.html('<div class="hostpn-display-table hostpn-width-100-percent"><div class="hostpn-display-inline-table hostpn-width-70-percent"><p>' + (hostpn_i18n.sending || 'Sending...') + '</p></div><div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right"><i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">hourglass_empty</i></div></div>');
+
+      var ajax_url = hostpn_ajax.ajax_url;
+      var data = {
+        action: 'hostpn_guest_resend_notification',
+        post_id: hostpn_guest_id,
+        nonce: hostpn_ajax.hostpn_ajax_nonce,
+      };
+
+      $.post(ajax_url, data, function(response) {
+        // Restore original button HTML
+        hostpn_btn.html(original_html);
+
+        if (response.success) {
+          var message = (response.data && response.data.message) ? response.data.message : (hostpn_i18n.notification_sent || 'Notification sent successfully');
+          hostpn_get_main_message(message);
+        } else {
+          var error_message = (response.data && response.data.message) ? response.data.message : (response.data || hostpn_i18n.an_error_has_occurred);
+          hostpn_get_main_message(error_message);
+        }
+
+        // Close the contextual menu
+        $('.hostpn-menu-more.hostpn-active').fadeOut('fast').removeClass('hostpn-active');
+        $('.hostpn-menu-more-overlay').fadeOut('fast');
+      }).fail(function(xhr, status, error) {
+        // Restore original button HTML on error
+        hostpn_btn.html(original_html);
+        hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
+
+        // Close the contextual menu
+        $('.hostpn-menu-more.hostpn-active').fadeOut('fast').removeClass('hostpn-active');
         $('.hostpn-menu-more-overlay').fadeOut('fast');
       });
     });

@@ -601,6 +601,82 @@ class HOSTPN_Ajax {
           exit;
           break;
 
+        case 'hostpn_install_plugin':
+          if (!current_user_can('install_plugins')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $slug = isset($_POST['slug']) ? sanitize_text_field($_POST['slug']) : '';
+          $allowed_slugs = ['pn-customers-manager', 'mailpn', 'pn-tasks-manager', 'pn-cookies-manager'];
+
+          if (!in_array($slug, $allowed_slugs, true)) {
+            echo wp_json_encode(['error_key' => 'invalid_slug']);
+            exit;
+          }
+
+          include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+          include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+          include_once ABSPATH . 'wp-admin/includes/plugin.php';
+
+          $api = plugins_api('plugin_information', [
+            'slug'   => $slug,
+            'fields' => ['sections' => false],
+          ]);
+
+          if (is_wp_error($api)) {
+            echo wp_json_encode(['error_key' => 'api_error', 'error_content' => $api->get_error_message()]);
+            exit;
+          }
+
+          $upgrader = new Plugin_Upgrader(new WP_Ajax_Upgrader_Skin());
+          $result   = $upgrader->install($api->download_link);
+
+          if (is_wp_error($result)) {
+            echo wp_json_encode(['error_key' => 'install_error', 'error_content' => $result->get_error_message()]);
+            exit;
+          }
+
+          if ($result === false) {
+            echo wp_json_encode(['error_key' => 'install_failed', 'error_content' => 'Installation failed.']);
+            exit;
+          }
+
+          echo wp_json_encode(['error_key' => '']);
+          exit;
+          break;
+
+        case 'hostpn_activate_plugin':
+          if (!current_user_can('activate_plugins')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $slug = isset($_POST['slug']) ? sanitize_text_field($_POST['slug']) : '';
+          $plugin_files = [
+            'pn-customers-manager' => 'pn-customers-manager/pn-customers-manager.php',
+            'mailpn'               => 'mailpn/mailpn.php',
+            'pn-tasks-manager'     => 'pn-tasks-manager/pn-tasks-manager.php',
+            'pn-cookies-manager'   => 'pn-cookies-manager/pn-cookies-manager.php',
+          ];
+
+          if (!isset($plugin_files[$slug])) {
+            echo wp_json_encode(['error_key' => 'invalid_slug']);
+            exit;
+          }
+
+          $plugin_file = $plugin_files[$slug];
+          $result = activate_plugin($plugin_file);
+
+          if (is_wp_error($result)) {
+            echo wp_json_encode(['error_key' => 'activate_error', 'error_content' => $result->get_error_message()]);
+            exit;
+          }
+
+          echo wp_json_encode(['error_key' => '']);
+          exit;
+          break;
+
         case 'hostpn_settings_export':
           if (!current_user_can('manage_options')) {
             echo wp_json_encode(['error_key' => 'permission_denied']);
@@ -656,407 +732,6 @@ class HOSTPN_Ajax {
           exit;
           break;
 
-        case 'hostpn_financial_upload':
-          // Handle CSV file upload
-          if (!isset($_FILES['hostpn_financial_csv_file'])) {
-            echo wp_json_encode([
-              'error_key' => 'no_file',
-              'error_content' => esc_html(__('No file was uploaded', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $file = $_FILES['hostpn_financial_csv_file'];
-
-          // Validate file
-          $validation = HOSTPN_Financial_CSV_Parser::validate_file($file);
-          if (is_wp_error($validation)) {
-            echo wp_json_encode([
-              'error_key' => 'invalid_file',
-              'error_content' => $validation->get_error_message(),
-            ]);
-            exit;
-          }
-
-          // Move uploaded file to temp location
-          $upload_dir = wp_upload_dir();
-          $temp_file = $upload_dir['basedir'] . '/hostpn_temp_' . uniqid() . '.csv';
-
-          if (!move_uploaded_file($file['tmp_name'], $temp_file)) {
-            echo wp_json_encode([
-              'error_key' => 'upload_failed',
-              'error_content' => esc_html(__('Failed to save uploaded file', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Get preview
-          $preview = HOSTPN_Financial_CSV_Parser::get_preview($temp_file, 5);
-
-          if (is_wp_error($preview)) {
-            unlink($temp_file);
-            echo wp_json_encode([
-              'error_key' => 'parse_failed',
-              'error_content' => $preview->get_error_message(),
-            ]);
-            exit;
-          }
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'temp_file' => basename($temp_file),
-            'detected_format' => $preview['format'],
-            'preview_rows' => $preview['preview_rows'],
-            'total_rows' => $preview['total_rows'],
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_import_confirmed':
-          // Import CSV records
-          $temp_filename = !empty($_POST['temp_file']) ? sanitize_file_name($_POST['temp_file']) : '';
-
-          if (empty($temp_filename)) {
-            echo wp_json_encode([
-              'error_key' => 'no_temp_file',
-              'error_content' => esc_html(__('Temporary file not found', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $upload_dir = wp_upload_dir();
-          $temp_file = $upload_dir['basedir'] . '/' . $temp_filename;
-
-          if (!file_exists($temp_file)) {
-            echo wp_json_encode([
-              'error_key' => 'file_not_found',
-              'error_content' => esc_html(__('Temporary file not found', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Check capability
-          if (!current_user_can('edit_post', $hostpn_accommodation_id)) {
-            unlink($temp_file);
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to import financial data', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Import records
-          $result = HOSTPN_Financial_Importer::import_csv($temp_file, $hostpn_accommodation_id);
-
-          // Delete temp file
-          unlink($temp_file);
-
-          if (is_wp_error($result)) {
-            echo wp_json_encode([
-              'error_key' => 'import_failed',
-              'error_content' => $result->get_error_message(),
-            ]);
-            exit;
-          }
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'batch_id' => $result['batch_id'],
-            'total_rows' => $result['total_rows'],
-            'imported' => $result['imported'],
-            'skipped' => $result['skipped'],
-            'errors' => $result['errors'],
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_dashboard_load':
-          // Load dashboard HTML
-          if (!current_user_can('edit_post', $hostpn_accommodation_id)) {
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to view financial data', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $filters = [
-            'year' => !empty($_POST['year']) ? (int) $_POST['year'] : '',
-            'quarter' => !empty($_POST['quarter']) ? sanitize_text_field($_POST['quarter']) : '',
-            'platform' => !empty($_POST['platform']) ? sanitize_text_field($_POST['platform']) : '',
-            'type' => !empty($_POST['type']) ? sanitize_text_field($_POST['type']) : '',
-            'page' => !empty($_POST['page']) ? (int) $_POST['page'] : 1,
-            'per_page' => !empty($_POST['per_page']) ? (int) $_POST['per_page'] : 20,
-          ];
-
-          $dashboard_data = HOSTPN_Financial::get_dashboard_data($hostpn_accommodation_id, $filters);
-
-          // Load template
-          ob_start();
-          include HOSTPN_DIR . 'templates/admin/financial/hostpn-financial-dashboard.php';
-          $html = ob_get_clean();
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'html' => $html,
-            'data' => $dashboard_data,
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_view':
-          // Frontend popup view (read-only)
-          if (!current_user_can('manage_options')) {
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to view financial data', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $filters = [
-            'year' => !empty($_POST['year']) ? (int) $_POST['year'] : '',
-            'quarter' => !empty($_POST['quarter']) ? sanitize_text_field($_POST['quarter']) : '',
-            'platform' => !empty($_POST['platform']) ? sanitize_text_field($_POST['platform']) : '',
-            'type' => !empty($_POST['type']) ? sanitize_text_field($_POST['type']) : '',
-            'page' => !empty($_POST['page']) ? (int) $_POST['page'] : 1,
-          ];
-
-          $dashboard_data = HOSTPN_Financial::get_dashboard_data($hostpn_accommodation_id, $filters);
-
-          // Load template (read-only version)
-          ob_start();
-          $read_only = true;
-          include HOSTPN_DIR . 'templates/admin/financial/hostpn-financial-dashboard.php';
-          $html = ob_get_clean();
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'html' => $html,
-            'data' => $dashboard_data,
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_record_edit':
-          // Load edit form for single record
-          $record_id = !empty($_POST['record_id']) ? (int) $_POST['record_id'] : 0;
-
-          if (empty($record_id)) {
-            echo wp_json_encode([
-              'error_key' => 'invalid_record',
-              'error_content' => esc_html(__('Invalid record ID', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $record_data = HOSTPN_Financial::get_record_details($record_id);
-
-          if (is_wp_error($record_data)) {
-            echo wp_json_encode([
-              'error_key' => 'record_not_found',
-              'error_content' => $record_data->get_error_message(),
-            ]);
-            exit;
-          }
-
-          // Check permission
-          if (!current_user_can('edit_post', $record_data['accommodation_id'])) {
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to edit this record', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Load edit form template
-          ob_start();
-          include HOSTPN_DIR . 'templates/admin/financial/hostpn-financial-record-edit.php';
-          $html = ob_get_clean();
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'html' => $html,
-            'record' => $record_data,
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_record_save':
-          // Save edited record
-          $record_id = !empty($_POST['record_id']) ? (int) $_POST['record_id'] : 0;
-
-          if (empty($record_id)) {
-            echo wp_json_encode([
-              'error_key' => 'invalid_record',
-              'error_content' => esc_html(__('Invalid record ID', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Get record to check permission
-          $record = get_post($record_id);
-          if (!$record || $record->post_type !== 'hostpn_financial_record') {
-            echo wp_json_encode([
-              'error_key' => 'invalid_record',
-              'error_content' => esc_html(__('Invalid record ID', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Check permission
-          if (!current_user_can('edit_post', $record->post_parent)) {
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to edit this record', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Prepare update data
-          $update_data = [
-            'meta' => [],
-          ];
-
-          // Collect all meta fields from POST
-          $meta_fields = [
-            'hostpn_financial_record_type', 'hostpn_financial_platform', 'hostpn_financial_date',
-            'hostpn_financial_amount', 'hostpn_financial_net_amount', 'hostpn_financial_tax_amount',
-            'hostpn_financial_fee_amount', 'hostpn_financial_currency', 'hostpn_financial_year',
-            'hostpn_financial_quarter',
-          ];
-
-          foreach ($meta_fields as $meta_key) {
-            if (isset($_POST[$meta_key])) {
-              $update_data['meta'][$meta_key] = wp_unslash($_POST[$meta_key]);
-            }
-          }
-
-          // Update record
-          $result = HOSTPN_Financial::update_record($record_id, $update_data);
-
-          if (is_wp_error($result)) {
-            echo wp_json_encode([
-              'error_key' => 'update_failed',
-              'error_content' => $result->get_error_message(),
-            ]);
-            exit;
-          }
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'message' => esc_html(__('Record updated successfully', 'hostpn')),
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_record_delete':
-          // Delete single record
-          $record_id = !empty($_POST['record_id']) ? (int) $_POST['record_id'] : 0;
-
-          if (empty($record_id)) {
-            echo wp_json_encode([
-              'error_key' => 'invalid_record',
-              'error_content' => esc_html(__('Invalid record ID', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Get record to check permission
-          $record = get_post($record_id);
-          if (!$record || $record->post_type !== 'hostpn_financial_record') {
-            echo wp_json_encode([
-              'error_key' => 'invalid_record',
-              'error_content' => esc_html(__('Invalid record ID', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Check permission
-          if (!current_user_can('delete_post', $record->post_parent)) {
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to delete this record', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $result = HOSTPN_Financial_Importer::delete_record($record_id, $record->post_parent);
-
-          if (is_wp_error($result)) {
-            echo wp_json_encode([
-              'error_key' => 'delete_failed',
-              'error_content' => $result->get_error_message(),
-            ]);
-            exit;
-          }
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'message' => esc_html(__('Record deleted successfully', 'hostpn')),
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_batch_delete':
-          // Delete entire import batch
-          $batch_id = !empty($_POST['batch_id']) ? sanitize_text_field($_POST['batch_id']) : '';
-
-          if (empty($batch_id)) {
-            echo wp_json_encode([
-              'error_key' => 'invalid_batch',
-              'error_content' => esc_html(__('Invalid batch ID', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          // Check permission
-          if (!current_user_can('delete_post', $hostpn_accommodation_id)) {
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to delete records', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $result = HOSTPN_Financial_Importer::delete_batch($batch_id, $hostpn_accommodation_id);
-
-          if (is_wp_error($result)) {
-            echo wp_json_encode([
-              'error_key' => 'delete_failed',
-              'error_content' => $result->get_error_message(),
-            ]);
-            exit;
-          }
-
-          echo wp_json_encode([
-            'error_key' => '',
-            'deleted_count' => $result,
-            'message' => sprintf(esc_html__('%d records deleted successfully', 'hostpn'), $result),
-          ]);
-          exit;
-          break;
-
-        case 'hostpn_financial_export':
-          // Export filtered records to CSV
-          if (!current_user_can('edit_post', $hostpn_accommodation_id)) {
-            echo wp_json_encode([
-              'error_key' => 'permission_denied',
-              'error_content' => esc_html(__('You do not have permission to export financial data', 'hostpn')),
-            ]);
-            exit;
-          }
-
-          $filters = [
-            'year' => !empty($_POST['year']) ? (int) $_POST['year'] : '',
-            'quarter' => !empty($_POST['quarter']) ? sanitize_text_field($_POST['quarter']) : '',
-            'platform' => !empty($_POST['platform']) ? sanitize_text_field($_POST['platform']) : '',
-            'type' => !empty($_POST['type']) ? sanitize_text_field($_POST['type']) : '',
-          ];
-
-          // This will force CSV download and exit
-          HOSTPN_Financial::export_to_csv($hostpn_accommodation_id, $filters);
-          break;
       }
 
       echo wp_json_encode([
@@ -1065,5 +740,5 @@ class HOSTPN_Ajax {
 
       exit;
     }
-	}
+  }
 }

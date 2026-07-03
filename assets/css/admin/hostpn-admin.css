@@ -295,3 +295,135 @@ body.folded .hostpn-settings-footer{left:36px}
   animation: hostpn-icon-spin 1s linear infinite;
   display: inline-block;
 }
+
+/* Plugin Recommendation Styles */
+.hostpn-plugin-recommendation {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 20px 0;
+}
+
+.hostpn-plugin-recommendation-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  color: #ffffff;
+}
+
+.hostpn-plugin-recommendation-header h3 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.hostpn-plugin-recommendation-header i {
+  font-size: 28px;
+}
+
+.hostpn-plugin-recommendation-body {
+  padding: 25px;
+}
+
+.hostpn-plugin-recommendation-body p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #495057;
+  margin-bottom: 15px;
+}
+
+.hostpn-plugin-recommendation-body ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.hostpn-plugin-recommendation-body ul li {
+  padding: 8px 0 8px 30px;
+  position: relative;
+  font-size: 14px;
+  color: #495057;
+}
+
+.hostpn-plugin-recommendation-body ul li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  color: #28a745;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.hostpn-plugin-active-notice {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  border-radius: 4px;
+  padding: 12px;
+  color: #155724;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.hostpn-plugin-active-notice i {
+  font-size: 20px;
+  color: #28a745;
+}
+
+.hostpn-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #007cba;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.hostpn-btn-primary:hover {
+  background: #005a87;
+  color: #ffffff;
+}
+
+.hostpn-btn-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #28a745;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Recommended plugins – badge on footer button */
+.pn-cm-rp-btn{position:relative}
+.pn-cm-rp-badge{position:absolute;top:-6px;right:-6px;background:#d63638;color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1;pointer-events:none}
+/* Recommended plugins – popup cards */
+.pn-cm-rp-list{display:flex;flex-direction:column;gap:12px}
+.pn-cm-rp-card{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid #dcdcde;border-radius:8px;background:#f9f9f9}
+.pn-cm-rp-icon{width:48px;height:48px;border-radius:50%;background:#f0f0f1;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pn-cm-rp-icon svg{width:28px;height:28px}
+.pn-cm-rp-info{flex:1;min-width:0}
+.pn-cm-rp-name{font-weight:600;font-size:14px;color:#1d2327}
+.pn-cm-rp-desc{font-size:13px;color:#787c82;margin-top:4px}
+.pn-cm-rp-action{flex-shrink:0}
+.pn-cm-rp-active-badge{display:inline-block;padding:4px 12px;background:#dff0d8;color:#3c763d;border-radius:4px;font-size:12px;font-weight:600}
+.pn-cm-rp-recommended{display:inline-block;padding:2px 8px;background:#fef3cd;color:#856404;border-radius:4px;font-size:11px;font-weight:600;margin-left:8px;vertical-align:middle}
+@media screen and (max-width:600px){.pn-cm-rp-card{flex-wrap:wrap;gap:10px}.pn-cm-rp-action{width:100%;text-align:right}}
