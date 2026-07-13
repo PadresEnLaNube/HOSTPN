@@ -32,8 +32,8 @@ class HOSTPN_Notifications {
     }
 
     // Schedule the notification to be sent after a delay to ensure data is fully saved
-    // Increased to 5 seconds to prevent the email from being sent with incomplete data
-    wp_schedule_single_event( time() + 5, 'hostpn_send_delayed_guest_notification', [ $element_id ] );
+    // Set to 60 seconds (1 minute) to allow all guest data to be updated in the database
+    wp_schedule_single_event( time() + 60, 'hostpn_send_delayed_guest_notification', [ $element_id ] );
   }
 
   /**

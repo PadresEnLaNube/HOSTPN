@@ -1,0 +1,11 @@
+# Excluir carpeta de tags
+tags/
+
+# Excluir carpeta de Claude
+.claude/
+
+# Excluir estructura SVN
+.svn/
+assets/
+
+# Solo rastrear el contenido del plugin en trunk/
