@@ -69,9 +69,9 @@
 .hostpn-contract-document {
   background: #fff;
   padding: 40px;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   line-height: 1.7;
   font-size: 13pt;
   color: #000;
@@ -88,17 +88,26 @@
 
 .hostpn-contract-document h2 {
   font-size: 14pt;
-  margin-top: 32px;
-  margin-bottom: 12px;
+  margin-top: 40px;
+  margin-bottom: 14px;
   font-weight: bold;
   text-transform: uppercase;
 }
 
 .hostpn-contract-document h3 {
   font-size: 13pt;
-  margin-top: 28px;
-  margin-bottom: 10px;
+  margin-top: 36px;
+  margin-bottom: 12px;
   font-weight: bold;
+}
+
+/* Extra spacing for inventory annex title and sections */
+.hostpn-contract-document .contract-inventory-title {
+  margin-top: 60px;
+}
+
+.hostpn-contract-document .contract-inventory-section {
+  margin-top: 40px;
 }
 
 .hostpn-contract-document p {
@@ -215,24 +224,6 @@
 .hostpn-contract-document .contract-page-break {
   page-break-before: always;
   break-before: page;
-}
-
-/* Inventory annex title: always starts on a new page */
-.hostpn-contract-document .contract-inventory-title {
-  page-break-before: always;
-  break-before: page;
-}
-
-/* Each inventory section (heading + table) stays together */
-.hostpn-contract-document .contract-inventory-section {
-  page-break-inside: avoid;
-  break-inside: avoid;
-}
-
-/* Prevent heading from being orphaned at the bottom of a page */
-.hostpn-contract-document .contract-inventory-section h3 {
-  page-break-after: avoid;
-  break-after: avoid;
 }
 
 /* Responsive */

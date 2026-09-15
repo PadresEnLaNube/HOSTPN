@@ -115,9 +115,9 @@ $tenant_label   = $contract_type === 'turistico' ? esc_html__('THE GUEST', 'host
 ?>
 
 <div class="hostpn-contract-public-wrapper" id="hostpn-contract-public">
-  <!-- Action buttons -->
+  <!-- Language selector -->
+  <?php if (count($available_languages) > 1) : ?>
   <div class="hostpn-contract-actions">
-    <?php if (count($available_languages) > 1) : ?>
     <select id="hostpn-contract-lang-select" class="hostpn-contract-lang-select">
       <?php foreach ($available_languages as $locale => $label) : ?>
         <option value="<?php echo esc_attr($locale); ?>" <?php selected($locale, $current_locale); ?>>
@@ -125,12 +125,8 @@ $tenant_label   = $contract_type === 'turistico' ? esc_html__('THE GUEST', 'host
         </option>
       <?php endforeach; ?>
     </select>
-    <?php endif; ?>
-    <button type="button" class="hostpn-btn hostpn-contract-pdf-btn" id="hostpn-contract-pdf-btn">
-      <i class="material-icons-outlined">picture_as_pdf</i>
-      <span><?php esc_html_e('Download PDF', 'hostpn'); ?></span>
-    </button>
   </div>
+  <?php endif; ?>
 
   <!-- Contract content -->
   <div class="hostpn-contract-document" id="hostpn-contract-document">
@@ -166,6 +162,14 @@ $tenant_label   = $contract_type === 'turistico' ? esc_html__('THE GUEST', 'host
     <div id="hostpn-contract-inventory">
       <?php echo wp_kses_post($inventory_html); ?>
     </div>
+  </div>
+
+  <!-- Download PDF button -->
+  <div class="hostpn-contract-actions hostpn-contract-actions-bottom">
+    <button type="button" class="hostpn-btn hostpn-contract-pdf-btn" id="hostpn-contract-pdf-btn">
+      <i class="material-icons-outlined">picture_as_pdf</i>
+      <span><?php esc_html_e('Download PDF', 'hostpn'); ?></span>
+    </button>
   </div>
 </div>
 
