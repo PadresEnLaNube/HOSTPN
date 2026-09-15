@@ -54,7 +54,7 @@ class HOSTPN
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.82';
+			$this->version = '1.0.83';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -193,6 +193,21 @@ class HOSTPN
 		require_once HOSTPN_DIR . 'includes/class-hostpn-contract-templates.php';
 
 		/**
+		 * The class responsible for create the Room custom post type.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-post-type-room.php';
+
+		/**
+		 * The class responsible for create the Contract custom post type.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-post-type-contract.php';
+
+		/**
+		 * The class responsible for private file storage.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-private-storage.php';
+
+		/**
 		 * The class defining settings.
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-settings.php';
@@ -291,6 +306,12 @@ class HOSTPN
 		$plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
 		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_guest, 'hostpn_guest_form_save', 999, 5);
 
+		$plugin_post_type_room = new HOSTPN_Post_Type_Room();
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_room, 'hostpn_room_form_save', 999, 5);
+
+		$plugin_post_type_contract = new HOSTPN_Post_Type_Contract();
+		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_post_type_contract, 'hostpn_contract_form_save', 999, 5);
+
 		$plugin_user = new HOSTPN_Functions_User();
 		$this->loader->hostpn_add_filter('userspn_register_fields', $plugin_user, 'hostpn_user_register_fields', 10, 2);
 		$this->loader->hostpn_add_action('user_register', $plugin_user, 'hostpn_user_register', 11, 1);
@@ -373,6 +394,24 @@ class HOSTPN
 		$this->loader->hostpn_add_filter('manage_hostpn_part_posts_columns', $plugin_post_type_part, 'hostpn_part_custom_columns');
 		$this->loader->hostpn_add_action('manage_hostpn_part_posts_custom_column', $plugin_post_type_part, 'hostpn_part_custom_column_content', 10, 2);
 		$this->loader->hostpn_add_filter('manage_edit-hostpn_part_sortable_columns', $plugin_post_type_part, 'hostpn_part_sortable_columns');
+
+		// Room post type
+		$plugin_post_type_room = new HOSTPN_Post_Type_Room();
+		$this->loader->hostpn_add_action('init', $plugin_post_type_room, 'hostpn_room_register_post_type');
+		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_room, 'hostpn_room_add_meta_box');
+		$this->loader->hostpn_add_action('save_post_hostpn_room', $plugin_post_type_room, 'hostpn_room_save_post', 10, 3);
+		$this->loader->hostpn_add_filter('manage_hostpn_room_posts_columns', $plugin_post_type_room, 'hostpn_room_custom_columns');
+		$this->loader->hostpn_add_action('manage_hostpn_room_posts_custom_column', $plugin_post_type_room, 'hostpn_room_custom_column_content', 10, 2);
+		$this->loader->hostpn_add_filter('manage_edit-hostpn_room_sortable_columns', $plugin_post_type_room, 'hostpn_room_sortable_columns');
+
+		// Contract post type
+		$plugin_post_type_contract = new HOSTPN_Post_Type_Contract();
+		$this->loader->hostpn_add_action('init', $plugin_post_type_contract, 'hostpn_contract_register_post_type');
+		$this->loader->hostpn_add_action('admin_init', $plugin_post_type_contract, 'hostpn_contract_add_meta_box');
+		$this->loader->hostpn_add_action('save_post_hostpn_contract', $plugin_post_type_contract, 'hostpn_contract_save_post', 10, 3);
+		$this->loader->hostpn_add_filter('manage_hostpn_contract_posts_columns', $plugin_post_type_contract, 'hostpn_contract_custom_columns');
+		$this->loader->hostpn_add_action('manage_hostpn_contract_posts_custom_column', $plugin_post_type_contract, 'hostpn_contract_custom_column_content', 10, 2);
+		$this->loader->hostpn_add_filter('manage_edit-hostpn_contract_sortable_columns', $plugin_post_type_contract, 'hostpn_contract_sortable_columns');
 	}
 
 	/**
@@ -455,6 +494,18 @@ class HOSTPN
 
 		$plugin_guest = new HOSTPN_Post_Type_Guest();
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_guest_resend_notification', $plugin_guest, 'hostpn_guest_resend_notification');
+
+		// Private storage AJAX handlers
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_contract_download_pdf', 'HOSTPN_Private_Storage', 'hostpn_contract_download_pdf');
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_contract_upload_signed', 'HOSTPN_Private_Storage', 'hostpn_contract_upload_signed');
+
+		// Room AJAX handler
+		$plugin_room = new HOSTPN_Post_Type_Room();
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_room_list_by_accommodation', $plugin_room, 'hostpn_room_list_by_accommodation');
+
+		// Room availability subscribe (priv + nopriv)
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_room_availability_subscribe', 'HOSTPN_Post_Type_Room', 'hostpn_room_availability_subscribe');
+		$this->loader->hostpn_add_action('wp_ajax_nopriv_hostpn_room_availability_subscribe', 'HOSTPN_Post_Type_Room', 'hostpn_room_availability_subscribe');
 	}
 
 	/**

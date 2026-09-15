@@ -1,0 +1,257 @@
+/* Public Contract View */
+.hostpn-contract-public-wrapper {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+/* Action buttons */
+.hostpn-contract-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.hostpn-contract-print-btn,
+.hostpn-contract-pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: #fff;
+}
+
+.hostpn-contract-print-btn {
+  background: #495057;
+}
+
+.hostpn-contract-print-btn:hover {
+  background: #343a40;
+}
+
+.hostpn-contract-pdf-btn {
+  background: #6c5ce7;
+}
+
+.hostpn-contract-pdf-btn:hover {
+  background: #5a4bd1;
+}
+
+.hostpn-contract-print-btn:disabled,
+.hostpn-contract-pdf-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hostpn-contract-print-btn .material-icons-outlined,
+.hostpn-contract-pdf-btn .material-icons-outlined {
+  font-size: 20px;
+}
+
+/* Contract document */
+.hostpn-contract-document {
+  background: #fff;
+  padding: 40px;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  line-height: 1.7;
+  font-size: 13pt;
+  color: #000;
+}
+
+.hostpn-contract-document h1 {
+  font-size: 17pt;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+
+.hostpn-contract-document h2 {
+  font-size: 14pt;
+  margin-top: 22px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.hostpn-contract-document h3 {
+  font-size: 13pt;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.hostpn-contract-document p {
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+/* Signatures */
+.hostpn-contract-signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  gap: 40px;
+}
+
+.hostpn-contract-signature-block {
+  flex: 1;
+  text-align: center;
+}
+
+.hostpn-contract-signature-line {
+  border-top: 1px solid #000;
+  margin-top: 10px;
+  padding-top: 8px;
+}
+
+/* Signature pad */
+.hostpn-signature-pad-wrapper {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.hostpn-signature-canvas {
+  border: 2px dashed #adb5bd;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: crosshair;
+  max-width: 100%;
+  touch-action: none;
+}
+
+.hostpn-signature-clear-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 16px;
+  background: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #495057;
+  transition: all 0.2s;
+}
+
+.hostpn-signature-clear-btn:hover {
+  background: #dee2e6;
+}
+
+.hostpn-signature-image-placeholder {
+  min-height: 10px;
+}
+
+.hostpn-signature-image-placeholder img {
+  max-width: 300px;
+  max-height: 100px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Inventory table */
+.hostpn-contract-inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.hostpn-contract-inventory-table th,
+.hostpn-contract-inventory-table td {
+  border: 1px solid #333;
+  padding: 8px 12px;
+  text-align: left;
+  font-size: 12pt;
+}
+
+.hostpn-contract-inventory-table th {
+  background: #f0f0f0;
+  font-weight: bold;
+}
+
+/* Page break for print */
+.hostpn-contract-page-break {
+  page-break-before: always;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .hostpn-contract-public-wrapper,
+  .hostpn-contract-public-wrapper * {
+    visibility: visible;
+  }
+
+  .hostpn-contract-public-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 15mm;
+  }
+
+  .hostpn-contract-document {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .hostpn-contract-actions {
+    display: none;
+  }
+
+  .hostpn-signature-pad-wrapper {
+    display: none;
+  }
+
+  .hostpn-contract-page-break {
+    page-break-before: always;
+  }
+
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hostpn-contract-public-wrapper {
+    padding: 10px;
+  }
+
+  .hostpn-contract-document {
+    padding: 20px;
+    font-size: 11pt;
+  }
+
+  .hostpn-contract-signatures {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .hostpn-signature-canvas {
+    width: 100%;
+    height: 120px;
+  }
+}

@@ -335,13 +335,22 @@ class HOSTPN_Settings
       'edit.php?post_type=hostpn_guest'
     );
 
-    // Add submenu for Contract Generator
+    // Add submenu for Rooms
     add_submenu_page(
       'hostpn',
-      __('Contract Generator', 'hostpn'),
-      __('Contract Generator', 'hostpn'),
+      __('Rooms', 'hostpn'),
+      __('Rooms', 'hostpn'),
       'manage_options',
-      'edit.php?post_type=hostpn_accommodation'
+      'edit.php?post_type=hostpn_room'
+    );
+
+    // Add submenu for Contracts
+    add_submenu_page(
+      'hostpn',
+      __('Contracts', 'hostpn'),
+      __('Contracts', 'hostpn'),
+      'manage_options',
+      'edit.php?post_type=hostpn_contract'
     );
   }
 
@@ -433,6 +442,28 @@ class HOSTPN_Settings
     $shortcodes = HOSTPN_Contract_Templates::hostpn_get_shortcodes_registry();
     ?>
     <div id="hostpn-contracts-editor" class="hostpn-contracts-editor">
+      <details class="hostpn-shortcodes-reference">
+        <summary><?php esc_html_e('Available shortcodes reference', 'hostpn'); ?></summary>
+        <div class="hostpn-shortcodes-reference-content">
+          <table class="hostpn-shortcodes-table">
+            <thead>
+              <tr>
+                <th><?php esc_html_e('Shortcode', 'hostpn'); ?></th>
+                <th><?php esc_html_e('Description', 'hostpn'); ?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($shortcodes as $shortcode => $description): ?>
+                <tr>
+                  <td><code>[<?php echo esc_html($shortcode); ?>]</code></td>
+                  <td><?php echo esc_html($description); ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
       <div class="hostpn-contracts-tabs">
         <?php $first = true; foreach ($contract_types as $type_key => $type_label): ?>
           <button type="button" class="hostpn-contracts-tab <?php echo $first ? 'active' : ''; ?>" data-contract-type="<?php echo esc_attr($type_key); ?>">
@@ -484,28 +515,6 @@ class HOSTPN_Settings
           </div>
         </div>
       <?php endforeach; ?>
-
-      <details class="hostpn-shortcodes-reference">
-        <summary><?php esc_html_e('Available shortcodes reference', 'hostpn'); ?></summary>
-        <div class="hostpn-shortcodes-reference-content">
-          <table class="hostpn-shortcodes-table">
-            <thead>
-              <tr>
-                <th><?php esc_html_e('Shortcode', 'hostpn'); ?></th>
-                <th><?php esc_html_e('Description', 'hostpn'); ?></th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php foreach ($shortcodes as $shortcode => $description): ?>
-                <tr>
-                  <td><code>[<?php echo esc_html($shortcode); ?>]</code></td>
-                  <td><?php echo esc_html($description); ?></td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      </details>
     </div>
     <?php
   }

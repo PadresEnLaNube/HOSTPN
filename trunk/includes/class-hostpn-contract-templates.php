@@ -138,69 +138,75 @@ class HOSTPN_Contract_Templates {
     return [
       'reunidos' =>
         '<h2>REUNIDOS</h2>'
-        . '<p>De una parte, DON/DO&Ntilde;A <strong>[hostpn-host-name]</strong>, mayor de edad, con NIF/NIE <strong>[hostpn-host-id]</strong>, y domicilio a efectos de notificaciones en <strong>[hostpn-host-address]</strong>. En adelante, el &laquo;ARRENDADOR&raquo;.</p>'
-        . '<p>Y de otra parte, DON/DO&Ntilde;A <strong>[hostpn-guest-name]</strong>, mayor de edad, con NIF/NIE <strong>[hostpn-guest-id-card]</strong>, y correo electr&oacute;nico <strong>[hostpn-guest-email]</strong>. En adelante, el &laquo;ARRENDATARIO&raquo;.</p>'
+        . '<p>De una parte, DON/DO&Ntilde;A <strong>[hostpn-host-name]</strong>, mayor de edad, con NIF <strong>[hostpn-host-id]</strong>, y domicilio a efectos de notificaciones en <strong>[hostpn-host-address]</strong>. En adelante, el &laquo;ARRENDADOR&raquo;.</p>'
+        . '<p>Y de otra parte, DON/DO&Ntilde;A <strong>[hostpn-guest-name]</strong>, mayor de edad, con NIF <strong>[hostpn-guest-id-card]</strong>, y correo electr&oacute;nico <strong>[hostpn-guest-email]</strong>. En adelante, el &laquo;ARRENDATARIO&raquo;.</p>'
         . '<p>Ambas partes se reconocen mutuamente la capacidad legal suficiente para el otorgamiento del presente contrato de arrendamiento de habitaci&oacute;n y, al efecto,</p>',
 
       'exponen' =>
         '<h2>EXPONEN</h2>'
-        . '<p><strong>I.</strong> Que el ARRENDADOR es titular/gestor leg&iacute;timo de la vivienda ubicada en <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>.</p>'
-        . '<p><strong>II.</strong> Que el ARRENDATARIO est&aacute; interesado en alquilar el uso exclusivo de la Habitaci&oacute;n n&ordm; <strong>[hostpn-room-name]</strong> de dicha vivienda, as&iacute; como el derecho al uso compartido de las zonas comunes del piso.</p>'
+        . '<p><strong>I.</strong> Que el ARRENDADOR es titular/gestor leg&iacute;timo de la vivienda ubicada en <strong>[hostpn-accommodation-address]</strong>, piso que consta de varias habitaciones y zonas comunes.</p>'
+        . '<p><strong>II.</strong> Que el ARRENDATARIO est&aacute; interesado en alquilar el uso exclusivo de la <strong>Habitaci&oacute;n [hostpn-room-name]</strong> de dicha vivienda, as&iacute; como el derecho al uso compartido de las zonas comunes del piso (cocina, ba&ntilde;o y pasillos si lo hubiere).</p>'
         . '<p><strong>III.</strong> Que habiendo llegado ambas partes a un acuerdo, formalizan el presente contrato sujet&aacute;ndose a las siguientes:</p>',
 
       'primera' =>
-        '<h3>PRIMERA. Objeto</h3>'
-        . '<p>El ARRENDADOR cede en arrendamiento al ARRENDATARIO el uso exclusivo de la Habitaci&oacute;n n&ordm; <strong>[hostpn-room-name]</strong>, amueblada seg&uacute;n inventario anexo, ubicada en la vivienda sita en <strong>[hostpn-accommodation-address]</strong>.</p>'
-        . '<p>El ARRENDATARIO tendr&aacute; derecho al uso compartido con los dem&aacute;s ocupantes de la vivienda de los servicios y zonas comunes: cocina, cuarto/s de ba&ntilde;o, tendedero y pasillos de distribuci&oacute;n.</p>',
+        '<h3>CL&Aacute;USULAS</h3>'
+        . '<h3>PRIMERA. Objeto</h3>'
+        . '<p>El ARRENDADOR cede en arrendamiento al ARRENDATARIO el uso exclusivo de la <strong>Habitaci&oacute;n [hostpn-room-name]</strong> amueblada seg&uacute;n inventario anexo, ubicada en la vivienda compartida sita en <strong>[hostpn-accommodation-address]</strong>.</p>'
+        . '<p>El ARRENDATARIO tendr&aacute; derecho al uso compartido con los dem&aacute;s ocupantes de la vivienda de los servicios y zonas comunes: cocina, cuarto de ba&ntilde;o, tendedero y pasillos de distribuci&oacute;n. Queda expresamente excluido el uso exclusivo de cualquier otra habitaci&oacute;n del piso.</p>',
 
       'segunda' =>
         '<h3>SEGUNDA. Duraci&oacute;n del contrato</h3>'
         . '<p>El presente contrato se estipula por un plazo de <strong>[hostpn-contract-duration]</strong> a contar desde el d&iacute;a <strong>[hostpn-contract-start-date]</strong> hasta el d&iacute;a <strong>[hostpn-contract-end-date]</strong>.</p>'
-        . '<p>Llegada la fecha de vencimiento, el contrato se extinguir&aacute; de forma autom&aacute;tica. Si el ARRENDATARIO deseara desistir antes, deber&aacute; notificarlo con una antelaci&oacute;n m&iacute;nima de <strong>[hostpn-contract-notice-days] d&iacute;as</strong>.</p>',
+        . '<p>Llegada la fecha de vencimiento, el contrato se extinguir&aacute; de forma autom&aacute;tica sin necesidad de requerimiento previo. Si el ARRENDATARIO deseara desistir del contrato antes de su finalizaci&oacute;n, deber&aacute; notificarlo al ARRENDADOR con una antelaci&oacute;n m&iacute;nima de <strong>[hostpn-contract-notice-days] d&iacute;as</strong> naturales. En caso de incumplimiento de dicho plazo, indemnizar&aacute; al ARRENDADOR con la parte proporcional de la renta equivalente a los d&iacute;as de preaviso no cumplidos.</p>',
 
       'tercera' =>
         '<h3>TERCERA. Renta y forma de pago</h3>'
-        . '<p>La renta mensual pactada es de <strong>[hostpn-contract-rent-amount] EUROS</strong> ([hostpn-contract-rent-words] &euro;).</p>'
-        . '<p>El pago se realizar&aacute; dentro de los primeros <strong>[hostpn-contract-payment-day]</strong> d&iacute;as de cada mes, mediante transferencia bancaria:</p>'
-        . '<p>Entidad: <strong>[hostpn-contract-bank-name]</strong><br>IBAN: <strong>[hostpn-contract-iban]</strong></p>',
+        . '<p>La renta mensual pactada es de <strong>[hostpn-contract-rent-amount] EUROS</strong> (<strong>[hostpn-contract-rent-words]</strong> &euro;).</p>'
+        . '<p>El pago de la renta se realizar&aacute; de forma anticipada dentro de los primeros <strong>[hostpn-contract-payment-day]</strong> d&iacute;as de cada mes, mediante transferencia bancaria o ingreso en la cuenta corriente titularidad del ARRENDADOR:</p>'
+        . '<p>Entidad Bancaria: <strong>[hostpn-contract-bank-name]</strong><br>'
+        . 'IBAN: <strong>[hostpn-contract-iban]</strong></p>',
 
       'cuarta' =>
         '<h3>CUARTA. Suministros y gastos</h3>'
-        . '<p>Los gastos de agua, electricidad, gas e internet se regular&aacute;n seg&uacute;n lo pactado entre las partes.</p>',
+        . '<p><strong>Gastos incluidos:</strong> En el precio de la renta mensual est&aacute;n incluidos los gastos de agua, comunidad, IBI, basuras e Internet de banda ancha.</p>'
+        . '<p><strong>Gastos no incluidos:</strong> Los gastos de electricidad no est&aacute;n incluidos en la renta y se abonar&aacute;n mensualmente de forma proporcional entre las habitaciones del piso en lo relativo a consumos comunes (termo de agua caliente, electrodom&eacute;sticos y luces de pasillos y cocina) y de forma individual en lo relativo a los consumos individuales del ARRENDATARIO en su habitaci&oacute;n.</p>',
 
       'quinta' =>
-        '<h3>QUINTA. Fianza</h3>'
-        . '<p>El ARRENDATARIO entrega al ARRENDADOR <strong>[hostpn-contract-deposit-amount] EUROS</strong> ([hostpn-contract-deposit-words] &euro;) en concepto de fianza.</p>'
-        . '<p>La fianza se devolver&aacute; dentro de los 30 d&iacute;as siguientes a la entrega de llaves, previa comprobaci&oacute;n del estado del inmueble.</p>',
+        '<h3>QUINTA. Pagos y Fianza</h3>'
+        . '<p>A la firma del presente contrato, el ARRENDATARIO hace entrega al ARRENDADOR de la cantidad de <strong>[hostpn-contract-deposit-amount] EUROS</strong> (<strong>[hostpn-contract-deposit-words]</strong> &euro;) en concepto de fianza.</p>'
+        . '<p>La fianza responder&aacute; del cumplimiento de las obligaciones contractuales, de la devoluci&oacute;n de la habitaci&oacute;n y sus enseres en el mismo estado en que se recibieron, y del pago de rentas o suministros pendientes. Se devolver&aacute; dentro de los 30 d&iacute;as siguientes a la entrega de llaves, previa comprobaci&oacute;n del estado del inmueble. En ning&uacute;n caso la fianza servir&aacute; como pago de la &uacute;ltima mensualidad de renta.</p>'
+        . '<p>Si se quiere reservar la habitaci&oacute;n con antelaci&oacute;n se puede aportar la mitad de la fianza como se&ntilde;al de forma que esta quedar&aacute; reservada hasta un m&aacute;ximo de 7 d&iacute;as desde la recepci&oacute;n del dinero.</p>',
 
       'sexta' =>
         '<h3>SEXTA. Normas de convivencia y uso</h3>'
-        . '<p>El ARRENDATARIO se compromete a respetar las normas b&aacute;sicas de convivencia:</p>'
-        . '<p><strong>Limpieza:</strong> Mantener la habitaci&oacute;n y colaborar en la limpieza de zonas comunes.</p>'
-        . '<p><strong>Visitas:</strong> Limitadas a horario diurno. Prohibida la pernocta de terceros sin autorizaci&oacute;n.</p>'
-        . '<p><strong>Mascotas:</strong> Prohibidas salvo autorizaci&oacute;n expresa.</p>'
-        . '<p><strong>Tabaco:</strong> Prohibido fumar en la vivienda.</p>'
-        . '<p><strong>Ruidos:</strong> Respetar el descanso comunitario a partir de las 23:00 horas.</p>',
+        . '<p>El ARRENDATARIO se compromete a respetar las normas b&aacute;sicas de convivencia con los dem&aacute;s compa&ntilde;eros/as de piso:</p>'
+        . '<p><strong>Limpieza:</strong> Mantener en perfecto estado de limpieza y orden la habitaci&oacute;n arrendada y colaborar activamente en el turno de limpieza de las zonas comunes.</p>'
+        . '<p><strong>Visitas y pernocta:</strong> Las visitas quedan limitadas a horario diurno. Queda expresamente prohibida la pernocta de terceras personas ajenas al contrato en la habitaci&oacute;n sin el consentimiento previo y por escrito del ARRENDADOR y de los dem&aacute;s convivientes.</p>'
+        . '<p><strong>Mascotas:</strong> Queda prohibida la tenencia de animales en la vivienda, salvo autorizaci&oacute;n expresa por escrito del ARRENDADOR.</p>'
+        . '<p><strong>Tabaco y sustancias:</strong> Queda estrictamente prohibido fumar o consumir drogas en la habitaci&oacute;n y en las zonas comunes de la vivienda.</p>'
+        . '<p><strong>Ruidos:</strong> Se respetar&aacute; el descanso comunitario, evitando ruidos o fiestas a partir de las 23:00 horas.</p>',
 
       'septima' =>
         '<h3>S&Eacute;PTIMA. Obras y conservaci&oacute;n</h3>'
-        . '<p>El ARRENDATARIO no podr&aacute; realizar obras ni modificaciones sin autorizaci&oacute;n escrita del ARRENDADOR.</p>'
-        . '<p>Las peque&ntilde;as reparaciones por uso ordinario ser&aacute;n a cargo del ARRENDATARIO.</p>',
+        . '<p>El ARRENDATARIO no podr&aacute; realizar obras, modificaciones ni taladros en las paredes de la habitaci&oacute;n ni de las zonas comunes sin autorizaci&oacute;n escrita del ARRENDADOR.</p>'
+        . '<p>Las peque&ntilde;as reparaciones que exija el desgaste por el uso ordinario de la habitaci&oacute;n y sus enseres ser&aacute;n a cargo del ARRENDATARIO.</p>',
 
       'octava' =>
         '<h3>OCTAVA. Cesi&oacute;n y subarriendo</h3>'
-        . '<p>Queda prohibida la cesi&oacute;n del contrato y el subarriendo parcial o total de la habitaci&oacute;n.</p>',
+        . '<p>Queda expresamente prohibida la cesi&oacute;n del contrato, as&iacute; como el subarriendo parcial o total de la habitaci&oacute;n a terceras personas.</p>',
 
       'novena' =>
-        '<h3>NOVENA. Incumplimiento</h3>'
-        . '<p>El incumplimiento de las obligaciones dar&aacute; derecho a la parte cumplidora a exigir la resoluci&oacute;n del contrato con indemnizaci&oacute;n de da&ntilde;os y perjuicios.</p>',
+        '<h3>NOVENA. Incumplimiento de contrato</h3>'
+        . '<p>El incumplimiento por cualquiera de las partes de las obligaciones derivadas de este contrato dar&aacute; derecho a la parte que hubiere cumplido a exigir la resoluci&oacute;n del contrato o su cumplimiento, con la correspondiente indemnizaci&oacute;n de da&ntilde;os y perjuicios.</p>'
+        . '<p>Ser&aacute; causa especial de resoluci&oacute;n la falta de pago de la renta o de la fianza, la realizaci&oacute;n de actividades molestas, insalubres, nocivas o il&iacute;citas, o la infracci&oacute;n de las normas de convivencia fijadas en la cl&aacute;usula sexta.</p>',
 
       'decima' =>
-        '<h3>D&Eacute;CIMA. Legislaci&oacute;n aplicable</h3>'
-        . '<p>El presente contrato se rige por el C&oacute;digo Civil espa&ntilde;ol (Arts. 1542 y ss.), quedando excluido de la LAU al tratarse de un arrendamiento por habitaciones.</p>',
+        '<h3>D&Eacute;CIMA. Legislaci&oacute;n aplicable y jurisdicci&oacute;n</h3>'
+        . '<p>El presente contrato se rige por lo libremente pactado por las partes y, en su defecto, por las disposiciones del C&oacute;digo Civil espa&ntilde;ol (Arts. 1542 y ss.), quedando expresamente excluido de la Ley de Arrendamientos Urbanos (LAU) al tratarse de un arrendamiento por habitaciones.</p>'
+        . '<p>Para la resoluci&oacute;n de cualquier controversia judicial que pudiera derivarse de la interpretaci&oacute;n o cumplimiento de este contrato, ambas partes se someten a la jurisdicci&oacute;n de los Juzgados y Tribunales del lugar donde se encuentra ubicada la vivienda.</p>',
 
       'firmas' =>
-        '<p style="margin-top:20pt;">Y para que as&iacute; conste, firman el presente contrato por duplicado ejemplar.</p>'
+        '<p style="margin-top:20pt;">Y para que as&iacute; conste, firman el presente contrato por duplicado ejemplar y a un solo efecto, en el lugar y fecha arriba indicados.</p>'
         . '<div class="contract-signatures">'
         . '<div class="contract-signature-block"><p><strong>EL ARRENDADOR</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-host-name]</p></div>'
         . '<div class="contract-signature-block"><p><strong>EL ARRENDATARIO</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-guest-name]</p></div>'
@@ -545,6 +551,84 @@ class HOSTPN_Contract_Templates {
   }
 
   /**
+   * Resolve shortcodes using Contract CPT meta instead of accommodation meta.
+   *
+   * When a contract is stored as its own CPT, the contract-specific fields
+   * (landlord, tenant, dates, amounts, etc.) live on the contract post,
+   * while accommodation address/city still come from the accommodation post.
+   *
+   * @param string $text              Already-rendered HTML (may still contain unresolved shortcodes).
+   * @param int    $contract_id       Contract CPT post ID.
+   * @param int    $accommodation_id  Accommodation post ID.
+   * @return string
+   */
+  public static function hostpn_resolve_shortcodes_from_contract($text, $contract_id, $accommodation_id) {
+    if (empty($contract_id)) {
+      return $text;
+    }
+
+    $cmeta = function($key) use ($contract_id) {
+      return get_post_meta($contract_id, $key, true);
+    };
+    $ameta = function($key) use ($accommodation_id) {
+      return get_post_meta($accommodation_id, $key, true);
+    };
+
+    // Compute full accommodation address
+    $address     = $ameta('hostpn_accommodation_address');
+    $address_alt = $ameta('hostpn_accommodation_address_alt');
+    $postal      = $ameta('hostpn_accommodation_postal_code');
+    $city        = $ameta('hostpn_accommodation_city');
+    $full_address = $address . (!empty($address_alt) ? ', ' . $address_alt : '');
+    if (!empty($postal) || !empty($city)) {
+      $full_address .= ', ' . trim($postal . ' ' . $city);
+    }
+
+    // Format dates
+    $start_date = $cmeta('hostpn_contract_start_date');
+    $end_date   = $cmeta('hostpn_contract_end_date');
+    $start_fmt  = !empty($start_date) ? gmdate('d/m/Y', strtotime($start_date)) : '';
+    $end_fmt    = !empty($end_date) ? gmdate('d/m/Y', strtotime($end_date)) : '';
+
+    // Room name from room CPT
+    $room_id   = $cmeta('hostpn_contract_room_id');
+    $room_name = '';
+    if (!empty($room_id)) {
+      $room_number = get_post_meta($room_id, 'hostpn_room_number', true);
+      $room_name   = !empty($room_number) ? $room_number : get_the_title($room_id);
+    }
+
+    $replacements = [
+      '[hostpn-host-name]'               => $cmeta('hostpn_contract_landlord_name'),
+      '[hostpn-host-id]'                 => $cmeta('hostpn_contract_landlord_nif'),
+      '[hostpn-host-address]'            => $cmeta('hostpn_contract_landlord_address'),
+      '[hostpn-guest-name]'              => $cmeta('hostpn_contract_tenant_name'),
+      '[hostpn-guest-id-card]'           => $cmeta('hostpn_contract_tenant_nif'),
+      '[hostpn-guest-email]'             => $cmeta('hostpn_contract_tenant_email'),
+      '[hostpn-accommodation-address]'   => $full_address,
+      '[hostpn-accommodation-city]'      => $city,
+      '[hostpn-contract-duration]'       => $cmeta('hostpn_contract_duration'),
+      '[hostpn-contract-start-date]'     => $start_fmt,
+      '[hostpn-contract-end-date]'       => $end_fmt,
+      '[hostpn-contract-rent-amount]'    => $cmeta('hostpn_contract_rent_amount'),
+      '[hostpn-contract-rent-words]'     => $cmeta('hostpn_contract_rent_words'),
+      '[hostpn-contract-deposit-amount]' => $cmeta('hostpn_contract_deposit_amount'),
+      '[hostpn-contract-deposit-words]'  => $cmeta('hostpn_contract_deposit_words'),
+      '[hostpn-room-name]'               => $room_name,
+      '[hostpn-contract-notice-days]'    => $cmeta('hostpn_contract_notice_days'),
+      '[hostpn-contract-payment-day]'    => $cmeta('hostpn_contract_payment_day'),
+      '[hostpn-contract-bank-name]'      => $cmeta('hostpn_contract_bank_name'),
+      '[hostpn-contract-iban]'           => $cmeta('hostpn_contract_iban'),
+      '[hostpn-contract-guest-count]'    => $cmeta('hostpn_contract_guest_count'),
+      '[hostpn-contract-checkin-time]'   => $cmeta('hostpn_contract_checkin_time'),
+      '[hostpn-contract-checkout-time]'  => $cmeta('hostpn_contract_checkout_time'),
+      '[hostpn-contract-total-price]'    => $cmeta('hostpn_contract_total_price'),
+    ];
+
+    return str_replace(array_keys($replacements), array_values($replacements), $text);
+  }
+
+  /**
    * Render a contract for public view (with signature pads).
    *
    * @param int $accommodation_id Post ID.
@@ -564,51 +648,60 @@ class HOSTPN_Contract_Templates {
   }
 
   /**
-   * Render inventory table from accommodation features.
+   * Render inventory annex from contract html_multi items.
    *
    * @param int $accommodation_id Post ID.
-   * @return string HTML for inventory section.
+   * @return string HTML for inventory section, or empty if disabled.
    */
   public static function hostpn_render_inventory($accommodation_id) {
-    $accommodation_features = HOSTPN_i18n::hostpn_get_accommodation_features();
-    $feature_categories = [];
+    $enabled = get_post_meta($accommodation_id, 'hostpn_contract_inventory_enabled', true);
+    if (empty($enabled) || $enabled !== 'on') {
+      return '';
+    }
 
-    foreach ($accommodation_features as $cat_key => $cat_data) {
-      $items = [];
-      foreach ($cat_data['features'] as $meta_key => $label) {
-        $val = get_post_meta($accommodation_id, $meta_key, true);
-        if (!empty($val) && $val === 'on') {
-          $items[] = $label;
-        }
+    $names = get_post_meta($accommodation_id, 'hostpn_contract_inventory_name', true);
+    $urls  = get_post_meta($accommodation_id, 'hostpn_contract_inventory_url', true);
+
+    if (!is_array($names)) {
+      $names = [];
+    }
+    if (!is_array($urls)) {
+      $urls = [];
+    }
+
+    // Filter out empty rows
+    $items = [];
+    foreach ($names as $i => $name) {
+      $name = trim($name);
+      if (!empty($name)) {
+        $url = isset($urls[$i]) ? trim($urls[$i]) : '';
+        $items[] = ['name' => $name, 'url' => $url];
       }
-      $custom_key = 'hostpn_' . $cat_key . '_custom_name';
-      $custom_vals = get_post_meta($accommodation_id, $custom_key, true);
-      if (is_array($custom_vals)) {
-        foreach ($custom_vals as $cv) {
-          if (!empty($cv)) $items[] = $cv;
-        }
-      }
-      if (!empty($items)) {
-        $feature_categories[$cat_data['title']] = $items;
-      }
+    }
+
+    if (empty($items)) {
+      return '';
     }
 
     $html = '<div class="contract-page-break"></div>';
-    $html .= '<h2>' . esc_html__('ANNEX: ACCOMMODATION INVENTORY', 'hostpn') . '</h2>';
+    $html .= '<h2>' . esc_html__('ANEXO: LISTADO DE ENSERES ARRENDADOS', 'hostpn') . '</h2>';
+    $html .= '<table class="contract-inventory-table"><thead><tr>';
+    $html .= '<th>' . esc_html__('Item', 'hostpn') . '</th>';
+    $html .= '<th>' . esc_html__('URL', 'hostpn') . '</th>';
+    $html .= '</tr></thead><tbody>';
 
-    if (!empty($feature_categories)) {
-      $html .= '<table class="contract-inventory-table"><thead><tr>';
-      $html .= '<th>' . esc_html__('Category', 'hostpn') . '</th>';
-      $html .= '<th>' . esc_html__('Items', 'hostpn') . '</th>';
-      $html .= '</tr></thead><tbody>';
-      foreach ($feature_categories as $cat_title => $items) {
-        $html .= '<tr><td><strong>' . esc_html($cat_title) . '</strong></td>';
-        $html .= '<td>' . esc_html(implode(', ', $items)) . '</td></tr>';
+    foreach ($items as $item) {
+      $html .= '<tr>';
+      $html .= '<td>' . esc_html($item['name']) . '</td>';
+      if (!empty($item['url'])) {
+        $html .= '<td><a href="' . esc_url($item['url']) . '" target="_blank">' . esc_html($item['url']) . '</a></td>';
+      } else {
+        $html .= '<td></td>';
       }
-      $html .= '</tbody></table>';
-    } else {
-      $html .= '<p><em>' . esc_html__('No items have been selected for the inventory.', 'hostpn') . '</em></p>';
+      $html .= '</tr>';
     }
+
+    $html .= '</tbody></table>';
 
     return $html;
   }

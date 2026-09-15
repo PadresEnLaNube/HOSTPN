@@ -60,6 +60,67 @@ if (wp_is_block_theme()) {
                                 </div>
                             </div>
                         <?php endif; ?>
+
+                        <?php if ($accommodation_type === 'habitacion'):
+                            $rooms = HOSTPN_Post_Type_Room::hostpn_get_rooms_by_accommodation($accommodation_id);
+                            if (!empty($rooms)):
+                                $status_labels = [
+                                    'available'   => __('Available', 'hostpn'),
+                                    'occupied'    => __('Occupied', 'hostpn'),
+                                    'maintenance' => __('Maintenance', 'hostpn'),
+                                ];
+                        ?>
+                            <div class="hostpn-rooms-listing">
+                                <div class="hostpn-toggle-header" data-toggle="rooms-listing">
+                                    <h4>
+                                        <i class="material-icons-outlined hostpn-icon-small">meeting_room</i>
+                                        <?php esc_html_e('Rooms', 'hostpn'); ?>
+                                    </h4>
+                                    <i class="material-icons-outlined hostpn-toggle-icon">sort</i>
+                                </div>
+                                <div class="hostpn-toggle-content hostpn-toggle-rooms-listing">
+                                <div class="hostpn-rooms-grid">
+                                    <?php foreach ($rooms as $room_id):
+                                        $room_number   = get_post_meta($room_id, 'hostpn_room_number', true);
+                                        $room_capacity = get_post_meta($room_id, 'hostpn_room_capacity', true);
+                                        $room_floor    = get_post_meta($room_id, 'hostpn_room_floor', true);
+                                        $room_status   = get_post_meta($room_id, 'hostpn_room_status', true);
+                                        $room_status   = !empty($room_status) ? $room_status : 'available';
+                                        $status_label  = isset($status_labels[$room_status]) ? $status_labels[$room_status] : $room_status;
+                                    ?>
+                                        <div class="hostpn-room-card hostpn-room-status-<?php echo esc_attr($room_status); ?>">
+                                            <div class="hostpn-room-card-header">
+                                                <span class="hostpn-room-card-name"><?php echo esc_html(sprintf(__('Room %s', 'hostpn'), $room_number)); ?></span>
+                                                <span class="hostpn-room-badge hostpn-room-badge-<?php echo esc_attr($room_status); ?>"><?php echo esc_html($status_label); ?></span>
+                                            </div>
+                                            <div class="hostpn-room-card-details">
+                                                <?php if ($room_capacity): ?>
+                                                    <span><i class="material-icons-outlined">people</i> <?php echo esc_html(sprintf(__('Capacity: %s', 'hostpn'), $room_capacity)); ?></span>
+                                                <?php endif; ?>
+                                                <?php if ($room_floor): ?>
+                                                    <span><i class="material-icons-outlined">layers</i> <?php echo esc_html(sprintf(__('Floor: %s', 'hostpn'), $room_floor)); ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <?php if ($room_status === 'occupied'): ?>
+                                                <div class="hostpn-room-notify-form" data-room-id="<?php echo esc_attr($room_id); ?>">
+                                                    <p><?php esc_html_e('Interested in this room?', 'hostpn'); ?></p>
+                                                    <div class="hostpn-room-notify-input-wrapper">
+                                                        <input type="email" placeholder="<?php esc_attr_e('Your email', 'hostpn'); ?>" class="hostpn-room-notify-email">
+                                                        <button type="button" class="hostpn-btn hostpn-btn-mini hostpn-room-notify-btn">
+                                                            <i class="material-icons-outlined">notifications</i> <?php esc_html_e('Notify me', 'hostpn'); ?>
+                                                        </button>
+                                                    </div>
+                                                    <div class="hostpn-room-notify-feedback"></div>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                </div><!-- .hostpn-toggle-content -->
+                            </div>
+                        <?php
+                            endif;
+                        endif; ?>
                     </div>
 
                     <?php if ($thumbnail): ?>
@@ -257,6 +318,22 @@ if (wp_is_block_theme()) {
                         <?php
                     endif;
                 endif;
+                ?>
+
+                <!-- Contracts Block for logged-in guests -->
+                <?php
+                if (is_user_logged_in()) {
+                    $guest_id = HOSTPN_Post_Type_Contract::hostpn_get_guest_id_for_user(get_current_user_id());
+                    if ($guest_id) {
+                        $contracts = HOSTPN_Post_Type_Contract::hostpn_get_contracts([
+                            'accommodation_id' => $accommodation_id,
+                            'guest_id'         => $guest_id,
+                        ]);
+                        if (!empty($contracts)) {
+                            include HOSTPN_DIR . 'templates/public/hostpn-contracts-block.php';
+                        }
+                    }
+                }
                 ?>
 
                 <!-- Navigation -->

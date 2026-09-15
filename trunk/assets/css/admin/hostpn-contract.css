@@ -150,6 +150,36 @@
   font-style: italic;
 }
 
+.hostpn-contract-live-preview .contract-inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10pt;
+}
+
+.hostpn-contract-live-preview .contract-inventory-table th,
+.hostpn-contract-live-preview .contract-inventory-table td {
+  border: 1px solid #333;
+  padding: 6pt 10pt;
+  text-align: left;
+  font-size: 10pt;
+}
+
+.hostpn-contract-live-preview .contract-inventory-table th {
+  background: #f0f0f0;
+  font-weight: bold;
+}
+
+.hostpn-contract-live-preview .contract-inventory-table a {
+  color: #6c5ce7;
+  word-break: break-all;
+  font-size: 9pt;
+}
+
+.hostpn-contract-live-preview .contract-page-break {
+  border-top: 2px dashed #ccc;
+  margin: 20pt 0;
+}
+
 /* ── Generate button ────────────────────────────────────────────── */
 .hostpn-contract-generate-btn {
   display: inline-flex;

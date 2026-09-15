@@ -69,5 +69,37 @@ class HOSTPN_Public {
 		if (is_post_type_archive('hostpn_accommodation') || is_singular('hostpn_accommodation')) {
 			wp_enqueue_script($this->plugin_name . '-accommodation-public', HOSTPN_URL . 'assets/js/public/hostpn-accommodation-public.js', ['jquery'], $this->version, false);
 		}
+
+		// Enqueue rooms block JS on single accommodation
+		if (is_singular('hostpn_accommodation')) {
+			wp_enqueue_script($this->plugin_name . '-rooms-block', HOSTPN_URL . 'assets/js/public/hostpn-rooms-block.js', ['jquery'], $this->version, true);
+			wp_localize_script($this->plugin_name . '-rooms-block', 'hostpnRoomsBlock', [
+				'ajaxUrl' => admin_url('admin-ajax.php'),
+				'nonce'   => wp_create_nonce('hostpn-nonce'),
+				'i18n'    => [
+					'subscribing'     => __('Sending...', 'hostpn'),
+					'subscribed'      => __('We will notify you when available.', 'hostpn'),
+					'invalidEmail'    => __('Please enter a valid email.', 'hostpn'),
+					'alreadySubscribed' => __('You are already on the waiting list.', 'hostpn'),
+					'notifyMe'        => __('Notify me', 'hostpn'),
+				],
+			]);
+		}
+
+		// Enqueue contracts block assets on single accommodation for logged-in users
+		if (is_singular('hostpn_accommodation') && is_user_logged_in()) {
+			wp_enqueue_style($this->plugin_name . '-contracts-block', HOSTPN_URL . 'assets/css/public/hostpn-contracts-block.css', [], $this->version, 'all');
+			wp_enqueue_script($this->plugin_name . '-contracts-block', HOSTPN_URL . 'assets/js/public/hostpn-contracts-block.js', ['jquery'], $this->version, true);
+			wp_localize_script($this->plugin_name . '-contracts-block', 'hostpnContractsBlock', [
+				'ajaxUrl' => admin_url('admin-ajax.php'),
+				'nonce'   => wp_create_nonce('hostpn-nonce'),
+				'i18n'    => [
+					'onlyPdf'       => __('Only PDF files are allowed.', 'hostpn'),
+					'uploading'     => __('Uploading...', 'hostpn'),
+					'uploadSuccess' => __('Signed copy uploaded successfully.', 'hostpn'),
+					'signed'        => __('Signed', 'hostpn'),
+				],
+			]);
+		}
 	}
 }

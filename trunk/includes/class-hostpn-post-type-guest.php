@@ -238,6 +238,14 @@ class HOSTPN_Post_Type_Guest
             'label' => esc_html(__('Relationship with contract holder', 'hostpn')),
             'placeholder' => esc_html(__('Relationship', 'hostpn')),
         ];
+        $hostpn_fields_meta['hostpn_room_id'] = [
+            'id' => 'hostpn_room_id',
+            'class' => 'hostpn-select hostpn-width-100-percent',
+            'input' => 'select',
+            'options' => HOSTPN_Post_Type_Room::hostpn_get_rooms_options(),
+            'label' => esc_html(__('Assigned room', 'hostpn')),
+            'placeholder' => esc_html(__('Select room (optional)', 'hostpn')),
+        ];
         $hostpn_fields_meta['hostpn_guest_form'] = [
             'id' => 'hostpn_guest_form',
             'class' => 'hostpn-input hostpn-width-100-percent',

@@ -130,6 +130,9 @@
       }
     }
 
+    // Append inventory annex to live preview
+    html += buildInventory();
+
     $preview.html(html);
   }
 
@@ -190,11 +193,8 @@
       return;
     }
 
-    // Build inventory from checked features
-    var inventory = buildInventory();
-
-    // Create a temporary render container with the preview content + inventory
-    var renderHtml = '<div id="hostpn-contract-render">' + $preview.html() + inventory + '</div>';
+    // Create a temporary render container with the preview content (includes inventory)
+    var renderHtml = '<div id="hostpn-contract-render">' + $preview.html() + '</div>';
     var $container = $(renderHtml);
     $('body').append($container);
 
@@ -204,77 +204,76 @@
     $span.text(hostpn_contract_data.i18n.generating || 'Generating PDF...');
 
     var element = document.getElementById('hostpn-contract-render');
-    element.style.opacity = '1';
-    element.style.zIndex = '-1';
-    element.style.position = 'absolute';
-    element.style.left = '0';
-    element.style.top = '0';
+
+    // Override all CSS properties that hide the element.
+    // html2canvas needs the element visible and on-screen to capture it.
+    element.style.cssText = 'position:absolute; left:0; top:0; z-index:99999; opacity:1; pointer-events:none; width:210mm; min-height:297mm; padding:20mm; background:#fff; font-family:"Times New Roman",Times,serif; font-size:12pt; line-height:1.6; color:#000; box-sizing:border-box;';
 
     var tenantName = $('#hostpn_contract_tenant_name').val() || 'contract';
     var startDate = $('#hostpn_contract_start_date').val() || '';
 
-    var opt = {
-      margin: [10, 10, 10, 10],
-      filename: 'contrato_' + sanitizeFilename(tenantName) + (startDate ? '_' + startDate : '') + '.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: {
-        scale: 2,
-        useCORS: true,
-        letterRendering: true,
-        windowWidth: element.scrollWidth,
-        windowHeight: element.scrollHeight
-      },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-    };
+    // Wait for the browser to complete layout before reading dimensions and capturing.
+    requestAnimationFrame(function () {
+      setTimeout(function () {
+        var elWidth = element.scrollWidth || 794;
+        var elHeight = element.scrollHeight || 1123;
 
-    html2pdf().set(opt).from(element).save().then(function () {
-      $('#hostpn-contract-render').remove();
-      $btn.prop('disabled', false);
-      $span.text(origText);
-    }).catch(function (err) {
-      console.error('hostpn-contract PDF error:', err);
-      $('#hostpn-contract-render').remove();
-      $btn.prop('disabled', false);
-      $span.text(origText);
+        var opt = {
+          margin: [10, 10, 10, 10],
+          filename: 'contrato_' + sanitizeFilename(tenantName) + (startDate ? '_' + startDate : '') + '.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            letterRendering: true,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: elWidth,
+            windowHeight: elHeight
+          },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        html2pdf().set(opt).from(element).save().then(function () {
+          $('#hostpn-contract-render').remove();
+          $btn.prop('disabled', false);
+          $span.text(origText);
+        }).catch(function (err) {
+          console.error('hostpn-contract PDF error:', err);
+          $('#hostpn-contract-render').remove();
+          $btn.prop('disabled', false);
+          $span.text(origText);
+        });
+      }, 100);
     });
   });
 
   /**
-   * Build the inventory HTML table from checked feature checkboxes.
+   * Build the inventory HTML table from the html_multi enseres fields.
    */
   function buildInventory() {
-    var categories = [
-      { selector: '.hostpn-kitchen-feature', title: 'Cocina' },
-      { selector: '.hostpn-room-feature', title: 'Habitaci\u00f3n' },
-      { selector: '.hostpn-bathroom-feature', title: 'Ba\u00f1o' },
-      { selector: '.hostpn-living-area-feature', title: 'Sal\u00f3n' },
-      { selector: '.hostpn-audiovisual-feature', title: 'Audiovisual' }
-    ];
+    var $checkbox = $('#hostpn_contract_inventory_enabled');
+    if (!$checkbox.length || !$checkbox.is(':checked')) {
+      return '';
+    }
+
+    var $wrapper = $('.hostpn-contract-inventory-items');
+    if (!$wrapper.length) return '';
 
     var rows = '';
     var hasItems = false;
 
-    categories.forEach(function (cat) {
-      var items = [];
-      $(cat.selector).each(function () {
-        var $wrapper = $(this).closest('.hostpn-input-wrapper');
-        var $checkbox = $wrapper.find('input[type="checkbox"]');
-        if ($checkbox.length && $checkbox.is(':checked')) {
-          var label = $wrapper.find('label').text().trim();
-          if (label) items.push(label);
-        }
-      });
+    $wrapper.find('.hostpn-html-multi-group').each(function () {
+      var nameInputs = $(this).find('input[name="hostpn_contract_inventory_name[]"]');
+      var urlInputs = $(this).find('input[name="hostpn_contract_inventory_url[]"]');
+      var name = nameInputs.length ? nameInputs.val().trim() : '';
+      var url = urlInputs.length ? urlInputs.val().trim() : '';
 
-      var additionalSelector = cat.selector.replace('-feature', '-additional-features');
-      $(additionalSelector).find('input[type="text"]').each(function () {
-        var val = $(this).val();
-        if (val && val.trim()) items.push(val.trim());
-      });
-
-      if (items.length > 0) {
+      if (name) {
         hasItems = true;
-        rows += '<tr><td><strong>' + esc(cat.title) + '</strong></td><td>' + items.map(esc).join(', ') + '</td></tr>';
+        var urlCell = url ? '<a href="' + esc(url) + '" target="_blank">' + esc(url) + '</a>' : '';
+        rows += '<tr><td>' + esc(name) + '</td><td>' + urlCell + '</td></tr>';
       }
     });
 
@@ -283,12 +282,38 @@
     }
 
     return '<div class="contract-page-break"></div>' +
-      '<h2>ANEXO: INVENTARIO</h2>' +
+      '<h2>ANEXO: LISTADO DE ENSERES ARRENDADOS</h2>' +
       '<table class="contract-inventory-table">' +
-      '<thead><tr><th>Categor\u00eda</th><th>Elementos</th></tr></thead>' +
+      '<thead><tr><th>Elemento</th><th>URL</th></tr></thead>' +
       '<tbody>' + rows + '</tbody>' +
       '</table>';
   }
+
+  /**
+   * Toggle visibility of inventory html_multi based on checkbox.
+   */
+  function toggleInventoryFields() {
+    var $checkbox = $('#hostpn_contract_inventory_enabled');
+    var $wrapper = $('#hostpn_contract_inventory_items').closest('.hostpn-input-wrapper');
+    if (!$checkbox.length || !$wrapper.length) return;
+
+    if ($checkbox.is(':checked')) {
+      $wrapper.show();
+    } else {
+      $wrapper.hide();
+    }
+  }
+
+  // --- Event: inventory checkbox toggle ---
+  $(document).on('change', '#hostpn_contract_inventory_enabled', function () {
+    toggleInventoryFields();
+    schedulePreviewUpdate();
+  });
+
+  // --- Event: inventory fields changes ---
+  $(document).on('input change', '.hostpn-contract-inventory-items input', function () {
+    schedulePreviewUpdate();
+  });
 
   // --- Poll localStorage for template changes from Settings tab ---
   var lastTemplateUpdate = 0;
@@ -309,14 +334,20 @@
     } catch (e) { /* ignore */ }
   }, 5000);
 
-  // --- Initialize preview on page load ---
+  // --- Initialize on page load ---
   $(document).ready(function () {
     if ($('#hostpn-contract-live-preview').length) {
+      toggleInventoryFields();
       var contractType = getContractType();
       loadTemplate(contractType, function () {
         updatePreview();
       });
     }
+  });
+
+  // --- Event: html_multi add/remove triggers preview update ---
+  $(document).on('click', '.hostpn-contract-inventory-items .hostpn-html-multi-add-btn, .hostpn-contract-inventory-items .hostpn-html-multi-remove-btn', function () {
+    schedulePreviewUpdate();
   });
 
 })(jQuery);

@@ -198,6 +198,59 @@ class HOSTPN_Notifications {
   }
 
   /**
+   * Notify all waitlisted emails that a room is now available.
+   *
+   * Called when a room status changes to 'available'.
+   * Sends an email to each address on the waitlist, then clears it.
+   *
+   * @param int $room_id The room post ID.
+   */
+  public static function hostpn_notify_room_available( $room_id ) {
+    $waitlist = get_post_meta( $room_id, 'hostpn_room_waitlist', true );
+    if ( empty( $waitlist ) || ! is_array( $waitlist ) ) {
+      return;
+    }
+
+    $room_number = get_post_meta( $room_id, 'hostpn_room_number', true );
+    $accommodation_id = get_post_meta( $room_id, 'hostpn_room_accommodation_id', true );
+    $accommodation_name = $accommodation_id ? get_the_title( $accommodation_id ) : '';
+    $accommodation_url = $accommodation_id ? get_permalink( $accommodation_id ) : '';
+
+    $subject = sprintf(
+      /* translators: %1$s: room number, %2$s: accommodation name */
+      __( 'Room %1$s is now available - %2$s', 'hostpn' ),
+      $room_number,
+      $accommodation_name
+    );
+
+    ob_start();
+    ?>
+    <h2><?php echo esc_html( sprintf( __( 'Room %s is now available!', 'hostpn' ), $room_number ) ); ?></h2>
+    <p><?php echo esc_html( sprintf(
+      __( 'The room %1$s in %2$s is now available. If you are still interested, visit the accommodation page to learn more.', 'hostpn' ),
+      $room_number,
+      $accommodation_name
+    ) ); ?></p>
+    <?php if ( ! empty( $accommodation_url ) ) : ?>
+      <p style="margin-top:20px;">
+        <a href="<?php echo esc_url( $accommodation_url ); ?>" style="background:#000000;color:#ffffff;padding:10px 20px;text-decoration:none;display:inline-block;">
+          <?php echo esc_html( __( 'View accommodation', 'hostpn' ) ); ?>
+        </a>
+      </p>
+    <?php endif; ?>
+    <?php
+    $content = ob_get_clean();
+
+    foreach ( $waitlist as $email ) {
+      if ( is_email( $email ) ) {
+        self::send_notification( $email, $subject, $content );
+      }
+    }
+
+    delete_post_meta( $room_id, 'hostpn_room_waitlist' );
+  }
+
+  /**
    * Collect all notification recipients as structured data.
    *
    * @return array List of [ 'type' => 'user_id'|'email', 'value' => int|string ].

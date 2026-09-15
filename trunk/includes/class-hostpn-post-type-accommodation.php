@@ -711,6 +711,41 @@ class HOSTPN_Post_Type_Accommodation {
       'label' => esc_html(__('Deposit months', 'hostpn')),
     ];
 
+    // --- Inventory annex ---
+    $hostpn_fields['hostpn_contract_inventory_enabled'] = [
+      'id' => 'hostpn_contract_inventory_enabled',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'checkbox',
+      'label' => esc_html(__('Add inventory annex to contract', 'hostpn')),
+    ];
+    $hostpn_fields['hostpn_contract_inventory_items'] = [
+      'id' => 'hostpn_contract_inventory_items',
+      'input' => 'html_multi',
+      'class' => 'hostpn-input hostpn-width-100-percent hostpn-contract-inventory-items',
+      'html_multi_fields' => [
+        [
+          'id' => 'hostpn_contract_inventory_name',
+          'class' => 'hostpn-input hostpn-width-100-percent',
+          'input' => 'input',
+          'type' => 'text',
+          'multiple' => true,
+          'label' => esc_html(__('Item name', 'hostpn')),
+          'placeholder' => esc_html(__('Name of the item', 'hostpn')),
+        ],
+        [
+          'id' => 'hostpn_contract_inventory_url',
+          'class' => 'hostpn-input hostpn-width-100-percent',
+          'input' => 'input',
+          'type' => 'url',
+          'multiple' => true,
+          'label' => esc_html(__('Item URL', 'hostpn')),
+          'placeholder' => esc_html(__('Link to the product', 'hostpn')),
+        ],
+      ],
+      'label' => esc_html(__('Inventory items', 'hostpn')),
+    ];
+
     // --- Share link ---
     $post_id = $accommodation_id ? $accommodation_id : get_the_ID();
     $token = get_post_meta($post_id, 'hostpn_contract_token', true);
@@ -754,6 +789,7 @@ class HOSTPN_Post_Type_Accommodation {
       'hostpn_contract_deposit_amount', 'hostpn_contract_deposit_words', 'hostpn_contract_deposit_months',
       'hostpn_contract_guest_count', 'hostpn_contract_checkin_time', 'hostpn_contract_checkout_time',
       'hostpn_contract_total_price',
+      'hostpn_contract_inventory_enabled',
     ];
     return $all_keys;
   }
@@ -886,6 +922,7 @@ class HOSTPN_Post_Type_Accommodation {
     echo '<div class="hostpn-contract-live-preview" id="hostpn-contract-live-preview">';
     $template = HOSTPN_Contract_Templates::hostpn_get_saved_template($contract_type);
     $preview_html = HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $post->ID);
+    $preview_html .= HOSTPN_Contract_Templates::hostpn_render_inventory($post->ID);
     echo wp_kses_post($preview_html);
     echo '</div>';
     echo '</div>';

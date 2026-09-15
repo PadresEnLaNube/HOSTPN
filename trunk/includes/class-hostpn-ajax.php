@@ -51,6 +51,8 @@ class HOSTPN_Ajax {
       $hostpn_accommodation_id = !empty($_POST['hostpn_accommodation_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['hostpn_accommodation_id'])) : 0;
       $hostpn_guest_id = !empty($_POST['hostpn_guest_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['hostpn_guest_id'])) : 0;
       $hostpn_part_id = !empty($_POST['hostpn_part_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['hostpn_part_id'])) : 0;
+      $hostpn_room_id = !empty($_POST['hostpn_room_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['hostpn_room_id'])) : 0;
+      $hostpn_contract_id = !empty($_POST['hostpn_contract_id']) ? HOSTPN_Forms::hostpn_sanitizer(wp_unslash($_POST['hostpn_contract_id'])) : 0;
       
       $hostpn_key_value = [];
 
@@ -435,11 +437,217 @@ class HOSTPN_Ajax {
             exit;
           }
           break;
+        // ── ROOM AJAX CASES ──────────────────────────────────────────
+        case 'hostpn_room_view':
+          if (!empty($hostpn_room_id)) {
+            $plugin_post_type_room = new HOSTPN_Post_Type_Room();
+            echo wp_json_encode([
+              'error_key' => '',
+              'html' => $plugin_post_type_room->hostpn_room_view($hostpn_room_id),
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_room_view_error',
+              'error_content' => esc_html(__('An error occurred while showing the Room.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+        case 'hostpn_room_edit':
+          if (!empty($hostpn_room_id)) {
+            $plugin_post_type_room = new HOSTPN_Post_Type_Room();
+            echo wp_json_encode([
+              'error_key' => '',
+              'html' => $plugin_post_type_room->hostpn_room_edit($hostpn_room_id),
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_room_edit_error',
+              'error_content' => esc_html(__('An error occurred while showing the Room.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+        case 'hostpn_room_new':
+          $plugin_post_type_room = new HOSTPN_Post_Type_Room();
+          echo wp_json_encode([
+            'error_key' => '',
+            'html' => $plugin_post_type_room->hostpn_room_new($hostpn_room_id),
+          ]);
+          exit;
+          break;
+        case 'hostpn_room_remove':
+          if (!empty($hostpn_room_id)) {
+            wp_delete_post($hostpn_room_id, true);
+            $plugin_post_type_room = new HOSTPN_Post_Type_Room();
+            echo wp_json_encode([
+              'error_key' => '',
+              'html' => $plugin_post_type_room->hostpn_room_list(),
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_room_remove_error',
+              'error_content' => esc_html(__('An error occurred while removing the Room.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+
+        // ── CONTRACT AJAX CASES ─────────────────────────────────────
+        case 'hostpn_contract_view':
+          if (!empty($hostpn_contract_id)) {
+            $plugin_post_type_contract = new HOSTPN_Post_Type_Contract();
+            echo wp_json_encode([
+              'error_key' => '',
+              'html' => $plugin_post_type_contract->hostpn_contract_view($hostpn_contract_id),
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_contract_view_error',
+              'error_content' => esc_html(__('An error occurred while showing the Contract.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+        case 'hostpn_contract_edit':
+          if (!empty($hostpn_contract_id)) {
+            $plugin_post_type_contract = new HOSTPN_Post_Type_Contract();
+            echo wp_json_encode([
+              'error_key' => '',
+              'html' => $plugin_post_type_contract->hostpn_contract_edit($hostpn_contract_id),
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_contract_edit_error',
+              'error_content' => esc_html(__('An error occurred while showing the Contract.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+        case 'hostpn_contract_new':
+          $plugin_post_type_contract = new HOSTPN_Post_Type_Contract();
+          echo wp_json_encode([
+            'error_key' => '',
+            'html' => $plugin_post_type_contract->hostpn_contract_new($hostpn_contract_id),
+          ]);
+          exit;
+          break;
+        case 'hostpn_contract_remove':
+          if (!empty($hostpn_contract_id)) {
+            wp_delete_post($hostpn_contract_id, true);
+            $plugin_post_type_contract = new HOSTPN_Post_Type_Contract();
+            echo wp_json_encode([
+              'error_key' => '',
+              'html' => $plugin_post_type_contract->hostpn_contract_list(),
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_contract_remove_error',
+              'error_content' => esc_html(__('An error occurred while removing the Contract.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+        case 'hostpn_contract_get_guest_data':
+          if (!empty($hostpn_guest_id)) {
+            $guest_name = get_post_meta($hostpn_guest_id, 'hostpn_name', true) . ' '
+              . get_post_meta($hostpn_guest_id, 'hostpn_surname', true) . ' '
+              . get_post_meta($hostpn_guest_id, 'hostpn_surname_alt', true);
+            $guest_nif = get_post_meta($hostpn_guest_id, 'hostpn_identity_number', true);
+            $guest_email = get_post_meta($hostpn_guest_id, 'hostpn_email', true);
+
+            echo wp_json_encode([
+              'error_key' => '',
+              'guest' => [
+                'name'  => trim($guest_name),
+                'nif'   => $guest_nif,
+                'email' => $guest_email,
+              ],
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_contract_get_guest_data_error',
+              'error_content' => esc_html(__('Guest not found.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+        case 'hostpn_contract_get_accommodation_data':
+          if (!empty($hostpn_accommodation_id)) {
+            $landlord_name = get_post_meta($hostpn_accommodation_id, 'hostpn_contract_landlord_name', true);
+            $landlord_nif = get_post_meta($hostpn_accommodation_id, 'hostpn_contract_landlord_nif', true);
+            $landlord_address = get_post_meta($hostpn_accommodation_id, 'hostpn_contract_landlord_address', true);
+            $contract_type = get_post_meta($hostpn_accommodation_id, 'hostpn_accommodation_type', true);
+            $mapped_type = HOSTPN_Contract_Templates::hostpn_get_type_for_accommodation($contract_type);
+
+            echo wp_json_encode([
+              'error_key' => '',
+              'accommodation' => [
+                'landlord_name'    => $landlord_name,
+                'landlord_nif'     => $landlord_nif,
+                'landlord_address' => $landlord_address,
+                'contract_type'    => $mapped_type,
+              ],
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'error_key' => 'hostpn_contract_get_accommodation_data_error',
+              'error_content' => esc_html(__('Accommodation not found.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+        case 'hostpn_contract_preview':
+          $contract_type = !empty($_POST['hostpn_contract_type']) ? sanitize_key(wp_unslash($_POST['hostpn_contract_type'])) : '';
+          $valid_types = array_keys(HOSTPN_Contract_Templates::hostpn_get_contract_types());
+          if (in_array($contract_type, $valid_types, true) && !empty($hostpn_accommodation_id)) {
+            $template = HOSTPN_Contract_Templates::hostpn_get_saved_template($contract_type);
+            $html = HOSTPN_Contract_Templates::hostpn_resolve_shortcodes_from_contract(
+              HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $hostpn_accommodation_id),
+              $hostpn_contract_id,
+              $hostpn_accommodation_id
+            );
+            echo wp_json_encode(['error_key' => '', 'html' => $html]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_preview']);
+          }
+          exit;
+          break;
+        case 'hostpn_contract_frontend_preview':
+          if (!empty($hostpn_contract_id)) {
+            $contract_type = get_post_meta($hostpn_contract_id, 'hostpn_contract_type', true);
+            $contract_accommodation_id = get_post_meta($hostpn_contract_id, 'hostpn_contract_accommodation_id', true);
+
+            if (!empty($contract_type) && !empty($contract_accommodation_id)) {
+              $template = HOSTPN_Contract_Templates::hostpn_get_saved_template($contract_type);
+              $html = HOSTPN_Contract_Templates::hostpn_resolve_shortcodes_from_contract(
+                HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $contract_accommodation_id),
+                $hostpn_contract_id,
+                $contract_accommodation_id
+              );
+              echo wp_json_encode(['error_key' => '', 'html' => $html]);
+            } else {
+              echo wp_json_encode(['error_key' => 'invalid_contract', 'error_content' => esc_html(__('Contract data is incomplete.', 'hostpn'))]);
+            }
+          } else {
+            echo wp_json_encode(['error_key' => 'hostpn_contract_preview_error', 'error_content' => esc_html(__('Contract not found.', 'hostpn'))]);
+          }
+          exit;
+          break;
+
         case 'hostpn_part_download':
             if (!empty($hostpn_part_id)) {
               $plugin_post_type_xml = new HOSTPN_XML();
               $plugin_post_type_xml->hostpn_part_download($hostpn_part_id);
-  
+
               echo wp_json_encode(['error_key' => '', ]);exit();
             }else{
               echo wp_json_encode(['error_key' => 'hostpn_part_download_error', 'error_' => esc_html(__('An error occurred while duplicating the part.', 'hostpn')), ]);exit();

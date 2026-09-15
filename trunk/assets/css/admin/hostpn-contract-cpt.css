@@ -1,0 +1,100 @@
+/* Contract CPT Admin Styles */
+
+.hostpn-contract-metabox-wrapper {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.hostpn-contract-fields-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.hostpn-contract-preview-column {
+  flex: 1;
+  min-width: 300px;
+  max-height: 800px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 20px;
+  background: #fafafa;
+}
+
+.hostpn-contract-preview-column h3 {
+  margin: 0 0 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #333;
+}
+
+.hostpn-contract-preview {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.hostpn-contract-preview h1 {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.hostpn-contract-preview h2 {
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.hostpn-contract-preview h3 {
+  font-size: 14px;
+  margin-top: 15px;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Status badges */
+.hostpn-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.hostpn-badge-grey {
+  background: #e0e0e0;
+  color: #555;
+}
+
+.hostpn-badge-blue {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.hostpn-badge-green {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.hostpn-badge-orange {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.hostpn-badge-red {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .hostpn-contract-metabox-wrapper {
+    flex-direction: column;
+  }
+
+  .hostpn-contract-preview-column {
+    max-height: 500px;
+  }
+}

@@ -49,6 +49,12 @@ class HOSTPN_Admin {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style($this->plugin_name . '-admin', HOSTPN_URL . 'assets/css/admin/hostpn-admin.css', [], $this->version, 'all');
+
+		// Contract CPT admin styles
+		$screen = get_current_screen();
+		if ($screen && $screen->post_type === 'hostpn_contract') {
+			wp_enqueue_style($this->plugin_name . '-contract-cpt', HOSTPN_URL . 'assets/css/admin/hostpn-contract-cpt.css', [], $this->version, 'all');
+		}
 	}
 
 	/**
@@ -65,5 +71,15 @@ class HOSTPN_Admin {
 			'nonce' => wp_create_nonce('hostpn-admin-nonce'),
 			'ajaxurl' => admin_url('admin-ajax.php')
 		]);
+
+		// Contract CPT admin scripts
+		$screen = get_current_screen();
+		if ($screen && $screen->post_type === 'hostpn_contract') {
+			wp_enqueue_script($this->plugin_name . '-contract-cpt', HOSTPN_URL . 'assets/js/admin/hostpn-contract-cpt.js', ['jquery'], $this->version, true);
+			wp_localize_script($this->plugin_name . '-contract-cpt', 'hostpnContractCpt', [
+				'ajaxUrl' => admin_url('admin-ajax.php'),
+				'nonce'   => wp_create_nonce('hostpn-nonce'),
+			]);
+		}
 	}
 }

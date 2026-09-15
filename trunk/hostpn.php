@@ -13,7 +13,7 @@
  * Plugin Name:       Hospedajes España - HOSTPN
  * Plugin URI:        https://padresenlanube.com/plugins/hostpn/
  * Description:       Allow you to ask for, save and send the information required by spanish Royal Decree 933/2021, of October 26.
- * Version:           1.0.80
+ * Version:           1.0.83
  * Requires at least: 3.5
  * Tested up to:      7.0
  * Requires PHP:      7.2
@@ -36,13 +36,15 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('HOSTPN_VERSION', '1.0.80');
+define('HOSTPN_VERSION', '1.0.83');
 define('HOSTPN_DIR', plugin_dir_path(__FILE__));
 define('HOSTPN_URL', plugin_dir_url(__FILE__));
 define('HOSTPN_CPTS', [
 	'guest' => 'Guest',
 	'accommodation' => 'Accommodation',
 	'part' => 'Part of traveller',
+	'room' => 'Room',
+	'contract' => 'Contract',
 ]);
 
 /**
@@ -417,7 +419,7 @@ define('HOSTPN_ROLE_CAPABILITIES', [
 // Build the KSES array first
 $hostpn_kses = [
 	// Basic text elements
-	'div' => ['id' => [], 'class' => []],
+	'div' => ['id' => [], 'class' => [], 'style' => []],
 	'section' => ['id' => [], 'class' => []],
 	'article' => ['id' => [], 'class' => []],
 	'aside' => ['id' => [], 'class' => []],
@@ -425,7 +427,8 @@ $hostpn_kses = [
 	'header' => ['id' => [], 'class' => []],
 	'main' => ['id' => [], 'class' => []],
 	'nav' => ['id' => [], 'class' => []],
-	'p' => ['id' => [], 'class' => []],
+	'p' => ['id' => [], 'class' => [], 'style' => []],
+	'code' => ['id' => [], 'class' => [], 'style' => []],
 	'span' => ['id' => [], 'class' => []],
 	'small' => ['id' => [], 'class' => []],
 	'em' => [],
@@ -474,8 +477,10 @@ $hostpn_kses = [
 		'id' => [],
 		'class' => [],
 		'title' => [],
+		'style' => [],
 		'data-hostpn-sort-mode' => [],
 		'data-hostpn-tooltip' => [],
+		'data-hostpn-copy-content' => [],
 	],
 
 	// Forms and inputs
@@ -501,6 +506,7 @@ $hostpn_kses = [
 		'data-hostpn-subtype' => [],
 		'data-hostpn-user-id' => [],
 		'data-hostpn-post-id' => [],
+		'data-hostpn-post-type' => [],
 	],
 	'select' => [
 		'name' => [],
@@ -541,6 +547,20 @@ $hostpn_kses = [
 		'id' => [],
 		'class' => [],
 		'for' => [],
+	],
+	'button' => [
+		'id' => [],
+		'class' => [],
+		'type' => [],
+		'disabled' => [],
+		'data-accommodation-id' => [],
+		'data-contract-token' => [],
+	],
+	'canvas' => [
+		'id' => [],
+		'class' => [],
+		'width' => [],
+		'height' => [],
 	],
 ];
 
@@ -603,3 +623,23 @@ function hostpn_run()
 
 // Initialize the plugin on init hook instead of plugins_loaded
 add_action('init', 'hostpn_run', 0);
+
+// DEBUG: Early contract redirect diagnostic - fires before any template loading
+add_action('wp_footer', function() {
+	if (empty($_GET['hostpn_contract'])) {
+		return;
+	}
+	$info = [
+		'bootstrap_debug' => true,
+		'HOSTPN_DIR_defined' => defined('HOSTPN_DIR'),
+		'HOSTPN_DIR_value' => defined('HOSTPN_DIR') ? HOSTPN_DIR : 'N/A',
+		'HOSTPN_VERSION' => defined('HOSTPN_VERSION') ? HOSTPN_VERSION : 'N/A',
+		'class_exists_accommodation' => class_exists('HOSTPN_Post_Type_Accommodation'),
+		'method_exists_redirect' => class_exists('HOSTPN_Post_Type_Accommodation') ? method_exists('HOSTPN_Post_Type_Accommodation', 'hostpn_contract_template_redirect') : false,
+		'current_filter' => current_filter(),
+		'did_template_redirect' => did_action('template_redirect'),
+		'did_wp_enqueue_scripts' => did_action('wp_enqueue_scripts'),
+		'request_uri' => isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : 'unknown',
+	];
+	echo '<script>console.log("[HOSTPN Bootstrap Debug]", ' . wp_json_encode($info) . ');</script>';
+});

@@ -1,0 +1,294 @@
+/* Contracts Block - Frontend Styles */
+
+.hostpn-contracts-block {
+  margin: 40px 0;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e8e8e8;
+}
+
+.hostpn-cb-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  margin: 0 0 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+  color: #232323;
+}
+
+.hostpn-cb-empty {
+  color: #888;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+.hostpn-cb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Card */
+.hostpn-cb-card {
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  padding: 20px;
+  background: #fafafa;
+  transition: box-shadow 0.2s ease;
+}
+
+.hostpn-cb-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.hostpn-cb-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.hostpn-cb-card-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hostpn-cb-card-type {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.hostpn-cb-card-version {
+  font-size: 12px;
+  color: #888;
+  font-weight: 400;
+}
+
+/* Status badges */
+.hostpn-cb-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hostpn-cb-status-draft {
+  background: #e0e0e0;
+  color: #555;
+}
+
+.hostpn-cb-status-sent {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.hostpn-cb-status-signed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.hostpn-cb-status-expired {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.hostpn-cb-status-cancelled {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Dates */
+.hostpn-cb-card-dates {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+  font-size: 14px;
+}
+
+.hostpn-cb-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hostpn-cb-date-separator {
+  color: #ccc;
+}
+
+/* Actions */
+.hostpn-cb-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hostpn-cb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  color: #555;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.hostpn-cb-btn:hover {
+  background: #f5f5f5;
+  border-color: #bbb;
+  color: #333;
+}
+
+.hostpn-cb-btn i {
+  font-size: 18px;
+}
+
+.hostpn-cb-btn-preview.active {
+  background: #e3f2fd;
+  border-color: #90caf9;
+  color: #1565c0;
+}
+
+.hostpn-cb-btn-download {
+  border-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.hostpn-cb-btn-download:hover {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.hostpn-cb-btn-signed {
+  border-color: #90caf9;
+  color: #1565c0;
+}
+
+.hostpn-cb-btn-signed:hover {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.hostpn-cb-btn-upload {
+  border-color: #ffcc80;
+  color: #e65100;
+}
+
+.hostpn-cb-btn-upload:hover {
+  background: #fff3e0;
+}
+
+.hostpn-cb-btn-upload.uploading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Preview area */
+.hostpn-cb-card-preview {
+  margin-top: 16px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.hostpn-cb-preview-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  padding: 20px;
+  justify-content: center;
+}
+
+.hostpn-cb-preview-content {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.hostpn-cb-preview-content h1 {
+  font-size: 20px;
+  text-align: center;
+}
+
+.hostpn-cb-preview-content h2 {
+  font-size: 17px;
+}
+
+.hostpn-cb-preview-content h3 {
+  font-size: 15px;
+}
+
+/* Spin animation */
+@keyframes hostpn-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.hostpn-spin {
+  animation: hostpn-spin 1s linear infinite;
+}
+
+/* Upload success message */
+.hostpn-cb-upload-success {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-radius: 4px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Print */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .hostpn-contracts-block {
+    padding: 16px;
+    margin: 20px 0;
+  }
+
+  .hostpn-cb-card-header {
+    flex-direction: column;
+  }
+
+  .hostpn-cb-card-actions {
+    flex-direction: column;
+  }
+
+  .hostpn-cb-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hostpn-cb-card-preview {
+    max-height: 300px;
+  }
+}
