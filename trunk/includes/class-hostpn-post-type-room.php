@@ -96,6 +96,186 @@ class HOSTPN_Post_Type_Room
             'label' => __('Status', 'hostpn'),
             'placeholder' => __('Select status', 'hostpn'),
         ];
+        // --- Guest assignment ---
+        $guest_options = [];
+        $guests = get_posts([
+            'post_type'   => 'hostpn_guest',
+            'post_status' => 'any',
+            'numberposts' => -1,
+            'fields'      => 'ids',
+        ]);
+        foreach ($guests as $gid) {
+            $name = get_post_meta($gid, 'hostpn_name', true) . ' ' . get_post_meta($gid, 'hostpn_surname', true);
+            $guest_options[$gid] = trim($name);
+        }
+
+        $hostpn_fields_meta['hostpn_room_guest_id'] = [
+            'id'          => 'hostpn_room_guest_id',
+            'class'       => 'hostpn-select hostpn-width-100-percent',
+            'input'       => 'select',
+            'options'     => $guest_options,
+            'label'       => __('Assigned guest', 'hostpn'),
+            'placeholder' => __('Select guest (optional)', 'hostpn'),
+        ];
+
+        // --- Contract details section ---
+        $hostpn_fields_meta['hostpn_room_contract_section'] = [
+            'id' => 'hostpn_room_contract_section',
+            'section' => 'start',
+            'class' => '',
+            'label' => __('Contract details', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_duration'] = [
+            'id' => 'hostpn_room_contract_duration',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text',
+            'label' => __('Contract duration', 'hostpn'),
+            'placeholder' => __('e.g. 11 months', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_start_date'] = [
+            'id' => 'hostpn_room_contract_start_date',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'date',
+            'label' => __('Start date', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_end_date'] = [
+            'id' => 'hostpn_room_contract_end_date',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'date',
+            'label' => __('End date', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_notice_days'] = [
+            'id' => 'hostpn_room_contract_notice_days',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'number',
+            'label' => __('Notice days', 'hostpn'),
+            'placeholder' => __('Days of advance notice', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_rent_amount'] = [
+            'id' => 'hostpn_room_contract_rent_amount',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'number',
+            'label' => __('Monthly rent (EUR)', 'hostpn'),
+            'placeholder' => __('Monthly rent amount', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_rent_words'] = [
+            'id' => 'hostpn_room_contract_rent_words',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text',
+            'label' => __('Rent in words', 'hostpn'),
+            'placeholder' => __('e.g. trescientos cincuenta', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_payment_day'] = [
+            'id' => 'hostpn_room_contract_payment_day',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'number',
+            'label' => __('Payment day', 'hostpn'),
+            'placeholder' => __('Day of the month for payment', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_supplies_option'] = [
+            'id' => 'hostpn_room_contract_supplies_option',
+            'class' => 'hostpn-select hostpn-width-100-percent',
+            'input' => 'select',
+            'options' => [
+                'A' => __('Option A - Supplies included', 'hostpn'),
+                'B' => __('Option B - Supplies not included', 'hostpn'),
+            ],
+            'label' => __('Supplies option', 'hostpn'),
+            'placeholder' => __('Select option', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_supplies_limit'] = [
+            'id' => 'hostpn_room_contract_supplies_limit',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'number',
+            'label' => __('Supplies limit per person/month (EUR)', 'hostpn'),
+            'placeholder' => __('Maximum supplies amount', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_deposit_amount'] = [
+            'id' => 'hostpn_room_contract_deposit_amount',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'number',
+            'label' => __('Deposit amount (EUR)', 'hostpn'),
+            'placeholder' => __('Deposit amount', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_deposit_words'] = [
+            'id' => 'hostpn_room_contract_deposit_words',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text',
+            'label' => __('Deposit in words', 'hostpn'),
+            'placeholder' => __('e.g. trescientos cincuenta', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_deposit_months'] = [
+            'id' => 'hostpn_room_contract_deposit_months',
+            'class' => 'hostpn-select hostpn-width-100-percent',
+            'input' => 'select',
+            'options' => [
+                '1' => '1 ' . __('month', 'hostpn'),
+                '2' => '2 ' . __('months', 'hostpn'),
+            ],
+            'label' => __('Deposit months', 'hostpn'),
+            'placeholder' => __('Select months', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_room_contract_section_end'] = [
+            'id' => 'hostpn_room_contract_section_end',
+            'section' => 'end',
+        ];
+
+        // --- Inventory section ---
+        $hostpn_fields_meta['hostpn_room_inventory_section'] = [
+            'id' => 'hostpn_room_inventory_section',
+            'section' => 'start',
+            'class' => '',
+            'label' => __('Room inventory', 'hostpn'),
+        ];
+        $inventory_categories = [
+            'mobiliario'              => __('Furniture', 'hostpn'),
+            'equipamiento_individual' => __('Individual equipment', 'hostpn'),
+            'menaje_individual'       => __('Individual kitchenware', 'hostpn'),
+            'equipamiento_comunitario' => __('Community equipment', 'hostpn'),
+            'otros_enseres'           => __('Other items', 'hostpn'),
+        ];
+
+        foreach ($inventory_categories as $cat_key => $cat_label) {
+            $hostpn_fields_meta['hostpn_room_inv_' . $cat_key] = [
+                'id' => 'hostpn_room_inv_' . $cat_key,
+                'class' => 'hostpn-input hostpn-width-100-percent',
+                'input' => 'html_multi',
+                'label' => $cat_label,
+                'html_multi_fields' => [
+                    [
+                        'id' => 'hostpn_room_inv_' . $cat_key . '_name',
+                        'class' => 'hostpn-input hostpn-width-100-percent',
+                        'input' => 'input',
+                        'type' => 'text',
+                        'label' => __('Item name', 'hostpn'),
+                        'placeholder' => __('Item name', 'hostpn'),
+                    ],
+                    [
+                        'id' => 'hostpn_room_inv_' . $cat_key . '_url',
+                        'class' => 'hostpn-input hostpn-width-100-percent',
+                        'input' => 'input',
+                        'type' => 'text',
+                        'label' => __('URL (optional)', 'hostpn'),
+                        'placeholder' => __('https://...', 'hostpn'),
+                    ],
+                ],
+            ];
+        }
+        $hostpn_fields_meta['hostpn_room_inventory_section_end'] = [
+            'id' => 'hostpn_room_inventory_section_end',
+            'section' => 'end',
+        ];
+
         $hostpn_fields_meta['hostpn_room_form'] = [
             'id' => 'hostpn_room_form',
             'class' => 'hostpn-input hostpn-width-100-percent',
@@ -139,7 +319,7 @@ class HOSTPN_Post_Type_Room
             'labels' => $labels,
             'label' => __('Room', 'hostpn'),
             'description' => __('Rooms within accommodations', 'hostpn'),
-            'supports' => ['title', 'author'],
+            'supports' => ['title', 'editor', 'author'],
             'hierarchical' => false,
             'public' => false,
             'show_ui' => true,
@@ -152,7 +332,7 @@ class HOSTPN_Post_Type_Room
             'exclude_from_search' => true,
             'publicly_queryable' => false,
             'capability_type' => 'page',
-            'show_in_rest' => false,
+            'show_in_rest' => true,
         ];
 
         register_post_type('hostpn_room', $args);
@@ -214,13 +394,14 @@ class HOSTPN_Post_Type_Room
             foreach (array_merge(self::hostpn_room_get_fields(), self::hostpn_room_get_fields_meta()) as $hostpn_field) {
                 $hostpn_input = array_key_exists('input', $hostpn_field) ? $hostpn_field['input'] : '';
 
-                if (array_key_exists($hostpn_field['id'], $_POST)) {
-                    $hostpn_value = HOSTPN_Forms::hostpn_sanitizer(
-                        wp_unslash($_POST[$hostpn_field['id']]),
-                        $hostpn_field['input'],
-                        !empty($hostpn_field['type']) ? $hostpn_field['type'] : '',
-                        $hostpn_field
-                    );
+                if (array_key_exists($hostpn_field['id'], $_POST) || $hostpn_input == 'html_multi') {
+                    $hostpn_value = array_key_exists($hostpn_field['id'], $_POST) ?
+                        HOSTPN_Forms::hostpn_sanitizer(
+                            wp_unslash($_POST[$hostpn_field['id']]),
+                            $hostpn_field['input'],
+                            !empty($hostpn_field['type']) ? $hostpn_field['type'] : '',
+                            $hostpn_field
+                        ) : '';
 
                     if (!empty($hostpn_input)) {
                         switch ($hostpn_input) {
@@ -237,6 +418,29 @@ class HOSTPN_Post_Type_Room
                                 break;
                             case 'select':
                                 update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
+                                break;
+                            case 'html_multi':
+                                foreach ($hostpn_field['html_multi_fields'] as $hostpn_multi_field) {
+                                    if (array_key_exists($hostpn_multi_field['id'], $_POST)) {
+                                        $multi_array = [];
+                                        $empty = true;
+                                        $sanitized_post_data = array_map(function ($value) {
+                                            return sanitize_text_field(wp_unslash($value));
+                                        }, (array) $_POST[$hostpn_multi_field['id']]);
+                                        foreach ($sanitized_post_data as $multi_value) {
+                                            if (!empty($multi_value)) {
+                                                $empty = false;
+                                            }
+                                            $multi_array[] = HOSTPN_Forms::hostpn_sanitizer(
+                                                $multi_value,
+                                                $hostpn_multi_field['input'],
+                                                !empty($hostpn_multi_field['type']) ? $hostpn_multi_field['type'] : '',
+                                                $hostpn_multi_field
+                                            );
+                                        }
+                                        update_post_meta($post_id, $hostpn_multi_field['id'], !$empty ? $multi_array : '');
+                                    }
+                                }
                                 break;
                             default:
                                 update_post_meta($post_id, $hostpn_field['id'], $hostpn_value);
@@ -640,6 +844,52 @@ class HOSTPN_Post_Type_Room
         $hostpn_return_string = ob_get_contents();
         ob_end_clean();
         return $hostpn_return_string;
+    }
+
+    /**
+     * AJAX: Subscribe email to room availability waitlist.
+     * Registered for both wp_ajax and wp_ajax_nopriv.
+     */
+    /**
+     * AJAX: Remove email from room availability waitlist (admin only).
+     */
+    public static function hostpn_room_waitlist_remove()
+    {
+        if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'unauthorized']);
+            wp_die();
+        }
+
+        if (empty($_POST['hostpn_ajax_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['hostpn_ajax_nonce'])), 'hostpn-nonce')) {
+            echo wp_json_encode(['error_key' => 'nonce_error']);
+            wp_die();
+        }
+
+        $room_id = !empty($_POST['hostpn_room_id']) ? absint($_POST['hostpn_room_id']) : 0;
+        $email = !empty($_POST['hostpn_notify_email']) ? sanitize_email(wp_unslash($_POST['hostpn_notify_email'])) : '';
+
+        if (empty($room_id) || empty($email)) {
+            echo wp_json_encode(['error_key' => 'invalid_data']);
+            wp_die();
+        }
+
+        $waitlist = get_post_meta($room_id, 'hostpn_room_waitlist', true);
+        if (!is_array($waitlist)) {
+            $waitlist = [];
+        }
+
+        $waitlist = array_values(array_filter($waitlist, function ($e) use ($email) {
+            return $e !== $email;
+        }));
+
+        if (empty($waitlist)) {
+            delete_post_meta($room_id, 'hostpn_room_waitlist');
+        } else {
+            update_post_meta($room_id, 'hostpn_room_waitlist', $waitlist);
+        }
+
+        echo wp_json_encode(['error_key' => '']);
+        wp_die();
     }
 
     /**

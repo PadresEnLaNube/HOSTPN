@@ -14,6 +14,33 @@
 class HOSTPN_Contract_Templates {
 
   /**
+   * Get available contract languages based on existing .mo files.
+   *
+   * @return array Locale code => display name.
+   */
+  public static function hostpn_get_available_contract_languages() {
+    $languages = ['en_US' => 'English'];
+    $lang_dir = HOSTPN_DIR . 'languages/';
+
+    $locale_names = [
+      'es_ES' => 'Español',
+      'gl_ES' => 'Galego',
+      'ca'    => 'Català',
+      'eu'    => 'Euskara',
+      'it_IT' => 'Italiano',
+      'pt_PT' => 'Português',
+    ];
+
+    foreach ($locale_names as $locale => $name) {
+      if (file_exists($lang_dir . 'hostpn-' . $locale . '.mo')) {
+        $languages[$locale] = $name;
+      }
+    }
+
+    return $languages;
+  }
+
+  /**
    * Get available contract types.
    *
    * @return array
@@ -22,7 +49,7 @@ class HOSTPN_Contract_Templates {
     return [
       'habitacion' => __('Room rental', 'hostpn'),
       'turistico'  => __('Tourist rental', 'hostpn'),
-      'lau'        => __('LAU rental', 'hostpn'),
+      'lau'        => __('Long-stay rental', 'hostpn'),
     ];
   }
 
@@ -54,51 +81,51 @@ class HOSTPN_Contract_Templates {
     switch ($contract_type) {
       case 'habitacion':
         $sections = [
-          'reunidos'        => __('REUNIDOS', 'hostpn'),
-          'exponen'         => __('EXPONEN', 'hostpn'),
-          'primera'         => __('PRIMERA - Object', 'hostpn'),
-          'segunda'         => __('SEGUNDA - Duration', 'hostpn'),
-          'tercera'         => __('TERCERA - Rent and payment', 'hostpn'),
-          'cuarta'          => __('CUARTA - Supplies', 'hostpn'),
-          'quinta'          => __('QUINTA - Deposit', 'hostpn'),
-          'sexta'           => __('SEXTA - House rules', 'hostpn'),
-          'septima'         => __('SEPTIMA - Works', 'hostpn'),
-          'octava'          => __('OCTAVA - Assignment', 'hostpn'),
-          'novena'          => __('NOVENA - Breach', 'hostpn'),
-          'decima'          => __('DECIMA - Legislation', 'hostpn'),
+          'reunidos'        => __('PARTIES', 'hostpn'),
+          'exponen'         => __('RECITALS', 'hostpn'),
+          'primera'         => __('CLAUSE 1 - Object', 'hostpn'),
+          'segunda'         => __('CLAUSE 2 - Duration', 'hostpn'),
+          'tercera'         => __('CLAUSE 3 - Rent and payment', 'hostpn'),
+          'cuarta'          => __('CLAUSE 4 - Supplies', 'hostpn'),
+          'quinta'          => __('CLAUSE 5 - Deposit', 'hostpn'),
+          'sexta'           => __('CLAUSE 6 - House rules', 'hostpn'),
+          'septima'         => __('CLAUSE 7 - Works', 'hostpn'),
+          'octava'          => __('CLAUSE 8 - Assignment', 'hostpn'),
+          'novena'          => __('CLAUSE 9 - Breach', 'hostpn'),
+          'decima'          => __('CLAUSE 10 - Legislation', 'hostpn'),
           'firmas'          => __('SIGNATURES + INVENTORY', 'hostpn'),
         ];
         break;
 
       case 'turistico':
         $sections = [
-          'reunidos'        => __('REUNIDOS', 'hostpn'),
-          'exponen'         => __('EXPONEN', 'hostpn'),
-          'primera'         => __('PRIMERA - Object', 'hostpn'),
-          'segunda'         => __('SEGUNDA - Stay duration', 'hostpn'),
-          'tercera'         => __('TERCERA - Price', 'hostpn'),
-          'cuarta'          => __('CUARTA - Deposit', 'hostpn'),
-          'quinta'          => __('QUINTA - Rules', 'hostpn'),
-          'sexta'           => __('SEXTA - Inventory', 'hostpn'),
-          'septima'         => __('SEPTIMA - Liability', 'hostpn'),
-          'octava'          => __('OCTAVA - Legislation', 'hostpn'),
+          'reunidos'        => __('PARTIES', 'hostpn'),
+          'exponen'         => __('RECITALS', 'hostpn'),
+          'primera'         => __('CLAUSE 1 - Object', 'hostpn'),
+          'segunda'         => __('CLAUSE 2 - Stay duration', 'hostpn'),
+          'tercera'         => __('CLAUSE 3 - Price', 'hostpn'),
+          'cuarta'          => __('CLAUSE 4 - Deposit', 'hostpn'),
+          'quinta'          => __('CLAUSE 5 - Rules', 'hostpn'),
+          'sexta'           => __('CLAUSE 6 - Inventory', 'hostpn'),
+          'septima'         => __('CLAUSE 7 - Liability', 'hostpn'),
+          'octava'          => __('CLAUSE 8 - Legislation', 'hostpn'),
           'firmas'          => __('SIGNATURES', 'hostpn'),
         ];
         break;
 
       case 'lau':
         $sections = [
-          'reunidos'        => __('REUNIDOS', 'hostpn'),
-          'exponen'         => __('EXPONEN', 'hostpn'),
-          'primera'         => __('PRIMERA - Object', 'hostpn'),
-          'segunda'         => __('SEGUNDA - LAU duration', 'hostpn'),
-          'tercera'         => __('TERCERA - Rent with CPI', 'hostpn'),
-          'cuarta'          => __('CUARTA - LAU deposit', 'hostpn'),
-          'quinta'          => __('QUINTA - Supplies', 'hostpn'),
-          'sexta'           => __('SEXTA - Works', 'hostpn'),
-          'septima'         => __('SEPTIMA - Assignment', 'hostpn'),
-          'octava'          => __('OCTAVA - Termination', 'hostpn'),
-          'novena'          => __('NOVENA - LAU legislation', 'hostpn'),
+          'reunidos'        => __('PARTIES', 'hostpn'),
+          'exponen'         => __('RECITALS', 'hostpn'),
+          'primera'         => __('CLAUSE 1 - Object', 'hostpn'),
+          'segunda'         => __('CLAUSE 2 - Duration', 'hostpn'),
+          'tercera'         => __('CLAUSE 3 - Rent', 'hostpn'),
+          'cuarta'          => __('CLAUSE 4 - Deposit', 'hostpn'),
+          'quinta'          => __('CLAUSE 5 - Supplies', 'hostpn'),
+          'sexta'           => __('CLAUSE 6 - Works', 'hostpn'),
+          'septima'         => __('CLAUSE 7 - Assignment', 'hostpn'),
+          'octava'          => __('CLAUSE 8 - Termination', 'hostpn'),
+          'novena'          => __('CLAUSE 9 - Legislation', 'hostpn'),
           'firmas'          => __('SIGNATURES', 'hostpn'),
         ];
         break;
@@ -137,79 +164,79 @@ class HOSTPN_Contract_Templates {
   private static function hostpn_get_default_habitacion() {
     return [
       'reunidos' =>
-        '<h2>REUNIDOS</h2>'
-        . '<p>De una parte, DON/DO&Ntilde;A <strong>[hostpn-host-name]</strong>, mayor de edad, con NIF <strong>[hostpn-host-id]</strong>, y domicilio a efectos de notificaciones en <strong>[hostpn-host-address]</strong>. En adelante, el &laquo;ARRENDADOR&raquo;.</p>'
-        . '<p>Y de otra parte, DON/DO&Ntilde;A <strong>[hostpn-guest-name]</strong>, mayor de edad, con NIF <strong>[hostpn-guest-id-card]</strong>, y correo electr&oacute;nico <strong>[hostpn-guest-email]</strong>. En adelante, el &laquo;ARRENDATARIO&raquo;.</p>'
-        . '<p>Ambas partes se reconocen mutuamente la capacidad legal suficiente para el otorgamiento del presente contrato de arrendamiento de habitaci&oacute;n y, al efecto,</p>',
+        '<h2>' . __('PARTIES', 'hostpn') . '</h2>'
+        . '<p>' . sprintf(__('On one hand, MR/MS <strong>[hostpn-host-name]</strong>, of legal age, with ID number <strong>[hostpn-host-id]</strong>, with address at <strong>[hostpn-host-address]</strong> and email <strong>[hostpn-host-email]</strong>. Hereinafter referred to as the %s.', 'hostpn'), '&laquo;' . __('LANDLORD', 'hostpn') . '&raquo;') . '</p>'
+        . '<p>' . sprintf(__('On the other hand, MR/MS <strong>[hostpn-guest-name]</strong>, of legal age, with ID number <strong>[hostpn-guest-id-card]</strong>, with address at <strong>[hostpn-guest-address]</strong> and email <strong>[hostpn-guest-email]</strong>. Hereinafter referred to as the %s.', 'hostpn'), '&laquo;' . __('TENANT', 'hostpn') . '&raquo;') . '</p>'
+        . '<p>' . __('Both parties mutually acknowledge sufficient legal capacity to enter into this room rental agreement and, to that effect,', 'hostpn') . '</p>',
 
       'exponen' =>
-        '<h2>EXPONEN</h2>'
-        . '<p><strong>I.</strong> Que el ARRENDADOR es titular/gestor leg&iacute;timo de la vivienda ubicada en <strong>[hostpn-accommodation-address]</strong>, piso que consta de varias habitaciones y zonas comunes.</p>'
-        . '<p><strong>II.</strong> Que el ARRENDATARIO est&aacute; interesado en alquilar el uso exclusivo de la <strong>Habitaci&oacute;n [hostpn-room-name]</strong> de dicha vivienda, as&iacute; como el derecho al uso compartido de las zonas comunes del piso (cocina, ba&ntilde;o y pasillos si lo hubiere).</p>'
-        . '<p><strong>III.</strong> Que habiendo llegado ambas partes a un acuerdo, formalizan el presente contrato sujet&aacute;ndose a las siguientes:</p>',
+        '<h2>' . __('RECITALS', 'hostpn') . '</h2>'
+        . '<p><strong>I.</strong> ' . __('The LANDLORD is the rightful owner/manager of the property located at <strong>[hostpn-accommodation-address]</strong>, a flat consisting of several rooms and common areas.', 'hostpn') . '</p>'
+        . '<p><strong>II.</strong> ' . __('The TENANT is interested in renting the exclusive use of <strong>Room [hostpn-room-name]</strong> of said property, as well as the right to shared use of the common areas of the flat (kitchen, bathroom and hallways if applicable).', 'hostpn') . '</p>'
+        . '<p><strong>III.</strong> ' . __('Both parties having reached an agreement, they formalize this contract subject to the following:', 'hostpn') . '</p>',
 
       'primera' =>
-        '<h3>CL&Aacute;USULAS</h3>'
-        . '<h3>PRIMERA. Objeto</h3>'
-        . '<p>El ARRENDADOR cede en arrendamiento al ARRENDATARIO el uso exclusivo de la <strong>Habitaci&oacute;n [hostpn-room-name]</strong> amueblada seg&uacute;n inventario anexo, ubicada en la vivienda compartida sita en <strong>[hostpn-accommodation-address]</strong>.</p>'
-        . '<p>El ARRENDATARIO tendr&aacute; derecho al uso compartido con los dem&aacute;s ocupantes de la vivienda de los servicios y zonas comunes: cocina, cuarto de ba&ntilde;o, tendedero y pasillos de distribuci&oacute;n. Queda expresamente excluido el uso exclusivo de cualquier otra habitaci&oacute;n del piso.</p>',
+        '<h3>' . __('CLAUSES', 'hostpn') . '</h3>'
+        . '<h3>' . __('CLAUSE 1. Object', 'hostpn') . '</h3>'
+        . '<p>' . __('The LANDLORD leases to the TENANT the exclusive use of <strong>Room [hostpn-room-name]</strong>, furnished as per the attached inventory, located in the shared property at <strong>[hostpn-accommodation-address]</strong>.', 'hostpn') . '</p>'
+        . '<p>' . __('The TENANT shall have the right to shared use with the other occupants of the property of the services and common areas: kitchen, bathroom, laundry area and hallways. The exclusive use of any other room in the flat is expressly excluded.', 'hostpn') . '</p>',
 
       'segunda' =>
-        '<h3>SEGUNDA. Duraci&oacute;n del contrato</h3>'
-        . '<p>El presente contrato se estipula por un plazo de <strong>[hostpn-contract-duration]</strong> a contar desde el d&iacute;a <strong>[hostpn-contract-start-date]</strong> hasta el d&iacute;a <strong>[hostpn-contract-end-date]</strong>.</p>'
-        . '<p>Llegada la fecha de vencimiento, el contrato se extinguir&aacute; de forma autom&aacute;tica sin necesidad de requerimiento previo. Si el ARRENDATARIO deseara desistir del contrato antes de su finalizaci&oacute;n, deber&aacute; notificarlo al ARRENDADOR con una antelaci&oacute;n m&iacute;nima de <strong>[hostpn-contract-notice-days] d&iacute;as</strong> naturales. En caso de incumplimiento de dicho plazo, indemnizar&aacute; al ARRENDADOR con la parte proporcional de la renta equivalente a los d&iacute;as de preaviso no cumplidos.</p>',
+        '<h3>' . __('CLAUSE 2. Contract duration', 'hostpn') . '</h3>'
+        . '<p>' . __('This contract is agreed for a term of <strong>[hostpn-contract-duration]</strong> from <strong>[hostpn-contract-start-date]</strong> until <strong>[hostpn-contract-end-date]</strong>.', 'hostpn') . '</p>'
+        . '<p>' . __('Upon the expiry date, the contract shall automatically terminate without prior notice. If the TENANT wishes to terminate the contract before its expiry, they must notify the LANDLORD with a minimum of <strong>[hostpn-contract-notice-days] days</strong> notice. Failure to comply with this notice period shall result in compensation to the LANDLORD equal to the proportional rent for the unfulfilled notice days.', 'hostpn') . '</p>',
 
       'tercera' =>
-        '<h3>TERCERA. Renta y forma de pago</h3>'
-        . '<p>La renta mensual pactada es de <strong>[hostpn-contract-rent-amount] EUROS</strong> (<strong>[hostpn-contract-rent-words]</strong> &euro;).</p>'
-        . '<p>El pago de la renta se realizar&aacute; de forma anticipada dentro de los primeros <strong>[hostpn-contract-payment-day]</strong> d&iacute;as de cada mes, mediante transferencia bancaria o ingreso en la cuenta corriente titularidad del ARRENDADOR:</p>'
-        . '<p>Entidad Bancaria: <strong>[hostpn-contract-bank-name]</strong><br>'
-        . 'IBAN: <strong>[hostpn-contract-iban]</strong></p>',
+        '<h3>' . __('CLAUSE 3. Rent and method of payment', 'hostpn') . '</h3>'
+        . '<p>' . __('The agreed monthly rent is <strong>[hostpn-contract-rent-amount] EUR</strong> (<strong>[hostpn-contract-rent-words]</strong>).', 'hostpn') . '</p>'
+        . '<p>' . __('Rent shall be paid in advance within the first <strong>[hostpn-contract-payment-day]</strong> days of each month, by bank transfer to the LANDLORD\'s account:', 'hostpn') . '</p>'
+        . '<p>' . __('Bank:', 'hostpn') . ' <strong>[hostpn-contract-bank-name]</strong><br>'
+        . __('IBAN:', 'hostpn') . ' <strong>[hostpn-contract-iban]</strong></p>',
 
       'cuarta' =>
-        '<h3>CUARTA. Suministros y gastos</h3>'
-        . '<p><strong>Gastos incluidos:</strong> En el precio de la renta mensual est&aacute;n incluidos los gastos de agua, comunidad, IBI, basuras e Internet de banda ancha.</p>'
-        . '<p><strong>Gastos no incluidos:</strong> Los gastos de electricidad no est&aacute;n incluidos en la renta y se abonar&aacute;n mensualmente de forma proporcional entre las habitaciones del piso en lo relativo a consumos comunes (termo de agua caliente, electrodom&eacute;sticos y luces de pasillos y cocina) y de forma individual en lo relativo a los consumos individuales del ARRENDATARIO en su habitaci&oacute;n.</p>',
+        '<h3>' . __('CLAUSE 4. Supplies and expenses', 'hostpn') . '</h3>'
+        . '<p><strong>' . __('Included expenses:', 'hostpn') . '</strong> ' . __('The monthly rent includes water, community fees, property tax, waste collection and broadband Internet.', 'hostpn') . '</p>'
+        . '<p><strong>' . __('Excluded expenses:', 'hostpn') . '</strong> ' . __('Electricity costs are not included in the rent and shall be paid monthly, proportionally divided among the rooms for common consumption (water heater, appliances and hallway/kitchen lighting) and individually for the TENANT\'s own consumption in their room.', 'hostpn') . '</p>',
 
       'quinta' =>
-        '<h3>QUINTA. Pagos y Fianza</h3>'
-        . '<p>A la firma del presente contrato, el ARRENDATARIO hace entrega al ARRENDADOR de la cantidad de <strong>[hostpn-contract-deposit-amount] EUROS</strong> (<strong>[hostpn-contract-deposit-words]</strong> &euro;) en concepto de fianza.</p>'
-        . '<p>La fianza responder&aacute; del cumplimiento de las obligaciones contractuales, de la devoluci&oacute;n de la habitaci&oacute;n y sus enseres en el mismo estado en que se recibieron, y del pago de rentas o suministros pendientes. Se devolver&aacute; dentro de los 30 d&iacute;as siguientes a la entrega de llaves, previa comprobaci&oacute;n del estado del inmueble. En ning&uacute;n caso la fianza servir&aacute; como pago de la &uacute;ltima mensualidad de renta.</p>'
-        . '<p>Si se quiere reservar la habitaci&oacute;n con antelaci&oacute;n se puede aportar la mitad de la fianza como se&ntilde;al de forma que esta quedar&aacute; reservada hasta un m&aacute;ximo de 7 d&iacute;as desde la recepci&oacute;n del dinero.</p>',
+        '<h3>' . __('CLAUSE 5. Payments and deposit', 'hostpn') . '</h3>'
+        . '<p>' . __('Upon signing this contract, the TENANT delivers to the LANDLORD the amount of <strong>[hostpn-contract-deposit-amount] EUR</strong> (<strong>[hostpn-contract-deposit-words]</strong>) as a security deposit.', 'hostpn') . '</p>'
+        . '<p>' . __('The deposit shall cover the fulfilment of contractual obligations, the return of the room and its contents in the same condition as received, and the payment of any outstanding rent or utilities. It shall be returned within 30 days of key handover, after inspection of the property. Under no circumstances shall the deposit serve as payment for the last month\'s rent.', 'hostpn') . '</p>'
+        . '<p>' . __('If the TENANT wishes to reserve the room in advance, half of the deposit may be provided as a booking fee, reserving the room for a maximum of 7 days from receipt of the funds.', 'hostpn') . '</p>',
 
       'sexta' =>
-        '<h3>SEXTA. Normas de convivencia y uso</h3>'
-        . '<p>El ARRENDATARIO se compromete a respetar las normas b&aacute;sicas de convivencia con los dem&aacute;s compa&ntilde;eros/as de piso:</p>'
-        . '<p><strong>Limpieza:</strong> Mantener en perfecto estado de limpieza y orden la habitaci&oacute;n arrendada y colaborar activamente en el turno de limpieza de las zonas comunes.</p>'
-        . '<p><strong>Visitas y pernocta:</strong> Las visitas quedan limitadas a horario diurno. Queda expresamente prohibida la pernocta de terceras personas ajenas al contrato en la habitaci&oacute;n sin el consentimiento previo y por escrito del ARRENDADOR y de los dem&aacute;s convivientes.</p>'
-        . '<p><strong>Mascotas:</strong> Queda prohibida la tenencia de animales en la vivienda, salvo autorizaci&oacute;n expresa por escrito del ARRENDADOR.</p>'
-        . '<p><strong>Tabaco y sustancias:</strong> Queda estrictamente prohibido fumar o consumir drogas en la habitaci&oacute;n y en las zonas comunes de la vivienda.</p>'
-        . '<p><strong>Ruidos:</strong> Se respetar&aacute; el descanso comunitario, evitando ruidos o fiestas a partir de las 23:00 horas.</p>',
+        '<h3>' . __('CLAUSE 6. House rules', 'hostpn') . '</h3>'
+        . '<p>' . __('The TENANT agrees to respect the basic rules of coexistence with the other flatmates:', 'hostpn') . '</p>'
+        . '<p><strong>' . __('Cleaning:', 'hostpn') . '</strong> ' . __('Keep the rented room in a perfect state of cleanliness and order, and actively participate in the cleaning rota for the common areas.', 'hostpn') . '</p>'
+        . '<p><strong>' . __('Visitors and overnight stays:', 'hostpn') . '</strong> ' . __('Visits are limited to daytime hours. Overnight stays by persons not party to this contract are expressly prohibited without prior written consent from the LANDLORD and the other cohabitants.', 'hostpn') . '</p>'
+        . '<p><strong>' . __('Pets:', 'hostpn') . '</strong> ' . __('Keeping animals in the property is prohibited unless expressly authorized in writing by the LANDLORD.', 'hostpn') . '</p>'
+        . '<p><strong>' . __('Smoking and substances:', 'hostpn') . '</strong> ' . __('Smoking or consuming drugs in the room and common areas of the property is strictly prohibited.', 'hostpn') . '</p>'
+        . '<p><strong>' . __('Noise:', 'hostpn') . '</strong> ' . __('Community rest shall be respected, avoiding noise or parties after 23:00.', 'hostpn') . '</p>',
 
       'septima' =>
-        '<h3>S&Eacute;PTIMA. Obras y conservaci&oacute;n</h3>'
-        . '<p>El ARRENDATARIO no podr&aacute; realizar obras, modificaciones ni taladros en las paredes de la habitaci&oacute;n ni de las zonas comunes sin autorizaci&oacute;n escrita del ARRENDADOR.</p>'
-        . '<p>Las peque&ntilde;as reparaciones que exija el desgaste por el uso ordinario de la habitaci&oacute;n y sus enseres ser&aacute;n a cargo del ARRENDATARIO.</p>',
+        '<h3>' . __('CLAUSE 7. Works and maintenance', 'hostpn') . '</h3>'
+        . '<p>' . __('The TENANT may not carry out works, modifications or drilling in the walls of the room or common areas without written authorization from the LANDLORD.', 'hostpn') . '</p>'
+        . '<p>' . __('Minor repairs required by ordinary wear and tear of the room and its contents shall be borne by the TENANT.', 'hostpn') . '</p>',
 
       'octava' =>
-        '<h3>OCTAVA. Cesi&oacute;n y subarriendo</h3>'
-        . '<p>Queda expresamente prohibida la cesi&oacute;n del contrato, as&iacute; como el subarriendo parcial o total de la habitaci&oacute;n a terceras personas.</p>',
+        '<h3>' . __('CLAUSE 8. Assignment and subletting', 'hostpn') . '</h3>'
+        . '<p>' . __('The assignment of this contract, as well as the partial or total subletting of the room to third parties, is expressly prohibited.', 'hostpn') . '</p>',
 
       'novena' =>
-        '<h3>NOVENA. Incumplimiento de contrato</h3>'
-        . '<p>El incumplimiento por cualquiera de las partes de las obligaciones derivadas de este contrato dar&aacute; derecho a la parte que hubiere cumplido a exigir la resoluci&oacute;n del contrato o su cumplimiento, con la correspondiente indemnizaci&oacute;n de da&ntilde;os y perjuicios.</p>'
-        . '<p>Ser&aacute; causa especial de resoluci&oacute;n la falta de pago de la renta o de la fianza, la realizaci&oacute;n de actividades molestas, insalubres, nocivas o il&iacute;citas, o la infracci&oacute;n de las normas de convivencia fijadas en la cl&aacute;usula sexta.</p>',
+        '<h3>' . __('CLAUSE 9. Breach of contract', 'hostpn') . '</h3>'
+        . '<p>' . __('Breach by either party of the obligations arising from this contract shall entitle the compliant party to demand termination of the contract or its fulfilment, with the corresponding compensation for damages.', 'hostpn') . '</p>'
+        . '<p>' . __('Special grounds for termination include failure to pay rent or the deposit, conducting nuisance, unhealthy, harmful or illegal activities, or violation of the house rules set out in Clause 6.', 'hostpn') . '</p>',
 
       'decima' =>
-        '<h3>D&Eacute;CIMA. Legislaci&oacute;n aplicable y jurisdicci&oacute;n</h3>'
-        . '<p>El presente contrato se rige por lo libremente pactado por las partes y, en su defecto, por las disposiciones del C&oacute;digo Civil espa&ntilde;ol (Arts. 1542 y ss.), quedando expresamente excluido de la Ley de Arrendamientos Urbanos (LAU) al tratarse de un arrendamiento por habitaciones.</p>'
-        . '<p>Para la resoluci&oacute;n de cualquier controversia judicial que pudiera derivarse de la interpretaci&oacute;n o cumplimiento de este contrato, ambas partes se someten a la jurisdicci&oacute;n de los Juzgados y Tribunales del lugar donde se encuentra ubicada la vivienda.</p>',
+        '<h3>' . __('CLAUSE 10. Applicable legislation and jurisdiction', 'hostpn') . '</h3>'
+        . '<p>' . __('This contract is governed by what has been freely agreed by the parties and, failing that, by the applicable civil legislation.', 'hostpn') . '</p>'
+        . '<p>' . __('For the resolution of any judicial dispute arising from the interpretation or fulfilment of this contract, both parties submit to the jurisdiction of the Courts of the place where the property is located.', 'hostpn') . '</p>',
 
       'firmas' =>
-        '<p style="margin-top:20pt;">Y para que as&iacute; conste, firman el presente contrato por duplicado ejemplar y a un solo efecto, en el lugar y fecha arriba indicados.</p>'
+        '<p style="margin-top:20pt;">' . __('In witness whereof, both parties sign this contract in duplicate and to a single effect, at the place and date indicated above.', 'hostpn') . '</p>'
         . '<div class="contract-signatures">'
-        . '<div class="contract-signature-block"><p><strong>EL ARRENDADOR</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-host-name]</p></div>'
-        . '<div class="contract-signature-block"><p><strong>EL ARRENDATARIO</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-guest-name]</p></div>'
+        . '<div class="contract-signature-block"><p><strong>' . __('THE LANDLORD', 'hostpn') . '</strong></p><div class="contract-signature-line"></div><p>' . __('Signed:', 'hostpn') . ' [hostpn-host-name]</p></div>'
+        . '<div class="contract-signature-block"><p><strong>' . __('THE TENANT', 'hostpn') . '</strong></p><div class="contract-signature-line"></div><p>' . __('Signed:', 'hostpn') . ' [hostpn-guest-name]</p></div>'
         . '</div>',
     ];
   }
@@ -220,138 +247,137 @@ class HOSTPN_Contract_Templates {
   private static function hostpn_get_default_turistico() {
     return [
       'reunidos' =>
-        '<h2>REUNIDOS</h2>'
-        . '<p>De una parte, DON/DO&Ntilde;A <strong>[hostpn-host-name]</strong>, mayor de edad, con NIF/NIE <strong>[hostpn-host-id]</strong>, y domicilio en <strong>[hostpn-host-address]</strong>. En adelante, el &laquo;PROPIETARIO&raquo;.</p>'
-        . '<p>Y de otra parte, DON/DO&Ntilde;A <strong>[hostpn-guest-name]</strong>, mayor de edad, con NIF/NIE <strong>[hostpn-guest-id-card]</strong>, y correo electr&oacute;nico <strong>[hostpn-guest-email]</strong>. En adelante, el &laquo;HU&Eacute;SPED&raquo;.</p>'
-        . '<p>Ambas partes se reconocen capacidad legal suficiente y acuerdan lo siguiente:</p>',
+        '<h2>' . __('PARTIES', 'hostpn') . '</h2>'
+        . '<p>' . sprintf(__('On one hand, MR/MS <strong>[hostpn-host-name]</strong>, of legal age, with ID number <strong>[hostpn-host-id]</strong>, with address at <strong>[hostpn-host-address]</strong> and email <strong>[hostpn-host-email]</strong>. Hereinafter referred to as the %s.', 'hostpn'), '&laquo;' . __('OWNER', 'hostpn') . '&raquo;') . '</p>'
+        . '<p>' . sprintf(__('On the other hand, MR/MS <strong>[hostpn-guest-name]</strong>, of legal age, with ID number <strong>[hostpn-guest-id-card]</strong>, with address at <strong>[hostpn-guest-address]</strong> and email <strong>[hostpn-guest-email]</strong>. Hereinafter referred to as the %s.', 'hostpn'), '&laquo;' . __('GUEST', 'hostpn') . '&raquo;') . '</p>'
+        . '<p>' . __('Both parties acknowledge sufficient legal capacity and agree as follows:', 'hostpn') . '</p>',
 
       'exponen' =>
-        '<h2>EXPONEN</h2>'
-        . '<p><strong>I.</strong> Que el PROPIETARIO es titular leg&iacute;timo de la vivienda de uso tur&iacute;stico ubicada en <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>.</p>'
-        . '<p><strong>II.</strong> Que el HU&Eacute;SPED desea alojarse temporalmente en dicha vivienda con fines tur&iacute;sticos o vacacionales.</p>'
-        . '<p><strong>III.</strong> Que ambas partes formalizan el presente contrato de alojamiento tur&iacute;stico.</p>',
+        '<h2>' . __('RECITALS', 'hostpn') . '</h2>'
+        . '<p><strong>I.</strong> ' . __('The OWNER is the rightful owner of the tourist accommodation property located at <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>.', 'hostpn') . '</p>'
+        . '<p><strong>II.</strong> ' . __('The GUEST wishes to stay temporarily in said property for tourist or holiday purposes.', 'hostpn') . '</p>'
+        . '<p><strong>III.</strong> ' . __('Both parties formalize this tourist accommodation contract.', 'hostpn') . '</p>',
 
       'primera' =>
-        '<h3>PRIMERA. Objeto</h3>'
-        . '<p>El PROPIETARIO cede el uso temporal de la vivienda tur&iacute;stica ubicada en <strong>[hostpn-accommodation-address]</strong>, amueblada y equipada seg&uacute;n inventario, para uso exclusivo de alojamiento tur&iacute;stico.</p>'
-        . '<p>N&uacute;mero m&aacute;ximo de hu&eacute;spedes: <strong>[hostpn-contract-guest-count]</strong>.</p>',
+        '<h3>' . __('CLAUSE 1. Object', 'hostpn') . '</h3>'
+        . '<p>' . __('The OWNER grants the temporary use of the tourist property located at <strong>[hostpn-accommodation-address]</strong>, furnished and equipped as per inventory, for the exclusive purpose of tourist accommodation.', 'hostpn') . '</p>'
+        . '<p>' . __('Maximum number of guests: <strong>[hostpn-contract-guest-count]</strong>.', 'hostpn') . '</p>',
 
       'segunda' =>
-        '<h3>SEGUNDA. Duraci&oacute;n de la estancia</h3>'
-        . '<p>La estancia se pacta desde el d&iacute;a <strong>[hostpn-contract-start-date]</strong> hasta el d&iacute;a <strong>[hostpn-contract-end-date]</strong>.</p>'
-        . '<p>Hora de entrada (check-in): <strong>[hostpn-contract-checkin-time]</strong>. Hora de salida (check-out): <strong>[hostpn-contract-checkout-time]</strong>.</p>'
-        . '<p>La vivienda deber&aacute; ser desalojada a la hora de check-out indicada.</p>',
+        '<h3>' . __('CLAUSE 2. Stay duration', 'hostpn') . '</h3>'
+        . '<p>' . __('The stay is agreed from <strong>[hostpn-contract-start-date]</strong> until <strong>[hostpn-contract-end-date]</strong>.', 'hostpn') . '</p>'
+        . '<p>' . __('Check-in time: <strong>[hostpn-contract-checkin-time]</strong>. Check-out time: <strong>[hostpn-contract-checkout-time]</strong>.', 'hostpn') . '</p>'
+        . '<p>' . __('The property must be vacated by the indicated check-out time.', 'hostpn') . '</p>',
 
       'tercera' =>
-        '<h3>TERCERA. Precio</h3>'
-        . '<p>El precio total de la estancia es de <strong>[hostpn-contract-total-price] EUROS</strong>.</p>'
-        . '<p>El pago se realizar&aacute; seg&uacute;n las condiciones acordadas entre las partes.</p>',
+        '<h3>' . __('CLAUSE 3. Price', 'hostpn') . '</h3>'
+        . '<p>' . __('The total price for the stay is <strong>[hostpn-contract-total-price] EUR</strong>.', 'hostpn') . '</p>'
+        . '<p>' . __('Payment shall be made according to the conditions agreed between both parties.', 'hostpn') . '</p>',
 
       'cuarta' =>
-        '<h3>CUARTA. Fianza</h3>'
-        . '<p>El HU&Eacute;SPED entrega al PROPIETARIO <strong>[hostpn-contract-deposit-amount] EUROS</strong> ([hostpn-contract-deposit-words] &euro;) en concepto de fianza.</p>'
-        . '<p>Se devolver&aacute; tras la comprobaci&oacute;n del estado de la vivienda al finalizar la estancia.</p>',
+        '<h3>' . __('CLAUSE 4. Deposit', 'hostpn') . '</h3>'
+        . '<p>' . __('The GUEST delivers to the OWNER <strong>[hostpn-contract-deposit-amount] EUR</strong> ([hostpn-contract-deposit-words]) as a security deposit.', 'hostpn') . '</p>'
+        . '<p>' . __('It shall be returned after inspection of the property at the end of the stay.', 'hostpn') . '</p>',
 
       'quinta' =>
-        '<h3>QUINTA. Normas de uso</h3>'
-        . '<p>El HU&Eacute;SPED se compromete a:</p>'
-        . '<p>- Usar la vivienda &uacute;nicamente como alojamiento tur&iacute;stico.</p>'
-        . '<p>- No realizar actividades molestas, insalubres o il&iacute;citas.</p>'
-        . '<p>- Respetar el descanso de los vecinos.</p>'
-        . '<p>- No alojar a m&aacute;s personas de las indicadas.</p>'
-        . '<p>- Prohibido fumar en el interior de la vivienda.</p>'
-        . '<p>- Prohibida la tenencia de mascotas salvo autorizaci&oacute;n expresa.</p>',
+        '<h3>' . __('CLAUSE 5. House rules', 'hostpn') . '</h3>'
+        . '<p>' . __('The GUEST agrees to:', 'hostpn') . '</p>'
+        . '<p>- ' . __('Use the property solely as tourist accommodation.', 'hostpn') . '</p>'
+        . '<p>- ' . __('Not carry out nuisance, unhealthy or illegal activities.', 'hostpn') . '</p>'
+        . '<p>- ' . __('Respect the neighbours\' rest.', 'hostpn') . '</p>'
+        . '<p>- ' . __('Not accommodate more persons than indicated.', 'hostpn') . '</p>'
+        . '<p>- ' . __('Smoking inside the property is prohibited.', 'hostpn') . '</p>'
+        . '<p>- ' . __('Pets are prohibited unless expressly authorized.', 'hostpn') . '</p>',
 
       'sexta' =>
-        '<h3>SEXTA. Inventario</h3>'
-        . '<p>Se adjunta inventario de los enseres y equipamiento de la vivienda. El HU&Eacute;SPED deber&aacute; devolver la vivienda en el mismo estado en que la recibi&oacute;.</p>',
+        '<h3>' . __('CLAUSE 6. Inventory', 'hostpn') . '</h3>'
+        . '<p>' . __('An inventory of the property\'s contents and equipment is attached. The GUEST must return the property in the same condition as received.', 'hostpn') . '</p>',
 
       'septima' =>
-        '<h3>S&Eacute;PTIMA. Responsabilidad</h3>'
-        . '<p>El HU&Eacute;SPED ser&aacute; responsable de los da&ntilde;os ocasionados en la vivienda, enseres o zonas comunes durante su estancia, salvo desgaste por uso normal.</p>'
-        . '<p>El PROPIETARIO no ser&aacute; responsable de los objetos personales del HU&Eacute;SPED.</p>',
+        '<h3>' . __('CLAUSE 7. Liability', 'hostpn') . '</h3>'
+        . '<p>' . __('The GUEST shall be liable for any damage caused to the property, contents or common areas during their stay, except for normal wear and tear.', 'hostpn') . '</p>'
+        . '<p>' . __('The OWNER shall not be liable for the GUEST\'s personal belongings.', 'hostpn') . '</p>',
 
       'octava' =>
-        '<h3>OCTAVA. Legislaci&oacute;n aplicable</h3>'
-        . '<p>El presente contrato se rige por la normativa auton&oacute;mica de viviendas de uso tur&iacute;stico aplicable, y supletoriamente por el C&oacute;digo Civil.</p>'
-        . '<p>Queda excluido de la Ley de Arrendamientos Urbanos conforme al art&iacute;culo 5.e) de la LAU.</p>',
+        '<h3>' . __('CLAUSE 8. Applicable legislation', 'hostpn') . '</h3>'
+        . '<p>' . __('This contract is governed by the applicable regional regulations on tourist accommodation properties, and additionally by the applicable civil legislation.', 'hostpn') . '</p>',
 
       'firmas' =>
-        '<p style="margin-top:20pt;">Y para que as&iacute; conste, firman el presente contrato.</p>'
+        '<p style="margin-top:20pt;">' . __('In witness whereof, both parties sign this contract.', 'hostpn') . '</p>'
         . '<div class="contract-signatures">'
-        . '<div class="contract-signature-block"><p><strong>EL PROPIETARIO</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-host-name]</p></div>'
-        . '<div class="contract-signature-block"><p><strong>EL HU&Eacute;SPED</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-guest-name]</p></div>'
+        . '<div class="contract-signature-block"><p><strong>' . __('THE OWNER', 'hostpn') . '</strong></p><div class="contract-signature-line"></div><p>' . __('Signed:', 'hostpn') . ' [hostpn-host-name]</p></div>'
+        . '<div class="contract-signature-block"><p><strong>' . __('THE GUEST', 'hostpn') . '</strong></p><div class="contract-signature-line"></div><p>' . __('Signed:', 'hostpn') . ' [hostpn-guest-name]</p></div>'
         . '</div>',
     ];
   }
 
   /**
-   * Default template for LAU rental.
+   * Default template for long-stay rental.
    */
   private static function hostpn_get_default_lau() {
     return [
       'reunidos' =>
-        '<h2>REUNIDOS</h2>'
-        . '<p>De una parte, DON/DO&Ntilde;A <strong>[hostpn-host-name]</strong>, mayor de edad, con NIF/NIE <strong>[hostpn-host-id]</strong>, y domicilio en <strong>[hostpn-host-address]</strong>. En adelante, el &laquo;ARRENDADOR&raquo;.</p>'
-        . '<p>Y de otra parte, DON/DO&Ntilde;A <strong>[hostpn-guest-name]</strong>, mayor de edad, con NIF/NIE <strong>[hostpn-guest-id-card]</strong>, y correo electr&oacute;nico <strong>[hostpn-guest-email]</strong>. En adelante, el &laquo;ARRENDATARIO&raquo;.</p>'
-        . '<p>Ambas partes se reconocen capacidad legal suficiente y acuerdan lo siguiente:</p>',
+        '<h2>' . __('PARTIES', 'hostpn') . '</h2>'
+        . '<p>' . sprintf(__('On one hand, MR/MS <strong>[hostpn-host-name]</strong>, of legal age, with ID number <strong>[hostpn-host-id]</strong>, with address at <strong>[hostpn-host-address]</strong> and email <strong>[hostpn-host-email]</strong>. Hereinafter referred to as the %s.', 'hostpn'), '&laquo;' . __('LANDLORD', 'hostpn') . '&raquo;') . '</p>'
+        . '<p>' . sprintf(__('On the other hand, MR/MS <strong>[hostpn-guest-name]</strong>, of legal age, with ID number <strong>[hostpn-guest-id-card]</strong>, with address at <strong>[hostpn-guest-address]</strong> and email <strong>[hostpn-guest-email]</strong>. Hereinafter referred to as the %s.', 'hostpn'), '&laquo;' . __('TENANT', 'hostpn') . '&raquo;') . '</p>'
+        . '<p>' . __('Both parties acknowledge sufficient legal capacity and agree as follows:', 'hostpn') . '</p>',
 
       'exponen' =>
-        '<h2>EXPONEN</h2>'
-        . '<p><strong>I.</strong> Que el ARRENDADOR es propietario/titular leg&iacute;timo de la vivienda ubicada en <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>.</p>'
-        . '<p><strong>II.</strong> Que el ARRENDATARIO desea arrendar dicha vivienda como residencia habitual y permanente.</p>'
-        . '<p><strong>III.</strong> Que ambas partes formalizan el presente contrato de arrendamiento de vivienda al amparo de la Ley 29/1994, de 24 de noviembre, de Arrendamientos Urbanos (LAU).</p>',
+        '<h2>' . __('RECITALS', 'hostpn') . '</h2>'
+        . '<p><strong>I.</strong> ' . __('The LANDLORD is the rightful owner of the property located at <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>.', 'hostpn') . '</p>'
+        . '<p><strong>II.</strong> ' . __('The TENANT wishes to rent said property as their habitual and permanent residence.', 'hostpn') . '</p>'
+        . '<p><strong>III.</strong> ' . __('Both parties formalize this long-stay residential lease agreement.', 'hostpn') . '</p>',
 
       'primera' =>
-        '<h3>PRIMERA. Objeto</h3>'
-        . '<p>El ARRENDADOR arrienda al ARRENDATARIO la vivienda ubicada en <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>, para destinarla a vivienda habitual y permanente del ARRENDATARIO.</p>',
+        '<h3>' . __('CLAUSE 1. Object', 'hostpn') . '</h3>'
+        . '<p>' . __('The LANDLORD leases to the TENANT the property located at <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>, for use as the TENANT\'s habitual and permanent residence.', 'hostpn') . '</p>',
 
       'segunda' =>
-        '<h3>SEGUNDA. Duraci&oacute;n</h3>'
-        . '<p>El contrato se pacta por un plazo de <strong>[hostpn-contract-duration]</strong>, desde el <strong>[hostpn-contract-start-date]</strong> hasta el <strong>[hostpn-contract-end-date]</strong>.</p>'
-        . '<p>Conforme al art. 9 de la LAU, si la duraci&oacute;n pactada fuera inferior a cinco a&ntilde;os (siete si el arrendador es persona jur&iacute;dica), el contrato se prorrogar&aacute; obligatoriamente por plazos anuales hasta alcanzar dicho plazo m&iacute;nimo, salvo que el ARRENDATARIO manifieste su voluntad de no renovar con 30 d&iacute;as de antelaci&oacute;n.</p>',
+        '<h3>' . __('CLAUSE 2. Duration', 'hostpn') . '</h3>'
+        . '<p>' . __('This contract is agreed for a term of <strong>[hostpn-contract-duration]</strong>, from <strong>[hostpn-contract-start-date]</strong> until <strong>[hostpn-contract-end-date]</strong>.', 'hostpn') . '</p>'
+        . '<p>' . __('If the agreed term is shorter than the minimum period established by the applicable legislation, the contract shall be automatically extended in annual increments until said minimum period is reached, unless the TENANT expresses their wish not to renew with 30 days\' notice.', 'hostpn') . '</p>',
 
       'tercera' =>
-        '<h3>TERCERA. Renta</h3>'
-        . '<p>La renta mensual pactada es de <strong>[hostpn-contract-rent-amount] EUROS</strong> ([hostpn-contract-rent-words] &euro;).</p>'
-        . '<p>El pago se realizar&aacute; dentro de los primeros <strong>[hostpn-contract-payment-day]</strong> d&iacute;as de cada mes mediante transferencia a:</p>'
-        . '<p>Entidad: <strong>[hostpn-contract-bank-name]</strong><br>IBAN: <strong>[hostpn-contract-iban]</strong></p>'
-        . '<p>La renta se actualizar&aacute; anualmente conforme al &iacute;ndice de referencia vigente seg&uacute;n la legislaci&oacute;n aplicable en el momento de la actualizaci&oacute;n.</p>',
+        '<h3>' . __('CLAUSE 3. Rent', 'hostpn') . '</h3>'
+        . '<p>' . __('The agreed monthly rent is <strong>[hostpn-contract-rent-amount] EUR</strong> ([hostpn-contract-rent-words]).', 'hostpn') . '</p>'
+        . '<p>' . __('Payment shall be made within the first <strong>[hostpn-contract-payment-day]</strong> days of each month by bank transfer to:', 'hostpn') . '</p>'
+        . '<p>' . __('Bank:', 'hostpn') . ' <strong>[hostpn-contract-bank-name]</strong><br>' . __('IBAN:', 'hostpn') . ' <strong>[hostpn-contract-iban]</strong></p>'
+        . '<p>' . __('The rent shall be updated annually according to the applicable reference index established by the legislation in force at the time of update.', 'hostpn') . '</p>',
 
       'cuarta' =>
-        '<h3>CUARTA. Fianza</h3>'
-        . '<p>El ARRENDATARIO entrega <strong>[hostpn-contract-deposit-amount] EUROS</strong> ([hostpn-contract-deposit-words] &euro;) como fianza legal (equivalente a un mes de renta, conforme al art. 36 LAU).</p>'
-        . '<p>La fianza se devolver&aacute; al finalizar el contrato, previa comprobaci&oacute;n del estado de la vivienda, en el plazo de un mes desde la entrega de llaves.</p>',
+        '<h3>' . __('CLAUSE 4. Deposit', 'hostpn') . '</h3>'
+        . '<p>' . __('The TENANT delivers <strong>[hostpn-contract-deposit-amount] EUR</strong> ([hostpn-contract-deposit-words]) as a legal security deposit (equivalent to one month\'s rent).', 'hostpn') . '</p>'
+        . '<p>' . __('The deposit shall be returned upon termination of the contract, after inspection of the property, within one month of key handover.', 'hostpn') . '</p>',
 
       'quinta' =>
-        '<h3>QUINTA. Gastos y suministros</h3>'
-        . '<p>Los gastos de suministros (agua, electricidad, gas, telecomunicaciones) ser&aacute;n por cuenta del ARRENDATARIO durante la vigencia del contrato.</p>'
-        . '<p>Los gastos de comunidad y el IBI ser&aacute;n por cuenta del ARRENDADOR, salvo pacto expreso en contrario.</p>',
+        '<h3>' . __('CLAUSE 5. Supplies and expenses', 'hostpn') . '</h3>'
+        . '<p>' . __('Supply costs (water, electricity, gas, telecommunications) shall be borne by the TENANT for the duration of the contract.', 'hostpn') . '</p>'
+        . '<p>' . __('Community fees and property tax shall be borne by the LANDLORD, unless expressly agreed otherwise.', 'hostpn') . '</p>',
 
       'sexta' =>
-        '<h3>SEXTA. Obras y conservaci&oacute;n</h3>'
-        . '<p>El ARRENDADOR realizar&aacute; las reparaciones necesarias para conservar la vivienda en condiciones de habitabilidad (art. 21 LAU), salvo deterioro imputable al ARRENDATARIO.</p>'
-        . '<p>El ARRENDATARIO no podr&aacute; realizar obras que modifiquen la configuraci&oacute;n de la vivienda sin consentimiento escrito del ARRENDADOR (art. 23 LAU).</p>',
+        '<h3>' . __('CLAUSE 6. Works and maintenance', 'hostpn') . '</h3>'
+        . '<p>' . __('The LANDLORD shall carry out the necessary repairs to keep the property in habitable condition, except for damage attributable to the TENANT.', 'hostpn') . '</p>'
+        . '<p>' . __('The TENANT may not carry out works that alter the layout of the property without written consent from the LANDLORD.', 'hostpn') . '</p>',
 
       'septima' =>
-        '<h3>S&Eacute;PTIMA. Cesi&oacute;n y subarriendo</h3>'
-        . '<p>El ARRENDATARIO no podr&aacute; ceder ni subarrendar la vivienda, total ni parcialmente, sin consentimiento escrito del ARRENDADOR (art. 8 LAU).</p>',
+        '<h3>' . __('CLAUSE 7. Assignment and subletting', 'hostpn') . '</h3>'
+        . '<p>' . __('The TENANT may not assign or sublet the property, in whole or in part, without written consent from the LANDLORD.', 'hostpn') . '</p>',
 
       'octava' =>
-        '<h3>OCTAVA. Resoluci&oacute;n del contrato</h3>'
-        . '<p>Ser&aacute;n causas de resoluci&oacute;n las previstas en el art. 27 de la LAU, especialmente: falta de pago de la renta, subarriendo no consentido, da&ntilde;os dolosos, obras no consentidas, y actividades molestas, insalubres, nocivas, peligrosas o il&iacute;citas.</p>'
-        . '<p>El ARRENDATARIO podr&aacute; desistir del contrato una vez transcurridos seis meses, comunic&aacute;ndolo con 30 d&iacute;as de antelaci&oacute;n (art. 11 LAU).</p>',
+        '<h3>' . __('CLAUSE 8. Termination', 'hostpn') . '</h3>'
+        . '<p>' . __('Grounds for termination include: failure to pay rent, unauthorized subletting, wilful damage, unauthorized works, and nuisance, unhealthy, harmful, dangerous or illegal activities.', 'hostpn') . '</p>'
+        . '<p>' . __('The TENANT may withdraw from the contract after six months, by giving 30 days\' notice.', 'hostpn') . '</p>',
 
       'novena' =>
-        '<h3>NOVENA. Legislaci&oacute;n aplicable</h3>'
-        . '<p>El presente contrato se rige por la Ley 29/1994, de 24 de noviembre, de Arrendamientos Urbanos (LAU), y supletoriamente por el C&oacute;digo Civil.</p>'
-        . '<p>Para la resoluci&oacute;n de controversias, ambas partes se someten a los Juzgados y Tribunales del lugar donde se ubica la vivienda.</p>',
+        '<h3>' . __('CLAUSE 9. Applicable legislation', 'hostpn') . '</h3>'
+        . '<p>' . __('This contract is governed by the applicable tenancy legislation and additionally by the applicable civil legislation.', 'hostpn') . '</p>'
+        . '<p>' . __('For the resolution of any dispute, both parties submit to the jurisdiction of the Courts of the place where the property is located.', 'hostpn') . '</p>',
 
       'firmas' =>
-        '<p style="margin-top:20pt;">Y para que as&iacute; conste, firman el presente contrato por duplicado.</p>'
+        '<p style="margin-top:20pt;">' . __('In witness whereof, both parties sign this contract in duplicate.', 'hostpn') . '</p>'
         . '<div class="contract-signatures">'
-        . '<div class="contract-signature-block"><p><strong>EL ARRENDADOR</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-host-name]</p></div>'
-        . '<div class="contract-signature-block"><p><strong>EL ARRENDATARIO</strong></p><div class="contract-signature-line"></div><p>Fdo.: [hostpn-guest-name]</p></div>'
+        . '<div class="contract-signature-block"><p><strong>' . __('THE LANDLORD', 'hostpn') . '</strong></p><div class="contract-signature-line"></div><p>' . __('Signed:', 'hostpn') . ' [hostpn-host-name]</p></div>'
+        . '<div class="contract-signature-block"><p><strong>' . __('THE TENANT', 'hostpn') . '</strong></p><div class="contract-signature-line"></div><p>' . __('Signed:', 'hostpn') . ' [hostpn-guest-name]</p></div>'
         . '</div>',
     ];
   }
@@ -403,8 +429,10 @@ class HOSTPN_Contract_Templates {
       'hostpn-host-name'              => __('Landlord full name', 'hostpn'),
       'hostpn-host-id'                => __('Landlord NIF/NIE', 'hostpn'),
       'hostpn-host-address'           => __('Landlord address', 'hostpn'),
+      'hostpn-host-email'             => __('Landlord email', 'hostpn'),
       'hostpn-guest-name'             => __('Tenant full name', 'hostpn'),
       'hostpn-guest-id-card'          => __('Tenant NIF/NIE', 'hostpn'),
+      'hostpn-guest-address'          => __('Tenant address', 'hostpn'),
       'hostpn-guest-email'            => __('Tenant email', 'hostpn'),
       'hostpn-accommodation-address'  => __('Full accommodation address', 'hostpn'),
       'hostpn-accommodation-city'     => __('Accommodation city', 'hostpn'),
@@ -439,8 +467,10 @@ class HOSTPN_Contract_Templates {
       'hostpn-host-name'              => 'hostpn_contract_landlord_name',
       'hostpn-host-id'                => 'hostpn_contract_landlord_nif',
       'hostpn-host-address'           => 'hostpn_contract_landlord_address',
+      'hostpn-host-email'             => 'hostpn_contract_landlord_email',
       'hostpn-guest-name'             => 'hostpn_contract_tenant_name',
       'hostpn-guest-id-card'          => 'hostpn_contract_tenant_nif',
+      'hostpn-guest-address'          => 'hostpn_contract_tenant_address',
       'hostpn-guest-email'            => 'hostpn_contract_tenant_email',
       'hostpn-accommodation-address'  => '_computed_address',
       'hostpn-accommodation-city'     => 'hostpn_accommodation_city',
@@ -451,7 +481,7 @@ class HOSTPN_Contract_Templates {
       'hostpn-contract-rent-words'    => 'hostpn_contract_rent_words',
       'hostpn-contract-deposit-amount' => 'hostpn_contract_deposit_amount',
       'hostpn-contract-deposit-words' => 'hostpn_contract_deposit_words',
-      'hostpn-room-name'              => 'hostpn_contract_room_id',
+      'hostpn-room-name'              => '_computed_room_name',
       'hostpn-contract-notice-days'   => 'hostpn_contract_notice_days',
       'hostpn-contract-payment-day'   => 'hostpn_contract_payment_day',
       'hostpn-contract-bank-name'     => 'hostpn_contract_bank_name',
@@ -466,11 +496,15 @@ class HOSTPN_Contract_Templates {
   /**
    * Resolve shortcodes in text using actual accommodation meta values.
    *
+   * When $room_id is provided and valid, tenant/room shortcodes are overridden
+   * with data from the room's assigned guest instead of accommodation meta.
+   *
    * @param string $text Text with shortcodes.
    * @param int    $accommodation_id Post ID.
+   * @param int    $room_id          Room post ID (0 = use accommodation meta).
    * @return string
    */
-  public static function hostpn_resolve_shortcodes($text, $accommodation_id) {
+  public static function hostpn_resolve_shortcodes($text, $accommodation_id, $room_id = 0) {
     $meta = function($key) use ($accommodation_id) {
       return get_post_meta($accommodation_id, $key, true);
     };
@@ -495,8 +529,10 @@ class HOSTPN_Contract_Templates {
       '[hostpn-host-name]'              => $meta('hostpn_contract_landlord_name'),
       '[hostpn-host-id]'                => $meta('hostpn_contract_landlord_nif'),
       '[hostpn-host-address]'           => $meta('hostpn_contract_landlord_address'),
+      '[hostpn-host-email]'             => $meta('hostpn_contract_landlord_email'),
       '[hostpn-guest-name]'             => $meta('hostpn_contract_tenant_name'),
       '[hostpn-guest-id-card]'          => $meta('hostpn_contract_tenant_nif'),
+      '[hostpn-guest-address]'          => $meta('hostpn_contract_tenant_address'),
       '[hostpn-guest-email]'            => $meta('hostpn_contract_tenant_email'),
       '[hostpn-accommodation-address]'  => $full_address,
       '[hostpn-accommodation-city]'     => $city,
@@ -507,7 +543,14 @@ class HOSTPN_Contract_Templates {
       '[hostpn-contract-rent-words]'    => $meta('hostpn_contract_rent_words'),
       '[hostpn-contract-deposit-amount]' => $meta('hostpn_contract_deposit_amount'),
       '[hostpn-contract-deposit-words]' => $meta('hostpn_contract_deposit_words'),
-      '[hostpn-room-name]'              => $meta('hostpn_contract_room_id'),
+      '[hostpn-room-name]'              => (function() use ($meta) {
+        $rid = $meta('hostpn_contract_room_id');
+        if (!empty($rid)) {
+          $rn = get_post_meta($rid, 'hostpn_room_number', true);
+          return !empty($rn) ? $rn : get_the_title($rid);
+        }
+        return '';
+      })(),
       '[hostpn-contract-notice-days]'   => $meta('hostpn_contract_notice_days'),
       '[hostpn-contract-payment-day]'   => $meta('hostpn_contract_payment_day'),
       '[hostpn-contract-bank-name]'     => $meta('hostpn_contract_bank_name'),
@@ -518,6 +561,54 @@ class HOSTPN_Contract_Templates {
       '[hostpn-contract-total-price]'   => $meta('hostpn_contract_total_price'),
     ];
 
+    // Override room/guest/contract shortcodes when a specific room is provided
+    if (!empty($room_id) && get_post($room_id)) {
+      $room_number = get_post_meta($room_id, 'hostpn_room_number', true);
+      $replacements['[hostpn-room-name]'] = !empty($room_number) ? $room_number : get_the_title($room_id);
+
+      // Override guest data from room's assigned guest
+      $guest_id = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+      if (!empty($guest_id) && get_post($guest_id)) {
+        $replacements['[hostpn-guest-name]'] = trim(
+          get_post_meta($guest_id, 'hostpn_name', true) . ' ' .
+          get_post_meta($guest_id, 'hostpn_surname', true) . ' ' .
+          get_post_meta($guest_id, 'hostpn_surname_alt', true)
+        );
+        $replacements['[hostpn-guest-id-card]'] = get_post_meta($guest_id, 'hostpn_identity_number', true);
+        $guest_address     = get_post_meta($guest_id, 'hostpn_address', true);
+        $guest_address_alt = get_post_meta($guest_id, 'hostpn_address_alt', true);
+        $replacements['[hostpn-guest-address]'] = trim($guest_address . (!empty($guest_address_alt) ? ', ' . $guest_address_alt : ''));
+        $replacements['[hostpn-guest-email]'] = get_post_meta($guest_id, 'hostpn_email', true);
+      }
+
+      // Override contract fields from room meta (only when the room has a value)
+      $room_contract_map = [
+        '[hostpn-contract-duration]'      => 'hostpn_room_contract_duration',
+        '[hostpn-contract-notice-days]'   => 'hostpn_room_contract_notice_days',
+        '[hostpn-contract-rent-amount]'   => 'hostpn_room_contract_rent_amount',
+        '[hostpn-contract-rent-words]'    => 'hostpn_room_contract_rent_words',
+        '[hostpn-contract-payment-day]'   => 'hostpn_room_contract_payment_day',
+        '[hostpn-contract-deposit-amount]' => 'hostpn_room_contract_deposit_amount',
+        '[hostpn-contract-deposit-words]' => 'hostpn_room_contract_deposit_words',
+      ];
+      foreach ($room_contract_map as $shortcode => $meta_key) {
+        $room_val = get_post_meta($room_id, $meta_key, true);
+        if ($room_val !== '' && $room_val !== null) {
+          $replacements[$shortcode] = $room_val;
+        }
+      }
+
+      // Override dates with formatting
+      $room_start = get_post_meta($room_id, 'hostpn_room_contract_start_date', true);
+      if (!empty($room_start)) {
+        $replacements['[hostpn-contract-start-date]'] = gmdate('d/m/Y', strtotime($room_start));
+      }
+      $room_end = get_post_meta($room_id, 'hostpn_room_contract_end_date', true);
+      if (!empty($room_end)) {
+        $replacements['[hostpn-contract-end-date]'] = gmdate('d/m/Y', strtotime($room_end));
+      }
+    }
+
     return str_replace(array_keys($replacements), array_values($replacements), $text);
   }
 
@@ -527,23 +618,24 @@ class HOSTPN_Contract_Templates {
    * @param string $contract_type Contract type key.
    * @param array  $template Template sections array.
    * @param int    $accommodation_id Post ID.
+   * @param int    $room_id          Room post ID (0 = use accommodation meta).
    * @return string Full HTML of the contract.
    */
-  public static function hostpn_render_contract($contract_type, $template, $accommodation_id) {
+  public static function hostpn_render_contract($contract_type, $template, $accommodation_id, $room_id = 0) {
     $types = self::hostpn_get_contract_types();
     $type_label = isset($types[$contract_type]) ? $types[$contract_type] : '';
 
     $title_map = [
-      'habitacion' => 'CONTRATO DE ARRENDAMIENTO DE HABITACI&Oacute;N EN VIVIENDA COMPARTIDA',
-      'turistico'  => 'CONTRATO DE ALOJAMIENTO TUR&Iacute;STICO',
-      'lau'        => 'CONTRATO DE ARRENDAMIENTO DE VIVIENDA',
+      'habitacion' => __('ROOM RENTAL AGREEMENT IN SHARED PROPERTY', 'hostpn'),
+      'turistico'  => __('TOURIST ACCOMMODATION AGREEMENT', 'hostpn'),
+      'lau'        => __('LONG-STAY RESIDENTIAL LEASE AGREEMENT', 'hostpn'),
     ];
     $title = isset($title_map[$contract_type]) ? $title_map[$contract_type] : '';
 
     $html = '<h1>' . $title . '</h1>';
 
     foreach ($template as $section_key => $section_content) {
-      $resolved = self::hostpn_resolve_shortcodes($section_content, $accommodation_id);
+      $resolved = self::hostpn_resolve_shortcodes($section_content, $accommodation_id, $room_id);
       $html .= $resolved;
     }
 
@@ -602,8 +694,10 @@ class HOSTPN_Contract_Templates {
       '[hostpn-host-name]'               => $cmeta('hostpn_contract_landlord_name'),
       '[hostpn-host-id]'                 => $cmeta('hostpn_contract_landlord_nif'),
       '[hostpn-host-address]'            => $cmeta('hostpn_contract_landlord_address'),
+      '[hostpn-host-email]'              => $cmeta('hostpn_contract_landlord_email'),
       '[hostpn-guest-name]'              => $cmeta('hostpn_contract_tenant_name'),
       '[hostpn-guest-id-card]'           => $cmeta('hostpn_contract_tenant_nif'),
+      '[hostpn-guest-address]'           => $cmeta('hostpn_contract_tenant_address'),
       '[hostpn-guest-email]'             => $cmeta('hostpn_contract_tenant_email'),
       '[hostpn-accommodation-address]'   => $full_address,
       '[hostpn-accommodation-city]'      => $city,
@@ -649,19 +743,69 @@ class HOSTPN_Contract_Templates {
 
   /**
    * Render inventory annex from contract html_multi items.
+   * Combines global accommodation items with room-specific items when a room_id is provided.
    *
    * @param int $accommodation_id Post ID.
+   * @param int $room_id          Room post ID (0 = no room items).
    * @return string HTML for inventory section, or empty if disabled.
    */
-  public static function hostpn_render_inventory($accommodation_id) {
+  public static function hostpn_render_inventory($accommodation_id, $room_id = 0) {
     $enabled = get_post_meta($accommodation_id, 'hostpn_contract_inventory_enabled', true);
     if (empty($enabled) || $enabled !== 'on') {
       return '';
     }
 
-    $names = get_post_meta($accommodation_id, 'hostpn_contract_inventory_name', true);
-    $urls  = get_post_meta($accommodation_id, 'hostpn_contract_inventory_url', true);
+    $categories = [
+      'mobiliario'              => __('Furniture', 'hostpn'),
+      'equipamiento_individual' => __('Individual equipment', 'hostpn'),
+      'menaje_individual'       => __('Individual kitchenware', 'hostpn'),
+      'equipamiento_comunitario' => __('Community equipment', 'hostpn'),
+      'otros_enseres'           => __('Other items', 'hostpn'),
+    ];
 
+    $html = '';
+    $has_any = false;
+
+    foreach ($categories as $cat_key => $cat_label) {
+      // Accommodation-level items
+      $accom_items = self::hostpn_collect_inventory_items(
+        get_post_meta($accommodation_id, 'hostpn_contract_inv_' . $cat_key . '_name', true),
+        get_post_meta($accommodation_id, 'hostpn_contract_inv_' . $cat_key . '_url', true)
+      );
+      // Room-level items
+      $room_items = [];
+      if (!empty($room_id) && get_post($room_id)) {
+        $room_items = self::hostpn_collect_inventory_items(
+          get_post_meta($room_id, 'hostpn_room_inv_' . $cat_key . '_name', true),
+          get_post_meta($room_id, 'hostpn_room_inv_' . $cat_key . '_url', true)
+        );
+      }
+      $merged = array_merge($accom_items, $room_items);
+      if (!empty($merged)) {
+        $has_any = true;
+        $html .= '<h3>' . esc_html($cat_label) . '</h3>';
+        $html .= self::hostpn_render_inventory_table($merged);
+      }
+    }
+
+    if (!$has_any) {
+      return '';
+    }
+
+    $result = '<div class="contract-page-break"></div>';
+    $result .= '<h2>' . esc_html__('ANNEX: LEASED ITEMS INVENTORY', 'hostpn') . '</h2>';
+    $result .= $html;
+    return $result;
+  }
+
+  /**
+   * Collect inventory items from parallel name/url meta arrays.
+   *
+   * @param mixed $names Name meta values (array or empty).
+   * @param mixed $urls  URL meta values (array or empty).
+   * @return array Items with 'name' and 'url' keys.
+   */
+  private static function hostpn_collect_inventory_items($names, $urls) {
     if (!is_array($names)) {
       $names = [];
     }
@@ -669,7 +813,6 @@ class HOSTPN_Contract_Templates {
       $urls = [];
     }
 
-    // Filter out empty rows
     $items = [];
     foreach ($names as $i => $name) {
       $name = trim($name);
@@ -678,14 +821,17 @@ class HOSTPN_Contract_Templates {
         $items[] = ['name' => $name, 'url' => $url];
       }
     }
+    return $items;
+  }
 
-    if (empty($items)) {
-      return '';
-    }
-
-    $html = '<div class="contract-page-break"></div>';
-    $html .= '<h2>' . esc_html__('ANEXO: LISTADO DE ENSERES ARRENDADOS', 'hostpn') . '</h2>';
-    $html .= '<table class="contract-inventory-table"><thead><tr>';
+  /**
+   * Render a single inventory table from an items array.
+   *
+   * @param array $items Items with 'name' and 'url' keys.
+   * @return string HTML table.
+   */
+  private static function hostpn_render_inventory_table($items) {
+    $html = '<table class="contract-inventory-table"><thead><tr>';
     $html .= '<th>' . esc_html__('Item', 'hostpn') . '</th>';
     $html .= '<th>' . esc_html__('URL', 'hostpn') . '</th>';
     $html .= '</tr></thead><tbody>';
@@ -702,7 +848,6 @@ class HOSTPN_Contract_Templates {
     }
 
     $html .= '</tbody></table>';
-
     return $html;
   }
 }

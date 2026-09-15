@@ -15,7 +15,28 @@
   flex-wrap: wrap;
 }
 
-.hostpn-contract-print-btn,
+/* Language selector */
+.hostpn-contract-lang-select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
+
+.hostpn-contract-lang-select:hover {
+  border-color: #6c5ce7;
+}
+
+.hostpn-contract-lang-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .hostpn-contract-pdf-btn {
   display: inline-flex;
   align-items: center;
@@ -28,17 +49,6 @@
   font-weight: 500;
   transition: all 0.2s ease;
   color: #fff;
-}
-
-.hostpn-contract-print-btn {
-  background: #495057;
-}
-
-.hostpn-contract-print-btn:hover {
-  background: #343a40;
-}
-
-.hostpn-contract-pdf-btn {
   background: #6c5ce7;
 }
 
@@ -46,13 +56,11 @@
   background: #5a4bd1;
 }
 
-.hostpn-contract-print-btn:disabled,
 .hostpn-contract-pdf-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.hostpn-contract-print-btn .material-icons-outlined,
 .hostpn-contract-pdf-btn .material-icons-outlined {
   font-size: 20px;
 }
@@ -80,22 +88,27 @@
 
 .hostpn-contract-document h2 {
   font-size: 14pt;
-  margin-top: 22px;
-  margin-bottom: 10px;
+  margin-top: 32px;
+  margin-bottom: 12px;
   font-weight: bold;
   text-transform: uppercase;
 }
 
 .hostpn-contract-document h3 {
   font-size: 13pt;
-  margin-top: 16px;
-  margin-bottom: 8px;
+  margin-top: 28px;
+  margin-bottom: 10px;
   font-weight: bold;
 }
 
 .hostpn-contract-document p {
   text-align: justify;
   margin-bottom: 10px;
+}
+
+/* Hide template-rendered signatures (interactive pads are added by PHP) */
+.hostpn-contract-document .contract-signatures {
+  display: none;
 }
 
 /* Signatures */
@@ -160,78 +173,47 @@
   margin: 0 auto;
 }
 
-/* Inventory table */
-.hostpn-contract-inventory-table {
+/* Inventory table (both prefixed and non-prefixed classes) */
+.hostpn-contract-inventory-table,
+.hostpn-contract-document .contract-inventory-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
+  table-layout: fixed;
 }
 
 .hostpn-contract-inventory-table th,
-.hostpn-contract-inventory-table td {
+.hostpn-contract-inventory-table td,
+.hostpn-contract-document .contract-inventory-table th,
+.hostpn-contract-document .contract-inventory-table td {
   border: 1px solid #333;
-  padding: 8px 12px;
+  padding: 6px 10px;
   text-align: left;
-  font-size: 12pt;
+  font-size: 9pt;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: none;
 }
 
-.hostpn-contract-inventory-table th {
+.hostpn-contract-inventory-table th,
+.hostpn-contract-document .contract-inventory-table th {
   background: #f0f0f0;
   font-weight: bold;
 }
 
-/* Page break for print */
-.hostpn-contract-page-break {
-  page-break-before: always;
+.hostpn-contract-inventory-table a,
+.hostpn-contract-document .contract-inventory-table a {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  hyphens: none;
+  font-size: 9pt;
 }
 
-/* Print styles */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-
-  body * {
-    visibility: hidden;
-  }
-
-  .hostpn-contract-public-wrapper,
-  .hostpn-contract-public-wrapper * {
-    visibility: visible;
-  }
-
-  .hostpn-contract-public-wrapper {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-    padding: 15mm;
-  }
-
-  .hostpn-contract-document {
-    border: none;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  .hostpn-contract-actions {
-    display: none;
-  }
-
-  .hostpn-signature-pad-wrapper {
-    display: none;
-  }
-
-  .hostpn-contract-page-break {
-    page-break-before: always;
-  }
-
-  @page {
-    size: A4;
-    margin: 15mm;
-  }
+/* Page break for PDF/print */
+.hostpn-contract-page-break,
+.hostpn-contract-document .contract-page-break {
+  page-break-before: always;
 }
 
 /* Responsive */

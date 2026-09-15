@@ -496,6 +496,55 @@ class HOSTPN_Ajax {
           }
           break;
 
+        case 'hostpn_room_get_guest_data':
+          if (!empty($hostpn_room_id)) {
+            $guest_id    = get_post_meta($hostpn_room_id, 'hostpn_room_guest_id', true);
+            $room_number = get_post_meta($hostpn_room_id, 'hostpn_room_number', true);
+            $room_label  = !empty($room_number) ? $room_number : get_the_title($hostpn_room_id);
+
+            $guest_data = ['name' => '', 'nif' => '', 'address' => '', 'email' => ''];
+            if (!empty($guest_id) && get_post($guest_id)) {
+              $guest_data['name']  = trim(
+                get_post_meta($guest_id, 'hostpn_name', true) . ' ' .
+                get_post_meta($guest_id, 'hostpn_surname', true) . ' ' .
+                get_post_meta($guest_id, 'hostpn_surname_alt', true)
+              );
+              $guest_data['nif']     = get_post_meta($guest_id, 'hostpn_identity_number', true);
+              $guest_address         = get_post_meta($guest_id, 'hostpn_address', true);
+              $guest_address_alt     = get_post_meta($guest_id, 'hostpn_address_alt', true);
+              $guest_data['address'] = trim($guest_address . (!empty($guest_address_alt) ? ', ' . $guest_address_alt : ''));
+              $guest_data['email']   = get_post_meta($guest_id, 'hostpn_email', true);
+            }
+
+            // Room-level contract fields
+            $contract_keys = [
+              'duration', 'start_date', 'end_date', 'notice_days',
+              'rent_amount', 'rent_words', 'payment_day',
+              'supplies_option', 'supplies_limit',
+              'deposit_amount', 'deposit_words', 'deposit_months',
+            ];
+            $contract_data = [];
+            foreach ($contract_keys as $ck) {
+              $contract_data[$ck] = get_post_meta($hostpn_room_id, 'hostpn_room_contract_' . $ck, true);
+            }
+
+            echo wp_json_encode([
+              'error_key'      => '',
+              'room_label'     => $room_label,
+              'guest'          => $guest_data,
+              'guest_id'       => intval($guest_id),
+              'guest_edit_url' => ($guest_id && get_post($guest_id))
+                                   ? admin_url('post.php?post=' . intval($guest_id) . '&action=edit')
+                                   : '',
+              'room_edit_url'  => admin_url('post.php?post=' . intval($hostpn_room_id) . '&action=edit'),
+              'contract'       => $contract_data,
+            ]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_room']);
+          }
+          exit;
+          break;
+
         // ── CONTRACT AJAX CASES ─────────────────────────────────────
         case 'hostpn_contract_view':
           if (!empty($hostpn_contract_id)) {
@@ -615,6 +664,8 @@ class HOSTPN_Ajax {
               $hostpn_contract_id,
               $hostpn_accommodation_id
             );
+            $contract_room_id = !empty($hostpn_contract_id) ? get_post_meta($hostpn_contract_id, 'hostpn_contract_room_id', true) : 0;
+            $html .= HOSTPN_Contract_Templates::hostpn_render_inventory($hostpn_accommodation_id, absint($contract_room_id));
             echo wp_json_encode(['error_key' => '', 'html' => $html]);
           } else {
             echo wp_json_encode(['error_key' => 'invalid_preview']);
@@ -633,6 +684,8 @@ class HOSTPN_Ajax {
                 $hostpn_contract_id,
                 $contract_accommodation_id
               );
+              $contract_room_id = get_post_meta($hostpn_contract_id, 'hostpn_contract_room_id', true);
+              $html .= HOSTPN_Contract_Templates::hostpn_render_inventory($contract_accommodation_id, absint($contract_room_id));
               echo wp_json_encode(['error_key' => '', 'html' => $html]);
             } else {
               echo wp_json_encode(['error_key' => 'invalid_contract', 'error_content' => esc_html(__('Contract data is incomplete.', 'hostpn'))]);

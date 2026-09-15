@@ -164,7 +164,15 @@ class HOSTPN_Post_Type_Contract
             'input' => 'input',
             'type' => 'text',
             'label' => __('Landlord address', 'hostpn'),
-            'placeholder' => __('Landlord notification address', 'hostpn'),
+            'placeholder' => __('Domicile address of the landlord', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_contract_landlord_email'] = [
+            'id' => 'hostpn_contract_landlord_email',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'email',
+            'label' => __('Landlord email', 'hostpn'),
+            'placeholder' => __('Email of the landlord', 'hostpn'),
         ];
 
         // ── Tenant data ────────────────────────────────────────────
@@ -183,6 +191,14 @@ class HOSTPN_Post_Type_Contract
             'type' => 'text',
             'label' => __('Tenant NIF/NIE', 'hostpn'),
             'placeholder' => __('Tenant NIF/NIE', 'hostpn'),
+        ];
+        $hostpn_fields_meta['hostpn_contract_tenant_address'] = [
+            'id' => 'hostpn_contract_tenant_address',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text',
+            'label' => __('Tenant address', 'hostpn'),
+            'placeholder' => __('Domicile address of the tenant', 'hostpn'),
         ];
         $hostpn_fields_meta['hostpn_contract_tenant_email'] = [
             'id' => 'hostpn_contract_tenant_email',
@@ -335,32 +351,42 @@ class HOSTPN_Post_Type_Contract
             'parent' => 'this',
             'label' => __('Enable inventory annex', 'hostpn'),
         ];
-        $hostpn_fields_meta['hostpn_contract_inventory'] = [
-            'id' => 'hostpn_contract_inventory',
-            'class' => 'hostpn-input hostpn-width-100-percent',
-            'input' => 'html_multi',
-            'parent' => 'hostpn_contract_inventory_enabled',
-            'parent_option' => 'on',
-            'label' => __('Inventory items', 'hostpn'),
-            'html_multi_fields' => [
-                [
-                    'id' => 'hostpn_contract_inventory_name',
-                    'class' => 'hostpn-input hostpn-width-100-percent',
-                    'input' => 'input',
-                    'type' => 'text',
-                    'label' => __('Item name', 'hostpn'),
-                    'placeholder' => __('Item name', 'hostpn'),
-                ],
-                [
-                    'id' => 'hostpn_contract_inventory_url',
-                    'class' => 'hostpn-input hostpn-width-100-percent',
-                    'input' => 'input',
-                    'type' => 'text',
-                    'label' => __('URL (optional)', 'hostpn'),
-                    'placeholder' => __('https://...', 'hostpn'),
-                ],
-            ],
+        $inventory_categories = [
+            'mobiliario'              => __('Furniture', 'hostpn'),
+            'equipamiento_individual' => __('Individual equipment', 'hostpn'),
+            'menaje_individual'       => __('Individual kitchenware', 'hostpn'),
+            'equipamiento_comunitario' => __('Community equipment', 'hostpn'),
+            'otros_enseres'           => __('Other items', 'hostpn'),
         ];
+
+        foreach ($inventory_categories as $cat_key => $cat_label) {
+            $hostpn_fields_meta['hostpn_contract_inv_' . $cat_key] = [
+                'id' => 'hostpn_contract_inv_' . $cat_key,
+                'class' => 'hostpn-input hostpn-width-100-percent hostpn-contract-inventory-items',
+                'input' => 'html_multi',
+                'parent' => 'hostpn_contract_inventory_enabled',
+                'parent_option' => 'on',
+                'label' => $cat_label,
+                'html_multi_fields' => [
+                    [
+                        'id' => 'hostpn_contract_inv_' . $cat_key . '_name',
+                        'class' => 'hostpn-input hostpn-width-100-percent',
+                        'input' => 'input',
+                        'type' => 'text',
+                        'label' => __('Item name', 'hostpn'),
+                        'placeholder' => __('Item name', 'hostpn'),
+                    ],
+                    [
+                        'id' => 'hostpn_contract_inv_' . $cat_key . '_url',
+                        'class' => 'hostpn-input hostpn-width-100-percent',
+                        'input' => 'input',
+                        'type' => 'text',
+                        'label' => __('URL (optional)', 'hostpn'),
+                        'placeholder' => __('https://...', 'hostpn'),
+                    ],
+                ],
+            ];
+        }
 
         // ── Private files (hidden, managed programmatically) ──────
         $hostpn_fields_meta['hostpn_contract_pdf_attachment_id'] = [

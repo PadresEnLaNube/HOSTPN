@@ -598,7 +598,7 @@ class HOSTPN_Forms {
                   <label class="hostpn-cursor-pointer hostpn-mb-20 hostpn-color-main-0"><?php echo wp_kses_post($input_array['label']); ?></label>
                 </div>
                 <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
-                  <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0">add</i>
+                  <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0 hostpn-toggle-indicator">add</i>
                 </div>
               </div>
             </a>
@@ -619,7 +619,7 @@ class HOSTPN_Forms {
           <?php if (array_key_exists('label', $input_array) && !empty($input_array['label'])): ?>
             <div class="hostpn-display-inline-table <?php echo (($hostpn_format == 'half' && !(array_key_exists('type', $input_array) && $input_array['type'] == 'submit')) ? 'hostpn-width-40-percent' : 'hostpn-width-100-percent'); ?> hostpn-tablet-display-block hostpn-tablet-width-100-percent hostpn-vertical-align-top">
               <div class="hostpn-p-10 <?php echo (array_key_exists('parent', $input_array) && !empty($input_array['parent']) && $input_array['parent'] != 'this') ? 'hostpn-pl-30' : ''; ?>">
-                <label class="hostpn-vertical-align-middle hostpn-display-block <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? 'hostpn-toggle' : ''; ?>" for="<?php echo esc_attr($input_array['id']); ?>"><?php echo esc_attr($input_array['label']); ?> <?php echo (array_key_exists('required', $input_array) && !empty($input_array['required']) && $input_array['required'] == true) ? '<span class="hostpn-tooltip" title="' . esc_html(__('Required field', 'hostpn')) . '">*</span>' : ''; ?><?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? '<i class="material-icons-outlined hostpn-cursor-pointer hostpn-float-right">add</i>' : ''; ?></label>
+                <label class="hostpn-vertical-align-middle hostpn-display-block <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? 'hostpn-toggle' : ''; ?>" for="<?php echo esc_attr($input_array['id']); ?>"><?php echo esc_attr($input_array['label']); ?> <?php echo (array_key_exists('required', $input_array) && !empty($input_array['required']) && $input_array['required'] == true) ? '<span class="hostpn-tooltip" title="' . esc_html(__('Required field', 'hostpn')) . '">*</span>' : ''; ?><?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? '<i class="material-icons-outlined hostpn-cursor-pointer hostpn-float-right hostpn-toggle-indicator">add</i>' : ''; ?></label>
 
                 <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>
                   <div class="hostpn-toggle-content hostpn-display-none-soft">
@@ -664,7 +664,7 @@ class HOSTPN_Forms {
                 <label class="hostpn-cursor-pointer hostpn-mb-20 hostpn-color-main-0"><?php echo wp_kses_post($input_array['label']); ?></label>
               </div>
               <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
-                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0">add</i>
+                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0 hostpn-toggle-indicator">add</i>
               </div>
             </div>
           </a>
@@ -688,7 +688,7 @@ class HOSTPN_Forms {
               <label class="hostpn-vertical-align-middle hostpn-display-block <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? 'hostpn-toggle' : ''; ?>" for="<?php echo esc_attr($input_array['id']); ?>">
                 <?php echo esc_html($input_array['label']); ?>
                 <?php echo (array_key_exists('required', $input_array) && !empty($input_array['required']) && $input_array['required'] == true) ? '<span class="hostpn-tooltip" title="' . esc_html(__('Required field', 'hostpn')) . '">*</span>' : ''; ?>
-                <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? '<i class="material-icons-outlined hostpn-cursor-pointer hostpn-float-right">add</i>' : ''; ?>
+                <?php echo (array_key_exists('description', $input_array) && !empty($input_array['description'])) ? '<i class="material-icons-outlined hostpn-cursor-pointer hostpn-float-right hostpn-toggle-indicator">add</i>' : ''; ?>
               </label>
 
               <?php if (array_key_exists('description', $input_array) && !empty($input_array['description'])): ?>

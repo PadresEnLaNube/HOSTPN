@@ -5,4 +5,4 @@
 
 ## File placement
 - The `.claude` folder must always be at the repo root level (`hostpn/.claude`), never inside `trunk/`. This prevents it from being uploaded to the server.
-- The `nul` file must always be at the repo root level (`hostpn/nul`), never inside `trunk/`. It breaks the SVN upload if placed inside trunk.
+- NEVER create a file called `nul`. It is a reserved device name on Windows and breaks git completely. If one exists, delete it immediately.

@@ -67,6 +67,30 @@
   width: 100%;
 }
 
+/* Room inventory fields: full width */
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_room_inv_mobiliario,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_room_inv_equipamiento_individual,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_room_inv_menaje_individual,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_room_inv_equipamiento_comunitario,
+.hostpn-section-wrapper .hostpn-toggle-content .hostpn-input-wrapper.hostpn_room_inv_otros_enseres {
+  flex: none;
+  min-width: 100%;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Room contract details: stacked single-column layout */
+#hostpn_room_contract_section .hostpn-toggle-content {
+  display: block;
+}
+#hostpn_room_contract_section .hostpn-toggle-content .hostpn-input-wrapper {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  flex: none;
+  min-width: 0;
+}
+
 /* Feature styling - ONLY for feature sections */
 .hostpn-section-wrapper .hostpn-field {
   transition: all 0.2s ease;

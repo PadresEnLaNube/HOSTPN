@@ -54,7 +54,7 @@ class HOSTPN
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.83';
+			$this->version = '1.0.97';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -506,6 +506,13 @@ class HOSTPN
 		// Room availability subscribe (priv + nopriv)
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_room_availability_subscribe', 'HOSTPN_Post_Type_Room', 'hostpn_room_availability_subscribe');
 		$this->loader->hostpn_add_action('wp_ajax_nopriv_hostpn_room_availability_subscribe', 'HOSTPN_Post_Type_Room', 'hostpn_room_availability_subscribe');
+
+		// Room waitlist remove (admin only)
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_room_waitlist_remove', 'HOSTPN_Post_Type_Room', 'hostpn_room_waitlist_remove');
+
+		// Contract locale switch (priv + nopriv)
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_contract_switch_locale', 'HOSTPN_Post_Type_Accommodation', 'hostpn_contract_switch_locale');
+		$this->loader->hostpn_add_action('wp_ajax_nopriv_hostpn_contract_switch_locale', 'HOSTPN_Post_Type_Accommodation', 'hostpn_contract_switch_locale');
 	}
 
 	/**

@@ -39,24 +39,69 @@ if (empty($accommodation_id)) {
   return;
 }
 
+// Resolve optional room parameter
+$room_id = isset($_GET['hostpn_contract_room']) ? absint($_GET['hostpn_contract_room']) : 0;
+if ($room_id) {
+  $room_acc = get_post_meta($room_id, 'hostpn_room_accommodation_id', true);
+  if (intval($room_acc) !== $accommodation_id) {
+    $room_id = 0;
+  }
+}
+
 // Get contract type and rendered HTML via templates
 $accommodation_type = get_post_meta($accommodation_id, 'hostpn_accommodation_type', true);
 $contract_type = HOSTPN_Contract_Templates::hostpn_get_type_for_accommodation($accommodation_type);
 $template = HOSTPN_Contract_Templates::hostpn_get_saved_template($contract_type);
-$contract_html = HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $accommodation_id);
-$inventory_html = HOSTPN_Contract_Templates::hostpn_render_inventory($accommodation_id);
+$contract_html = HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $accommodation_id, $room_id);
+$inventory_html = HOSTPN_Contract_Templates::hostpn_render_inventory($accommodation_id, $room_id);
 
 $landlordName = get_post_meta($accommodation_id, 'hostpn_contract_landlord_name', true);
 $tenantName   = get_post_meta($accommodation_id, 'hostpn_contract_tenant_name', true);
+
+// Override tenant name from room's guest when available
+if ($room_id) {
+  $guest_id = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+  if ($guest_id && get_post($guest_id)) {
+    $tenantName = trim(
+      get_post_meta($guest_id, 'hostpn_name', true) . ' ' .
+      get_post_meta($guest_id, 'hostpn_surname', true) . ' ' .
+      get_post_meta($guest_id, 'hostpn_surname_alt', true)
+    );
+  }
+}
+
+// Language selector data
+$available_languages = HOSTPN_Contract_Templates::hostpn_get_available_contract_languages();
+$current_locale = get_locale();
+if (!isset($available_languages[$current_locale])) {
+  $current_locale = 'en_US';
+}
+
+// Localize script data for AJAX
+wp_localize_script('hostpn-contract-public', 'hostpnContractPublic', [
+  'ajaxUrl' => admin_url('admin-ajax.php'),
+  'nonce'   => wp_create_nonce('hostpn-contract-public'),
+  'token'   => $token,
+  'roomId'  => $room_id,
+]);
+
+// Determine signature labels
+$landlord_label = $contract_type === 'turistico' ? esc_html__('THE OWNER', 'hostpn') : esc_html__('THE LANDLORD', 'hostpn');
+$tenant_label   = $contract_type === 'turistico' ? esc_html__('THE GUEST', 'hostpn') : esc_html__('THE TENANT', 'hostpn');
 ?>
 
 <div class="hostpn-contract-public-wrapper" id="hostpn-contract-public">
-  <!-- Action buttons (not printed) -->
-  <div class="hostpn-contract-actions no-print">
-    <button type="button" class="hostpn-btn hostpn-contract-print-btn" id="hostpn-contract-print-btn">
-      <i class="material-icons-outlined">print</i>
-      <span><?php esc_html_e('Print contract', 'hostpn'); ?></span>
-    </button>
+  <!-- Action buttons -->
+  <div class="hostpn-contract-actions">
+    <?php if (count($available_languages) > 1) : ?>
+    <select id="hostpn-contract-lang-select" class="hostpn-contract-lang-select">
+      <?php foreach ($available_languages as $locale => $label) : ?>
+        <option value="<?php echo esc_attr($locale); ?>" <?php selected($locale, $current_locale); ?>>
+          <?php echo esc_html($label); ?>
+        </option>
+      <?php endforeach; ?>
+    </select>
+    <?php endif; ?>
     <button type="button" class="hostpn-btn hostpn-contract-pdf-btn" id="hostpn-contract-pdf-btn">
       <i class="material-icons-outlined">picture_as_pdf</i>
       <span><?php esc_html_e('Download PDF', 'hostpn'); ?></span>
@@ -65,12 +110,14 @@ $tenantName   = get_post_meta($accommodation_id, 'hostpn_contract_tenant_name', 
 
   <!-- Contract content -->
   <div class="hostpn-contract-document" id="hostpn-contract-document">
-    <?php echo wp_kses_post($contract_html); ?>
+    <div id="hostpn-contract-text">
+      <?php echo wp_kses_post($contract_html); ?>
+    </div>
 
     <!-- Signature section -->
     <div class="hostpn-contract-signatures">
       <div class="hostpn-contract-signature-block">
-        <p><strong><?php echo $contract_type === 'turistico' ? esc_html__('THE OWNER', 'hostpn') : esc_html__('THE LANDLORD', 'hostpn'); ?></strong></p>
+        <p><strong data-sig-label="landlord"><?php echo $landlord_label; ?></strong></p>
         <div class="hostpn-signature-pad-wrapper no-print" id="hostpn-signature-landlord-wrapper">
           <canvas id="hostpn-signature-landlord" class="hostpn-signature-canvas" width="400" height="150"></canvas>
           <button type="button" class="hostpn-signature-clear-btn" data-target="hostpn-signature-landlord"><?php esc_html_e('Clear', 'hostpn'); ?></button>
@@ -80,7 +127,7 @@ $tenantName   = get_post_meta($accommodation_id, 'hostpn_contract_tenant_name', 
         <p>Fdo.: <?php echo esc_html($landlordName); ?></p>
       </div>
       <div class="hostpn-contract-signature-block">
-        <p><strong><?php echo $contract_type === 'turistico' ? esc_html__('THE GUEST', 'hostpn') : esc_html__('THE TENANT', 'hostpn'); ?></strong></p>
+        <p><strong data-sig-label="tenant"><?php echo $tenant_label; ?></strong></p>
         <div class="hostpn-signature-pad-wrapper no-print" id="hostpn-signature-tenant-wrapper">
           <canvas id="hostpn-signature-tenant" class="hostpn-signature-canvas" width="400" height="150"></canvas>
           <button type="button" class="hostpn-signature-clear-btn" data-target="hostpn-signature-tenant"><?php esc_html_e('Clear', 'hostpn'); ?></button>
@@ -92,7 +139,9 @@ $tenantName   = get_post_meta($accommodation_id, 'hostpn_contract_tenant_name', 
     </div>
 
     <!-- Inventory annex -->
-    <?php echo wp_kses_post($inventory_html); ?>
+    <div id="hostpn-contract-inventory">
+      <?php echo wp_kses_post($inventory_html); ?>
+    </div>
   </div>
 </div>
 

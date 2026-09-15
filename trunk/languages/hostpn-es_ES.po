@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Filkers WooCommerce Marketing\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-31 14:12+0000\n"
-"PO-Revision-Date: 2026-07-03 13:35+0000\n"
-"Last-Translator: info-4a15bf12\n"
+"PO-Revision-Date: 2026-09-15 21:16+0000\n"
+"Last-Translator: Sea Suite Spain\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
@@ -12,15 +12,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
-"X-Loco-Version: 2.8.0; wp-6.8.2; php-8.2.27\n"
+"X-Loco-Version: 2.8.8; wp-7.1; php-8.2.33\n"
 "X-Domain: filkers"
 
-#: includes/class-hostpn-ajax.php:515
+#: includes/class-hostpn-ajax.php:776
 #, php-format
 msgid "%d user(s) have been assigned the %s role."
 msgstr "%d usuarios se han asignado al rol %s."
 
-#: includes/class-hostpn-ajax.php:517
+#: includes/class-hostpn-ajax.php:778
 #, php-format
 msgid "%d user(s) have been removed from the %s role."
 msgstr "Se han eliminado %d usuarios del rol %s."
@@ -67,7 +67,7 @@ msgstr "4 - Razones médicas"
 msgid "4. Recent HOSTPN Notification Log"
 msgstr "4. Registro de notificaciones recientes de HOSTPN"
 
-#: hostpn.php:367
+#: hostpn.php:369
 msgid "4K TV"
 msgstr "Televisor 4K"
 
@@ -79,7 +79,7 @@ msgstr "5 - Otros"
 msgid "5. Send Test Email"
 msgstr "5. Enviar correo electrónico de prueba"
 
-#: hostpn.php:368
+#: hostpn.php:370
 msgid "8K TV"
 msgstr "Televisor 8K"
 
@@ -89,7 +89,7 @@ msgstr "Televisor 8K"
 msgid "[%s] HOSTPN Test Notification"
 msgstr "[%s] Notificación de prueba de HOSTPN"
 
-#: includes/class-hostpn-notifications.php:405
+#: includes/class-hostpn-notifications.php:458
 msgid "A new guest has been registered on your platform."
 msgstr "Se ha registrado un nuevo invitado en su plataforma."
 
@@ -99,13 +99,17 @@ msgstr "Una referencia contractual única para distinguirlo."
 
 #: includes/class-hostpn-post-type-part.php:68
 #: includes/class-hostpn-post-type-part.php:69
-#: includes/class-hostpn-post-type-accommodation.php:498
-#: includes/class-hostpn-notifications.php:397
+#: includes/class-hostpn-post-type-contract.php:79
+#: includes/class-hostpn-post-type-contract.php:807
+#: includes/class-hostpn-post-type-accommodation.php:870
+#: includes/class-hostpn-post-type-room.php:58
+#: includes/class-hostpn-post-type-room.php:614
+#: includes/class-hostpn-notifications.php:450
 msgid "Accommodation"
 msgstr "Alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:961
-#: includes/class-hostpn-post-type-accommodation.php:1020
+#: includes/class-hostpn-post-type-accommodation.php:1403
+#: includes/class-hostpn-post-type-accommodation.php:1462
 msgid "Accommodation Archive"
 msgstr "Archivo de alojamiento"
 
@@ -115,6 +119,7 @@ msgstr "Categorías de alojamiento"
 
 #: includes/class-hostpn-post-type-accommodation.php:112
 #: includes/class-hostpn-post-type-accommodation.php:113
+#: includes/class-hostpn-contract-templates.php:438
 msgid "Accommodation city"
 msgstr "Ciudad de alojamiento"
 
@@ -129,19 +134,19 @@ msgid "Accommodation country"
 msgstr "País de alojamiento"
 
 #: includes/class-hostpn-post-type-accommodation.php:30
-#: includes/class-hostpn-post-type-accommodation.php:499
+#: includes/class-hostpn-post-type-accommodation.php:871
 msgid "Accommodation description"
 msgstr "Descripción del alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:780
+#: includes/class-hostpn-post-type-accommodation.php:1222
 msgid "Accommodation description..."
 msgstr "Descripción del alojamiento..."
 
-#: includes/class-hostpn-post-type-accommodation.php:535
+#: includes/class-hostpn-post-type-accommodation.php:907
 msgid "Accommodation details"
 msgstr "Detalles del alojamiento"
 
-#: templates/public/single-hostpn_accommodation.php:160
+#: templates/public/single-hostpn_accommodation.php:263
 msgid "Accommodation Features"
 msgstr "Características del alojamiento"
 
@@ -149,17 +154,21 @@ msgstr "Características del alojamiento"
 msgid "Accommodation ID"
 msgstr "ID de alojamiento"
 
+#: includes/class-hostpn-ajax.php:652
+msgid "Accommodation not found."
+msgstr "No se encontró alojamiento."
+
 #: includes/class-hostpn-post-type-accommodation.php:103
 #: includes/class-hostpn-post-type-accommodation.php:104
 msgid "Accommodation postal code"
 msgstr "Código postal del alojamiento"
 
 #: includes/class-hostpn-post-type-accommodation.php:145
-#: templates/public/single-hostpn_accommodation.php:93
+#: templates/public/single-hostpn_accommodation.php:196
 msgid "Accommodation Rules"
 msgstr "Normas de alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:1341
+#: includes/class-hostpn-post-type-accommodation.php:1783
 msgid "Accommodation share link"
 msgstr "Enlace para compartir alojamiento"
 
@@ -173,41 +182,41 @@ msgstr "Título del alojamiento"
 msgid "Accommodation type"
 msgstr "Tipo de alojamiento"
 
-#: includes/class-hostpn-shortcodes.php:33 includes/class-hostpn-ajax.php:536
+#: includes/class-hostpn-shortcodes.php:33 includes/class-hostpn-ajax.php:797
 #: includes/class-hostpn-activator.php:47
 #: includes/class-hostpn-activator.php:76
-#: includes/class-hostpn-post-type-accommodation.php:482
-#: includes/class-hostpn-settings.php:309
-#: includes/class-hostpn-settings.php:310
-#: includes/class-hostpn-settings.php:422
+#: includes/class-hostpn-post-type-accommodation.php:854
+#: includes/class-hostpn-settings.php:323
+#: includes/class-hostpn-settings.php:324
+#: includes/class-hostpn-settings.php:527
 #: templates/public/archive-hostpn_accommodation.php:28
 msgid "Accommodations"
 msgstr "Alojamientos"
 
 #: includes/class-hostpn-post-type-part.php:796
-#: includes/class-hostpn-post-type-guest.php:649
-#: includes/class-hostpn-post-type-accommodation.php:1087
+#: includes/class-hostpn-post-type-guest.php:672
+#: includes/class-hostpn-post-type-accommodation.php:1529
 msgid "Account needed"
 msgstr "Se necesita una cuenta"
 
-#: includes/class-hostpn-settings.php:369
+#: includes/class-hostpn-settings.php:392
 #: templates/public/hostpn-accommodation-financial.php:190
 #: templates/admin/financial/hostpn-financial-dashboard.php:158
 #: templates/admin/financial/hostpn-financial-dashboard.php:240
 msgid "Actions"
 msgstr "Comportamiento"
 
-#: includes/class-hostpn-settings.php:566
-#: includes/class-hostpn-settings.php:611
+#: includes/class-hostpn-settings.php:673
+#: includes/class-hostpn-settings.php:718
 msgid "Activate"
 msgstr "Activar"
 
-#: includes/class-hostpn-settings.php:610
+#: includes/class-hostpn-settings.php:717
 msgid "Activating..."
 msgstr "Activando..."
 
-#: includes/class-hostpn-settings.php:563
-#: includes/class-hostpn-settings.php:612
+#: includes/class-hostpn-settings.php:670
+#: includes/class-hostpn-settings.php:719
 msgid "Active"
 msgstr "Activo"
 
@@ -290,18 +299,22 @@ msgstr "Añadir imagen"
 msgid "Add images"
 msgstr "Añadir imágenes"
 
+#: includes/class-hostpn-post-type-accommodation.php:728
+msgid "Add inventory annex to contract"
+msgstr "Agregar anexo de inventario al contrato"
+
 #: includes/class-hostpn-post-type-financial-record.php:30
 msgid "Add New"
 msgstr "Agregar nuevo"
 
-#: includes/class-hostpn-post-type-accommodation.php:1076
-#: includes/class-hostpn-post-type-accommodation.php:1240
-#: includes/class-hostpn-post-type-accommodation.php:1286
+#: includes/class-hostpn-post-type-accommodation.php:1518
+#: includes/class-hostpn-post-type-accommodation.php:1682
+#: includes/class-hostpn-post-type-accommodation.php:1728
 msgid "Add new Accommodation"
 msgstr "Añadir nuevo alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:486
-#: includes/class-hostpn-post-type-accommodation.php:487
+#: includes/class-hostpn-post-type-accommodation.php:858
+#: includes/class-hostpn-post-type-accommodation.php:859
 msgid "Add new accommodation"
 msgstr "Añadir nuevo alojamiento"
 
@@ -309,15 +322,21 @@ msgstr "Añadir nuevo alojamiento"
 msgid "Add New Accommodation category"
 msgstr "Añadir nueva categoría de alojamiento"
 
+#: includes/class-hostpn-post-type-contract.php:466
+#: includes/class-hostpn-post-type-contract.php:467
+#: includes/class-hostpn-post-type-contract.php:1009
+msgid "Add new Contract"
+msgstr "Agregar nuevo contrato"
+
 #: includes/class-hostpn-post-type-financial-record.php:29
 msgid "Add New Financial Record"
 msgstr "Agregar nuevo registro financiero"
 
-#: includes/class-hostpn-post-type-guest.php:271
-#: includes/class-hostpn-post-type-guest.php:272
-#: includes/class-hostpn-post-type-guest.php:638
-#: includes/class-hostpn-post-type-guest.php:809
-#: includes/class-hostpn-post-type-guest.php:862
+#: includes/class-hostpn-post-type-guest.php:285
+#: includes/class-hostpn-post-type-guest.php:286
+#: includes/class-hostpn-post-type-guest.php:661
+#: includes/class-hostpn-post-type-guest.php:832
+#: includes/class-hostpn-post-type-guest.php:885
 msgid "Add new Guest"
 msgstr "Añadir nuevo huésped"
 
@@ -339,6 +358,12 @@ msgstr "Añadir nueva Parte del viajero"
 #: includes/class-hostpn-taxonomies-part.php:30
 msgid "Add New Part of travelers category"
 msgstr "Añadir nueva parte de la categoría de viajeros"
+
+#: includes/class-hostpn-post-type-room.php:309
+#: includes/class-hostpn-post-type-room.php:310
+#: includes/class-hostpn-post-type-room.php:795
+msgid "Add new Room"
+msgstr "Agregar nueva habitación"
 
 #: templates/public/hostpn-accommodation-financial.php:63
 msgid "Add Record"
@@ -372,23 +397,23 @@ msgstr "Características adicionales del área de estar"
 msgid "Additional Room Features"
 msgstr "Características adicionales de la habitación"
 
-#: includes/class-hostpn-post-type-guest.php:140
-#: includes/class-hostpn-post-type-guest.php:141
+#: includes/class-hostpn-post-type-guest.php:146
+#: includes/class-hostpn-post-type-guest.php:147
 #: includes/class-hostpn-post-type-accommodation.php:73
 #: includes/class-hostpn-post-type-accommodation.php:74
 #: includes/class-hostpn-functions-user.php:223
 #: includes/class-hostpn-functions-user.php:224
-#: includes/class-hostpn-notifications.php:390
+#: includes/class-hostpn-notifications.php:443
 msgid "Address"
 msgstr "Dirección"
 
-#: includes/class-hostpn-post-type-guest.php:149
-#: includes/class-hostpn-post-type-guest.php:150
+#: includes/class-hostpn-post-type-guest.php:155
+#: includes/class-hostpn-post-type-guest.php:156
 #: includes/class-hostpn-post-type-accommodation.php:82
 #: includes/class-hostpn-post-type-accommodation.php:83
 #: includes/class-hostpn-functions-user.php:232
 #: includes/class-hostpn-functions-user.php:233
-#: includes/class-hostpn-notifications.php:391
+#: includes/class-hostpn-notifications.php:444
 msgid "Address complementary information"
 msgstr "Información complementaria de la dirección"
 
@@ -404,15 +429,15 @@ msgstr "Afganistán"
 msgid "Agrotourism"
 msgstr "Agroturismo"
 
-#: hostpn.php:288
+#: hostpn.php:290
 msgid "Air Conditioning"
 msgstr "Aire acondicionado"
 
-#: hostpn.php:254
+#: hostpn.php:256
 msgid "Air Fryer"
 msgstr "Freidora de aire"
 
-#: hostpn.php:296
+#: hostpn.php:298
 msgid "Air Purifier"
 msgstr "Purificador de aire"
 
@@ -480,13 +505,17 @@ msgstr "argelino"
 msgid "All Accommodation categories"
 msgstr "Todas las categorías de alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:484
+#: includes/class-hostpn-post-type-accommodation.php:856
 msgid "All accommodations"
 msgstr "Todos los alojamientos"
 
 #: includes/class-hostpn-debug.php:281
 msgid "All callbacks on hostpn_form_save:"
 msgstr "Todas las devoluciones de llamada en hostpn_form_save:"
+
+#: includes/class-hostpn-post-type-contract.php:464
+msgid "All Contracts"
+msgstr "Todos los contratos"
 
 #: includes/class-hostpn-post-type-financial-record.php:27
 msgid "All Financial Records"
@@ -496,7 +525,7 @@ msgstr "Todos los registros financieros"
 msgid "All Guest categories"
 msgstr "Todas las categorías de huéspedes"
 
-#: includes/class-hostpn-post-type-guest.php:269
+#: includes/class-hostpn-post-type-guest.php:283
 msgid "All Guests"
 msgstr "Todos los huéspedes"
 
@@ -517,6 +546,10 @@ msgstr "Todas las plataformas"
 #: templates/admin/financial/hostpn-financial-dashboard.php:109
 msgid "All Quarters"
 msgstr "Todos los trimestres"
+
+#: includes/class-hostpn-post-type-room.php:307
+msgid "All Rooms"
+msgstr "Todas las habitaciones"
 
 #: templates/public/hostpn-accommodation-financial.php:161
 #: templates/admin/financial/hostpn-financial-dashboard.php:130
@@ -541,35 +574,39 @@ msgid "Allowed date formats: dd/MM/yyyy, dd-MM-yyyy, dd.MM.yyyy, yyyy-MM-dd"
 msgstr ""
 "Formatos de fecha permitidos: dd/MM/aaaa, dd-MM-aaaa, dd.MM.aaaa, aaaa-MM-dd"
 
-#: includes/class-hostpn-settings.php:161
+#: includes/class-hostpn-common.php:157
+msgid "Alquiler"
+msgstr "Alquiler"
+
+#: includes/class-hostpn-settings.php:175
 msgid "Alternative background color"
 msgstr "Color de fondo alternativo"
 
-#: includes/class-hostpn-settings.php:162
+#: includes/class-hostpn-settings.php:176
 msgid "Alternative background color used across the plugin."
 msgstr "Se utiliza un color de fondo alternativo en todo el complemento."
 
-#: includes/class-hostpn-settings.php:170
+#: includes/class-hostpn-settings.php:184
 msgid "Alternative border color"
 msgstr "Color de borde alternativo"
 
-#: includes/class-hostpn-settings.php:171
+#: includes/class-hostpn-settings.php:185
 msgid "Alternative border color used across the plugin."
 msgstr "Se utiliza un color de borde alternativo en todo el complemento."
 
-#: includes/class-hostpn-settings.php:152
+#: includes/class-hostpn-settings.php:166
 msgid "Alternative color"
 msgstr "Color alternativo"
 
-#: includes/class-hostpn-settings.php:153
+#: includes/class-hostpn-settings.php:167
 msgid "Alternative color used across the plugin."
 msgstr "Se utiliza un color alternativo en todo el complemento."
 
-#: includes/class-hostpn-post-type-guest.php:208
-#: includes/class-hostpn-post-type-guest.php:209
+#: includes/class-hostpn-post-type-guest.php:214
+#: includes/class-hostpn-post-type-guest.php:215
 #: includes/class-hostpn-functions-user.php:292
 #: includes/class-hostpn-functions-user.php:293
-#: includes/class-hostpn-notifications.php:384
+#: includes/class-hostpn-notifications.php:437
 msgid "Alternative phone"
 msgstr "Teléfono alternativo"
 
@@ -584,66 +621,91 @@ msgstr "Americano"
 msgid "Amount"
 msgstr "Cantidad"
 
-#: includes/class-hostpn-common.php:189
+#: includes/class-hostpn-common.php:245
 #: includes/class-hostpn-post-type-part.php:733
 msgid "An error has occurred. Please try again in a few minutes."
 msgstr "Se ha producido un error. Inténtalo de nuevo en unos minutos."
 
-#: includes/class-hostpn-ajax.php:159
+#: includes/class-hostpn-ajax.php:161
 msgid "An error occurred while checking the Accommodation."
 msgstr "Se produjo un error al verificar el Alojamiento."
 
-#: includes/class-hostpn-ajax.php:282
+#: includes/class-hostpn-ajax.php:284
 msgid "An error occurred while checking the Guest."
 msgstr "Se produjo un error al verificar el huésped."
 
-#: includes/class-hostpn-ajax.php:391
+#: includes/class-hostpn-ajax.php:393
 msgid "An error occurred while checking the Part."
 msgstr "Se produjo un error al verificar la pieza."
 
-#: includes/class-hostpn-settings.php:608
+#: includes/class-hostpn-settings.php:715
 msgid "An error occurred while creating the page."
 msgstr "Se produjo un error al crear la página."
 
-#: includes/class-hostpn-ajax.php:180
+#: includes/class-hostpn-ajax.php:182
 msgid "An error occurred while duplicating the Accommodation."
 msgstr "Se produjo un error al duplicar el alojamiento."
 
-#: includes/class-hostpn-ajax.php:303
+#: includes/class-hostpn-ajax.php:305
 msgid "An error occurred while duplicating the Guest."
 msgstr "Se produjo un error al duplicar el huésped."
 
-#: includes/class-hostpn-ajax.php:412
+#: includes/class-hostpn-ajax.php:414
 msgid "An error occurred while duplicating the Part."
 msgstr "Se produjo un error al duplicar la pieza."
 
-#: includes/class-hostpn-ajax.php:445
+#: includes/class-hostpn-ajax.php:706
 msgid "An error occurred while duplicating the part."
 msgstr "Se produjo un error al duplicar la pieza."
 
-#: includes/class-hostpn-ajax.php:200
+#: includes/class-hostpn-ajax.php:202
 msgid "An error occurred while removing the Accommodation."
 msgstr "Se produjo un error al eliminar el alojamiento."
 
-#: includes/class-hostpn-ajax.php:323
+#: includes/class-hostpn-ajax.php:601
+msgid "An error occurred while removing the Contract."
+msgstr "Se produjo un error al eliminar el contrato."
+
+#: includes/class-hostpn-ajax.php:325
 msgid "An error occurred while removing the Guest."
 msgstr "Se produjo un error al eliminar el huésped."
 
-#: includes/class-hostpn-ajax.php:432
+#: includes/class-hostpn-ajax.php:434
 msgid "An error occurred while removing the Part."
 msgstr "Se produjo un error al eliminar la pieza."
 
-#: includes/class-hostpn-ajax.php:109 includes/class-hostpn-ajax.php:131
+#: includes/class-hostpn-ajax.php:493
+msgid "An error occurred while removing the Room."
+msgstr "Se produjo un error al eliminar la habitación."
+
+#: includes/class-hostpn-ajax.php:111 includes/class-hostpn-ajax.php:133
 msgid "An error occurred while showing the Accommodation."
 msgstr "Se produjo un error al mostrar el Alojamiento."
 
-#: includes/class-hostpn-ajax.php:228 includes/class-hostpn-ajax.php:250
+#: includes/class-hostpn-ajax.php:560 includes/class-hostpn-ajax.php:576
+msgid "An error occurred while showing the Contract."
+msgstr "Se produjo un error al mostrar el contrato."
+
+#: includes/class-hostpn-ajax.php:230 includes/class-hostpn-ajax.php:252
 msgid "An error occurred while showing the Guest."
 msgstr "Se produjo un error al mostrar el huésped."
 
-#: includes/class-hostpn-ajax.php:341 includes/class-hostpn-ajax.php:363
+#: includes/class-hostpn-ajax.php:343 includes/class-hostpn-ajax.php:365
 msgid "An error occurred while showing the Part."
 msgstr "Se produjo un error al mostrar la pieza."
+
+#: includes/class-hostpn-ajax.php:452 includes/class-hostpn-ajax.php:468
+msgid "An error occurred while showing the Room."
+msgstr "Se produjo un error al mostrar la habitación."
+
+#: includes/class-hostpn-contract-templates.php:294
+msgid ""
+"An inventory of the property's contents and equipment is attached. The GUEST "
+"must return the property in the same condition as received."
+msgstr ""
+"Se adjunta un inventario del contenido y el equipamiento de la propiedad. El "
+"huésped deberá devolver la propiedad en las mismas condiciones en que la "
+"recibió."
 
 #: includes/class-hostpn-data.php:89
 msgid "Andorra"
@@ -660,6 +722,11 @@ msgstr "Angola"
 #: includes/class-hostpn-data.php:294
 msgid "Angolan"
 msgstr "angoleño"
+
+#: includes/class-hostpn-common.php:141
+#: includes/class-hostpn-contract-templates.php:796
+msgid "ANNEX: LEASED ITEMS INVENTORY"
+msgstr "ANEXO: INVENTARIO DE ARTÍCULOS ARRENDADOS"
 
 #: includes/class-hostpn-data.php:91
 msgid "Antigua and Barbuda"
@@ -681,13 +748,13 @@ msgstr "Departamento"
 msgid "Application received"
 msgstr "Solicitud recibida"
 
-#: includes/class-hostpn-common.php:143
+#: includes/class-hostpn-common.php:199
 msgid "Are you sure you want to delete all records from this import batch?"
 msgstr ""
 "¿Está seguro de que desea eliminar todos los registros de este lote de "
 "importación?"
 
-#: includes/class-hostpn-common.php:142
+#: includes/class-hostpn-common.php:198
 msgid "Are you sure you want to delete this record?"
 msgstr "¿Está seguro de que desea eliminar este registro?"
 
@@ -699,7 +766,7 @@ msgstr "Argentina"
 msgid "Argentine"
 msgstr "Argentino"
 
-#: hostpn.php:274
+#: hostpn.php:276
 msgid "Armchair"
 msgstr "Sillón"
 
@@ -716,12 +783,20 @@ msgstr "armenio"
 msgid "Assign %s Role"
 msgstr "Asignar rol a %s"
 
+#: includes/class-hostpn-post-type-room.php:117
+msgid "Assigned guest"
+msgstr "Invitado asignado"
+
+#: includes/class-hostpn-post-type-guest.php:252
+msgid "Assigned room"
+msgstr "Habitación asignada"
+
 #: includes/class-hostpn-forms.php:220
 msgid "Atleast 8 Character"
 msgstr "Al menos 8 caracteres"
 
 #. Audiovisual
-#: hostpn.php:364
+#: hostpn.php:366
 msgid "Audiovisual"
 msgstr "Audiovisual"
 
@@ -747,9 +822,19 @@ msgid "Austrian"
 msgstr "austriaco"
 
 #: includes/class-hostpn-post-type-part.php:1218
-#: includes/class-hostpn-post-type-guest.php:939
+#: includes/class-hostpn-post-type-guest.php:962
 msgid "Author"
 msgstr "Autor"
+
+#: includes/class-hostpn-post-type-room.php:92
+#: includes/class-hostpn-post-type-room.php:661
+#: templates/public/single-hostpn_accommodation.php:68
+msgid "Available"
+msgstr "Disponible"
+
+#: includes/class-hostpn-settings.php:446
+msgid "Available shortcodes reference"
+msgstr "Referencia de códigos cortos disponibles"
 
 #: includes/class-hostpn-data.php:96
 msgid "Azerbaijan"
@@ -759,7 +844,7 @@ msgstr "Azerbaiyán"
 msgid "Azerbaijani"
 msgstr "azerbaiyano"
 
-#: templates/public/single-hostpn_accommodation.php:298
+#: templates/public/single-hostpn_accommodation.php:417
 msgid "Back to Accommodations"
 msgstr "Volver a Alojamientos"
 
@@ -787,6 +872,22 @@ msgstr "Bangladés"
 msgid "Bangladeshi"
 msgstr "bangladesí"
 
+#: includes/class-hostpn-post-type-accommodation.php:688
+msgid "Bank account IBAN"
+msgstr "IBAN de la cuenta bancaria"
+
+#: includes/class-hostpn-post-type-contract.php:270
+#: includes/class-hostpn-post-type-contract.php:271
+#: includes/class-hostpn-post-type-accommodation.php:679
+#: includes/class-hostpn-contract-templates.php:450
+msgid "Bank name"
+msgstr "Nombre del banco"
+
+#: includes/class-hostpn-contract-templates.php:193
+#: includes/class-hostpn-contract-templates.php:344
+msgid "Bank:"
+msgstr "Banco:"
+
 #: includes/class-hostpn-data.php:304
 msgid "Barbadian"
 msgstr "barbadense"
@@ -803,16 +904,16 @@ msgstr "Basotho"
 msgid "Batch ID"
 msgstr "ID de lote"
 
-#: hostpn.php:320
+#: hostpn.php:322
 msgid "Bath Mat"
 msgstr "Alfombra de baño"
 
-#: hostpn.php:322
+#: hostpn.php:324
 msgid "Bath Tub"
 msgstr "Bañera"
 
 #. Bathroom
-#: hostpn.php:310
+#: hostpn.php:312
 msgid "Bathroom"
 msgstr "Baño"
 
@@ -821,11 +922,11 @@ msgstr "Baño"
 msgid "Bathroom Features"
 msgstr "Características del baño"
 
-#: hostpn.php:269
+#: hostpn.php:271
 msgid "Bed Linen"
 msgstr "Ropa de cama"
 
-#: hostpn.php:276
+#: hostpn.php:278
 msgid "Bedside Lamp"
 msgstr "Lámpara de noche"
 
@@ -869,35 +970,35 @@ msgstr "Bután"
 msgid "Bhutanese"
 msgstr "butaneses"
 
-#: hostpn.php:324
+#: hostpn.php:326
 msgid "Bidet"
 msgstr "Bidé"
 
-#: hostpn.php:355
+#: hostpn.php:357
 msgid "Bioethanol Stove"
 msgstr "Estufa de bioetanol"
 
-#: includes/class-hostpn-post-type-guest.php:109
-#: includes/class-hostpn-post-type-guest.php:110
+#: includes/class-hostpn-post-type-guest.php:115
+#: includes/class-hostpn-post-type-guest.php:116
 #: includes/class-hostpn-functions-user.php:192
 #: includes/class-hostpn-functions-user.php:193
-#: includes/class-hostpn-notifications.php:387
+#: includes/class-hostpn-notifications.php:440
 msgid "Birthdate"
 msgstr "Fecha de nacimiento"
 
-#: hostpn.php:284
+#: hostpn.php:286
 msgid "Blackout Curtains"
 msgstr "Cortinas opacas"
 
-#: hostpn.php:340
+#: hostpn.php:342
 msgid "Blanket"
 msgstr "Frazada"
 
-#: hostpn.php:248
+#: hostpn.php:250
 msgid "Blender"
 msgstr "Licuadora"
 
-#: hostpn.php:282
+#: hostpn.php:284
 msgid "Blinds"
 msgstr "Persianas"
 
@@ -909,16 +1010,16 @@ msgstr "Direcciones bloqueadas"
 msgid "Blocked domains"
 msgstr "Dominios bloqueados"
 
-#: includes/class-hostpn-settings.php:179
+#: includes/class-hostpn-settings.php:193
 msgid "Blue accent color"
 msgstr "Color de acento azul"
 
-#: includes/class-hostpn-settings.php:180
+#: includes/class-hostpn-settings.php:194
 msgid "Blue accent color used across the plugin."
 msgstr ""
 "Se ha utilizado el color azul como color de acento en todo el complemento."
 
-#: hostpn.php:316
+#: hostpn.php:318
 msgid "Body Wash"
 msgstr "Gel de baño"
 
@@ -930,7 +1031,7 @@ msgstr "Bolivia (Estado Plurinacional de)"
 msgid "Bolivian"
 msgstr "boliviano"
 
-#: hostpn.php:337
+#: hostpn.php:339
 msgid "Bookcase"
 msgstr "Estantería"
 
@@ -964,6 +1065,40 @@ msgstr "Bosnia y Herzegovina"
 msgid "Bosnian"
 msgstr "bosnio"
 
+#: includes/class-hostpn-contract-templates.php:253
+#: includes/class-hostpn-contract-templates.php:323
+msgid ""
+"Both parties acknowledge sufficient legal capacity and agree as follows:"
+msgstr ""
+"Ambas partes reconocen tener capacidad jurídica suficiente y acuerdan lo "
+"siguiente:"
+
+#: includes/class-hostpn-contract-templates.php:329
+msgid "Both parties formalize this long-stay residential lease agreement."
+msgstr ""
+"Ambas partes formalizan este contrato de arrendamiento residencial de larga "
+"duración."
+
+#: includes/class-hostpn-contract-templates.php:259
+msgid "Both parties formalize this tourist accommodation contract."
+msgstr "Ambas partes formalizan este contrato de alojamiento turístico."
+
+#: includes/class-hostpn-contract-templates.php:176
+msgid ""
+"Both parties having reached an agreement, they formalize this contract "
+"subject to the following:"
+msgstr ""
+"Habiendo llegado ambas partes a un acuerdo, formalizan este contrato sujeto "
+"a lo siguiente:"
+
+#: includes/class-hostpn-contract-templates.php:170
+msgid ""
+"Both parties mutually acknowledge sufficient legal capacity to enter into "
+"this room rental agreement and, to that effect,"
+msgstr ""
+"Ambas partes reconocen mutuamente que tienen capacidad legal suficiente para "
+"celebrar este contrato de alquiler de habitación y, a tal efecto,"
+
 #: includes/class-hostpn-data.php:108
 msgid "Botswana"
 msgstr "Botsuana"
@@ -980,7 +1115,18 @@ msgstr "Brasil"
 msgid "Brazilian"
 msgstr "brasileño"
 
-#: hostpn.php:262
+#: includes/class-hostpn-contract-templates.php:227
+msgid ""
+"Breach by either party of the obligations arising from this contract shall "
+"entitle the compliant party to demand termination of the contract or its "
+"fulfilment, with the corresponding compensation for damages."
+msgstr ""
+"El incumplimiento por cualquiera de las partes de las obligaciones derivadas "
+"de este contrato facultará a la parte perjudicada a exigir la rescisión del "
+"contrato o su cumplimiento, con la correspondiente indemnización por daños y "
+"perjuicios."
+
+#: hostpn.php:264
 msgid "Breakfast Bar"
 msgstr "Barra de desayuno"
 
@@ -1083,11 +1229,24 @@ msgstr "canadiense"
 msgid "Cancel"
 msgstr "Cancelar"
 
+#: includes/class-hostpn-post-type-contract.php:448
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#: includes/class-hostpn-post-type-room.php:615
+msgid "Capacity"
+msgstr "Capacidad"
+
+#: templates/public/single-hostpn_accommodation.php:104
+#, php-format
+msgid "Capacity: %s"
+msgstr "Capacidad: %s"
+
 #: includes/class-hostpn-data.php:321
 msgid "Cape Verdean"
 msgstr "caboverdiano"
 
-#: hostpn.php:301
+#: hostpn.php:303
 msgid "Carbon Filter"
 msgstr "Filtro de carbón"
 
@@ -1100,11 +1259,11 @@ msgstr "Fecha de vencimiento de la tarjeta"
 msgid "Cash"
 msgstr "Dinero"
 
-#: hostpn.php:290
+#: hostpn.php:292
 msgid "Ceiling Fan"
 msgstr "Ventilador de techo"
 
-#: hostpn.php:277
+#: hostpn.php:279
 msgid "Ceiling Lamp"
 msgstr "Lámpara de techo"
 
@@ -1124,11 +1283,11 @@ msgstr "Chad"
 msgid "Chadian"
 msgstr "Chadiano"
 
-#: hostpn.php:342
+#: hostpn.php:344
 msgid "Chandelier"
 msgstr "Araña"
 
-#: includes/class-hostpn-post-type-guest.php:228
+#: includes/class-hostpn-post-type-guest.php:234
 #: includes/class-hostpn-functions-user.php:312
 msgid ""
 "Check this box if you are not the one who has booked the accommodation. Then "
@@ -1138,34 +1297,48 @@ msgstr ""
 " deberá indicar su relación con esta persona."
 
 #: includes/class-hostpn-post-type-accommodation.php:153
-#: templates/public/single-hostpn_accommodation.php:102
+#: templates/public/single-hostpn_accommodation.php:205
 msgid "Check-in Conditions"
 msgstr "Condiciones de check-in"
 
 #: includes/class-hostpn-post-type-part.php:179
 #: includes/class-hostpn-post-type-part.php:180
-#: includes/class-hostpn-notifications.php:395
+#: includes/class-hostpn-notifications.php:448
 msgid "Check-in date"
 msgstr "Fecha de entrada"
 
 #: includes/class-hostpn-post-type-part.php:187
 #: includes/class-hostpn-post-type-part.php:188
+#: includes/class-hostpn-post-type-contract.php:315
+#: includes/class-hostpn-post-type-accommodation.php:585
+#: includes/class-hostpn-contract-templates.php:454
 msgid "Check-in time"
 msgstr "Hora de check-in"
 
+#: includes/class-hostpn-contract-templates.php:269
+msgid ""
+"Check-in time: <strong>[hostpn-contract-checkin-time]</strong>. Check-out "
+"time: <strong>[hostpn-contract-checkout-time]</strong>."
+msgstr ""
+"Hora de entrada: <strong>[hostpn-contract-checkin-time]</strong>. Hora de "
+"salida: <strong>[hostpn-contract-checkout-time]</strong>."
+
 #: includes/class-hostpn-post-type-accommodation.php:161
-#: templates/public/single-hostpn_accommodation.php:111
+#: templates/public/single-hostpn_accommodation.php:214
 msgid "Check-out Conditions"
 msgstr "Condiciones de salida"
 
 #: includes/class-hostpn-post-type-part.php:197
 #: includes/class-hostpn-post-type-part.php:198
-#: includes/class-hostpn-notifications.php:396
+#: includes/class-hostpn-notifications.php:449
 msgid "Check-out date"
 msgstr "Fecha de salida"
 
 #: includes/class-hostpn-post-type-part.php:205
 #: includes/class-hostpn-post-type-part.php:206
+#: includes/class-hostpn-post-type-contract.php:323
+#: includes/class-hostpn-post-type-accommodation.php:592
+#: includes/class-hostpn-contract-templates.php:455
 msgid "Check-out time"
 msgstr "Hora de salida"
 
@@ -1186,35 +1359,244 @@ msgid "Chinese"
 msgstr "Chino"
 
 #: includes/class-hostpn-data.php:551
-#: includes/class-hostpn-notifications.php:336
+#: includes/class-hostpn-notifications.php:389
 msgid "CIF"
 msgstr "CIF"
 
-#: includes/class-hostpn-post-type-guest.php:179
-#: includes/class-hostpn-post-type-guest.php:180
-#: includes/class-hostpn-post-type-guest.php:189
-#: includes/class-hostpn-post-type-guest.php:190
+#: includes/class-hostpn-post-type-guest.php:185
+#: includes/class-hostpn-post-type-guest.php:186
+#: includes/class-hostpn-post-type-guest.php:195
+#: includes/class-hostpn-post-type-guest.php:196
 #: includes/class-hostpn-functions-user.php:254
 #: includes/class-hostpn-functions-user.php:255
 #: includes/class-hostpn-functions-user.php:273
 #: includes/class-hostpn-functions-user.php:274
-#: includes/class-hostpn-notifications.php:394
+#: includes/class-hostpn-notifications.php:447
 msgid "City"
 msgstr "Ciudad"
 
-#: hostpn.php:237
+#: includes/class-hostpn-contract-templates.php:86
+#: includes/class-hostpn-contract-templates.php:104
+#: includes/class-hostpn-contract-templates.php:120
+msgid "CLAUSE 1 - Object"
+msgstr "CLÁUSULA 1 - Objeto"
+
+#: includes/class-hostpn-contract-templates.php:180
+#: includes/class-hostpn-contract-templates.php:262
+#: includes/class-hostpn-contract-templates.php:332
+msgid "CLAUSE 1. Object"
+msgstr "CLÁUSULA 1. Objeto"
+
+#: includes/class-hostpn-contract-templates.php:95
+msgid "CLAUSE 10 - Legislation"
+msgstr "CLÁUSULA 10 - Legislación"
+
+#: includes/class-hostpn-contract-templates.php:231
+msgid "CLAUSE 10. Applicable legislation and jurisdiction"
+msgstr "CLÁUSULA 10. Legislación y jurisdicción aplicables"
+
+#: includes/class-hostpn-contract-templates.php:87
+#: includes/class-hostpn-contract-templates.php:121
+msgid "CLAUSE 2 - Duration"
+msgstr "CLÁUSULA 2 - Duración"
+
+#: includes/class-hostpn-contract-templates.php:105
+msgid "CLAUSE 2 - Stay duration"
+msgstr "CLÁUSULA 2 - Duración de la estancia"
+
+#: includes/class-hostpn-contract-templates.php:185
+msgid "CLAUSE 2. Contract duration"
+msgstr "CLÁUSULA 2. Duración del contrato"
+
+#: includes/class-hostpn-contract-templates.php:336
+msgid "CLAUSE 2. Duration"
+msgstr "CLÁUSULA 2. Duración"
+
+#: includes/class-hostpn-contract-templates.php:267
+msgid "CLAUSE 2. Stay duration"
+msgstr "CLÁUSULA 2. Duración de la estancia"
+
+#: includes/class-hostpn-contract-templates.php:106
+msgid "CLAUSE 3 - Price"
+msgstr "CLÁUSULA 3 - Precio"
+
+#: includes/class-hostpn-contract-templates.php:122
+msgid "CLAUSE 3 - Rent"
+msgstr "CLÁUSULA 3 - Alquiler"
+
+#: includes/class-hostpn-contract-templates.php:88
+msgid "CLAUSE 3 - Rent and payment"
+msgstr "CLÁUSULA 3 - Alquiler y pago"
+
+#: includes/class-hostpn-contract-templates.php:273
+msgid "CLAUSE 3. Price"
+msgstr "CLÁUSULA 3. Precio"
+
+#: includes/class-hostpn-contract-templates.php:341
+msgid "CLAUSE 3. Rent"
+msgstr "CLÁUSULA 3. Alquiler"
+
+#: includes/class-hostpn-contract-templates.php:190
+msgid "CLAUSE 3. Rent and method of payment"
+msgstr "CLÁUSULA 3. Alquiler y forma de pago"
+
+#: includes/class-hostpn-contract-templates.php:107
+#: includes/class-hostpn-contract-templates.php:123
+msgid "CLAUSE 4 - Deposit"
+msgstr "CLÁUSULA 4 - Depósito"
+
+#: includes/class-hostpn-contract-templates.php:89
+msgid "CLAUSE 4 - Supplies"
+msgstr "CLÁUSULA 4 - Suministros"
+
+#: includes/class-hostpn-contract-templates.php:278
+#: includes/class-hostpn-contract-templates.php:348
+msgid "CLAUSE 4. Deposit"
+msgstr "CLÁUSULA 4. Depósito"
+
+#: includes/class-hostpn-contract-templates.php:197
+msgid "CLAUSE 4. Supplies and expenses"
+msgstr "CLÁUSULA 4. Suministros y gastos"
+
+#: includes/class-hostpn-contract-templates.php:90
+msgid "CLAUSE 5 - Deposit"
+msgstr "CLÁUSULA 5 - Depósito"
+
+#: includes/class-hostpn-contract-templates.php:108
+msgid "CLAUSE 5 - Rules"
+msgstr "CLÁUSULA 5 - Reglas"
+
+#: includes/class-hostpn-contract-templates.php:124
+msgid "CLAUSE 5 - Supplies"
+msgstr "CLÁUSULA 5 - Suministros"
+
+#: includes/class-hostpn-contract-templates.php:283
+msgid "CLAUSE 5. House rules"
+msgstr "CLÁUSULA 5. Normas de la casa"
+
+#: includes/class-hostpn-contract-templates.php:202
+msgid "CLAUSE 5. Payments and deposit"
+msgstr "CLÁUSULA 5. Pagos y depósito"
+
+#: includes/class-hostpn-contract-templates.php:353
+msgid "CLAUSE 5. Supplies and expenses"
+msgstr "CLÁUSULA 5. Suministros y gastos"
+
+#: includes/class-hostpn-contract-templates.php:91
+msgid "CLAUSE 6 - House rules"
+msgstr "CLÁUSULA 6 - Normas de la casa"
+
+#: includes/class-hostpn-contract-templates.php:109
+msgid "CLAUSE 6 - Inventory"
+msgstr "CLÁUSULA 6 - Inventario"
+
+#: includes/class-hostpn-contract-templates.php:125
+msgid "CLAUSE 6 - Works"
+msgstr "CLÁUSULA 6 - Obras"
+
+#: includes/class-hostpn-contract-templates.php:208
+msgid "CLAUSE 6. House rules"
+msgstr "CLÁUSULA 6. Normas de la casa"
+
+#: includes/class-hostpn-contract-templates.php:293
+msgid "CLAUSE 6. Inventory"
+msgstr "CLÁUSULA 6. Inventario"
+
+#: includes/class-hostpn-contract-templates.php:358
+msgid "CLAUSE 6. Works and maintenance"
+msgstr "CLÁUSULA 6. Obras y mantenimiento"
+
+#: includes/class-hostpn-contract-templates.php:126
+msgid "CLAUSE 7 - Assignment"
+msgstr "CLÁUSULA 7 - Asignación"
+
+#: includes/class-hostpn-contract-templates.php:110
+msgid "CLAUSE 7 - Liability"
+msgstr "CLÁUSULA 7 - Responsabilidad"
+
+#: includes/class-hostpn-contract-templates.php:92
+msgid "CLAUSE 7 - Works"
+msgstr "CLÁUSULA 7 - Obras"
+
+#: includes/class-hostpn-contract-templates.php:363
+msgid "CLAUSE 7. Assignment and subletting"
+msgstr "CLÁUSULA 7. Cesión y subarrendamiento"
+
+#: includes/class-hostpn-contract-templates.php:297
+msgid "CLAUSE 7. Liability"
+msgstr "CLÁUSULA 7. Responsabilidad"
+
+#: includes/class-hostpn-contract-templates.php:217
+msgid "CLAUSE 7. Works and maintenance"
+msgstr "CLÁUSULA 7. Obras y mantenimiento"
+
+#: includes/class-hostpn-contract-templates.php:93
+msgid "CLAUSE 8 - Assignment"
+msgstr "CLÁUSULA 8 - Asignación"
+
+#: includes/class-hostpn-contract-templates.php:111
+msgid "CLAUSE 8 - Legislation"
+msgstr "CLÁUSULA 8 - Legislación"
+
+#: includes/class-hostpn-contract-templates.php:127
+msgid "CLAUSE 8 - Termination"
+msgstr "CLÁUSULA 8 - Terminación"
+
+#: includes/class-hostpn-contract-templates.php:302
+msgid "CLAUSE 8. Applicable legislation"
+msgstr "CLÁUSULA 8. Legislación aplicable"
+
+#: includes/class-hostpn-contract-templates.php:222
+msgid "CLAUSE 8. Assignment and subletting"
+msgstr "CLÁUSULA 8. Cesión y subarrendamiento"
+
+#: includes/class-hostpn-contract-templates.php:367
+msgid "CLAUSE 8. Termination"
+msgstr "CLÁUSULA 8. Terminación"
+
+#: includes/class-hostpn-contract-templates.php:94
+msgid "CLAUSE 9 - Breach"
+msgstr "CLÁUSULA 9 - Incumplimiento"
+
+#: includes/class-hostpn-contract-templates.php:128
+msgid "CLAUSE 9 - Legislation"
+msgstr "CLÁUSULA 9 - Legislación"
+
+#: includes/class-hostpn-contract-templates.php:372
+msgid "CLAUSE 9. Applicable legislation"
+msgstr "CLÁUSULA 9. Legislación aplicable"
+
+#: includes/class-hostpn-contract-templates.php:226
+msgid "CLAUSE 9. Breach of contract"
+msgstr "CLÁUSULA 9. Incumplimiento de contrato"
+
+#: includes/class-hostpn-contract-templates.php:179
+msgid "CLAUSES"
+msgstr "CLÁUSULAS"
+
+#: hostpn.php:239
 msgid "Cleaning Products"
 msgstr "Productos de limpieza"
+
+#: includes/class-hostpn-contract-templates.php:210
+msgid "Cleaning:"
+msgstr "Limpieza:"
+
+#: includes/class-hostpn-post-type-accommodation.php:2011
+#: templates/public/hostpn-contract-view.php:123
+#: templates/public/hostpn-contract-view.php:133
+msgid "Clear"
+msgstr "Claro"
 
 #: templates/admin/financial/hostpn-financial-import.php:128
 msgid "Close"
 msgstr "Cerca"
 
-#: hostpn.php:236
+#: hostpn.php:238
 msgid "Coffee Maker"
 msgstr "Cafetera"
 
-#: hostpn.php:334
+#: hostpn.php:336
 msgid "Coffee Table"
 msgstr "Mesa de centro"
 
@@ -1230,6 +1612,29 @@ msgstr "colombiano"
 msgid "Commission"
 msgstr "Comisión"
 
+#: includes/class-hostpn-common.php:147
+#: includes/class-hostpn-post-type-contract.php:358
+#: includes/class-hostpn-post-type-accommodation.php:734
+#: includes/class-hostpn-contract-templates.php:762
+#: includes/class-hostpn-post-type-room.php:244
+msgid "Community equipment"
+msgstr "Equipamiento comunitario"
+
+#: includes/class-hostpn-contract-templates.php:355
+msgid ""
+"Community fees and property tax shall be borne by the LANDLORD, unless "
+"expressly agreed otherwise."
+msgstr ""
+"Los gastos de comunidad y el impuesto sobre la propiedad correrán a cargo "
+"del PROPIETARIO, a menos que se acuerde expresamente lo contrario."
+
+#: includes/class-hostpn-contract-templates.php:214
+msgid ""
+"Community rest shall be respected, avoiding noise or parties after 23:00."
+msgstr ""
+"Se deberá respetar el descanso comunitario, evitando ruidos o fiestas "
+"después de las 23:00 horas."
+
 #: includes/class-hostpn-data.php:327
 msgid "Comorian"
 msgstr "comorano"
@@ -1242,9 +1647,17 @@ msgstr "Comoras"
 msgid "Completed"
 msgstr "Terminado"
 
-#: hostpn.php:315
+#: hostpn.php:317
 msgid "Conditioner"
 msgstr "Acondicionador"
+
+#: includes/class-hostpn-settings.php:110
+msgid ""
+"Configure contract templates for each rental type. Use shortcodes to insert "
+"dynamic data."
+msgstr ""
+"Configure plantillas de contrato para cada tipo de alquiler. Utilice códigos "
+"cortos para insertar datos dinámicos."
 
 #: includes/class-hostpn-settings.php:53
 msgid "Configure email notifications when new guests are registered."
@@ -1252,15 +1665,15 @@ msgstr ""
 "Configure las notificaciones por correo electrónico cuando se registren "
 "nuevos huéspedes."
 
-#: includes/class-hostpn-settings.php:199
+#: includes/class-hostpn-settings.php:213
 msgid "Configure system options for the plugin."
 msgstr "Configure las opciones del sistema para el complemento."
 
-#: includes/class-hostpn-settings.php:110
+#: includes/class-hostpn-settings.php:124
 msgid "Configure system settings, design, and user roles."
 msgstr "Configure los ajustes del sistema, el diseño y los roles de usuario."
 
-#: includes/class-hostpn-settings.php:117
+#: includes/class-hostpn-settings.php:131
 msgid "Configure the design and colors of the plugin."
 msgstr "Configura el diseño y los colores del plugin."
 
@@ -1280,14 +1693,36 @@ msgstr "Congo, República Democrática del"
 msgid "Congolese"
 msgstr "congoleños"
 
+#: includes/class-hostpn-post-type-contract.php:24
+#: includes/class-hostpn-post-type-contract.php:477
+#: includes/class-hostpn-post-type-contract.php:658
+#: includes/class-hostpn-post-type-contract.php:805
+msgid "Contract"
+msgstr "Contrato"
+
+#: includes/class-hostpn-ajax.php:691
+msgid "Contract data is incomplete."
+msgstr "Los datos del contrato están incompletos."
+
 #: includes/class-hostpn-post-type-part.php:169
 #: includes/class-hostpn-post-type-part.php:170
 msgid "Contract date"
 msgstr "Fecha del contrato"
 
-#: includes/class-hostpn-settings.php:327
-#: includes/class-hostpn-settings.php:328
-msgid "Contract Generator"
+#: includes/class-hostpn-post-type-contract.php:507
+#: includes/class-hostpn-post-type-room.php:126
+msgid "Contract details"
+msgstr "Detalles del contrato"
+
+#: includes/class-hostpn-post-type-accommodation.php:603
+#: includes/class-hostpn-contract-templates.php:439
+#: includes/class-hostpn-post-type-room.php:133
+msgid "Contract duration"
+msgstr "Duración del contrato"
+
+#: includes/class-hostpn-post-type-accommodation.php:909
+#| msgid "Contract Generator"
+msgid "Contract Generation"
 msgstr "Generador de contratos"
 
 #: includes/class-hostpn-post-type-part.php:148
@@ -1295,20 +1730,52 @@ msgstr "Generador de contratos"
 msgid "Contract holder"
 msgstr "Titular del contrato"
 
+#: templates/public/hostpn-contract-view.php:35
+msgid "Contract not found"
+msgstr "Contrato no encontrado"
+
+#: includes/class-hostpn-ajax.php:694
+msgid "Contract not found."
+msgstr "Contrato no encontrado."
+
+#: includes/class-hostpn-post-type-contract.php:537
+msgid "Contract Preview"
+msgstr "Vista previa del contrato"
+
 #: includes/class-hostpn-post-type-part.php:158
 #: includes/class-hostpn-post-type-part.php:159
 msgid "Contract reference"
 msgstr "Referencia del contrato"
 
-#: includes/class-hostpn-settings.php:487
+#: includes/class-hostpn-post-type-accommodation.php:778
+msgid "Contract shared link"
+msgstr "Enlace compartido del contrato"
+
+#: includes/class-hostpn-post-type-contract.php:108
+msgid "Contract type"
+msgstr "Tipo de contrato"
+
+#: includes/class-hostpn-post-type-contract.php:462
+#: includes/class-hostpn-settings.php:109
+#: includes/class-hostpn-settings.php:350
+#: includes/class-hostpn-settings.php:351
+msgid "Contracts"
+msgstr "Contratos"
+
+#: includes/class-hostpn-settings.php:594
 msgid "Cookie consent and GDPR compliance."
 msgstr "Consentimiento de cookies y cumplimiento del RGPD."
 
-#: includes/class-hostpn-common.php:223
+#: includes/class-hostpn-common.php:279
 msgid "Copied"
 msgstr "Copiado"
 
-#: includes/class-hostpn-post-type-accommodation.php:1358
+#: includes/class-hostpn-post-type-accommodation.php:795
+#: includes/class-hostpn-post-type-accommodation.php:808
+msgid "Copy URL"
+msgstr "Copiar URL"
+
+#: includes/class-hostpn-post-type-accommodation.php:1800
 msgid "Copy url"
 msgstr "Copiar URL"
 
@@ -1333,28 +1800,36 @@ msgstr ""
 msgid "Could not read CSV file"
 msgstr "No se pudo leer el archivo CSV."
 
-#: includes/class-hostpn-post-type-guest.php:159
-#: includes/class-hostpn-post-type-guest.php:160
+#: includes/class-hostpn-private-storage.php:137
+msgid "Could not save the uploaded file."
+msgstr "No se pudo guardar el archivo subido."
+
+#: includes/class-hostpn-post-type-guest.php:165
+#: includes/class-hostpn-post-type-guest.php:166
 #: includes/class-hostpn-functions-user.php:243
 #: includes/class-hostpn-functions-user.php:244
-#: includes/class-hostpn-notifications.php:392
+#: includes/class-hostpn-notifications.php:445
 msgid "Country"
 msgstr "País"
 
-#: includes/class-hostpn-post-type-accommodation.php:1298
+#: includes/class-hostpn-post-type-accommodation.php:1740
 msgid "Create Accommodation"
 msgstr "Crear alojamiento"
 
-#: includes/class-hostpn-post-type-guest.php:887
+#: includes/class-hostpn-post-type-contract.php:1023
+msgid "Create Contract"
+msgstr "Crear contrato"
+
+#: includes/class-hostpn-post-type-guest.php:910
 msgid "Create Guest"
 msgstr "Crear huésped"
 
-#: includes/class-hostpn-post-type-guest.php:871
+#: includes/class-hostpn-post-type-guest.php:894
 msgid "Create my own guest"
 msgstr "Crear mi propio invitado"
 
-#: includes/class-hostpn-settings.php:406
-#: includes/class-hostpn-settings.php:607
+#: includes/class-hostpn-settings.php:429
+#: includes/class-hostpn-settings.php:714
 msgid "Create page"
 msgstr "Crear página"
 
@@ -1362,7 +1837,11 @@ msgstr "Crear página"
 msgid "Create Part"
 msgstr "Crear pieza"
 
-#: includes/class-hostpn-settings.php:606
+#: includes/class-hostpn-post-type-room.php:809
+msgid "Create Room"
+msgstr "Crear habitación"
+
+#: includes/class-hostpn-settings.php:713
 msgid "Creating page..."
 msgstr "Creando página..."
 
@@ -1374,7 +1853,7 @@ msgstr "Fecha de creación"
 msgid "Credit card"
 msgstr "Tarjeta de crédito"
 
-#: includes/class-hostpn-settings.php:466
+#: includes/class-hostpn-settings.php:573
 msgid "CRM with financial management and business tools."
 msgstr "CRM con gestión financiera y herramientas empresariales."
 
@@ -1386,7 +1865,7 @@ msgstr "Croacia"
 msgid "Croatian"
 msgstr "croata"
 
-#: hostpn.php:374
+#: hostpn.php:376
 msgid "CRT TV"
 msgstr "Televisor CRT"
 
@@ -1421,7 +1900,7 @@ msgstr "cubano"
 msgid "Currency"
 msgstr "Divisa"
 
-#: hostpn.php:281
+#: hostpn.php:283
 msgid "Curtains"
 msgstr "Cortinas"
 
@@ -1470,7 +1949,9 @@ msgid "Danish"
 msgstr "danés"
 
 #: includes/class-hostpn-financial.php:296
-#: includes/class-hostpn-notifications.php:399
+#: includes/class-hostpn-post-type-contract.php:810
+#: includes/class-hostpn-post-type-room.php:617
+#: includes/class-hostpn-notifications.php:452
 #: templates/public/hostpn-accommodation-financial.php:185
 #: templates/public/hostpn-accommodation-financial.php:305
 #: templates/admin/financial/hostpn-financial-dashboard.php:152
@@ -1478,16 +1959,26 @@ msgstr "danés"
 msgid "Date"
 msgstr "Fecha"
 
+#: includes/class-hostpn-post-type-accommodation.php:668
+#: includes/class-hostpn-post-type-room.php:180
+msgid "Day of the month for payment"
+msgstr "Día del mes para el pago"
+
+#: includes/class-hostpn-post-type-accommodation.php:630
+#: includes/class-hostpn-post-type-room.php:156
+msgid "Days of advance notice"
+msgstr "Días de aviso previo"
+
 #: includes/class-hostpn-functions-user.php:151
 #: includes/class-hostpn-functions-user.php:434
 msgid "Dear guest"
 msgstr "Estimado huésped"
 
-#: includes/class-hostpn-post-type-guest.php:1173
+#: includes/class-hostpn-post-type-guest.php:1196
 msgid "Debes iniciar sesión para realizar esta acción."
 msgstr "Debes iniciar sesión para realizar esta acción."
 
-#: hostpn.php:295
+#: hostpn.php:297
 msgid "Dehumidifier"
 msgstr "Deshumidificador"
 
@@ -1500,13 +1991,41 @@ msgstr "Borrar"
 msgid "Delete Batch"
 msgstr "Eliminar lote"
 
-#: hostpn.php:358
+#: hostpn.php:360
 msgid "Denatured Alcohol Stove"
 msgstr "Estufa de alcohol desnaturalizado"
 
 #: includes/class-hostpn-data.php:132
 msgid "Denmark"
 msgstr "Dinamarca"
+
+#: includes/class-hostpn-post-type-accommodation.php:700
+#: includes/class-hostpn-post-type-room.php:207
+msgid "Deposit amount"
+msgstr "Monto del depósito"
+
+#: includes/class-hostpn-post-type-contract.php:288
+#: includes/class-hostpn-post-type-accommodation.php:699
+#: includes/class-hostpn-contract-templates.php:444
+#: includes/class-hostpn-post-type-room.php:206
+msgid "Deposit amount (EUR)"
+msgstr "Importe del depósito (EUR)"
+
+#: includes/class-hostpn-post-type-contract.php:296
+#: includes/class-hostpn-post-type-accommodation.php:707
+#: includes/class-hostpn-contract-templates.php:445
+#: includes/class-hostpn-post-type-room.php:214
+msgid "Deposit in words"
+msgstr "Depósito en palabras"
+
+#: includes/class-hostpn-post-type-accommodation.php:718
+#: includes/class-hostpn-post-type-room.php:225
+msgid "Deposit months"
+msgstr "Meses de depósito"
+
+#: includes/class-hostpn-common.php:161
+msgid "Depósito"
+msgstr "Depósito"
 
 #: includes/class-hostpn-post-type-accommodation.php:180
 msgid "Describe internet speed and features"
@@ -1517,20 +2036,25 @@ msgid "Describe parking availability and conditions"
 msgstr "Describir la disponibilidad y condiciones del estacionamiento."
 
 #: includes/class-hostpn-financial.php:299
-#: templates/public/single-hostpn_accommodation.php:76
+#: includes/class-hostpn-settings.php:452
+#: templates/public/single-hostpn_accommodation.php:179
 #: templates/public/hostpn-accommodation-financial.php:188
 #: templates/public/hostpn-accommodation-financial.php:388
 #: templates/admin/financial/hostpn-financial-dashboard.php:155
 msgid "Description"
 msgstr "Descripción"
 
-#: includes/class-hostpn-settings.php:116
+#: includes/class-hostpn-settings.php:130
 msgid "Design"
 msgstr "Diseño"
 
 #: includes/class-hostpn-data.php:533
 msgid "Detached or semi-detached chalet"
 msgstr "Chalet independiente o adosado"
+
+#: includes/class-hostpn-common.php:150
+msgid "Detalles del contrato"
+msgstr "Detalles del contrato"
 
 #: templates/admin/financial/hostpn-financial-import.php:75
 msgid "Detected format:"
@@ -1542,11 +2066,15 @@ msgstr ""
 "Descripción general del diagnóstico del proceso de notificación a los "
 "invitados."
 
-#: hostpn.php:235
+#: hostpn.php:237
 msgid "Dining Table"
 msgstr "Mesa de comedor"
 
-#: hostpn.php:244
+#: includes/class-hostpn-common.php:153
+msgid "Dirección"
+msgstr "Dirección"
+
+#: hostpn.php:246
 msgid "Dishwasher"
 msgstr "Lavavajillas"
 
@@ -1559,23 +2087,23 @@ msgid "Djiboutian"
 msgstr "Yibutiense"
 
 #: includes/class-hostpn-post-type-part.php:1013
-#: includes/class-hostpn-post-type-guest.php:88
-#: includes/class-hostpn-post-type-guest.php:89
+#: includes/class-hostpn-post-type-guest.php:94
+#: includes/class-hostpn-post-type-guest.php:95
 #: includes/class-hostpn-functions-user.php:171
 #: includes/class-hostpn-functions-user.php:172
 msgid "Document number"
 msgstr "Número de documento"
 
-#: includes/class-hostpn-post-type-guest.php:98
-#: includes/class-hostpn-post-type-guest.php:99
+#: includes/class-hostpn-post-type-guest.php:104
+#: includes/class-hostpn-post-type-guest.php:105
 #: includes/class-hostpn-functions-user.php:181
 #: includes/class-hostpn-functions-user.php:182
-#: includes/class-hostpn-notifications.php:386
+#: includes/class-hostpn-notifications.php:439
 msgid "Document support number"
 msgstr "Número de soporte del documento"
 
-#: includes/class-hostpn-post-type-guest.php:77
-#: includes/class-hostpn-post-type-guest.php:78
+#: includes/class-hostpn-post-type-guest.php:83
+#: includes/class-hostpn-post-type-guest.php:84
 #: includes/class-hostpn-functions-user.php:161
 #: includes/class-hostpn-functions-user.php:162
 msgid "Document type"
@@ -1584,6 +2112,16 @@ msgstr "Tipo de documento"
 #: includes/class-hostpn-post-type-part.php:1006
 msgid "Document type (NIF, NIE, Passport, etc.)"
 msgstr "Tipo de documento (NIF, NIE, pasaporte, etc.)"
+
+#: includes/class-hostpn-post-type-contract.php:167
+#: includes/class-hostpn-post-type-accommodation.php:504
+msgid "Domicile address of the landlord"
+msgstr "Domicilio del propietario"
+
+#: includes/class-hostpn-post-type-contract.php:201
+#: includes/class-hostpn-post-type-accommodation.php:558
+msgid "Domicile address of the tenant"
+msgstr "Domicilio del inquilino"
 
 #: includes/class-hostpn-data.php:134
 msgid "Dominica"
@@ -1601,6 +2139,16 @@ msgstr "República Dominicana"
 msgid "Download CSV"
 msgstr "Descargar CSV"
 
+#: includes/class-hostpn-post-type-accommodation.php:2012
+#: templates/public/hostpn-contract-view.php:107
+#: templates/public/hostpn-contracts-block.php:101
+msgid "Download PDF"
+msgstr "Descargar PDF"
+
+#: templates/public/hostpn-contracts-block.php:109
+msgid "Download Signed"
+msgstr "Descargar firmado"
+
 #: includes/class-hostpn-post-type-part.php:781
 #: includes/class-hostpn-post-type-part.php:967
 msgid "Download stays CSV"
@@ -1615,7 +2163,8 @@ msgstr "Descargar archivo XML"
 msgid "DR Congolese"
 msgstr "RD Congo"
 
-#: includes/class-hostpn-settings.php:384
+#: includes/class-hostpn-post-type-contract.php:444
+#: includes/class-hostpn-settings.php:407
 msgid "Draft"
 msgstr "Borrador"
 
@@ -1623,15 +2172,15 @@ msgstr "Borrador"
 msgid "Drag and drop CSV file here or"
 msgstr "Arrastra y suelta el archivo CSV aquí o"
 
-#: hostpn.php:272
+#: hostpn.php:274
 msgid "Dresser"
 msgstr "Aparador"
 
-#: includes/class-hostpn-post-type-accommodation.php:1189
+#: includes/class-hostpn-post-type-accommodation.php:1631
 msgid "Duplicate Accommodation"
 msgstr "Alojamiento duplicado"
 
-#: includes/class-hostpn-post-type-guest.php:752
+#: includes/class-hostpn-post-type-guest.php:775
 msgid "Duplicate Guest"
 msgstr "Huésped duplicado"
 
@@ -1639,9 +2188,75 @@ msgstr "Huésped duplicado"
 msgid "Duplicate Part"
 msgstr "Pieza duplicada"
 
+#: includes/class-hostpn-common.php:154
+msgid "Duración"
+msgstr "Duración"
+
+#: includes/class-hostpn-post-type-contract.php:218
+msgid "Duration"
+msgstr "Duración"
+
 #: includes/class-hostpn-data.php:407
 msgid "Dutch"
 msgstr "Holandés"
+
+#: includes/class-hostpn-common.php:158
+msgid "Día de pago"
+msgstr "Día de pago"
+
+#: includes/class-hostpn-common.php:160
+msgid "días"
+msgstr "días"
+
+#: includes/class-hostpn-post-type-accommodation.php:604
+#: includes/class-hostpn-post-type-room.php:134
+msgid "e.g. 11 months"
+msgstr "Por ejemplo, 11 meses"
+
+#: includes/class-hostpn-post-type-accommodation.php:660
+#: includes/class-hostpn-post-type-accommodation.php:708
+#: includes/class-hostpn-post-type-room.php:172
+#: includes/class-hostpn-post-type-room.php:215
+msgid "e.g. trescientos cincuenta"
+msgstr "p. ej. trescientos cincuenta"
+
+#: includes/class-hostpn-post-type-room.php:76
+msgid "E.g.: 1, Ground, Basement..."
+msgstr "Por ejemplo: 1, Planta baja, Sótano..."
+
+#: includes/class-hostpn-post-type-room.php:68
+msgid "E.g.: 101, A, Suite 1..."
+msgstr "Por ejemplo: 101, A, Suite 1..."
+
+#: includes/class-hostpn-post-type-contract.php:324
+msgid "E.g.: 11:00"
+msgstr "Por ejemplo: 11:00"
+
+#: includes/class-hostpn-post-type-contract.php:219
+msgid "E.g.: 12 months, 1 year..."
+msgstr "Por ejemplo: 12 meses, 1 año..."
+
+#: includes/class-hostpn-post-type-contract.php:316
+msgid "E.g.: 15:00"
+msgstr "Por ejemplo: 15:00"
+
+#: includes/class-hostpn-post-type-contract.php:342
+msgid "E.g.: 30"
+msgstr "Por ejemplo: 30"
+
+#: includes/class-hostpn-post-type-contract.php:263
+msgid "E.g.: 5"
+msgstr "Por ejemplo: 5"
+
+#: includes/class-hostpn-post-type-contract.php:245
+#: includes/class-hostpn-post-type-contract.php:289
+msgid "E.g.: 500"
+msgstr "Por ejemplo: 500"
+
+#: includes/class-hostpn-post-type-contract.php:253
+#: includes/class-hostpn-post-type-contract.php:297
+msgid "E.g.: five hundred"
+msgstr "Por ejemplo: quinientos"
 
 #: includes/class-hostpn-data.php:136
 msgid "Ecuador"
@@ -1651,18 +2266,18 @@ msgstr "Ecuador"
 msgid "Ecuadorian"
 msgstr "ecuatoriano"
 
-#: includes/class-hostpn-settings.php:396
+#: includes/class-hostpn-settings.php:419
 #: templates/public/hostpn-accommodation-financial.php:218
 #: templates/admin/financial/hostpn-financial-dashboard.php:188
 msgid "Edit"
 msgstr "Editar"
 
-#: includes/class-hostpn-post-type-accommodation.php:1165
-#: includes/class-hostpn-post-type-accommodation.php:1270
+#: includes/class-hostpn-post-type-accommodation.php:1607
+#: includes/class-hostpn-post-type-accommodation.php:1712
 msgid "Edit Accommodation"
 msgstr "Editar alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:488
+#: includes/class-hostpn-post-type-accommodation.php:860
 msgid "Edit accommodation"
 msgstr "Editar alojamiento"
 
@@ -1670,22 +2285,28 @@ msgstr "Editar alojamiento"
 msgid "Edit Accommodation category"
 msgstr "Editar categoría de alojamiento"
 
-#: includes/class-hostpn-common.php:208 includes/class-hostpn-forms.php:358
+#: includes/class-hostpn-common.php:264 includes/class-hostpn-forms.php:358
 #: includes/class-hostpn-forms.php:419
 msgid "Edit audio"
 msgstr "Editar audio"
 
-#: includes/class-hostpn-common.php:209 includes/class-hostpn-forms.php:358
+#: includes/class-hostpn-common.php:265 includes/class-hostpn-forms.php:358
 #: includes/class-hostpn-forms.php:419
 msgid "Edit audios"
 msgstr "Editar audios"
 
-#: includes/class-hostpn-common.php:214 includes/class-hostpn-forms.php:379
+#: includes/class-hostpn-post-type-contract.php:468
+#: includes/class-hostpn-post-type-contract.php:944
+#: includes/class-hostpn-post-type-contract.php:995
+msgid "Edit Contract"
+msgstr "Editar contrato"
+
+#: includes/class-hostpn-common.php:270 includes/class-hostpn-forms.php:379
 #: includes/class-hostpn-forms.php:427
 msgid "Edit file"
 msgstr "Editar archivo"
 
-#: includes/class-hostpn-common.php:215 includes/class-hostpn-forms.php:379
+#: includes/class-hostpn-common.php:271 includes/class-hostpn-forms.php:379
 #: includes/class-hostpn-forms.php:427
 msgid "Edit files"
 msgstr "Editar archivos"
@@ -1695,9 +2316,9 @@ msgstr "Editar archivos"
 msgid "Edit Financial Record"
 msgstr "Editar registro financiero"
 
-#: includes/class-hostpn-post-type-guest.php:273
-#: includes/class-hostpn-post-type-guest.php:738
-#: includes/class-hostpn-post-type-guest.php:845
+#: includes/class-hostpn-post-type-guest.php:287
+#: includes/class-hostpn-post-type-guest.php:761
+#: includes/class-hostpn-post-type-guest.php:868
 msgid "Edit Guest"
 msgstr "Editar huésped"
 
@@ -1705,12 +2326,12 @@ msgstr "Editar huésped"
 msgid "Edit Guest category"
 msgstr "Editar categoría de huésped"
 
-#: includes/class-hostpn-common.php:195 includes/class-hostpn-forms.php:316
+#: includes/class-hostpn-common.php:251 includes/class-hostpn-forms.php:316
 #: includes/class-hostpn-forms.php:403
 msgid "Edit image"
 msgstr "Editar imagen"
 
-#: includes/class-hostpn-common.php:196 includes/class-hostpn-forms.php:316
+#: includes/class-hostpn-common.php:252 includes/class-hostpn-forms.php:316
 #: includes/class-hostpn-forms.php:403
 msgid "Edit images"
 msgstr "Editar imágenes"
@@ -1728,19 +2349,35 @@ msgstr "Editar Parte del viajero"
 msgid "Edit Part of travelers category"
 msgstr "Editar Parte de la categoría de viajeros"
 
-#: includes/class-hostpn-common.php:202 includes/class-hostpn-forms.php:337
+#: includes/class-hostpn-post-type-room.php:311
+#: includes/class-hostpn-post-type-room.php:736
+#: includes/class-hostpn-post-type-room.php:780
+msgid "Edit Room"
+msgstr "Editar habitación"
+
+#: includes/class-hostpn-post-type-accommodation.php:949
+msgid "Edit templates"
+msgstr "Editar plantillas"
+
+#: includes/class-hostpn-common.php:258 includes/class-hostpn-forms.php:337
 #: includes/class-hostpn-forms.php:411
 msgid "Edit video"
 msgstr "Editar video"
 
-#: includes/class-hostpn-common.php:203 includes/class-hostpn-forms.php:337
+#: includes/class-hostpn-common.php:259 includes/class-hostpn-forms.php:337
 #: includes/class-hostpn-forms.php:411
 msgid "Edit videos"
 msgstr "Editar vídeos"
 
+#: includes/class-hostpn-common.php:151
+msgid "Editar"
+msgstr "Editor"
+
 #: includes/class-hostpn-post-type-part.php:1093
-#: includes/class-hostpn-post-type-guest.php:904
-#: includes/class-hostpn-post-type-accommodation.php:1314
+#: includes/class-hostpn-post-type-contract.php:1038
+#: includes/class-hostpn-post-type-guest.php:927
+#: includes/class-hostpn-post-type-accommodation.php:1756
+#: includes/class-hostpn-post-type-room.php:824
 msgid "Editing"
 msgstr "Edición"
 
@@ -1752,7 +2389,7 @@ msgstr "Egipto"
 msgid "Egyptian"
 msgstr "egipcio"
 
-#: includes/class-hostpn-post-type-guest.php:1189
+#: includes/class-hostpn-post-type-guest.php:1212
 msgid "El huésped no existe."
 msgstr "El huésped no existe."
 
@@ -1760,34 +2397,56 @@ msgstr "El huésped no existe."
 msgid "El Salvador"
 msgstr "El Salvador"
 
-#: includes/class-hostpn-post-type-guest.php:1219
+#: includes/class-hostpn-post-type-guest.php:1242
 msgid "El sistema de notificaciones no está disponible."
 msgstr "El sistema de notificaciones no está disponible."
 
-#: hostpn.php:242
+#: hostpn.php:244
 msgid "Electric Kettle"
 msgstr "Hervidor eléctrico"
 
-#: hostpn.php:351
+#: hostpn.php:353
 msgid "Electric Stove"
 msgstr "Estufa eléctrica"
 
-#: hostpn.php:302
+#: includes/class-hostpn-contract-templates.php:199
+msgid ""
+"Electricity costs are not included in the rent and shall be paid monthly, "
+"proportionally divided among the rooms for common consumption (water heater, "
+"appliances and hallway/kitchen lighting) and individually for the TENANT's "
+"own consumption in their room."
+msgstr ""
+"Los gastos de electricidad no están incluidos en el alquiler y deberán "
+"abonarse mensualmente, divididos proporcionalmente entre las habitaciones "
+"para el consumo común (calentador de agua, electrodomésticos e iluminación "
+"del pasillo/cocina) e individualmente para el consumo propio del INQUILINO "
+"en su habitación."
+
+#: hostpn.php:304
 msgid "Electrostatic Filter"
 msgstr "Filtro electrostático"
 
-#: includes/class-hostpn-post-type-guest.php:218
-#: includes/class-hostpn-post-type-guest.php:219
+#: includes/class-hostpn-post-type-guest.php:224
+#: includes/class-hostpn-post-type-guest.php:225
 #: includes/class-hostpn-settings.php:90
 #: includes/class-hostpn-functions-user.php:302
 #: includes/class-hostpn-functions-user.php:303
-#: includes/class-hostpn-notifications.php:382
+#: includes/class-hostpn-notifications.php:435
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: includes/class-hostpn-settings.php:473
+#: includes/class-hostpn-settings.php:580
 msgid "Email marketing and newsletter campaigns."
 msgstr "Marketing por correo electrónico y campañas de boletines informativos."
+
+#: includes/class-hostpn-post-type-contract.php:175
+#: includes/class-hostpn-post-type-accommodation.php:512
+msgid "Email of the landlord"
+msgstr "Correo electrónico del propietario"
+
+#: includes/class-hostpn-post-type-accommodation.php:566
+msgid "Email of the tenant"
+msgstr "Correo electrónico del inquilino"
 
 #: includes/class-hostpn-settings.php:91
 msgid "email@example.com"
@@ -1801,7 +2460,19 @@ msgstr "emiratí"
 msgid "Enable guest registration notifications"
 msgstr "Habilitar las notificaciones de registro de invitados"
 
-#: includes/class-hostpn-settings.php:542
+#: includes/class-hostpn-post-type-contract.php:352
+msgid "Enable inventory annex"
+msgstr "Habilitar anexo de inventario"
+
+#: includes/class-hostpn-post-type-contract.php:234
+#: includes/class-hostpn-post-type-contract.php:235
+#: includes/class-hostpn-post-type-accommodation.php:618
+#: includes/class-hostpn-contract-templates.php:441
+#: includes/class-hostpn-post-type-room.php:148
+msgid "End date"
+msgstr "Fecha de finalización"
+
+#: includes/class-hostpn-settings.php:649
 msgid "Enhance your workflow with these companion plugins."
 msgstr "Optimiza tu flujo de trabajo con estos plugins complementarios."
 
@@ -1853,23 +2524,23 @@ msgstr "Eritrea"
 msgid "Eritrean"
 msgstr "Eritreo"
 
-#: includes/class-hostpn-settings.php:614
+#: includes/class-hostpn-settings.php:721
 msgid "Error activating plugin."
 msgstr "Error al activar el complemento."
 
-#: includes/class-hostpn-post-type-guest.php:1214
+#: includes/class-hostpn-post-type-guest.php:1237
 msgid "Error al enviar la notificación. Verifica la configuración."
 msgstr "Error al enviar la notificación. Verifica la configuración."
 
-#: includes/class-hostpn-settings.php:605
+#: includes/class-hostpn-settings.php:712
 msgid "Error exporting settings."
 msgstr "Error al exportar la configuración."
 
-#: includes/class-hostpn-settings.php:603
+#: includes/class-hostpn-settings.php:710
 msgid "Error importing settings."
 msgstr "Error al importar la configuración."
 
-#: includes/class-hostpn-settings.php:613
+#: includes/class-hostpn-settings.php:720
 msgid "Error installing plugin."
 msgstr "Error al instalar el complemento."
 
@@ -1889,7 +2560,7 @@ msgstr "estonio"
 msgid "Eswatini"
 msgstr "Esuatini"
 
-#: hostpn.php:354
+#: hostpn.php:356
 msgid "Ethanol Stove"
 msgstr "Estufa de etanol"
 
@@ -1904,6 +2575,10 @@ msgstr "etíope"
 #: includes/class-hostpn-debug.php:160
 msgid "Exception emails filter"
 msgstr "Filtro de correos electrónicos de excepción"
+
+#: includes/class-hostpn-contract-templates.php:199
+msgid "Excluded expenses:"
+msgstr "Gastos excluidos:"
 
 #: includes/class-hostpn-post-type-financial-record.php:84
 #: templates/public/hostpn-accommodation-financial.php:163
@@ -1922,11 +2597,15 @@ msgstr "Gastos"
 msgid "Expiration date of the card."
 msgstr "Fecha de vencimiento de la tarjeta."
 
+#: includes/class-hostpn-post-type-contract.php:447
+msgid "Expired"
+msgstr "Venció"
+
 #: templates/public/hostpn-accommodation-financial.php:67
 msgid "Export CSV"
 msgstr "Exportar CSV"
 
-#: includes/class-hostpn-settings.php:525
+#: includes/class-hostpn-settings.php:632
 msgid "Export settings"
 msgstr "Exportar configuración"
 
@@ -1967,7 +2646,7 @@ msgstr "Padre / Madre"
 msgid "Father-in-Law"
 msgstr "Suegro"
 
-#: includes/class-hostpn-post-type-guest.php:940
+#: includes/class-hostpn-post-type-guest.php:963
 msgid "Fecha de creación"
 msgstr "Fecha de creación"
 
@@ -1989,9 +2668,9 @@ msgstr "Importe de la tarifa"
 msgid "Fees"
 msgstr "Honorarios"
 
-#: includes/class-hostpn-post-type-guest.php:126
+#: includes/class-hostpn-post-type-guest.php:132
 #: includes/class-hostpn-functions-user.php:209
-#: includes/class-hostpn-notifications.php:342
+#: includes/class-hostpn-notifications.php:395
 msgid "Female"
 msgstr "Femenino"
 
@@ -2002,6 +2681,10 @@ msgstr "Fiyi"
 #: includes/class-hostpn-data.php:345
 msgid "Fijian"
 msgstr "Fiyiano"
+
+#: includes/class-hostpn-private-storage.php:198
+msgid "File not found."
+msgstr "Archivo no encontrado."
 
 #: includes/class-hostpn-debug.php:320
 msgid "File not readable"
@@ -2015,6 +2698,10 @@ msgstr "El tamaño del archivo supera el límite de 5 MB."
 msgid "File upload failed"
 msgstr "Error al cargar el archivo"
 
+#: includes/class-hostpn-private-storage.php:127
+msgid "File upload failed."
+msgstr "Error al cargar el archivo."
+
 #: templates/admin/financial/hostpn-financial-dashboard.php:238
 msgid "Filename"
 msgstr "Nombre del archivo"
@@ -2024,17 +2711,20 @@ msgid "Filipino"
 msgstr "filipino"
 
 #: includes/class-hostpn-post-type-part.php:765
-#: includes/class-hostpn-post-type-guest.php:618
-#: includes/class-hostpn-post-type-accommodation.php:1060
+#: includes/class-hostpn-post-type-guest.php:641
+#: includes/class-hostpn-post-type-accommodation.php:1502
 msgid "Filter..."
 msgstr "Filtrar..."
 
-#: includes/class-hostpn-post-type-accommodation.php:1204
+#: includes/class-hostpn-common.php:156
+msgid "Fin"
+msgstr "Aleta"
+
+#: includes/class-hostpn-post-type-accommodation.php:1646
 msgid "Financial Data"
 msgstr "Datos financieros"
 
-#: includes/class-hostpn-post-type-accommodation.php:436
-#: includes/class-hostpn-post-type-accommodation.php:467
+#: includes/class-hostpn-post-type-accommodation.php:908
 msgid "Financial Management"
 msgstr "Gestión financiera"
 
@@ -2062,27 +2752,58 @@ msgstr "Finlandia"
 msgid "Finnish"
 msgstr "finlandés"
 
-#: hostpn.php:347
+#: hostpn.php:349
 msgid "Fireplace"
 msgstr "Hogar"
 
-#: hostpn.php:291
+#: includes/class-hostpn-post-type-room.php:75
+#: includes/class-hostpn-post-type-room.php:602
+#: includes/class-hostpn-post-type-room.php:638
+msgid "Floor"
+msgstr "Piso"
+
+#: hostpn.php:293
 msgid "Floor Fan"
 msgstr "Ventilador de piso"
 
-#: hostpn.php:278
+#: hostpn.php:280
 msgid "Floor Lamp"
 msgstr "Lámpara de pie"
 
-#: hostpn.php:249
+#: templates/public/single-hostpn_accommodation.php:107
+#, php-format
+msgid "Floor: %s"
+msgstr "Piso: %s"
+
+#: hostpn.php:251
 msgid "Food Processor"
 msgstr "Procesador de alimentos"
+
+#: includes/class-hostpn-contract-templates.php:374
+msgid ""
+"For the resolution of any dispute, both parties submit to the jurisdiction "
+"of the Courts of the place where the property is located."
+msgstr ""
+"Para la resolución de cualquier controversia, ambas partes se someten a la "
+"jurisdicción de los tribunales del lugar donde se encuentre ubicado el "
+"inmueble."
+
+#: includes/class-hostpn-contract-templates.php:233
+msgid ""
+"For the resolution of any judicial dispute arising from the interpretation "
+"or fulfilment of this contract, both parties submit to the jurisdiction of "
+"the Courts of the place where the property is located."
+msgstr ""
+"Para la resolución de cualquier controversia judicial que surja de la "
+"interpretación o el cumplimiento de este contrato, ambas partes se someten a "
+"la jurisdicción de los tribunales del lugar donde se encuentre ubicado el "
+"inmueble."
 
 #: includes/class-hostpn-data.php:146
 msgid "France"
 msgstr "Francia"
 
-#: hostpn.php:256
+#: hostpn.php:258
 msgid "Freezer"
 msgstr "Congelador"
 
@@ -2093,6 +2814,28 @@ msgstr "Francés"
 #: includes/class-hostpn-debug.php:156
 msgid "From email / name"
 msgstr "Correo electrónico / nombre"
+
+#: includes/class-hostpn-contract-templates.php:437
+msgid "Full accommodation address"
+msgstr "Dirección completa del alojamiento"
+
+#: includes/class-hostpn-post-type-contract.php:151
+#: includes/class-hostpn-post-type-accommodation.php:488
+msgid "Full name of the landlord"
+msgstr "Nombre completo del propietario"
+
+#: includes/class-hostpn-post-type-contract.php:185
+#: includes/class-hostpn-post-type-accommodation.php:542
+msgid "Full name of the tenant"
+msgstr "Nombre completo del inquilino"
+
+#: includes/class-hostpn-common.php:144
+#: includes/class-hostpn-post-type-contract.php:355
+#: includes/class-hostpn-post-type-accommodation.php:731
+#: includes/class-hostpn-contract-templates.php:759
+#: includes/class-hostpn-post-type-room.php:241
+msgid "Furniture"
+msgstr "Muebles"
 
 #: includes/class-hostpn-data.php:147
 msgid "Gabon"
@@ -2110,23 +2853,23 @@ msgstr "Gambia"
 msgid "Gambian"
 msgstr "Gambiano"
 
-#: hostpn.php:259
+#: hostpn.php:261
 msgid "Garbage Disposal"
 msgstr "Eliminación de basura"
 
-#: hostpn.php:350
+#: hostpn.php:352
 msgid "Gas Stove"
 msgstr "Estufa de gas"
 
-#: hostpn.php:356
+#: hostpn.php:358
 msgid "Gel Stove"
 msgstr "Estufa de gel"
 
-#: includes/class-hostpn-post-type-guest.php:129
-#: includes/class-hostpn-post-type-guest.php:130
+#: includes/class-hostpn-post-type-guest.php:135
+#: includes/class-hostpn-post-type-guest.php:136
 #: includes/class-hostpn-functions-user.php:212
 #: includes/class-hostpn-functions-user.php:213
-#: includes/class-hostpn-notifications.php:388
+#: includes/class-hostpn-notifications.php:441
 msgid "Gender"
 msgstr "Género"
 
@@ -2137,6 +2880,14 @@ msgid ""
 msgstr ""
 "Generar un archivo CSV con todas las estancias (partes) del año seleccionado,"
 " agrupadas por tipo de alojamiento."
+
+#: includes/class-hostpn-common.php:140
+msgid "Generate PDF"
+msgstr "Generar PDF"
+
+#: includes/class-hostpn-common.php:139
+msgid "Generating PDF..."
+msgstr "Generando PDF..."
 
 #: includes/class-hostpn-post-type-accommodation.php:56
 msgid ""
@@ -2210,18 +2961,29 @@ msgstr "Granada"
 msgid "Grenadian"
 msgstr "granadino"
 
-#: includes/class-hostpn-settings.php:188
+#: includes/class-hostpn-settings.php:202
 msgid "Grey accent color"
 msgstr "Color de acento gris"
 
-#: includes/class-hostpn-settings.php:189
+#: includes/class-hostpn-settings.php:203
 msgid "Grey accent color used across the plugin."
 msgstr ""
 "Se ha utilizado el color gris como color de acento en todo el complemento."
 
-#: hostpn.php:251
+#: hostpn.php:253
 msgid "Grill"
 msgstr "Parrilla"
+
+#: includes/class-hostpn-contract-templates.php:368
+msgid ""
+"Grounds for termination include: failure to pay rent, unauthorized "
+"subletting, wilful damage, unauthorized works, and nuisance, unhealthy, "
+"harmful, dangerous or illegal activities."
+msgstr ""
+"Entre los motivos de rescisión del contrato se incluyen: la falta de pago "
+"del alquiler, el subarriendo no autorizado, los daños intencionados, las "
+"obras no autorizadas y las actividades molestas, insalubres, perjudiciales, "
+"peligrosas o ilegales."
 
 #: includes/class-hostpn-data.php:537
 msgid "Guardian"
@@ -2235,16 +2997,22 @@ msgstr "Guatemala"
 msgid "Guatemalan"
 msgstr "guatemalteco"
 
-#: includes/class-hostpn-post-type-guest.php:283
+#: includes/class-hostpn-contract-templates.php:252
+msgid "GUEST"
+msgstr "INVITADO"
+
+#: includes/class-hostpn-post-type-contract.php:88
+#: includes/class-hostpn-post-type-contract.php:806
+#: includes/class-hostpn-post-type-guest.php:297
 msgid "Guest"
 msgstr "Huésped"
 
-#: includes/class-hostpn-ajax.php:487 includes/class-hostpn-activator.php:37
-#: includes/class-hostpn-settings.php:240
+#: includes/class-hostpn-ajax.php:748 includes/class-hostpn-activator.php:37
+#: includes/class-hostpn-settings.php:254
 msgid "Guest - HOSTPN"
 msgstr "Huésped - HOSTPN"
 
-#: includes/class-hostpn-settings.php:238
+#: includes/class-hostpn-settings.php:252
 msgid "Guest - HOSTPN Role"
 msgstr "Invitado - Puesto HOSTPN"
 
@@ -2252,12 +3020,12 @@ msgstr "Invitado - Puesto HOSTPN"
 msgid "Guest categories"
 msgstr "Categorías de huéspedes"
 
-#: includes/class-hostpn-post-type-guest.php:284
+#: includes/class-hostpn-post-type-guest.php:298
 #| msgid "Step description"
 msgid "Guest description"
 msgstr "Descripción del huésped"
 
-#: includes/class-hostpn-post-type-guest.php:316
+#: includes/class-hostpn-post-type-guest.php:330
 msgid "Guest details"
 msgstr "Detalles del huésped"
 
@@ -2265,12 +3033,12 @@ msgstr "Detalles del huésped"
 msgid "Guest house"
 msgstr "Casa de huéspedes"
 
-#: includes/class-hostpn-post-type-guest.php:938
+#: includes/class-hostpn-post-type-guest.php:961
 msgid "Guest Information"
 msgstr "Información para huéspedes"
 
-#: includes/class-hostpn-post-type-guest.php:24
-#: includes/class-hostpn-post-type-guest.php:25
+#: includes/class-hostpn-post-type-guest.php:30
+#: includes/class-hostpn-post-type-guest.php:31
 msgid "Guest name"
 msgstr "Nombre del huésped"
 
@@ -2278,28 +3046,32 @@ msgstr "Nombre del huésped"
 msgid "Guest name and surnames"
 msgstr "Nombre y apellidos de los huéspedes"
 
-#: includes/class-hostpn-post-type-guest.php:44
-#: includes/class-hostpn-post-type-guest.php:45
+#: includes/class-hostpn-ajax.php:626
+msgid "Guest not found."
+msgstr "Invitado no encontrado."
+
+#: includes/class-hostpn-post-type-guest.php:50
+#: includes/class-hostpn-post-type-guest.php:51
 msgid "Guest second surname"
 msgstr "Segundo apellido del huésped"
 
-#: includes/class-hostpn-settings.php:206
-#: includes/class-hostpn-settings.php:207
+#: includes/class-hostpn-settings.php:220
+#: includes/class-hostpn-settings.php:221
 msgid "Guest slug"
 msgstr "Babosa invitada"
 
-#: includes/class-hostpn-post-type-guest.php:34
-#: includes/class-hostpn-post-type-guest.php:35
+#: includes/class-hostpn-post-type-guest.php:40
+#: includes/class-hostpn-post-type-guest.php:41
 msgid "Guest surname"
 msgstr "Apellido del huésped"
 
-#: includes/class-hostpn-shortcodes.php:43 includes/class-hostpn-ajax.php:541
+#: includes/class-hostpn-shortcodes.php:43 includes/class-hostpn-ajax.php:802
 #: includes/class-hostpn-activator.php:102
 #: includes/class-hostpn-activator.php:125
-#: includes/class-hostpn-post-type-guest.php:267
-#: includes/class-hostpn-settings.php:318
-#: includes/class-hostpn-settings.php:319
-#: includes/class-hostpn-settings.php:428
+#: includes/class-hostpn-post-type-guest.php:281
+#: includes/class-hostpn-settings.php:332
+#: includes/class-hostpn-settings.php:333
+#: includes/class-hostpn-settings.php:533
 msgid "Guests"
 msgstr "Huéspedes"
 
@@ -2331,7 +3103,7 @@ msgstr "Guayana"
 msgid "Guyanese"
 msgstr "guyanés"
 
-#: hostpn.php:313
+#: hostpn.php:315
 msgid "Hair Dryer"
 msgstr "Secador de pelo"
 
@@ -2343,11 +3115,11 @@ msgstr "Haití"
 msgid "Haitian"
 msgstr "haitiano"
 
-#: hostpn.php:289
+#: hostpn.php:291
 msgid "Heating"
 msgstr "Calefacción"
 
-#: hostpn.php:300
+#: hostpn.php:302
 msgid "HEPA Filter"
 msgstr "Filtro HEPA"
 
@@ -2359,7 +3131,7 @@ msgstr "hondureño"
 msgid "Honduras"
 msgstr "Honduras"
 
-#: includes/class-hostpn-settings.php:627
+#: includes/class-hostpn-settings.php:734
 msgid "Hospedajes España"
 msgstr "Hospedajes España"
 
@@ -2367,12 +3139,12 @@ msgstr "Hospedajes España"
 msgid "Hospedajes España - HOSTPN"
 msgstr "Hospedajes España - HOSTPN"
 
-#: includes/class-hostpn-ajax.php:487 includes/class-hostpn-activator.php:25
-#: includes/class-hostpn-forms.php:551 includes/class-hostpn-settings.php:233
+#: includes/class-hostpn-ajax.php:748 includes/class-hostpn-activator.php:25
+#: includes/class-hostpn-forms.php:551 includes/class-hostpn-settings.php:247
 msgid "Host - HOSTPN"
 msgstr "Anfitrión - HOSTPN"
 
-#: includes/class-hostpn-settings.php:231
+#: includes/class-hostpn-settings.php:245
 msgid "Host - HOSTPN Role"
 msgstr "Anfitrión - Rol HOSTPN"
 
@@ -2380,8 +3152,8 @@ msgstr "Anfitrión - Rol HOSTPN"
 msgid "Hostel"
 msgstr "Albergue"
 
-#: includes/class-hostpn-settings.php:279
-#: includes/class-hostpn-settings.php:280
+#: includes/class-hostpn-settings.php:293
+#: includes/class-hostpn-settings.php:294
 msgid "HostPN"
 msgstr "HostPN"
 
@@ -2389,7 +3161,7 @@ msgstr "HostPN"
 msgid "HOSTPN Notifications Debug"
 msgstr "Depuración de notificaciones HOSTPN"
 
-#: includes/class-hostpn-settings.php:441
+#: includes/class-hostpn-settings.php:546
 msgid "HOSTPN Options"
 msgstr "Opciones de HOSTPN"
 
@@ -2413,6 +3185,11 @@ msgstr "Casa o domicilio particular"
 msgid "Housing for tourism purposes"
 msgstr "Viviendas con fines turísticos"
 
+#: includes/class-hostpn-post-type-contract.php:385
+#: includes/class-hostpn-post-type-room.php:269
+msgid "https://..."
+msgstr "https://..."
+
 #. Author URI of the plugin
 msgid "https://padresenlanube.com/"
 msgstr "https://padresenlanube.com/"
@@ -2421,7 +3198,7 @@ msgstr "https://padresenlanube.com/"
 msgid "https://padresenlanube.com/plugins/hostpn/"
 msgstr "https://padresenlanube.com/plugins/hostpn/"
 
-#: hostpn.php:294
+#: hostpn.php:296
 msgid "Humidifier"
 msgstr "Humidificador"
 
@@ -2433,7 +3210,19 @@ msgstr "húngaro"
 msgid "Hungary"
 msgstr "Hungría"
 
-#: hostpn.php:261
+#: includes/class-hostpn-post-type-contract.php:278
+#: includes/class-hostpn-post-type-contract.php:279
+#: includes/class-hostpn-post-type-accommodation.php:687
+#: includes/class-hostpn-contract-templates.php:451
+msgid "IBAN"
+msgstr "IBAN"
+
+#: includes/class-hostpn-contract-templates.php:194
+#: includes/class-hostpn-contract-templates.php:344
+msgid "IBAN:"
+msgstr "IBAN:"
+
+#: hostpn.php:263
 msgid "Ice Maker"
 msgstr "Máquina de hielo"
 
@@ -2445,11 +3234,33 @@ msgstr "Islandia"
 msgid "Icelandic"
 msgstr "islandés"
 
-#: includes/class-hostpn-post-type-guest.php:1181
+#: includes/class-hostpn-post-type-guest.php:1204
 msgid "ID de huésped inválido."
 msgstr "ID de huésped inválido."
 
-#: includes/class-hostpn-settings.php:216
+#: includes/class-hostpn-contract-templates.php:338
+msgid ""
+"If the agreed term is shorter than the minimum period established by the "
+"applicable legislation, the contract shall be automatically extended in "
+"annual increments until said minimum period is reached, unless the TENANT "
+"expresses their wish not to renew with 30 days' notice."
+msgstr ""
+"Si el plazo acordado es inferior al período mínimo establecido por la "
+"legislación aplicable, el contrato se prorrogará automáticamente en "
+"incrementos anuales hasta alcanzar dicho período mínimo, a menos que el "
+"ARRENDATARIO manifieste su deseo de no renovarlo con un preaviso de 30 días."
+
+#: includes/class-hostpn-contract-templates.php:205
+msgid ""
+"If the TENANT wishes to reserve the room in advance, half of the deposit may "
+"be provided as a booking fee, reserving the room for a maximum of 7 days "
+"from receipt of the funds."
+msgstr ""
+"Si el inquilino desea reservar la habitación con antelación, podrá abonar la "
+"mitad del depósito como tarifa de reserva, reservando la habitación por un "
+"plazo máximo de 7 días a partir de la recepción del pago."
+
+#: includes/class-hostpn-settings.php:230
 msgid ""
 "If you activate this option the plugin will remove all options on "
 "deactivation. Please, be careful. This process cannot be undone."
@@ -2463,13 +3274,6 @@ msgid ""
 msgstr ""
 "Si estás leyendo esto, el sistema de notificaciones está funcionando "
 "correctamente."
-
-#: includes/class-hostpn-post-type-accommodation.php:437
-msgid ""
-"Import and manage financial data from booking platforms (Airbnb, Booking.com)"
-msgstr ""
-"Importa y gestiona datos financieros de plataformas de reservas (Airbnb, "
-"Booking.com)."
 
 #: includes/class-hostpn-post-type-financial-record.php:119
 msgid "Import Batch ID"
@@ -2499,13 +3303,33 @@ msgstr "Historial de importación"
 msgid "Import Records"
 msgstr "Registros de importación"
 
-#: includes/class-hostpn-settings.php:521
+#: includes/class-hostpn-settings.php:628
 msgid "Import settings"
 msgstr "Importar configuración"
 
 #: includes/class-hostpn-post-type-financial-record.php:128
 msgid "Import Timestamp"
 msgstr "Marca de tiempo de importación"
+
+#: includes/class-hostpn-contract-templates.php:236
+msgid ""
+"In witness whereof, both parties sign this contract in duplicate and to a "
+"single effect, at the place and date indicated above."
+msgstr ""
+"En fe de lo cual, ambas partes firman este contrato por duplicado y con un "
+"solo efecto, en el lugar y fecha indicados anteriormente."
+
+#: includes/class-hostpn-contract-templates.php:377
+msgid "In witness whereof, both parties sign this contract in duplicate."
+msgstr "En fe de lo cual, ambas partes firman este contrato por duplicado."
+
+#: includes/class-hostpn-contract-templates.php:306
+msgid "In witness whereof, both parties sign this contract."
+msgstr "En fe de lo cual, ambas partes firman el presente contrato."
+
+#: includes/class-hostpn-contract-templates.php:198
+msgid "Included expenses:"
+msgstr "Gastos incluidos:"
 
 #: includes/class-hostpn-post-type-financial-record.php:83
 #: templates/public/hostpn-accommodation-financial.php:162
@@ -2525,6 +3349,22 @@ msgstr "India"
 msgid "Indian"
 msgstr "indio"
 
+#: includes/class-hostpn-common.php:145
+#: includes/class-hostpn-post-type-contract.php:356
+#: includes/class-hostpn-post-type-accommodation.php:732
+#: includes/class-hostpn-contract-templates.php:760
+#: includes/class-hostpn-post-type-room.php:242
+msgid "Individual equipment"
+msgstr "Equipo individual"
+
+#: includes/class-hostpn-common.php:146
+#: includes/class-hostpn-post-type-contract.php:357
+#: includes/class-hostpn-post-type-accommodation.php:733
+#: includes/class-hostpn-contract-templates.php:761
+#: includes/class-hostpn-post-type-room.php:243
+msgid "Individual kitchenware"
+msgstr "Utensilios de cocina individuales"
+
 #: includes/class-hostpn-data.php:163
 msgid "Indonesia"
 msgstr "Indonesia"
@@ -2533,19 +3373,31 @@ msgstr "Indonesia"
 msgid "Indonesian"
 msgstr "indonesio"
 
-#: includes/class-hostpn-settings.php:569
+#: includes/class-hostpn-common.php:155
+msgid "Inicio"
+msgstr "Inicio"
+
+#: includes/class-hostpn-common.php:149
+msgid "Inquilino"
+msgstr "Inquilino"
+
+#: includes/class-hostpn-settings.php:676
 msgid "Install"
 msgstr "Instalar"
 
-#: includes/class-hostpn-post-type-accommodation.php:1365
+#: includes/class-hostpn-post-type-accommodation.php:1807
 msgid "Install plugin"
 msgstr "Instalar complemento"
 
-#: includes/class-hostpn-settings.php:609
+#: includes/class-hostpn-settings.php:716
 msgid "Installing..."
 msgstr "Instalando..."
 
-#: templates/public/single-hostpn_accommodation.php:146
+#: templates/public/single-hostpn_accommodation.php:112
+msgid "Interested in this room?"
+msgstr "¿Te interesa esta habitación?"
+
+#: templates/public/single-hostpn_accommodation.php:249
 msgid "Internet"
 msgstr "Internet"
 
@@ -2563,6 +3415,15 @@ msgstr "Descripción de Internet"
 msgid "Invalid accommodation ID"
 msgstr "ID de alojamiento no válido"
 
+#: includes/class-hostpn-ajax.php:977
+msgid "Invalid contract type."
+msgstr "Tipo de contrato no válido."
+
+#: includes/class-hostpn-private-storage.php:230
+#: includes/class-hostpn-private-storage.php:265
+msgid "Invalid contract."
+msgstr "Contrato inválido."
+
 #: includes/class-hostpn-financial-csv-parser.php:44
 #: includes/class-hostpn-financial-csv-parser.php:127
 msgid "Invalid CSV format: no headers found"
@@ -2578,15 +3439,15 @@ msgstr "Dirección de correo electrónico no válida."
 msgid "Invalid financial record ID"
 msgstr "ID de registro financiero no válido"
 
-#: includes/class-hostpn-settings.php:604
+#: includes/class-hostpn-settings.php:711
 msgid "Invalid JSON file."
 msgstr "Archivo JSON no válido."
 
-#: includes/class-hostpn-ajax.php:555
+#: includes/class-hostpn-ajax.php:816
 msgid "Invalid page type."
 msgstr "Tipo de página no válido."
 
-#: includes/class-hostpn-ajax.php:490
+#: includes/class-hostpn-ajax.php:751
 msgid "Invalid role specified."
 msgstr "Se ha especificado un rol no válido."
 
@@ -2599,7 +3460,7 @@ msgid "Invalid server response."
 msgstr "Respuesta del servidor no válida."
 
 #: includes/class-hostpn-debug.php:453
-#: includes/class-hostpn-post-type-guest.php:1112
+#: includes/class-hostpn-post-type-guest.php:1135
 msgid "Invalid user ID."
 msgstr "ID de usuario no válido"
 
@@ -2607,11 +3468,11 @@ msgstr "ID de usuario no válido"
 msgid "Invoice Number"
 msgstr "Número de factura"
 
-#: hostpn.php:306
+#: hostpn.php:308
 msgid "Ion Filter"
 msgstr "Filtro de iones"
 
-#: hostpn.php:297
+#: hostpn.php:299
 msgid "Ionizer"
 msgstr "Ionizador"
 
@@ -2639,7 +3500,7 @@ msgstr "Irlanda"
 msgid "Irish"
 msgstr "irlandés"
 
-#: hostpn.php:360
+#: hostpn.php:362
 msgid "Isopropyl Alcohol Stove"
 msgstr "Estufa de alcohol isopropílico"
 
@@ -2651,6 +3512,13 @@ msgstr "Israel"
 msgid "Israeli"
 msgstr "israelí"
 
+#: includes/class-hostpn-contract-templates.php:280
+msgid ""
+"It shall be returned after inspection of the property at the end of the stay."
+msgstr ""
+"Deberá devolverse tras la inspección de la propiedad al finalizar la "
+"estancia."
+
 #: includes/class-hostpn-data.php:369
 msgid "Italian"
 msgstr "italiano"
@@ -2659,7 +3527,24 @@ msgstr "italiano"
 msgid "Italy"
 msgstr "Italia"
 
-#: includes/class-hostpn-post-type-guest.php:227
+#: includes/class-hostpn-common.php:142
+#: includes/class-hostpn-contract-templates.php:835
+msgid "Item"
+msgstr "Artículo"
+
+#: includes/class-hostpn-post-type-contract.php:376
+#: includes/class-hostpn-post-type-contract.php:377
+#: includes/class-hostpn-post-type-accommodation.php:750
+#: includes/class-hostpn-post-type-room.php:260
+#: includes/class-hostpn-post-type-room.php:261
+msgid "Item name"
+msgstr "Nombre del artículo"
+
+#: includes/class-hostpn-post-type-accommodation.php:759
+msgid "Item URL"
+msgstr "URL del artículo"
+
+#: includes/class-hostpn-post-type-guest.php:233
 msgid "I´m not the holder of the contract"
 msgstr "No soy el titular del contrato"
 
@@ -2687,7 +3572,7 @@ msgstr "Jordán"
 msgid "Jordanian"
 msgstr "jordano"
 
-#: hostpn.php:250
+#: hostpn.php:252
 msgid "Juicer"
 msgstr "Exprimidor"
 
@@ -2699,6 +3584,22 @@ msgstr "Kazajstán"
 msgid "Kazakhstani"
 msgstr "kazajo"
 
+#: includes/class-hostpn-contract-templates.php:210
+msgid ""
+"Keep the rented room in a perfect state of cleanliness and order, and "
+"actively participate in the cleaning rota for the common areas."
+msgstr ""
+"Mantenga la habitación alquilada en perfecto estado de limpieza y orden, y "
+"participe activamente en el calendario de limpieza de las zonas comunes."
+
+#: includes/class-hostpn-contract-templates.php:212
+msgid ""
+"Keeping animals in the property is prohibited unless expressly authorized in "
+"writing by the LANDLORD."
+msgstr ""
+"Queda prohibido tener animales en la propiedad a menos que el PROPIETARIO lo "
+"autorice expresamente por escrito."
+
 #: includes/class-hostpn-data.php:173
 msgid "Kenya"
 msgstr "Kenia"
@@ -2707,7 +3608,7 @@ msgstr "Kenia"
 msgid "Kenyan"
 msgstr "Keniano"
 
-#: hostpn.php:353
+#: hostpn.php:355
 msgid "Kerosene Stove"
 msgstr "Estufa de queroseno"
 
@@ -2716,11 +3617,11 @@ msgid "Kiribati"
 msgstr "Kiribati"
 
 #. Kitchen
-#: hostpn.php:234
+#: hostpn.php:236
 msgid "Kitchen"
 msgstr "Cocina"
 
-#: hostpn.php:247
+#: hostpn.php:249
 msgid "Kitchen Area"
 msgstr "Área de cocina"
 
@@ -2729,15 +3630,15 @@ msgstr "Área de cocina"
 msgid "Kitchen Features"
 msgstr "Características de la cocina"
 
-#: hostpn.php:257
+#: hostpn.php:259
 msgid "Kitchen Island"
 msgstr "Isla de cocina"
 
-#: hostpn.php:241
+#: hostpn.php:243
 msgid "Kitchen Utensils"
 msgstr "Utensilios de cocina"
 
-#: hostpn.php:265
+#: hostpn.php:267
 msgid "Knife Block"
 msgstr "Bloque de cuchillos"
 
@@ -2757,6 +3658,39 @@ msgstr "Kirguistán"
 msgid "Kyrgyzstani"
 msgstr "Kirguistán"
 
+#: includes/class-hostpn-contract-templates.php:168
+#: includes/class-hostpn-contract-templates.php:321
+msgid "LANDLORD"
+msgstr "PROPIETARIO"
+
+#: includes/class-hostpn-post-type-contract.php:166
+#: includes/class-hostpn-post-type-accommodation.php:503
+#: includes/class-hostpn-contract-templates.php:431
+msgid "Landlord address"
+msgstr "Dirección del propietario"
+
+#: includes/class-hostpn-post-type-contract.php:174
+#: includes/class-hostpn-post-type-accommodation.php:511
+#: includes/class-hostpn-contract-templates.php:432
+msgid "Landlord email"
+msgstr "Correo electrónico del propietario"
+
+#: includes/class-hostpn-post-type-accommodation.php:487
+#: includes/class-hostpn-contract-templates.php:429
+msgid "Landlord full name"
+msgstr "Nombre completo del propietario"
+
+#: includes/class-hostpn-post-type-contract.php:150
+msgid "Landlord name"
+msgstr "Nombre del propietario"
+
+#: includes/class-hostpn-post-type-contract.php:158
+#: includes/class-hostpn-post-type-contract.php:159
+#: includes/class-hostpn-post-type-accommodation.php:495
+#: includes/class-hostpn-contract-templates.php:430
+msgid "Landlord NIF/NIE"
+msgstr "Propietario NIF/NIE"
+
 #: includes/class-hostpn-data.php:177
 msgid "Lao People's Democratic Republic"
 msgstr "República Democrática Popular Lao"
@@ -2773,7 +3707,7 @@ msgstr "Letonia"
 msgid "Latvian"
 msgstr "letón"
 
-#: hostpn.php:372
+#: hostpn.php:374
 msgid "LCD TV"
 msgstr "Televisor LCD"
 
@@ -2785,7 +3719,7 @@ msgstr "libanés"
 msgid "Lebanon"
 msgstr "Líbano"
 
-#: hostpn.php:371
+#: hostpn.php:373
 msgid "LED TV"
 msgstr "Televisor LED"
 
@@ -2813,6 +3747,10 @@ msgstr "libio"
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
 
+#: includes/class-hostpn-post-type-accommodation.php:760
+msgid "Link to the product"
+msgstr "Enlace al producto"
+
 #: includes/class-hostpn-data.php:184
 msgid "Lithuania"
 msgstr "Lituania"
@@ -2822,7 +3760,7 @@ msgid "Lithuanian"
 msgstr "lituano"
 
 #. Living Area
-#: hostpn.php:332
+#: hostpn.php:334
 msgid "Living Area"
 msgstr "Área de estar"
 
@@ -2831,7 +3769,11 @@ msgstr "Área de estar"
 msgid "Living Area Features"
 msgstr "Características de la sala de estar"
 
-#: includes/class-hostpn-common.php:141
+#: templates/public/hostpn-contracts-block.php:127
+msgid "Loading preview..."
+msgstr "Cargando vista previa..."
+
+#: includes/class-hostpn-common.php:197
 msgid "Loading..."
 msgstr "Cargando..."
 
@@ -2840,16 +3782,24 @@ msgid "Log file:"
 msgstr "Archivo de registro:"
 
 #: includes/class-hostpn-post-type-part.php:796
-#: includes/class-hostpn-post-type-guest.php:649
-#: includes/class-hostpn-post-type-accommodation.php:1087
+#: includes/class-hostpn-post-type-guest.php:672
+#: includes/class-hostpn-post-type-accommodation.php:1529
 msgid "Login"
 msgstr "Acceso"
 
 #: includes/class-hostpn-post-type-part.php:796
-#: includes/class-hostpn-post-type-guest.php:649
-#: includes/class-hostpn-post-type-accommodation.php:1087
+#: includes/class-hostpn-post-type-guest.php:672
+#: includes/class-hostpn-post-type-accommodation.php:1529
 msgid "login"
 msgstr "acceso"
+
+#: includes/class-hostpn-contract-templates.php:52
+msgid "Long-stay rental"
+msgstr "Alquiler de larga estancia"
+
+#: includes/class-hostpn-contract-templates.php:631
+msgid "LONG-STAY RESIDENTIAL LEASE AGREEMENT"
+msgstr "CONTRATO DE ARRENDAMIENTO RESIDENCIAL DE LARGA ESTANCIA"
 
 #: includes/class-hostpn-forms.php:208
 msgid "Lowercase & Uppercase"
@@ -2871,7 +3821,7 @@ msgstr "macedónio"
 msgid "Madagascar"
 msgstr "Madagascar"
 
-#: hostpn.php:338
+#: hostpn.php:340
 msgid "Magazine Rack"
 msgstr "Revistero"
 
@@ -2895,29 +3845,35 @@ msgstr ""
 msgid "mailpn_error option (recent delivery failures):"
 msgstr "Opción mailpn_error (fallos de entrega recientes):"
 
-#: includes/class-hostpn-settings.php:134
+#: includes/class-hostpn-settings.php:148
 msgid "Main background color"
 msgstr "Color de fondo principal"
 
-#: includes/class-hostpn-settings.php:135
+#: includes/class-hostpn-settings.php:149
 msgid "Main background color used across the plugin."
 msgstr "Color de fondo principal utilizado en todo el complemento."
 
-#: includes/class-hostpn-settings.php:143
+#: includes/class-hostpn-settings.php:157
 msgid "Main border color"
 msgstr "Color del borde principal"
 
-#: includes/class-hostpn-settings.php:144
+#: includes/class-hostpn-settings.php:158
 msgid "Main border color used across the plugin."
 msgstr "Color de borde principal utilizado en todo el complemento."
 
-#: includes/class-hostpn-settings.php:125
+#: includes/class-hostpn-settings.php:139
 msgid "Main color"
 msgstr "Color principal"
 
-#: includes/class-hostpn-settings.php:126
+#: includes/class-hostpn-settings.php:140
 msgid "Main color used across the plugin."
 msgstr "Color principal utilizado en todo el complemento."
+
+#: includes/class-hostpn-post-type-room.php:94
+#: includes/class-hostpn-post-type-room.php:663
+#: templates/public/single-hostpn_accommodation.php:70
+msgid "Maintenance"
+msgstr "Mantenimiento"
 
 #: includes/class-hostpn-data.php:386
 msgid "Malagasy"
@@ -2947,9 +3903,9 @@ msgstr "Maldivas"
 msgid "Maldivian"
 msgstr "Maldivas"
 
-#: includes/class-hostpn-post-type-guest.php:126
+#: includes/class-hostpn-post-type-guest.php:132
 #: includes/class-hostpn-functions-user.php:209
-#: includes/class-hostpn-notifications.php:341
+#: includes/class-hostpn-notifications.php:394
 msgid "Male"
 msgstr "Masculino"
 
@@ -2977,7 +3933,7 @@ msgstr ""
 "Gestiona las páginas utilizadas por el plugin. Cada página contiene el "
 "código corto que genera la lista correspondiente."
 
-#: includes/class-hostpn-settings.php:226
+#: includes/class-hostpn-settings.php:240
 msgid ""
 "Manage which users have the Host and Guest roles. Users with these roles can "
 "access the corresponding features."
@@ -3027,15 +3983,33 @@ msgstr "mauriciano"
 msgid "Mauritius"
 msgstr "Mauricio"
 
+#: includes/class-hostpn-post-type-room.php:84
+msgid "Maximum capacity"
+msgstr "Capacidad máxima"
+
 #: templates/admin/financial/hostpn-financial-import.php:58
 msgid "Maximum file size: 5MB"
 msgstr "Tamaño máximo del archivo: 5 MB"
 
-#: hostpn.php:327
+#: includes/class-hostpn-post-type-accommodation.php:578
+msgid "Maximum number of guests"
+msgstr "Número máximo de huéspedes"
+
+#: includes/class-hostpn-contract-templates.php:264
+msgid ""
+"Maximum number of guests: <strong>[hostpn-contract-guest-count]</strong>."
+msgstr ""
+"Número máximo de invitados: <strong>[hostpn-contract-guest-count]</strong>."
+
+#: includes/class-hostpn-post-type-room.php:199
+msgid "Maximum supplies amount"
+msgstr "Cantidad máxima de suministros"
+
+#: hostpn.php:329
 msgid "Medicine Cabinet"
 msgstr "Botiquín"
 
-#: hostpn.php:359
+#: hostpn.php:361
 msgid "Methylated Spirits Stove"
 msgstr "Estufa de alcohol desnaturalizado"
 
@@ -3055,11 +4029,19 @@ msgstr "Micronesia (Estados Federados de)"
 msgid "Micronesian"
 msgstr "Micronesia"
 
-#: hostpn.php:245
+#: hostpn.php:247
 msgid "Microwave"
 msgstr "Microonda"
 
-#: hostpn.php:273
+#: includes/class-hostpn-contract-templates.php:219
+msgid ""
+"Minor repairs required by ordinary wear and tear of the room and its "
+"contents shall be borne by the TENANT."
+msgstr ""
+"Las pequeñas reparaciones necesarias debido al desgaste normal de la "
+"habitación y su contenido correrán a cargo del INQUILINO."
+
+#: hostpn.php:275
 msgid "Mirror"
 msgstr "Espejo"
 
@@ -3099,6 +4081,28 @@ msgstr "montenegrino"
 msgid "Montenegro"
 msgstr "Montenegro"
 
+#: includes/class-hostpn-post-type-accommodation.php:715
+#: includes/class-hostpn-post-type-room.php:222
+msgid "month"
+msgstr "mes"
+
+#: includes/class-hostpn-post-type-contract.php:244
+#: includes/class-hostpn-post-type-accommodation.php:651
+#: includes/class-hostpn-contract-templates.php:442
+#: includes/class-hostpn-post-type-room.php:163
+msgid "Monthly rent (EUR)"
+msgstr "Alquiler mensual (EUR)"
+
+#: includes/class-hostpn-post-type-accommodation.php:652
+#: includes/class-hostpn-post-type-room.php:164
+msgid "Monthly rent amount"
+msgstr "Monto del alquiler mensual"
+
+#: includes/class-hostpn-post-type-accommodation.php:716
+#: includes/class-hostpn-post-type-room.php:223
+msgid "months"
+msgstr "meses"
+
 #: includes/class-hostpn-data.php:401
 msgid "Moroccan"
 msgstr "marroquí"
@@ -3119,17 +4123,21 @@ msgstr "mozambiqueño"
 msgid "Mozambique"
 msgstr "Mozambique"
 
+#: templates/public/hostpn-contracts-block.php:36
+msgid "My Contracts"
+msgstr "Mis contratos"
+
 #: includes/class-hostpn-data.php:203 includes/class-hostpn-data.php:403
 msgid "Myanmar"
 msgstr "Myanmar"
 
-#: includes/class-hostpn-notifications.php:381
+#: includes/class-hostpn-notifications.php:434
 msgid "Name"
 msgstr "Nombre"
 
 #: includes/class-hostpn-post-type-part.php:774
-#: includes/class-hostpn-post-type-guest.php:629
-#: includes/class-hostpn-post-type-accommodation.php:1069
+#: includes/class-hostpn-post-type-guest.php:652
+#: includes/class-hostpn-post-type-accommodation.php:1511
 msgid "Name A-Z"
 msgstr "Nombre A-Z"
 
@@ -3137,9 +4145,17 @@ msgstr "Nombre A-Z"
 msgid "Name and surname of the holder of the payment."
 msgstr "Nombre y apellidos del titular del pago."
 
+#: includes/class-hostpn-post-type-accommodation.php:680
+msgid "Name of the bank"
+msgstr "Nombre del banco"
+
+#: includes/class-hostpn-post-type-accommodation.php:751
+msgid "Name of the item"
+msgstr "Nombre del artículo"
+
 #: includes/class-hostpn-post-type-part.php:775
-#: includes/class-hostpn-post-type-guest.php:630
-#: includes/class-hostpn-post-type-accommodation.php:1070
+#: includes/class-hostpn-post-type-guest.php:653
+#: includes/class-hostpn-post-type-accommodation.php:1512
 msgid "Name Z-A"
 msgstr "Nombre Z-A"
 
@@ -3151,11 +4167,11 @@ msgstr "Namibia"
 msgid "Namibian"
 msgstr "namibio"
 
-#: includes/class-hostpn-post-type-guest.php:119
-#: includes/class-hostpn-post-type-guest.php:120
+#: includes/class-hostpn-post-type-guest.php:125
+#: includes/class-hostpn-post-type-guest.php:126
 #: includes/class-hostpn-functions-user.php:202
 #: includes/class-hostpn-functions-user.php:203
-#: includes/class-hostpn-notifications.php:389
+#: includes/class-hostpn-notifications.php:442
 msgid "Nationality"
 msgstr "Nacionalidad"
 
@@ -3209,7 +4225,7 @@ msgstr "Nueva categoría de huésped"
 msgid "New guest registered: %1$s - %2$s"
 msgstr "Nuevo huésped registrado: %1$s - %2$s"
 
-#: includes/class-hostpn-notifications.php:404
+#: includes/class-hostpn-notifications.php:457
 msgid "New Guest Registration"
 msgstr "Registro de nuevos huéspedes"
 
@@ -3226,8 +4242,8 @@ msgid "New Zealander"
 msgstr "neozelandés"
 
 #: includes/class-hostpn-post-type-part.php:772
-#: includes/class-hostpn-post-type-guest.php:627
-#: includes/class-hostpn-post-type-accommodation.php:1067
+#: includes/class-hostpn-post-type-guest.php:650
+#: includes/class-hostpn-post-type-accommodation.php:1509
 msgid "Newest first"
 msgstr "Más recientes primero"
 
@@ -3240,14 +4256,22 @@ msgid "Nicaraguan"
 msgstr "nicaragüense"
 
 #: includes/class-hostpn-data.php:549
-#: includes/class-hostpn-notifications.php:334
+#: includes/class-hostpn-notifications.php:387
 msgid "NIE"
 msgstr "NIE"
 
 #: includes/class-hostpn-data.php:548
-#: includes/class-hostpn-notifications.php:333
+#: includes/class-hostpn-notifications.php:386
 msgid "NIF"
 msgstr "NIF"
+
+#: includes/class-hostpn-post-type-accommodation.php:496
+msgid "NIF or NIE of the landlord"
+msgstr "NIF o NIE del propietario"
+
+#: includes/class-hostpn-post-type-accommodation.php:550
+msgid "NIF or NIE of the tenant"
+msgstr "NIF o NIE del inquilino"
 
 #: includes/class-hostpn-data.php:210
 msgid "Niger"
@@ -3265,7 +4289,7 @@ msgstr "nigeriano"
 msgid "Nigerien"
 msgstr "nigerino"
 
-#: hostpn.php:271
+#: hostpn.php:273
 msgid "Nightstand"
 msgstr "Mesita de noche"
 
@@ -3281,6 +4305,22 @@ msgstr "No se encontraron alojamientos"
 msgid "No callbacks registered on hostpn_form_save."
 msgstr "No se registraron devoluciones de llamada en hostpn_form_save."
 
+#: includes/class-hostpn-post-type-contract.php:471
+msgid "No Contracts found"
+msgstr "No se encontraron contratos."
+
+#: templates/public/hostpn-contracts-block.php:40
+msgid "No contracts found for this accommodation."
+msgstr "No se encontraron contratos para este alojamiento."
+
+#: includes/class-hostpn-post-type-contract.php:472
+msgid "No Contracts found in Trash"
+msgstr "No se encontraron contratos en la basura."
+
+#: includes/class-hostpn-private-storage.php:240
+msgid "No file available."
+msgstr "No hay ningún archivo disponible."
+
 #: includes/class-hostpn-forms.php:89
 msgid "No file found"
 msgstr "No se encontró ningún archivo"
@@ -3288,6 +4328,10 @@ msgstr "No se encontró ningún archivo"
 #: includes/class-hostpn-forms.php:752
 msgid "No file uploaded"
 msgstr "No hay ningún archivo subido"
+
+#: includes/class-hostpn-private-storage.php:276
+msgid "No file uploaded."
+msgstr "No se ha subido ningún archivo."
 
 #: templates/public/hostpn-accommodation-financial.php:21
 msgid "No financial data available yet. Add your first record below."
@@ -3309,7 +4353,7 @@ msgstr "No se encontraron registros financieros."
 msgid "No financial records found in Trash"
 msgstr "No se encontraron registros financieros en la basura."
 
-#: includes/class-hostpn-post-type-guest.php:1046
+#: includes/class-hostpn-post-type-guest.php:1069
 msgid "No hay destinatarios configurados en Settings"
 msgstr "No hay destinatarios configurados en Configuración"
 
@@ -3344,7 +4388,21 @@ msgstr ""
 "No se encontraron registros. Intente ajustar los filtros o agregar un nuevo "
 "registro."
 
-#: includes/class-hostpn-post-type-guest.php:1200
+#: includes/class-hostpn-post-type-room.php:314
+msgid "No Rooms found"
+msgstr "No se encontraron habitaciones."
+
+#: includes/class-hostpn-post-type-room.php:315
+msgid "No Rooms found in Trash"
+msgstr "No se encontraron habitaciones en la basura."
+
+#: includes/class-hostpn-post-type-accommodation.php:800
+msgid "No rooms found. Add rooms to generate per-room contract links."
+msgstr ""
+"No se encontraron habitaciones. Añada habitaciones para generar enlaces de "
+"contrato por habitación."
+
+#: includes/class-hostpn-post-type-guest.php:1223
 msgid "No tienes permisos para reenviar la notificación de este huésped."
 msgstr "No tienes permisos para reenviar la notificación de este huésped."
 
@@ -3353,13 +4411,21 @@ msgstr "No tienes permisos para reenviar la notificación de este huésped."
 msgid "No users currently have the %s role."
 msgstr "Actualmente ningún usuario tiene el rol %s."
 
-#: includes/class-hostpn-ajax.php:495
+#: includes/class-hostpn-ajax.php:756
 msgid "No users selected."
 msgstr "No se ha seleccionado ningún usuario."
 
 #: includes/class-hostpn-debug.php:141
 msgid "No — plugin not active"
 msgstr "No, el complemento no está activo."
+
+#: includes/class-hostpn-contract-templates.php:214
+msgid "Noise:"
+msgstr "Ruido:"
+
+#: includes/class-hostpn-common.php:152
+msgid "Nombre"
+msgstr "Nombre"
 
 #: includes/class-hostpn-debug.php:180 includes/class-hostpn-debug.php:196
 msgid "None"
@@ -3385,13 +4451,21 @@ msgstr "Noruega"
 msgid "Norwegian"
 msgstr "noruego"
 
-#: includes/class-hostpn-post-type-accommodation.php:491
+#: includes/class-hostpn-contract-templates.php:288
+msgid "Not accommodate more persons than indicated."
+msgstr "No se admiten más personas de las indicadas."
+
+#: includes/class-hostpn-post-type-accommodation.php:863
 msgid "Not accommodation found"
 msgstr "No se encontró alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:492
+#: includes/class-hostpn-post-type-accommodation.php:864
 msgid "Not accommodation found in Trash"
 msgstr "No se encontró alojamiento en la Papelera"
+
+#: includes/class-hostpn-contract-templates.php:286
+msgid "Not carry out nuisance, unhealthy or illegal activities."
+msgstr "No realizar actividades molestas, insalubres o ilegales."
 
 #: includes/class-hostpn-post-type-part.php:1132
 msgid "Not completed"
@@ -3405,15 +4479,15 @@ msgstr "No configurado"
 msgid "NOT found"
 msgstr "Extraviado"
 
-#: includes/class-hostpn-settings.php:389
+#: includes/class-hostpn-settings.php:412
 msgid "Not found"
 msgstr "Extraviado"
 
-#: includes/class-hostpn-post-type-guest.php:276
+#: includes/class-hostpn-post-type-guest.php:290
 msgid "Not Guest found"
 msgstr "No se encontró ningún huésped"
 
-#: includes/class-hostpn-post-type-guest.php:277
+#: includes/class-hostpn-post-type-guest.php:291
 #| msgid "Not Base CPT found in Trash"
 msgid "Not Guest found in Trash"
 msgstr "No se encontraron huéspedes CPT en la papelera"
@@ -3438,15 +4512,22 @@ msgstr "No es el titular del contrato"
 msgid "Notes (Optional)"
 msgstr "Notas (opcional)"
 
-#: includes/class-hostpn-post-type-guest.php:941
+#: includes/class-hostpn-post-type-contract.php:341
+#: includes/class-hostpn-post-type-accommodation.php:629
+#: includes/class-hostpn-contract-templates.php:448
+#: includes/class-hostpn-post-type-room.php:155
+msgid "Notice days"
+msgstr "días de preaviso"
+
+#: includes/class-hostpn-post-type-guest.php:964
 msgid "Notificación"
 msgstr "Notificación"
 
-#: includes/class-hostpn-post-type-guest.php:1210
+#: includes/class-hostpn-post-type-guest.php:1233
 msgid "Notificación reenviada correctamente."
 msgstr "Notificación reenviada correctamente."
 
-#: includes/class-hostpn-common.php:194
+#: includes/class-hostpn-common.php:250
 msgid "Notification sent successfully"
 msgstr "Notificación enviada correctamente"
 
@@ -3461,6 +4542,11 @@ msgstr "Depuración de notificaciones"
 #: includes/class-hostpn-debug.php:66
 msgid "Notifications enabled"
 msgstr "Notificaciones habilitadas"
+
+#: templates/public/single-hostpn_accommodation.php:116
+#: includes/public/class-hostpn-public.php:84
+msgid "Notify me"
+msgstr "Avísame"
 
 #: includes/class-hostpn-debug.php:73 includes/class-hostpn-settings.php:72
 msgid "Notify platform users"
@@ -3494,6 +4580,14 @@ msgstr "El número debe ser al menos %s."
 msgid "Number must be at most %s."
 msgstr "El número debe ser como máximo %s."
 
+#: includes/class-hostpn-post-type-contract.php:307
+#: includes/class-hostpn-post-type-contract.php:308
+#: includes/class-hostpn-post-type-accommodation.php:577
+#: includes/class-hostpn-contract-templates.php:453
+#: includes/class-hostpn-post-type-room.php:85
+msgid "Number of guests"
+msgstr "Número de invitados"
+
 #: includes/class-hostpn-post-type-part.php:215
 #: includes/class-hostpn-post-type-part.php:216
 msgid "Number of people"
@@ -3504,6 +4598,12 @@ msgstr "Número de personas"
 msgid "Number of rooms"
 msgstr "Número de habitaciones"
 
+#: includes/class-hostpn-post-type-room.php:93
+#: includes/class-hostpn-post-type-room.php:662
+#: templates/public/single-hostpn_accommodation.php:69
+msgid "Occupied"
+msgstr "Ocupado"
+
 #: includes/class-hostpn-debug.php:68
 msgid "OFF"
 msgstr "APAGADO"
@@ -3513,12 +4613,12 @@ msgid "Off (no filtering)"
 msgstr "Desactivado (sin filtrado)"
 
 #: includes/class-hostpn-post-type-part.php:773
-#: includes/class-hostpn-post-type-guest.php:628
-#: includes/class-hostpn-post-type-accommodation.php:1068
+#: includes/class-hostpn-post-type-guest.php:651
+#: includes/class-hostpn-post-type-accommodation.php:1510
 msgid "Oldest first"
 msgstr "Del más antiguo al más antiguo."
 
-#: hostpn.php:369
+#: hostpn.php:371
 msgid "OLED TV"
 msgstr "Televisor OLED"
 
@@ -3534,9 +4634,59 @@ msgstr "omaní"
 msgid "ON"
 msgstr "EN"
 
+#: includes/class-hostpn-contract-templates.php:168
+#: includes/class-hostpn-contract-templates.php:251
+#: includes/class-hostpn-contract-templates.php:321
+#, php-format
+msgid ""
+"On one hand, MR/MS <strong>[hostpn-host-name]</strong>, of legal age, with "
+"ID number <strong>[hostpn-host-id]</strong>, with address at <strong>[hostpn-"
+"host-address]</strong> and email <strong>[hostpn-host-email]</strong>. "
+"Hereinafter referred to as the %s."
+msgstr ""
+"Por un lado, el Sr./Sra. <strong>[hostpn-host-name]</strong>, mayor de edad, "
+"con número de identificación <strong>[hostpn-host-id]</strong>, con "
+"domicilio en <strong>[hostpn-host-address]</strong> y correo electrónico "
+"<strong>[hostpn-host-email]</strong>. En adelante, denominado %s."
+
+#: includes/class-hostpn-contract-templates.php:169
+#: includes/class-hostpn-contract-templates.php:252
+#: includes/class-hostpn-contract-templates.php:322
+#, php-format
+msgid ""
+"On the other hand, MR/MS <strong>[hostpn-guest-name]</strong>, of legal age, "
+"with ID number <strong>[hostpn-guest-id-card]</strong>, with address at "
+"<strong>[hostpn-guest-address]</strong> and email <strong>[hostpn-guest-"
+"email]</strong>. Hereinafter referred to as the %s."
+msgstr ""
+"Por otra parte, el Sr./Sra. <strong>[hostpn-guest-name]</strong>, mayor de "
+"edad, con número de identificación <strong>[hostpn-guest-id-card]</strong>, "
+"con domicilio en <strong>[hostpn-guest-address]</strong> y correo "
+"electrónico <strong>[hostpn-guest-email]</strong>. En adelante, denominado "
+"%s."
+
 #: includes/class-hostpn-financial-csv-parser.php:225
 msgid "Only CSV files are allowed"
 msgstr "Solo se permiten archivos CSV."
+
+#: includes/class-hostpn-private-storage.php:118
+#: includes/class-hostpn-private-storage.php:122
+#: includes/public/class-hostpn-public.php:98
+msgid "Only PDF files are allowed."
+msgstr "Solo se admiten archivos PDF."
+
+#: includes/class-hostpn-post-type-accommodation.php:794
+#: includes/class-hostpn-post-type-accommodation.php:807
+msgid "Open"
+msgstr "Abierto"
+
+#: includes/class-hostpn-post-type-room.php:187
+msgid "Option A - Supplies included"
+msgstr "Opción A - Suministros incluidos"
+
+#: includes/class-hostpn-post-type-room.php:188
+msgid "Option B - Supplies not included"
+msgstr "Opción B: suministros no incluidos"
 
 #: includes/class-hostpn-post-type-part.php:240
 msgid ""
@@ -3551,8 +4701,8 @@ msgid "Optional guest fields"
 msgstr "Campos de invitados opcionales"
 
 #: includes/class-hostpn-post-type-part.php:796
-#: includes/class-hostpn-post-type-guest.php:649
-#: includes/class-hostpn-post-type-accommodation.php:1087
+#: includes/class-hostpn-post-type-guest.php:672
+#: includes/class-hostpn-post-type-accommodation.php:1529
 msgid "or"
 msgstr "o"
 
@@ -3560,32 +4710,44 @@ msgstr "o"
 msgid "Order element"
 msgstr "Elemento de orden"
 
-#: includes/class-hostpn-common.php:220
+#: includes/class-hostpn-common.php:276
 msgid "Ordered element"
 msgstr "Elemento ordenado"
 
 #: includes/class-hostpn-data.php:533 includes/class-hostpn-data.php:537
 #: includes/class-hostpn-data.php:552
-#: includes/class-hostpn-post-type-guest.php:126
+#: includes/class-hostpn-post-type-guest.php:132
 #: includes/class-hostpn-functions-user.php:209
-#: includes/class-hostpn-notifications.php:337
-#: includes/class-hostpn-notifications.php:343
+#: includes/class-hostpn-notifications.php:390
+#: includes/class-hostpn-notifications.php:396
 msgid "Other"
 msgstr "Otro"
+
+#: includes/class-hostpn-common.php:148
+#: includes/class-hostpn-post-type-contract.php:359
+#: includes/class-hostpn-post-type-accommodation.php:735
+#: includes/class-hostpn-contract-templates.php:763
+#: includes/class-hostpn-post-type-room.php:245
+msgid "Other items"
+msgstr "Otros artículos"
 
 #: includes/class-hostpn-post-type-part.php:262
 msgid "Other payment methods"
 msgstr "Otros métodos de pago"
 
-#: hostpn.php:240
+#: hostpn.php:242
 msgid "Oven"
 msgstr "Horno"
 
-#: hostpn.php:307
+#: includes/class-hostpn-contract-templates.php:251
+msgid "OWNER"
+msgstr "DUEÑO"
+
+#: hostpn.php:309
 msgid "Ozone Filter"
 msgstr "Filtro de ozono"
 
-#: hostpn.php:298
+#: hostpn.php:300
 msgid "Ozone Generator"
 msgstr "Generador de ozono"
 
@@ -3593,7 +4755,7 @@ msgstr "Generador de ozono"
 msgid "Padres en la Nube"
 msgstr "Padres en la Nube"
 
-#: includes/class-hostpn-settings.php:366
+#: includes/class-hostpn-settings.php:389
 msgid "Page"
 msgstr "Página"
 
@@ -3625,7 +4787,7 @@ msgstr "Panamá"
 msgid "Panamanian"
 msgstr "panameño"
 
-#: hostpn.php:258
+#: hostpn.php:260
 msgid "Pantry"
 msgstr "Despensa"
 
@@ -3641,7 +4803,7 @@ msgstr "Papúa Nueva Guinea"
 msgid "Parador de tourism"
 msgstr "Parador de turismo"
 
-#: hostpn.php:357
+#: hostpn.php:359
 msgid "Paraffin Stove"
 msgstr "Estufa de parafina"
 
@@ -3653,7 +4815,7 @@ msgstr "Paraguay"
 msgid "Paraguayan"
 msgstr "paraguayo"
 
-#: includes/class-hostpn-post-type-accommodation.php:483
+#: includes/class-hostpn-post-type-accommodation.php:855
 msgid "Parent accommodation"
 msgstr "Alojamiento para padres"
 
@@ -3665,7 +4827,11 @@ msgstr "Categoría de alojamiento para padres"
 msgid "Parent Accommodation category:"
 msgstr "Categoría de alojamiento para padres:"
 
-#: includes/class-hostpn-post-type-guest.php:268
+#: includes/class-hostpn-post-type-contract.php:463
+msgid "Parent Contract"
+msgstr "Contrato de padres"
+
+#: includes/class-hostpn-post-type-guest.php:282
 msgid "Parent Guest"
 msgstr "Padre huésped"
 
@@ -3693,7 +4859,11 @@ msgstr "Padre Parte de la categoría de viajeros:"
 msgid "Parent Record"
 msgstr "Registro de padres"
 
-#: templates/public/single-hostpn_accommodation.php:134
+#: includes/class-hostpn-post-type-room.php:306
+msgid "Parent Room"
+msgstr "Sala para padres"
+
+#: templates/public/single-hostpn_accommodation.php:237
 msgid "Parking"
 msgstr "Aparcamiento"
 
@@ -3741,8 +4911,8 @@ msgid "Part of traveler details"
 msgstr "Parte de los datos del viajero"
 
 #: includes/class-hostpn-post-type-part.php:421
-#: includes/class-hostpn-settings.php:300
-#: includes/class-hostpn-settings.php:301
+#: includes/class-hostpn-settings.php:314
+#: includes/class-hostpn-settings.php:315
 msgid "Part of travelers"
 msgstr "Parte de los viajeros"
 
@@ -3755,15 +4925,24 @@ msgstr "Parte de las categorías de viajeros"
 msgid "Part title"
 msgstr "Título de la pieza"
 
-#: includes/class-hostpn-shortcodes.php:38 includes/class-hostpn-ajax.php:546
+#: includes/class-hostpn-contract-templates.php:84
+#: includes/class-hostpn-contract-templates.php:102
+#: includes/class-hostpn-contract-templates.php:118
+#: includes/class-hostpn-contract-templates.php:167
+#: includes/class-hostpn-contract-templates.php:250
+#: includes/class-hostpn-contract-templates.php:320
+msgid "PARTIES"
+msgstr "FIESTAS"
+
+#: includes/class-hostpn-shortcodes.php:38 includes/class-hostpn-ajax.php:807
 #: includes/class-hostpn-activator.php:151
 #: includes/class-hostpn-activator.php:174
-#: includes/class-hostpn-settings.php:434
+#: includes/class-hostpn-settings.php:539
 msgid "Parts of travelers"
 msgstr "Partes de viajeros"
 
 #: includes/class-hostpn-data.php:550
-#: includes/class-hostpn-notifications.php:335
+#: includes/class-hostpn-notifications.php:388
 msgid "Passport"
 msgstr "Pasaporte"
 
@@ -3783,6 +4962,13 @@ msgstr "Fecha de pago"
 #: includes/class-hostpn-post-type-part.php:294
 msgid "Payment date"
 msgstr "Fecha de pago"
+
+#: includes/class-hostpn-post-type-contract.php:262
+#: includes/class-hostpn-post-type-accommodation.php:667
+#: includes/class-hostpn-contract-templates.php:449
+#: includes/class-hostpn-post-type-room.php:179
+msgid "Payment day"
+msgstr "Día de pago"
 
 #: includes/class-hostpn-post-type-part.php:313
 #: includes/class-hostpn-post-type-part.php:314
@@ -3810,6 +4996,22 @@ msgstr ""
 msgid "Payment platform"
 msgstr "Plataforma de pago"
 
+#: includes/class-hostpn-contract-templates.php:275
+msgid ""
+"Payment shall be made according to the conditions agreed between both "
+"parties."
+msgstr ""
+"El pago se realizará de acuerdo con las condiciones acordadas entre ambas "
+"partes."
+
+#: includes/class-hostpn-contract-templates.php:343
+msgid ""
+"Payment shall be made within the first <strong>[hostpn-contract-payment-day]"
+"</strong> days of each month by bank transfer to:"
+msgstr ""
+"El pago deberá efectuarse dentro de los primeros <strong>[hostpn-contract-"
+"payment-day]</strong> días de cada mes mediante transferencia bancaria a:"
+
 #: includes/class-hostpn-post-type-financial-record.php:325
 msgid "Payment Status"
 msgstr "Estado del pago"
@@ -3819,11 +5021,11 @@ msgstr "Estado del pago"
 msgid "Payment type"
 msgstr "Tipo de pago"
 
-#: hostpn.php:349
+#: hostpn.php:351
 msgid "Pellet Stove"
 msgstr "Estufa de pellets"
 
-#: hostpn.php:343
+#: hostpn.php:345
 msgid "Pendant Lamp"
 msgstr "Lámpara colgante"
 
@@ -3848,15 +5050,23 @@ msgstr "Perú"
 msgid "Peruvian"
 msgstr "peruano"
 
+#: includes/class-hostpn-contract-templates.php:290
+msgid "Pets are prohibited unless expressly authorized."
+msgstr "No se admiten mascotas a menos que estén expresamente autorizadas."
+
+#: includes/class-hostpn-contract-templates.php:212
+msgid "Pets:"
+msgstr "Mascotas:"
+
 #: includes/class-hostpn-data.php:222
 msgid "Philippines"
 msgstr "Filipinas"
 
-#: includes/class-hostpn-post-type-guest.php:199
-#: includes/class-hostpn-post-type-guest.php:200
+#: includes/class-hostpn-post-type-guest.php:205
+#: includes/class-hostpn-post-type-guest.php:206
 #: includes/class-hostpn-functions-user.php:283
 #: includes/class-hostpn-functions-user.php:284
-#: includes/class-hostpn-notifications.php:383
+#: includes/class-hostpn-notifications.php:436
 msgid "Phone"
 msgstr "Teléfono"
 
@@ -3864,15 +5074,15 @@ msgstr "Teléfono"
 msgid "Photo Gallery"
 msgstr "Galería de fotos"
 
-#: hostpn.php:303
+#: hostpn.php:305
 msgid "Photocatalytic Filter"
 msgstr "Filtro fotocatalítico"
 
-#: hostpn.php:304
+#: hostpn.php:306
 msgid "Plasma Filter"
 msgstr "Filtro de plasma"
 
-#: hostpn.php:373
+#: hostpn.php:375
 msgid "Plasma TV"
 msgstr "Televisor de plasma"
 
@@ -3887,7 +5097,7 @@ msgstr "Televisor de plasma"
 msgid "Platform"
 msgstr "Plataforma"
 
-#: includes/class-hostpn-common.php:190
+#: includes/class-hostpn-common.php:246
 msgid "Please create a new user or login to save the information."
 msgstr ""
 "Por favor crea un nuevo usuario o inicia sesión para guardar la información."
@@ -3900,6 +5110,11 @@ msgstr "Introduzca una fecha válida."
 msgid "Please enter a valid email address."
 msgstr "Por favor, introduce una dirección de correo electrónico válida."
 
+#: includes/class-hostpn-post-type-room.php:923
+#: includes/public/class-hostpn-public.php:82
+msgid "Please enter a valid email."
+msgstr "Por favor, introduzca un correo electrónico válido."
+
 #: includes/class-hostpn-validation.php:84
 msgid "Please enter a valid number."
 msgstr "Por favor, introduzca un número válido."
@@ -3908,7 +5123,7 @@ msgstr "Por favor, introduzca un número válido."
 msgid "Please enter a valid URL."
 msgstr "Introduzca una URL válida."
 
-#: includes/class-hostpn-post-type-accommodation.php:1362
+#: includes/class-hostpn-post-type-accommodation.php:1804
 #| msgid ""
 #| "Please install Users Manager - WPH plugin to allow user creation and "
 #| "management."
@@ -3943,17 +5158,22 @@ msgstr "Portugal"
 msgid "Portuguese"
 msgstr "portugués"
 
-#: includes/class-hostpn-post-type-accommodation.php:480
+#: includes/class-hostpn-post-type-accommodation.php:852
 msgctxt "Post Type general name"
 msgid "Accommodation"
 msgstr "Alojamiento"
+
+#: includes/class-hostpn-post-type-contract.php:460
+msgctxt "Post Type general name"
+msgid "Contract"
+msgstr "Contrato"
 
 #: includes/class-hostpn-post-type-financial-record.php:23
 msgctxt "Post Type general name"
 msgid "Financial Records"
 msgstr "Registros financieros"
 
-#: includes/class-hostpn-post-type-guest.php:265
+#: includes/class-hostpn-post-type-guest.php:279
 #| msgid "Base CPT"
 msgctxt "Post Type general name"
 msgid "Guest"
@@ -3964,17 +5184,27 @@ msgctxt "Post Type general name"
 msgid "Part of traveler"
 msgstr "Parte del viajero"
 
-#: includes/class-hostpn-post-type-accommodation.php:481
+#: includes/class-hostpn-post-type-room.php:303
+msgctxt "Post Type general name"
+msgid "Room"
+msgstr "Habitación"
+
+#: includes/class-hostpn-post-type-accommodation.php:853
 msgctxt "Post Type singular name"
 msgid "Accommodation"
 msgstr "Alojamiento"
+
+#: includes/class-hostpn-post-type-contract.php:461
+msgctxt "Post Type singular name"
+msgid "Contract"
+msgstr "Contrato"
 
 #: includes/class-hostpn-post-type-financial-record.php:24
 msgctxt "Post Type singular name"
 msgid "Financial Record"
 msgstr "Historial financiero"
 
-#: includes/class-hostpn-post-type-guest.php:266
+#: includes/class-hostpn-post-type-guest.php:280
 #| msgid "Recipe"
 msgctxt "Post Type singular name"
 msgid "Guest"
@@ -3985,13 +5215,26 @@ msgctxt "Post Type singular name"
 msgid "Part of traveler"
 msgstr "Parte del viajero"
 
-#: includes/class-hostpn-post-type-guest.php:169
-#: includes/class-hostpn-post-type-guest.php:170
+#: includes/class-hostpn-post-type-room.php:304
+msgctxt "Post Type singular name"
+msgid "Room"
+msgstr "Habitación"
+
+#: includes/class-hostpn-post-type-guest.php:175
+#: includes/class-hostpn-post-type-guest.php:176
 #: includes/class-hostpn-functions-user.php:264
 #: includes/class-hostpn-functions-user.php:265
-#: includes/class-hostpn-notifications.php:393
+#: includes/class-hostpn-notifications.php:446
 msgid "Postal code"
 msgstr "Código Postal"
+
+#: includes/class-hostpn-common.php:159
+msgid "Preaviso"
+msgstr "Preaviso"
+
+#: templates/public/hostpn-contracts-block.php:94
+msgid "Preview"
+msgstr "Avance"
 
 #: templates/admin/financial/hostpn-financial-import.php:85
 msgid "Preview (first 5 rows):"
@@ -4001,19 +5244,19 @@ msgstr "Vista previa (primeras 5 filas):"
 msgid "Priority"
 msgstr "Prioridad"
 
-#: hostpn.php:311
+#: hostpn.php:313
 msgid "Private Bathroom"
 msgstr "Baño privado"
 
-#: hostpn.php:375
+#: hostpn.php:377
 msgid "Projector"
 msgstr "Proyector"
 
-#: hostpn.php:352
+#: hostpn.php:354
 msgid "Propane Stove"
 msgstr "Estufa de propano"
 
-#: includes/class-hostpn-settings.php:384
+#: includes/class-hostpn-settings.php:407
 msgid "Published"
 msgstr "Publicado"
 
@@ -4061,7 +5304,7 @@ msgstr "Katar"
 msgid "Qatari"
 msgstr "catarí"
 
-#: hostpn.php:370
+#: hostpn.php:372
 msgid "QLED TV"
 msgstr "Televisor QLED"
 
@@ -4077,23 +5320,32 @@ msgstr "Cuarto"
 msgid "Quarterly Breakdown"
 msgstr "Desglose trimestral"
 
-#: hostpn.php:275
+#: hostpn.php:277
 msgid "Reading Lamp"
 msgstr "Lámpara para leer"
 
-#: hostpn.php:345
+#: hostpn.php:347
 msgid "Recessed Lighting"
 msgstr "Iluminación empotrada"
 
-#: includes/class-hostpn-settings.php:556
+#: includes/class-hostpn-contract-templates.php:85
+#: includes/class-hostpn-contract-templates.php:103
+#: includes/class-hostpn-contract-templates.php:119
+#: includes/class-hostpn-contract-templates.php:173
+#: includes/class-hostpn-contract-templates.php:256
+#: includes/class-hostpn-contract-templates.php:326
+msgid "RECITALS"
+msgstr "RECITALES"
+
+#: includes/class-hostpn-settings.php:663
 msgid "Recommended"
 msgstr "Recomendado"
 
-#: includes/class-hostpn-settings.php:540
+#: includes/class-hostpn-settings.php:647
 msgid "Recommended Plugins"
 msgstr "Plugins recomendados"
 
-#: includes/class-hostpn-settings.php:513
+#: includes/class-hostpn-settings.php:620
 msgid "Recommended plugins"
 msgstr "Plugins recomendados"
 
@@ -4110,11 +5362,15 @@ msgstr "Tipo de registro"
 msgid "Records"
 msgstr "Archivos"
 
-#: includes/class-hostpn-post-type-guest.php:1060
+#: includes/class-hostpn-post-type-guest.php:1083
 msgid "Reenviar"
 msgstr "Reenviar"
 
-#: hostpn.php:246
+#: includes/class-hostpn-post-type-accommodation.php:950
+msgid "Refresh preview"
+msgstr "Actualizar vista previa"
+
+#: hostpn.php:248
 msgid "Refrigerator"
 msgstr "Refrigerador"
 
@@ -4123,8 +5379,8 @@ msgid "Refuge"
 msgstr "Refugio"
 
 #: includes/class-hostpn-post-type-part.php:796
-#: includes/class-hostpn-post-type-guest.php:649
-#: includes/class-hostpn-post-type-accommodation.php:1087
+#: includes/class-hostpn-post-type-guest.php:672
+#: includes/class-hostpn-post-type-accommodation.php:1529
 msgid "register"
 msgstr "registro"
 
@@ -4133,14 +5389,14 @@ msgstr "registro"
 msgid "Registered"
 msgstr "Registrado"
 
-#: includes/class-hostpn-post-type-guest.php:239
+#: includes/class-hostpn-post-type-guest.php:245
 #: includes/class-hostpn-functions-user.php:323
 msgid "Relationship"
 msgstr "Relación"
 
-#: includes/class-hostpn-post-type-guest.php:238
+#: includes/class-hostpn-post-type-guest.php:244
 #: includes/class-hostpn-functions-user.php:322
-#: includes/class-hostpn-notifications.php:398
+#: includes/class-hostpn-notifications.php:451
 msgid "Relationship with contract holder"
 msgstr "Relación con el titular del contrato"
 
@@ -4148,7 +5404,7 @@ msgstr "Relación con el titular del contrato"
 msgid "removal"
 msgstr "eliminación"
 
-#: templates/hostpn-popups.php:47 includes/class-hostpn-common.php:201
+#: templates/hostpn-popups.php:47 includes/class-hostpn-common.php:257
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -4157,15 +5413,19 @@ msgstr "Eliminar"
 msgid "Remove %s Role"
 msgstr "Eliminar el rol %s"
 
-#: includes/class-hostpn-post-type-accommodation.php:1217
+#: includes/class-hostpn-post-type-accommodation.php:1659
 msgid "Remove Accommodation"
 msgstr "Eliminar alojamiento"
+
+#: includes/class-hostpn-post-type-contract.php:952
+msgid "Remove Contract"
+msgstr "Eliminar contrato"
 
 #: includes/class-hostpn-forms.php:515 includes/class-hostpn-forms.php:531
 msgid "Remove element"
 msgstr "Eliminar elemento"
 
-#: includes/class-hostpn-post-type-guest.php:780
+#: includes/class-hostpn-post-type-guest.php:803
 msgid "Remove Guest"
 msgstr "Eliminar huésped"
 
@@ -4173,14 +5433,39 @@ msgstr "Eliminar huésped"
 msgid "Remove Part"
 msgstr "Quitar pieza"
 
-#: includes/class-hostpn-settings.php:215
+#: includes/class-hostpn-settings.php:229
 msgid "Remove plugin options on deactivation"
 msgstr "Eliminar las opciones del plugin al desactivarlo"
 
-#: includes/class-hostpn-common.php:192
+#: includes/class-hostpn-post-type-room.php:744
+msgid "Remove Room"
+msgstr "Eliminar habitación"
+
+#: includes/class-hostpn-common.php:248
 #: includes/class-hostpn-post-type-part.php:735
 msgid "Removed successfully"
 msgstr "Eliminado exitosamente"
+
+#: includes/class-hostpn-post-type-contract.php:252
+#: includes/class-hostpn-post-type-accommodation.php:659
+#: includes/class-hostpn-contract-templates.php:443
+#: includes/class-hostpn-post-type-room.php:171
+msgid "Rent in words"
+msgstr "Alquiler en palabras"
+
+#: includes/class-hostpn-contract-templates.php:192
+msgid ""
+"Rent shall be paid in advance within the first <strong>[hostpn-contract-"
+"payment-day]</strong> days of each month, by bank transfer to the LANDLORD's "
+"account:"
+msgstr ""
+"El alquiler deberá pagarse por adelantado dentro de los primeros <strong>"
+"[hostpn-contract-payment-day]</strong> días de cada mes, mediante "
+"transferencia bancaria a la cuenta del ARRENDADOR:"
+
+#: includes/class-hostpn-post-type-contract.php:478
+msgid "Rental contracts linked to accommodations and guests"
+msgstr "Contratos de alquiler vinculados a alojamientos y huéspedes"
 
 #: includes/class-hostpn-post-type-financial-record.php:232
 msgid "Rented Days"
@@ -4190,7 +5475,7 @@ msgstr "Días alquilados"
 msgid "Required field"
 msgstr "Campo obligatorio"
 
-#: includes/class-hostpn-post-type-guest.php:766
+#: includes/class-hostpn-post-type-guest.php:789
 msgid "Resend Notification"
 msgstr "Reenviar notificación"
 
@@ -4210,6 +5495,19 @@ msgstr "Restablecer filtros"
 msgid "Residence"
 msgstr "Residencia"
 
+#: includes/class-hostpn-contract-templates.php:287
+msgid "Respect the neighbours' rest."
+msgstr "Respeta el descanso de los vecinos."
+
+#: includes/class-hostpn-common.php:172
+msgid "Restore default texts? Unsaved changes will be lost."
+msgstr ""
+"¿Restaurar los textos predeterminados? Los cambios no guardados se perderán."
+
+#: includes/class-hostpn-settings.php:507
+msgid "Restore defaults"
+msgstr "Restaurar valores predeterminados"
+
 #: includes/class-hostpn-data.php:226
 msgid "Romania"
 msgstr "Rumania"
@@ -4219,33 +5517,101 @@ msgid "Romanian"
 msgstr "rumano"
 
 #. Room
-#: hostpn.php:268
+#: hostpn.php:270 includes/class-hostpn-post-type-contract.php:96
+#: includes/class-hostpn-post-type-accommodation.php:522
+#: includes/class-hostpn-post-type-room.php:24
+#: includes/class-hostpn-post-type-room.php:320
+#: includes/class-hostpn-post-type-room.php:486
+#: includes/class-hostpn-post-type-room.php:613
 msgid "Room"
 msgstr "Habitación"
+
+#. %1$s: room number, %2$s: accommodation name
+#: includes/class-hostpn-notifications.php:221
+#, php-format
+msgid "Room %1$s is now available - %2$s"
+msgstr "La habitación %1$s ya está disponible - %2$s"
+
+#: templates/public/single-hostpn_accommodation.php:99
+#, php-format
+msgid "Room %s"
+msgstr "Habitación %s"
+
+#: includes/class-hostpn-notifications.php:228
+#, php-format
+msgid "Room %s is now available!"
+msgstr "¡La habitación %s ya está disponible!"
+
+#: includes/class-hostpn-post-type-room.php:31
+msgid "Room description"
+msgstr "Descripción de la habitación"
+
+#: includes/class-hostpn-post-type-room.php:350
+msgid "Room details"
+msgstr "Detalles de la habitación"
 
 #: includes/class-hostpn-post-type-accommodation.php:237
 #: includes/class-hostpn-post-type-accommodation.php:279
 msgid "Room Features"
 msgstr "Características de la habitación"
 
+#: includes/class-hostpn-contract-templates.php:447
+msgid "Room identification"
+msgstr "Identificación de la habitación"
+
+#: includes/class-hostpn-post-type-room.php:238
+msgid "Room inventory"
+msgstr "Inventario de la habitación"
+
+#: includes/class-hostpn-post-type-room.php:915
+msgid "Room not found."
+msgstr "Habitación no encontrada."
+
+#: includes/class-hostpn-post-type-room.php:67
+msgid "Room number / identifier"
+msgstr "Número/identificador de la habitación"
+
+#: includes/class-hostpn-contract-templates.php:50
+msgid "Room rental"
+msgstr "Alquiler de habitaciones"
+
+#: includes/class-hostpn-contract-templates.php:629
+msgid "ROOM RENTAL AGREEMENT IN SHARED PROPERTY"
+msgstr "CONTRATO DE ALQUILER DE HABITACIÓN EN PROPIEDAD COMPARTIDA"
+
 #: includes/class-hostpn-data.php:533
 msgid "Room/s in a house"
 msgstr "Habitación(es) en una casa"
+
+#: includes/class-hostpn-settings.php:341
+#: includes/class-hostpn-settings.php:342
+#: includes/class-hostpn-post-type-room.php:305
+#: templates/public/single-hostpn_accommodation.php:79
+msgid "Rooms"
+msgstr "Habitaciones"
+
+#: includes/class-hostpn-post-type-contract.php:98
+msgid "Rooms are filtered by the selected accommodation."
+msgstr "Las habitaciones se filtran según el alojamiento seleccionado."
+
+#: includes/class-hostpn-post-type-room.php:321
+msgid "Rooms within accommodations"
+msgstr "Habitaciones dentro del alojamiento"
 
 #: includes/class-hostpn-financial-importer.php:68
 #, php-format
 msgid "Row %d: %s"
 msgstr "Fila %d: %s"
 
-#: hostpn.php:361
+#: hostpn.php:363
 msgid "Rubbing Alcohol Stove"
 msgstr "Estufa de alcohol isopropílico"
 
-#: hostpn.php:341
+#: hostpn.php:343
 msgid "Rug"
 msgstr "Alfombra"
 
-#: templates/public/single-hostpn_accommodation.php:89
+#: templates/public/single-hostpn_accommodation.php:192
 msgid "Rules & Conditions"
 msgstr "Reglas y condiciones"
 
@@ -4333,7 +5699,7 @@ msgstr "Arabia Saudita"
 msgid "Saudi Arabia"
 msgstr "Arabia Saudita"
 
-#: includes/class-hostpn-post-type-accommodation.php:1327
+#: includes/class-hostpn-post-type-accommodation.php:1769
 msgid "Save Accommodation"
 msgstr "Guardar alojamiento"
 
@@ -4341,12 +5707,16 @@ msgstr "Guardar alojamiento"
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
-#: includes/class-hostpn-post-type-guest.php:919
+#: includes/class-hostpn-post-type-contract.php:1053
+msgid "Save Contract"
+msgstr "Guardar contrato"
+
+#: includes/class-hostpn-post-type-guest.php:942
 msgid "Save Guest"
 msgstr "Guardar huésped"
 
-#: includes/class-hostpn-settings.php:453
-#: includes/class-hostpn-settings.php:529
+#: includes/class-hostpn-settings.php:560
+#: includes/class-hostpn-settings.php:636
 msgid "Save options"
 msgstr ""
 "Guardar opciones\n"
@@ -4359,20 +5729,28 @@ msgstr "Guardar parte"
 msgid "Save Record"
 msgstr "Guardar registro"
 
-#: includes/class-hostpn-common.php:191
+#: includes/class-hostpn-post-type-room.php:839
+msgid "Save Room"
+msgstr "Guardar habitación"
+
+#: includes/class-hostpn-common.php:170 includes/class-hostpn-settings.php:504
+msgid "Save template"
+msgstr "Guardar plantilla"
+
+#: includes/class-hostpn-common.php:171 includes/class-hostpn-common.php:247
 #: includes/class-hostpn-post-type-part.php:734
 msgid "Saved successfully"
 msgstr "Guardado con éxito"
 
-#: hostpn.php:346
+#: hostpn.php:348
 msgid "Sconces"
 msgstr "Apliques"
 
-#: hostpn.php:376
+#: hostpn.php:378
 msgid "Screen"
 msgstr "Pantalla"
 
-#: includes/class-hostpn-post-type-guest.php:1045
+#: includes/class-hostpn-post-type-guest.php:1068
 #, php-format
 msgid "Se enviará a: %s"
 msgstr "Se enviará a: %s"
@@ -4381,13 +5759,17 @@ msgstr "Se enviará a: %s"
 msgid "Search Accommodation categories"
 msgstr "Buscar categorías de alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:1061
+#: includes/class-hostpn-post-type-accommodation.php:1503
 msgid "Search Accommodations"
 msgstr "Buscar alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:490
+#: includes/class-hostpn-post-type-accommodation.php:862
 msgid "Search accommodations"
 msgstr "Buscar alojamiento"
+
+#: includes/class-hostpn-post-type-contract.php:470
+msgid "Search Contracts"
+msgstr "Buscar contratos"
 
 #: includes/class-hostpn-post-type-financial-record.php:33
 msgid "Search Financial Records"
@@ -4397,8 +5779,8 @@ msgstr "Buscar registros financieros"
 msgid "Search Guest categories"
 msgstr "Buscar categorías de huéspedes"
 
-#: includes/class-hostpn-post-type-guest.php:275
-#: includes/class-hostpn-post-type-guest.php:620
+#: includes/class-hostpn-post-type-guest.php:289
+#: includes/class-hostpn-post-type-guest.php:643
 msgid "Search Guests"
 msgstr "Buscar huéspedes"
 
@@ -4414,32 +5796,48 @@ msgstr "Buscar Parte de las categorías de viajeros"
 msgid "Search Parts"
 msgstr "Buscar piezas"
 
+#: includes/class-hostpn-post-type-room.php:313
+msgid "Search Rooms"
+msgstr "Buscar salas"
+
 #: includes/class-hostpn-functions-user.php:144
 #: includes/class-hostpn-functions-user.php:145
 msgid "Second surname"
 msgstr "Segundo apellido"
 
-#: includes/class-hostpn-ajax.php:482
+#: includes/class-hostpn-ajax.php:743
+#: includes/class-hostpn-private-storage.php:223
+#: includes/class-hostpn-private-storage.php:258
+#: includes/class-hostpn-post-type-room.php:904
 msgid "Security check failed."
 msgstr "Falló la comprobación de seguridad."
 
 #: includes/class-hostpn-ajax.php:34
 #: includes/class-hostpn-post-type-part.php:527
 #: includes/class-hostpn-ajax-nopriv.php:33
-#: includes/class-hostpn-post-type-guest.php:358
-#: includes/class-hostpn-post-type-guest.php:1102
-#: includes/class-hostpn-post-type-guest.php:1166
-#: includes/class-hostpn-post-type-accommodation.php:652
+#: includes/class-hostpn-post-type-guest.php:377
+#: includes/class-hostpn-post-type-guest.php:1125
+#: includes/class-hostpn-post-type-guest.php:1189
+#: includes/class-hostpn-post-type-accommodation.php:1081
 msgid "Security check failed: Invalid nonce."
 msgstr "Error en la comprobación de seguridad: nonce no válido."
 
 #: includes/class-hostpn-ajax.php:25
 #: includes/class-hostpn-post-type-part.php:518
 #: includes/class-hostpn-ajax-nopriv.php:24
-#: includes/class-hostpn-post-type-guest.php:349
-#: includes/class-hostpn-post-type-accommodation.php:643
+#: includes/class-hostpn-post-type-guest.php:368
+#: includes/class-hostpn-post-type-accommodation.php:1072
 msgid "Security check failed: Nonce is required."
 msgstr "Error en la comprobación de seguridad: se requiere Nonce."
+
+#: includes/class-hostpn-post-type-contract.php:80
+#: includes/class-hostpn-post-type-room.php:59
+msgid "Select accommodation"
+msgstr "Seleccione alojamiento"
+
+#: includes/class-hostpn-post-type-contract.php:549
+msgid "Select accommodation and contract type to see preview."
+msgstr "Seleccione el tipo de alojamiento y contrato para ver la vista previa."
 
 #: includes/class-hostpn-post-type-part.php:994
 msgid ""
@@ -4448,11 +5846,11 @@ msgstr ""
 "Seleccione los campos adicionales que desea incluir en el archivo CSV "
 "(proporcionados por el titular del contrato):"
 
-#: includes/class-hostpn-common.php:210
+#: includes/class-hostpn-common.php:266
 msgid "Select audio"
 msgstr "Seleccionar audio"
 
-#: includes/class-hostpn-common.php:211
+#: includes/class-hostpn-common.php:267
 msgid "Select audios"
 msgstr "Seleccionar audios"
 
@@ -4460,28 +5858,45 @@ msgstr "Seleccionar audios"
 msgid "Select contact"
 msgstr "Seleccionar contacto"
 
-#: includes/class-hostpn-common.php:216
+#: includes/class-hostpn-post-type-contract.php:109
+msgid "Select contract type"
+msgstr "Seleccione el tipo de contrato"
+
+#: includes/class-hostpn-common.php:272
 msgid "Select file"
 msgstr "Seleccione archivo"
 
-#: includes/class-hostpn-common.php:217
+#: includes/class-hostpn-common.php:273
 msgid "Select files"
 msgstr "Selecciona archivos"
 
-#: includes/class-hostpn-common.php:197
+#: includes/class-hostpn-post-type-contract.php:89
+msgid "Select guest"
+msgstr "Seleccionar invitado"
+
+#: includes/class-hostpn-post-type-room.php:118
+msgid "Select guest (optional)"
+msgstr "Seleccione al invitado (opcional)"
+
+#: includes/class-hostpn-common.php:253
 msgid "Select image"
 msgstr "Seleccionar imagen"
 
-#: includes/class-hostpn-common.php:198
+#: includes/class-hostpn-common.php:254
 #: includes/class-hostpn-post-type-accommodation.php:123
 msgid "Select images"
 msgstr "Seleccionar imágenes"
 
-#: includes/class-hostpn-common.php:221
+#: includes/class-hostpn-post-type-room.php:226
+msgid "Select months"
+msgstr "Seleccione meses"
+
+#: includes/class-hostpn-common.php:277
+#: includes/class-hostpn-post-type-room.php:191
 msgid "Select option"
 msgstr "Seleccionar opción"
 
-#: includes/class-hostpn-common.php:222
+#: includes/class-hostpn-common.php:278
 #: includes/class-hostpn-post-type-part.php:736
 msgid "Select options"
 msgstr "Seleccionar opciones"
@@ -4498,6 +5913,20 @@ msgstr ""
 "Seleccione los usuarios registrados que recibirán correos electrónicos de "
 "notificación cuando se registre un nuevo invitado."
 
+#: includes/class-hostpn-post-type-accommodation.php:523
+msgid "Select room"
+msgstr "Seleccione habitación"
+
+#: includes/class-hostpn-post-type-contract.php:97
+#: includes/class-hostpn-post-type-guest.php:253
+msgid "Select room (optional)"
+msgstr "Seleccione habitación (opcional)"
+
+#: includes/class-hostpn-post-type-contract.php:118
+#: includes/class-hostpn-post-type-room.php:97
+msgid "Select status"
+msgstr "Seleccione estado"
+
 #: includes/class-hostpn-forms.php:570
 msgid "Select Users"
 msgstr "Seleccionar usuarios"
@@ -4506,11 +5935,11 @@ msgstr "Seleccionar usuarios"
 msgid "Select users..."
 msgstr "Seleccionar usuarios..."
 
-#: includes/class-hostpn-common.php:204
+#: includes/class-hostpn-common.php:260
 msgid "Select video"
 msgstr "Seleccionar vídeo"
 
-#: includes/class-hostpn-common.php:205
+#: includes/class-hostpn-common.php:261
 msgid "Select videos"
 msgstr "Seleccionar vídeos"
 
@@ -4532,7 +5961,8 @@ msgstr ""
 msgid "Send test"
 msgstr "Enviar prueba"
 
-#: includes/class-hostpn-common.php:193
+#: includes/class-hostpn-common.php:249
+#: includes/public/class-hostpn-public.php:80
 msgid "Sending..."
 msgstr "Envío..."
 
@@ -4543,6 +5973,10 @@ msgstr "Senegal"
 #: includes/class-hostpn-data.php:434
 msgid "Senegalese"
 msgstr "senegaleses"
+
+#: includes/class-hostpn-post-type-contract.php:445
+msgid "Sent"
+msgstr "Enviado"
 
 #: includes/class-hostpn-data.php:237
 msgid "Serbia"
@@ -4556,16 +5990,16 @@ msgstr "serbio"
 msgid "Service Charge"
 msgstr "Cargo por servicio"
 
-#: templates/public/single-hostpn_accommodation.php:128
+#: templates/public/single-hostpn_accommodation.php:231
 msgid "Services & Amenities"
 msgstr "Servicios y comodidades"
 
-#: includes/class-hostpn-settings.php:290
-#: includes/class-hostpn-settings.php:291
+#: includes/class-hostpn-settings.php:304
+#: includes/class-hostpn-settings.php:305
 msgid "Settings"
 msgstr "Ajustes"
 
-#: includes/class-hostpn-settings.php:602
+#: includes/class-hostpn-settings.php:709
 msgid "Settings imported successfully. Reloading..."
 msgstr "Configuración importada correctamente. Recargando..."
 
@@ -4577,15 +6011,15 @@ msgstr "Seychelles"
 msgid "Seychellois"
 msgstr "Seychelles"
 
-#: hostpn.php:314
+#: hostpn.php:316
 msgid "Shampoo"
 msgstr "Champú"
 
-#: includes/class-hostpn-post-type-accommodation.php:1177
+#: includes/class-hostpn-post-type-accommodation.php:1619
 msgid "Share accommodation"
 msgstr "Compartir alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:1142
+#: includes/class-hostpn-post-type-accommodation.php:1584
 msgid ""
 "Share link to allow guests fill their information out directly in the "
 "platform."
@@ -4593,31 +6027,39 @@ msgstr ""
 "Compartir enlace para permitir que los huéspedes completen su información "
 "directamente en la plataforma."
 
-#: hostpn.php:312
+#: includes/class-hostpn-post-type-accommodation.php:812
+msgid ""
+"Share this link with the tenant to view, sign, and download the contract."
+msgstr ""
+"Comparta este enlace con el inquilino para que pueda ver, firmar y descargar "
+"el contrato."
+
+#: hostpn.php:314
 msgid "Shared Bathroom"
 msgstr "Baño compartido"
 
-#: hostpn.php:285
+#: hostpn.php:287
 msgid "Sheer Curtains"
 msgstr "Cortinas transparentes"
 
-#: includes/class-hostpn-settings.php:367
+#: includes/class-hostpn-settings.php:390
+#: includes/class-hostpn-settings.php:451
 msgid "Shortcode"
 msgstr "Código corto"
 
-#: hostpn.php:323
+#: hostpn.php:325
 msgid "Shower"
 msgstr "Ducha"
 
-#: hostpn.php:321
+#: hostpn.php:323
 msgid "Shower Curtain"
 msgstr "Cortina de ducha"
 
-#: hostpn.php:283
+#: hostpn.php:285
 msgid "Shutters"
 msgstr "Persianas"
 
-#: hostpn.php:335
+#: hostpn.php:337
 msgid "Side Table"
 msgstr "Mesa auxiliar"
 
@@ -4629,6 +6071,37 @@ msgstr "Sierra Leona"
 msgid "Sierra Leonean"
 msgstr "Sierra Leona"
 
+#: includes/class-hostpn-contract-templates.php:112
+#: includes/class-hostpn-contract-templates.php:129
+msgid "SIGNATURES"
+msgstr "FIRMAS"
+
+#: includes/class-hostpn-contract-templates.php:96
+msgid "SIGNATURES + INVENTORY"
+msgstr "FIRMAS + INVENTARIO"
+
+#: includes/class-hostpn-post-type-contract.php:446
+#: includes/public/class-hostpn-public.php:101
+msgid "Signed"
+msgstr "Firmado"
+
+#: includes/class-hostpn-private-storage.php:289
+msgid "Signed contract uploaded successfully."
+msgstr "Contrato firmado cargado correctamente."
+
+#: includes/public/class-hostpn-public.php:100
+msgid "Signed copy uploaded successfully."
+msgstr "Copia firmada cargada correctamente."
+
+#: includes/class-hostpn-contract-templates.php:238
+#: includes/class-hostpn-contract-templates.php:239
+#: includes/class-hostpn-contract-templates.php:308
+#: includes/class-hostpn-contract-templates.php:309
+#: includes/class-hostpn-contract-templates.php:379
+#: includes/class-hostpn-contract-templates.php:380
+msgid "Signed:"
+msgstr "Firmado:"
+
 #: includes/class-hostpn-data.php:240
 msgid "Singapore"
 msgstr "Singapur"
@@ -4637,12 +6110,12 @@ msgstr "Singapur"
 msgid "Singaporean"
 msgstr "Singapurense"
 
-#: includes/class-hostpn-post-type-accommodation.php:940
-#: includes/class-hostpn-post-type-accommodation.php:1020
+#: includes/class-hostpn-post-type-accommodation.php:1382
+#: includes/class-hostpn-post-type-accommodation.php:1462
 msgid "Single Accommodation"
 msgstr "Alojamiento individual"
 
-#: hostpn.php:326
+#: hostpn.php:328
 msgid "Sink"
 msgstr "Hundir"
 
@@ -4666,13 +6139,29 @@ msgstr "Eslovenia"
 msgid "Slovenian"
 msgstr "esloveno"
 
-#: hostpn.php:253
+#: hostpn.php:255
 msgid "Slow Cooker"
 msgstr "Olla de cocción lenta"
 
-#: hostpn.php:366
+#: hostpn.php:368
 msgid "Smart TV"
 msgstr "Televisión inteligente"
+
+#: includes/class-hostpn-contract-templates.php:213
+msgid "Smoking and substances:"
+msgstr "El tabaquismo y las sustancias:"
+
+#: includes/class-hostpn-contract-templates.php:289
+msgid "Smoking inside the property is prohibited."
+msgstr "Está prohibido fumar dentro de la propiedad."
+
+#: includes/class-hostpn-contract-templates.php:213
+msgid ""
+"Smoking or consuming drugs in the room and common areas of the property is "
+"strictly prohibited."
+msgstr ""
+"Está estrictamente prohibido fumar o consumir drogas en la habitación y en "
+"las zonas comunes del establecimiento."
 
 #: includes/class-hostpn-debug.php:148
 msgid "SMTP enabled"
@@ -4682,11 +6171,11 @@ msgstr "SMTP habilitado"
 msgid "SMTP host / port"
 msgstr "Host/puerto SMTP"
 
-#: hostpn.php:317
+#: hostpn.php:319
 msgid "Soap"
 msgstr "Jabón"
 
-#: hostpn.php:333
+#: hostpn.php:335
 msgid "Sofa"
 msgstr "Sofá"
 
@@ -4721,32 +6210,32 @@ msgstr ""
 "de nuevo más tarde."
 
 #: includes/class-hostpn-post-type-part.php:769
-#: includes/class-hostpn-post-type-guest.php:624
-#: includes/class-hostpn-post-type-accommodation.php:1064
+#: includes/class-hostpn-post-type-guest.php:647
+#: includes/class-hostpn-post-type-accommodation.php:1506
 msgid "Sort"
 msgstr "Clasificar"
 
-#: includes/class-hostpn-common.php:226
+#: includes/class-hostpn-common.php:282
 msgid "Sort: A-Z"
 msgstr "Ordenar: A-Z"
 
-#: includes/class-hostpn-common.php:224
+#: includes/class-hostpn-common.php:280
 msgid "Sort: Newest first"
 msgstr "Ordenar por: Más recientes primero"
 
-#: includes/class-hostpn-common.php:225
+#: includes/class-hostpn-common.php:281
 msgid "Sort: Oldest first"
 msgstr "Ordenar por: Más antiguos primero"
 
-#: includes/class-hostpn-common.php:227
+#: includes/class-hostpn-common.php:283
 msgid "Sort: Z-A"
 msgstr "Ordenar: Z-A"
 
-#: hostpn.php:377
+#: hostpn.php:379
 msgid "Sound System"
 msgstr "Sistema de sonido"
 
-#: hostpn.php:287
+#: hostpn.php:289
 msgid "Soundproofing"
 msgstr "Insonorización"
 
@@ -4806,8 +6295,19 @@ msgstr ""
 msgid "Special Character (!@#$%^&*)"
 msgstr "Carácter especial (!@#$%^&*)"
 
-#: includes/class-hostpn-post-type-guest.php:59
-#: includes/class-hostpn-post-type-guest.php:521
+#: includes/class-hostpn-contract-templates.php:228
+msgid ""
+"Special grounds for termination include failure to pay rent or the deposit, "
+"conducting nuisance, unhealthy, harmful or illegal activities, or violation "
+"of the house rules set out in Clause 6."
+msgstr ""
+"Entre los motivos especiales para la rescisión del contrato se incluyen la "
+"falta de pago del alquiler o del depósito, la realización de actividades "
+"molestas, insalubres, perjudiciales o ilegales, o la violación de las normas "
+"de la casa establecidas en la cláusula 6."
+
+#: includes/class-hostpn-post-type-guest.php:65
+#: includes/class-hostpn-post-type-guest.php:544
 #: includes/class-hostpn-functions-user.php:387
 #: includes/class-hostpn-functions-user.php:415
 #: includes/class-hostpn-functions-user.php:501
@@ -4815,7 +6315,7 @@ msgid "Special needs, allergies, important situations to highlight..."
 msgstr ""
 "Necesidades especiales, alergias, situaciones importantes a destacar..."
 
-#: hostpn.php:264
+#: hostpn.php:266
 msgid "Spice Rack"
 msgstr "Estante de especias"
 
@@ -4831,7 +6331,19 @@ msgstr "Sri Lanka"
 msgid "Sri Lankan"
 msgstr "de Sri Lanka"
 
-#: includes/class-hostpn-settings.php:368
+#: includes/class-hostpn-post-type-contract.php:226
+#: includes/class-hostpn-post-type-contract.php:227
+#: includes/class-hostpn-post-type-accommodation.php:611
+#: includes/class-hostpn-contract-templates.php:440
+#: includes/class-hostpn-post-type-room.php:141
+msgid "Start date"
+msgstr "Fecha de inicio"
+
+#: includes/class-hostpn-post-type-contract.php:117
+#: includes/class-hostpn-post-type-contract.php:809
+#: includes/class-hostpn-settings.php:391
+#: includes/class-hostpn-post-type-room.php:96
+#: includes/class-hostpn-post-type-room.php:616
 msgid "Status"
 msgstr "Estado"
 
@@ -4843,11 +6355,11 @@ msgstr "Permanecer con el propósito (para CSV policial)"
 msgid "Stay purpose (optional)"
 msgstr "Permanecer con el propósito (opcional)"
 
-#: hostpn.php:252
+#: hostpn.php:254
 msgid "Steamer"
 msgstr "Buque de vapor"
 
-#: hostpn.php:239
+#: hostpn.php:241
 msgid "Stovetops"
 msgstr "Estufas"
 
@@ -4862,6 +6374,22 @@ msgstr "Sudán"
 #: includes/class-hostpn-data.php:448
 msgid "Sudanese"
 msgstr "sudanés"
+
+#: includes/class-hostpn-post-type-room.php:198
+msgid "Supplies limit per person/month (EUR)"
+msgstr "Límite de suministros por persona/mes (EUR)"
+
+#: includes/class-hostpn-post-type-room.php:190
+msgid "Supplies option"
+msgstr "Opción de suministros"
+
+#: includes/class-hostpn-contract-templates.php:354
+msgid ""
+"Supply costs (water, electricity, gas, telecommunications) shall be borne by "
+"the TENANT for the duration of the contract."
+msgstr ""
+"Los gastos de suministro (agua, electricidad, gas, telecomunicaciones) "
+"correrán a cargo del ARRENDATARIO durante la vigencia del contrato."
 
 #: templates/admin/financial/hostpn-financial-import.php:34
 msgid "Supported formats:"
@@ -4899,19 +6427,19 @@ msgstr "sirio"
 msgid "Syrian Arab Republic"
 msgstr "República Árabe Siria"
 
-#: includes/class-hostpn-settings.php:109
+#: includes/class-hostpn-settings.php:123
 msgid "System"
 msgstr "Sistema"
 
-#: includes/class-hostpn-settings.php:198
+#: includes/class-hostpn-settings.php:212
 msgid "System Options"
 msgstr "Opciones del sistema"
 
-#: hostpn.php:292
+#: hostpn.php:294
 msgid "Table Fan"
 msgstr "Ventilador de mesa"
 
-#: hostpn.php:279
+#: hostpn.php:281
 msgid "Table Lamp"
 msgstr "Lámpara de mesa"
 
@@ -4931,7 +6459,7 @@ msgstr "República Unida de Tanzania"
 msgid "Tanzanian"
 msgstr "tanzano"
 
-#: includes/class-hostpn-settings.php:480
+#: includes/class-hostpn-settings.php:587
 msgid "Task and project management for teams."
 msgstr "Gestión de tareas y proyectos para equipos."
 
@@ -4982,15 +6510,49 @@ msgctxt "Taxonomy singular name"
 msgid "Part of travelers category"
 msgstr "Parte de la categoría de viajeros"
 
-#: includes/class-hostpn-post-type-accommodation.php:941
-#: includes/class-hostpn-post-type-accommodation.php:1021
+#: includes/class-hostpn-post-type-accommodation.php:1383
+#: includes/class-hostpn-post-type-accommodation.php:1463
 msgid "Template for displaying a single accommodation post."
 msgstr "Plantilla para mostrar una única publicación de alojamiento."
 
-#: includes/class-hostpn-post-type-accommodation.php:962
-#: includes/class-hostpn-post-type-accommodation.php:1021
+#: includes/class-hostpn-post-type-accommodation.php:1404
+#: includes/class-hostpn-post-type-accommodation.php:1463
 msgid "Template for displaying the accommodation archive page."
 msgstr "Plantilla para mostrar la página de archivo de alojamientos."
+
+#: includes/class-hostpn-contract-templates.php:169
+#: includes/class-hostpn-contract-templates.php:322
+msgid "TENANT"
+msgstr "ARRENDATARIO"
+
+#: includes/class-hostpn-post-type-contract.php:200
+#: includes/class-hostpn-post-type-accommodation.php:557
+#: includes/class-hostpn-contract-templates.php:435
+msgid "Tenant address"
+msgstr "Dirección del inquilino"
+
+#: includes/class-hostpn-post-type-contract.php:208
+#: includes/class-hostpn-post-type-contract.php:209
+#: includes/class-hostpn-post-type-accommodation.php:565
+#: includes/class-hostpn-contract-templates.php:436
+msgid "Tenant email"
+msgstr "Correo electrónico del inquilino"
+
+#: includes/class-hostpn-post-type-accommodation.php:541
+#: includes/class-hostpn-contract-templates.php:433
+msgid "Tenant full name"
+msgstr "Nombre completo del inquilino"
+
+#: includes/class-hostpn-post-type-contract.php:184
+msgid "Tenant name"
+msgstr "Nombre del inquilino"
+
+#: includes/class-hostpn-post-type-contract.php:192
+#: includes/class-hostpn-post-type-contract.php:193
+#: includes/class-hostpn-post-type-accommodation.php:549
+#: includes/class-hostpn-contract-templates.php:434
+msgid "Tenant NIF/NIE"
+msgstr "NIF/NIE del inquilino"
 
 #. %s: recipient label
 #: includes/class-hostpn-debug.php:474
@@ -5024,11 +6586,162 @@ msgstr "tailandés"
 msgid "Thailand"
 msgstr "Tailandia"
 
+#: includes/class-hostpn-contract-templates.php:191
+msgid ""
+"The agreed monthly rent is <strong>[hostpn-contract-rent-amount] EUR</strong>"
+" (<strong>[hostpn-contract-rent-words]</strong>)."
+msgstr ""
+"El alquiler mensual acordado es de <strong>[hostpn-contract-rent-amount] "
+"EUR</strong> (<strong>[hostpn-contract-rent-words]</strong>)."
+
+#: includes/class-hostpn-contract-templates.php:342
+msgid ""
+"The agreed monthly rent is <strong>[hostpn-contract-rent-amount] EUR</strong>"
+" ([hostpn-contract-rent-words])."
+msgstr ""
+"El alquiler mensual acordado es <strong>[hostpn-contract-rent-amount] "
+"EUR</strong> ([hostpn-contract-rent-words])."
+
+#: includes/class-hostpn-contract-templates.php:223
+msgid ""
+"The assignment of this contract, as well as the partial or total subletting "
+"of the room to third parties, is expressly prohibited."
+msgstr ""
+"Queda expresamente prohibida la cesión de este contrato, así como el "
+"subarriendo parcial o total de la habitación a terceros."
+
+#: templates/public/hostpn-contract-view.php:36
+msgid "The contract link is invalid or has expired."
+msgstr "El enlace del contrato no es válido o ha caducado."
+
+#: includes/class-hostpn-contract-templates.php:350
+msgid ""
+"The deposit shall be returned upon termination of the contract, after "
+"inspection of the property, within one month of key handover."
+msgstr ""
+"El depósito se devolverá al finalizar el contrato, tras la inspección del "
+"inmueble, en el plazo de un mes desde la entrega de las llaves."
+
+#: includes/class-hostpn-contract-templates.php:204
+msgid ""
+"The deposit shall cover the fulfilment of contractual obligations, the "
+"return of the room and its contents in the same condition as received, and "
+"the payment of any outstanding rent or utilities. It shall be returned "
+"within 30 days of key handover, after inspection of the property. Under no "
+"circumstances shall the deposit serve as payment for the last month's rent."
+msgstr ""
+"El depósito cubrirá el cumplimiento de las obligaciones contractuales, la "
+"devolución de la habitación y su contenido en el mismo estado en que se "
+"recibió, y el pago de cualquier alquiler o servicio pendiente. Se devolverá "
+"dentro de los 30 días posteriores a la entrega de llaves, tras la inspección "
+"del inmueble. En ningún caso el depósito servirá como pago del último mes de "
+"alquiler."
+
 #: includes/class-hostpn-post-type-part.php:386
 msgid "The estimated time was"
 msgstr "El tiempo estimado fue"
 
-#: includes/class-hostpn-post-type-guest.php:90
+#: includes/class-hostpn-post-type-accommodation.php:2010
+#: includes/class-hostpn-contract-templates.php:309
+#: templates/public/hostpn-contract-view.php:90
+msgid "THE GUEST"
+msgstr "EL INVITADO"
+
+#: includes/class-hostpn-contract-templates.php:284
+msgid "The GUEST agrees to:"
+msgstr "El HUÉSPED acepta:"
+
+#: includes/class-hostpn-contract-templates.php:279
+msgid ""
+"The GUEST delivers to the OWNER <strong>[hostpn-contract-deposit-amount] "
+"EUR</strong> ([hostpn-contract-deposit-words]) as a security deposit."
+msgstr ""
+"El HUÉSPED entrega al PROPIETARIO <strong>[hostpn-contract-deposit-amount] "
+"EUR</strong> ([hostpn-contract-deposit-words]) como depósito de seguridad."
+
+#: includes/class-hostpn-contract-templates.php:298
+msgid ""
+"The GUEST shall be liable for any damage caused to the property, contents or "
+"common areas during their stay, except for normal wear and tear."
+msgstr ""
+"El HUÉSPED será responsable de cualquier daño causado a la propiedad, su "
+"contenido o las áreas comunes durante su estancia, excepto el desgaste "
+"normal por el uso."
+
+#: includes/class-hostpn-contract-templates.php:258
+msgid ""
+"The GUEST wishes to stay temporarily in said property for tourist or holiday "
+"purposes."
+msgstr ""
+"El HUÉSPED desea alojarse temporalmente en dicha propiedad con fines "
+"turísticos o vacacionales."
+
+#: includes/class-hostpn-post-type-accommodation.php:2009
+#: includes/class-hostpn-contract-templates.php:238
+#: includes/class-hostpn-contract-templates.php:379
+#: templates/public/hostpn-contract-view.php:89
+msgid "THE LANDLORD"
+msgstr "EL PROPIETARIO"
+
+#: includes/class-hostpn-contract-templates.php:327
+msgid ""
+"The LANDLORD is the rightful owner of the property located at <strong>"
+"[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]"
+"</strong>."
+msgstr ""
+"El PROPIETARIO es el legítimo dueño de la propiedad ubicada en <strong>"
+"[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]"
+"</strong>."
+
+#: includes/class-hostpn-contract-templates.php:174
+msgid ""
+"The LANDLORD is the rightful owner/manager of the property located at "
+"<strong>[hostpn-accommodation-address]</strong>, a flat consisting of "
+"several rooms and common areas."
+msgstr ""
+"El PROPIETARIO es el legítimo propietario/administrador de la propiedad "
+"ubicada en <strong>[hostpn-accommodation-address]</strong>, un piso que "
+"consta de varias habitaciones y áreas comunes."
+
+#: includes/class-hostpn-contract-templates.php:181
+msgid ""
+"The LANDLORD leases to the TENANT the exclusive use of <strong>Room [hostpn-"
+"room-name]</strong>, furnished as per the attached inventory, located in the "
+"shared property at <strong>[hostpn-accommodation-address]</strong>."
+msgstr ""
+"El ARRENDADOR arrienda al ARRENDATARIO el uso exclusivo de la <strong>"
+"Habitación [hostpn-room-name]</strong>, amueblada según el inventario "
+"adjunto, ubicada en la propiedad compartida en <strong>[hostpn-accommodation-"
+"address]</strong>."
+
+#: includes/class-hostpn-contract-templates.php:333
+msgid ""
+"The LANDLORD leases to the TENANT the property located at <strong>[hostpn-"
+"accommodation-address]</strong>, <strong>[hostpn-accommodation-city]</strong>"
+", for use as the TENANT's habitual and permanent residence."
+msgstr ""
+"El ARRENDADOR arrienda al ARRENDATARIO la propiedad ubicada en <strong>"
+"[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]"
+"</strong>, para uso como residencia habitual y permanente del ARRENDATARIO."
+
+#: includes/class-hostpn-contract-templates.php:359
+msgid ""
+"The LANDLORD shall carry out the necessary repairs to keep the property in "
+"habitable condition, except for damage attributable to the TENANT."
+msgstr ""
+"El PROPIETARIO deberá realizar las reparaciones necesarias para mantener la "
+"propiedad en condiciones habitables, excepto los daños atribuibles al "
+"ARRENDATARIO."
+
+#: includes/class-hostpn-contract-templates.php:198
+msgid ""
+"The monthly rent includes water, community fees, property tax, waste "
+"collection and broadband Internet."
+msgstr ""
+"El alquiler mensual incluye el agua, los gastos de comunidad, el impuesto "
+"sobre la propiedad, la recogida de basuras e internet de banda ancha."
+
+#: includes/class-hostpn-post-type-guest.php:96
 #: includes/class-hostpn-functions-user.php:173
 msgid ""
 "The number/ID of the document that you set on \"Document type\" field just "
@@ -5037,31 +6750,237 @@ msgstr ""
 "El número/ID del documento que usted configuró en el campo “Tipo de "
 "documento” justo arriba."
 
+#: includes/class-hostpn-post-type-accommodation.php:2009
+#: includes/class-hostpn-contract-templates.php:308
+#: templates/public/hostpn-contract-view.php:89
+msgid "THE OWNER"
+msgstr "EL PROPIETARIO"
+
+#: includes/class-hostpn-contract-templates.php:263
+msgid ""
+"The OWNER grants the temporary use of the tourist property located at "
+"<strong>[hostpn-accommodation-address]</strong>, furnished and equipped as "
+"per inventory, for the exclusive purpose of tourist accommodation."
+msgstr ""
+"El PROPIETARIO otorga el uso temporal de la propiedad turística ubicada en "
+"<strong>[hostpn-accommodation-address]</strong>, amueblada y equipada según "
+"inventario, para el propósito exclusivo de alojamiento turístico."
+
+#: includes/class-hostpn-contract-templates.php:257
+msgid ""
+"The OWNER is the rightful owner of the tourist accommodation property "
+"located at <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-"
+"accommodation-city]</strong>."
+msgstr ""
+"El PROPIETARIO es el legítimo propietario del alojamiento turístico situado "
+"en <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-"
+"accommodation-city]</strong>."
+
+#: includes/class-hostpn-contract-templates.php:299
+msgid "The OWNER shall not be liable for the GUEST's personal belongings."
+msgstr ""
+"El PROPIETARIO no será responsable de las pertenencias personales del "
+"HUÉSPED."
+
+#: includes/class-hostpn-contract-templates.php:270
+msgid "The property must be vacated by the indicated check-out time."
+msgstr ""
+"La propiedad debe quedar desocupada antes de la hora de salida indicada."
+
 #: includes/class-hostpn-post-type-part.php:976
 msgid "The purpose code is taken from each Part (optional)."
 msgstr "El código de propósito se toma de cada Parte (opcional)."
 
-#: hostpn.php:286
+#: includes/class-hostpn-contract-templates.php:345
+msgid ""
+"The rent shall be updated annually according to the applicable reference "
+"index established by the legislation in force at the time of update."
+msgstr ""
+"El alquiler se actualizará anualmente de acuerdo con el índice de referencia "
+"aplicable establecido por la legislación vigente en el momento de la "
+"actualización."
+
+#: includes/class-hostpn-notifications.php:230
+#, php-format
+msgid ""
+"The room %1$s in %2$s is now available. If you are still interested, visit "
+"the accommodation page to learn more."
+msgstr ""
+"La habitación %1$s en %2$s ya está disponible. Si aún le interesa, visite la "
+"página de alojamiento para obtener más información."
+
+#: includes/class-hostpn-contract-templates.php:268
+msgid ""
+"The stay is agreed from <strong>[hostpn-contract-start-date]</strong> until "
+"<strong>[hostpn-contract-end-date]</strong>."
+msgstr ""
+"La estancia se acuerda desde el <strong>[hostpn-contract-start-date]</strong>"
+" hasta el <strong>[hostpn-contract-end-date]</strong>."
+
+#: includes/class-hostpn-post-type-accommodation.php:2010
+#: includes/class-hostpn-contract-templates.php:239
+#: includes/class-hostpn-contract-templates.php:380
+#: templates/public/hostpn-contract-view.php:90
+msgid "THE TENANT"
+msgstr "EL INQUILINO"
+
+#: includes/class-hostpn-contract-templates.php:209
+msgid ""
+"The TENANT agrees to respect the basic rules of coexistence with the other "
+"flatmates:"
+msgstr ""
+"El inquilino se compromete a respetar las normas básicas de convivencia con "
+"los demás compañeros de piso:"
+
+#: includes/class-hostpn-contract-templates.php:349
+msgid ""
+"The TENANT delivers <strong>[hostpn-contract-deposit-amount] EUR</strong> "
+"([hostpn-contract-deposit-words]) as a legal security deposit (equivalent to "
+"one month's rent)."
+msgstr ""
+"El ARRENDATARIO entrega <strong>[hostpn-contract-deposit-amount] EUR</strong>"
+" ([hostpn-contract-deposit-words]) como depósito de garantía legal "
+"(equivalente a un mes de alquiler)."
+
+#: includes/class-hostpn-contract-templates.php:175
+msgid ""
+"The TENANT is interested in renting the exclusive use of <strong>Room "
+"[hostpn-room-name]</strong> of said property, as well as the right to shared "
+"use of the common areas of the flat (kitchen, bathroom and hallways if "
+"applicable)."
+msgstr ""
+"El ARRENDATARIO está interesado en alquilar el uso exclusivo de la <strong>"
+"Habitación [hostpn-room-name]</strong> de dicha propiedad, así como el "
+"derecho al uso compartido de las áreas comunes del piso (cocina, baño y "
+"pasillos, si corresponde)."
+
+#: includes/class-hostpn-contract-templates.php:364
+msgid ""
+"The TENANT may not assign or sublet the property, in whole or in part, "
+"without written consent from the LANDLORD."
+msgstr ""
+"El ARRENDATARIO no podrá ceder ni subarrendar la propiedad, en su totalidad "
+"o en parte, sin el consentimiento por escrito del ARRENDADOR."
+
+#: includes/class-hostpn-contract-templates.php:360
+msgid ""
+"The TENANT may not carry out works that alter the layout of the property "
+"without written consent from the LANDLORD."
+msgstr ""
+"El ARRENDATARIO no podrá realizar obras que alteren la distribución de la "
+"propiedad sin el consentimiento por escrito del PROPIETARIO."
+
+#: includes/class-hostpn-contract-templates.php:218
+msgid ""
+"The TENANT may not carry out works, modifications or drilling in the walls "
+"of the room or common areas without written authorization from the LANDLORD."
+msgstr ""
+"El ARRENDATARIO no podrá realizar obras, modificaciones ni perforaciones en "
+"las paredes de la habitación o en las zonas comunes sin la autorización por "
+"escrito del ARRENDADOR."
+
+#: includes/class-hostpn-contract-templates.php:369
+msgid ""
+"The TENANT may withdraw from the contract after six months, by giving 30 "
+"days' notice."
+msgstr ""
+"El arrendatario podrá rescindir el contrato transcurridos seis meses, "
+"mediante un preaviso de 30 días."
+
+#: includes/class-hostpn-contract-templates.php:182
+msgid ""
+"The TENANT shall have the right to shared use with the other occupants of "
+"the property of the services and common areas: kitchen, bathroom, laundry "
+"area and hallways. The exclusive use of any other room in the flat is "
+"expressly excluded."
+msgstr ""
+"El arrendatario tendrá derecho al uso compartido con los demás ocupantes de "
+"la propiedad de los servicios y zonas comunes: cocina, baño, lavandería y "
+"pasillos. Queda expresamente excluido el uso exclusivo de cualquier otra "
+"habitación del piso."
+
+#: includes/class-hostpn-contract-templates.php:328
+msgid ""
+"The TENANT wishes to rent said property as their habitual and permanent "
+"residence."
+msgstr ""
+"El arrendatario desea alquilar dicha propiedad como su residencia habitual y "
+"permanente."
+
+#: includes/class-hostpn-contract-templates.php:274
+msgid ""
+"The total price for the stay is <strong>[hostpn-contract-total-price] "
+"EUR</strong>."
+msgstr ""
+"El precio total de la estancia es <strong>[hostpn-contract-total-price] "
+"EUR</strong>."
+
+#: hostpn.php:288
 msgid "Thermal Curtains"
 msgstr "Cortinas térmicas"
 
-#: includes/class-hostpn-post-type-accommodation.php:1135
+#: includes/class-hostpn-post-type-accommodation.php:1577
 msgid "This Accommodation is periodic"
 msgstr "Este alojamiento es periódico."
 
-#: includes/class-hostpn-post-type-accommodation.php:1131
+#: includes/class-hostpn-post-type-accommodation.php:1573
 msgid "This Accommodation is timed"
 msgstr "Este alojamiento está cronometrado"
+
+#: includes/class-hostpn-contract-templates.php:186
+msgid ""
+"This contract is agreed for a term of <strong>[hostpn-contract-duration]"
+"</strong> from <strong>[hostpn-contract-start-date]</strong> until <strong>"
+"[hostpn-contract-end-date]</strong>."
+msgstr ""
+"Este contrato se acuerda por un plazo de <strong>[hostpn-contract-duration]"
+"</strong> desde <strong>[hostpn-contract-start-date]</strong> hasta <strong>"
+"[hostpn-contract-end-date]</strong>."
+
+#: includes/class-hostpn-contract-templates.php:337
+msgid ""
+"This contract is agreed for a term of <strong>[hostpn-contract-duration]"
+"</strong>, from <strong>[hostpn-contract-start-date]</strong> until <strong>"
+"[hostpn-contract-end-date]</strong>."
+msgstr ""
+"Este contrato se acuerda por un plazo de <strong>[hostpn-contract-duration]"
+"</strong>, desde <strong>[hostpn-contract-start-date]</strong> hasta <strong>"
+"[hostpn-contract-end-date]</strong>."
+
+#: includes/class-hostpn-contract-templates.php:303
+msgid ""
+"This contract is governed by the applicable regional regulations on tourist "
+"accommodation properties, and additionally by the applicable civil "
+"legislation."
+msgstr ""
+"Este contrato se rige por la normativa regional aplicable a los alojamientos "
+"turísticos y, adicionalmente, por la legislación civil aplicable."
+
+#: includes/class-hostpn-contract-templates.php:373
+msgid ""
+"This contract is governed by the applicable tenancy legislation and "
+"additionally by the applicable civil legislation."
+msgstr ""
+"Este contrato se rige por la legislación de arrendamiento aplicable y, "
+"adicionalmente, por la legislación civil aplicable."
+
+#: includes/class-hostpn-contract-templates.php:232
+msgid ""
+"This contract is governed by what has been freely agreed by the parties and, "
+"failing that, by the applicable civil legislation."
+msgstr ""
+"Este contrato se rige por lo que las partes hayan acordado libremente y, en "
+"su defecto, por la legislación civil aplicable."
 
 #: includes/class-hostpn-validation.php:49
 msgid "This field"
 msgstr "Este campo"
 
-#: includes/class-hostpn-post-type-guest.php:704
+#: includes/class-hostpn-post-type-guest.php:727
 msgid "This Guest is periodic"
 msgstr "Este huésped es periódico"
 
-#: includes/class-hostpn-post-type-guest.php:699
+#: includes/class-hostpn-post-type-guest.php:722
 msgid "This Guest is timed"
 msgstr "Este huésped está cronometrado"
 
@@ -5073,7 +6992,7 @@ msgstr ""
 "Este es un correo electrónico de notificación de prueba enviado desde la "
 "página de depuración de notificaciones de HOSTPN."
 
-#: includes/class-hostpn-settings.php:208
+#: includes/class-hostpn-settings.php:222
 #| msgid ""
 #| "This option sets the slug of the main recipes archive page, and the "
 #| "recipe pages. By default they will be:"
@@ -5096,15 +7015,19 @@ msgstr "Esta parte está cronometrada"
 msgid "This Part of traveler was not timed."
 msgstr "Esta parte del viajero no fue cronometrada."
 
+#: includes/class-hostpn-post-type-room.php:932
+msgid "This room is not currently occupied."
+msgstr "Esta habitación no está ocupada actualmente."
+
 #: includes/class-hostpn-post-type-part.php:25
 msgid "This title will help you to remind and find this Part in the future"
 msgstr "Este título te ayudará a recordar y encontrar esta Parte en el futuro."
 
-#: includes/class-hostpn-settings.php:601
+#: includes/class-hostpn-settings.php:708
 msgid "This will overwrite your current settings. Continue?"
 msgstr "Esto sobrescribirá tu configuración actual. ¿Continuar?"
 
-#: hostpn.php:339
+#: hostpn.php:341
 msgid "Throw Pillows"
 msgstr "Cojines"
 
@@ -5122,12 +7045,12 @@ msgid "Timorese"
 msgstr "timorenses"
 
 #: includes/class-hostpn-post-type-part.php:796
-#: includes/class-hostpn-post-type-guest.php:649
-#: includes/class-hostpn-post-type-accommodation.php:1087
+#: includes/class-hostpn-post-type-guest.php:672
+#: includes/class-hostpn-post-type-accommodation.php:1529
 msgid "to go ahead"
 msgstr "seguir adelante"
 
-#: hostpn.php:238
+#: hostpn.php:240
 msgid "Toaster"
 msgstr "Tostadora"
 
@@ -5139,11 +7062,11 @@ msgstr "Ir"
 msgid "Togolese"
 msgstr "Togolés"
 
-#: hostpn.php:325
+#: hostpn.php:327
 msgid "Toilet"
 msgstr "Baño"
 
-#: hostpn.php:318
+#: hostpn.php:320
 msgid "Toilet Paper"
 msgstr "Papel higiénico"
 
@@ -5170,6 +7093,20 @@ msgstr "Gastos totales"
 msgid "Total Income"
 msgstr "Ingresos totales"
 
+#: includes/class-hostpn-contract-templates.php:456
+msgid "Total price"
+msgstr "Precio total"
+
+#: includes/class-hostpn-post-type-contract.php:331
+#: includes/class-hostpn-post-type-accommodation.php:641
+msgid "Total price (EUR)"
+msgstr "Precio total (EUR)"
+
+#: includes/class-hostpn-post-type-contract.php:332
+#: includes/class-hostpn-post-type-accommodation.php:642
+msgid "Total price for the stay"
+msgstr "Precio total de la estancia"
+
 #: templates/public/hostpn-accommodation-financial.php:114
 #: templates/admin/financial/hostpn-financial-dashboard.php:85
 msgid "Total Records"
@@ -5183,11 +7120,19 @@ msgstr "Registros totales:"
 msgid "Tourist accommodation"
 msgstr "Alojamientos turísticos"
 
-#: hostpn.php:319
+#: includes/class-hostpn-contract-templates.php:630
+msgid "TOURIST ACCOMMODATION AGREEMENT"
+msgstr "CONTRATO DE ALOJAMIENTO TURÍSTICO"
+
+#: includes/class-hostpn-contract-templates.php:51
+msgid "Tourist rental"
+msgstr "Alquiler turístico"
+
+#: hostpn.php:321
 msgid "Towels"
 msgstr "Toallas"
 
-#: hostpn.php:344
+#: hostpn.php:346
 msgid "Track Lighting"
 msgstr "Iluminación de riel"
 
@@ -5244,15 +7189,16 @@ msgstr "Tuvalu"
 msgid "Tuvaluan"
 msgstr "Tuvaluano"
 
-#: hostpn.php:365
+#: hostpn.php:367
 msgid "TV"
 msgstr "TELEVISOR"
 
-#: hostpn.php:336
+#: hostpn.php:338
 msgid "TV Stand"
 msgstr "Soporte de TV"
 
 #: includes/class-hostpn-financial.php:298
+#: includes/class-hostpn-post-type-contract.php:808
 #: templates/public/hostpn-accommodation-financial.php:159
 #: templates/public/hostpn-accommodation-financial.php:186
 #: templates/public/hostpn-accommodation-financial.php:317
@@ -5277,7 +7223,7 @@ msgstr "Ucrania"
 msgid "Ukrainian"
 msgstr "ucranio"
 
-#: includes/class-hostpn-ajax.php:472
+#: includes/class-hostpn-ajax.php:733
 msgid "Unauthorized access."
 msgstr "Acceso no autorizado."
 
@@ -5301,7 +7247,7 @@ msgstr "Estados Unidos de América"
 msgid "Unknown error"
 msgstr "Error desconocido"
 
-#: includes/class-hostpn-post-type-accommodation.php:489
+#: includes/class-hostpn-post-type-accommodation.php:861
 msgid "Update accommodation"
 msgstr "Actualizar alojamiento"
 
@@ -5309,11 +7255,15 @@ msgstr "Actualizar alojamiento"
 msgid "Update Accommodation category"
 msgstr "Actualizar categoría de alojamiento"
 
+#: includes/class-hostpn-post-type-contract.php:469
+msgid "Update Contract"
+msgstr "Actualizar contrato"
+
 #: includes/class-hostpn-post-type-financial-record.php:32
 msgid "Update Financial Record"
 msgstr "Actualizar el registro financiero"
 
-#: includes/class-hostpn-post-type-guest.php:274
+#: includes/class-hostpn-post-type-guest.php:288
 msgid "Update Guest"
 msgstr "Actualizar huésped"
 
@@ -5329,6 +7279,10 @@ msgstr "Actualizar Parte del viajero"
 msgid "Update Part of travelers category"
 msgstr "Actualizar Parte de la categoría de viajeros"
 
+#: includes/class-hostpn-post-type-room.php:312
+msgid "Update Room"
+msgstr "Sala de actualizaciones"
+
 #: templates/admin/financial/hostpn-financial-import.php:31
 msgid ""
 "Upload a CSV file from Airbnb or Booking.com. The file format will be "
@@ -5343,6 +7297,51 @@ msgid ""
 msgstr ""
 "Sube varias imágenes para crear una galería de fotos de este alojamiento."
 
+#: templates/public/hostpn-contracts-block.php:117
+msgid "Upload Signed Copy"
+msgstr "Subir copia firmada"
+
+#: includes/public/class-hostpn-public.php:99
+msgid "Uploading..."
+msgstr "Subiendo..."
+
+#: includes/class-hostpn-contract-templates.php:203
+msgid ""
+"Upon signing this contract, the TENANT delivers to the LANDLORD the amount "
+"of <strong>[hostpn-contract-deposit-amount] EUR</strong> (<strong>[hostpn-"
+"contract-deposit-words]</strong>) as a security deposit."
+msgstr ""
+"Al firmar este contrato, el ARRENDATARIO entrega al ARRENDADOR la cantidad "
+"de <strong>[hostpn-contract-deposit-amount] EUR</strong> (<strong>[hostpn-"
+"contract-deposit-words]</strong>) como depósito de garantía."
+
+#: includes/class-hostpn-contract-templates.php:187
+msgid ""
+"Upon the expiry date, the contract shall automatically terminate without "
+"prior notice. If the TENANT wishes to terminate the contract before its "
+"expiry, they must notify the LANDLORD with a minimum of <strong>[hostpn-"
+"contract-notice-days] days</strong> notice. Failure to comply with this "
+"notice period shall result in compensation to the LANDLORD equal to the "
+"proportional rent for the unfulfilled notice days."
+msgstr ""
+"Al vencimiento del contrato, este se rescindirá automáticamente sin previo "
+"aviso. Si el arrendatario desea rescindir el contrato antes de su "
+"vencimiento, deberá notificarlo al arrendador con un mínimo de <strong>"
+"[hostpn-contract-notice-days] días</strong> de antelación. El incumplimiento "
+"de este plazo de preaviso dará lugar a una indemnización al arrendador "
+"equivalente a la renta proporcional correspondiente a los días de preaviso "
+"no cumplidos."
+
+#: includes/class-hostpn-common.php:143
+#: includes/class-hostpn-contract-templates.php:836
+msgid "URL"
+msgstr "URL"
+
+#: includes/class-hostpn-post-type-contract.php:384
+#: includes/class-hostpn-post-type-room.php:268
+msgid "URL (optional)"
+msgstr "URL (opcional)"
+
 #: includes/class-hostpn-data.php:271
 msgid "Uruguay"
 msgstr "Uruguay"
@@ -5351,35 +7350,39 @@ msgstr "Uruguay"
 msgid "Uruguayan"
 msgstr "uruguayo"
 
-#: includes/class-hostpn-common.php:212
+#: includes/class-hostpn-common.php:268
 msgid "Use audio"
 msgstr "Utilizar audio"
 
-#: includes/class-hostpn-common.php:213
+#: includes/class-hostpn-common.php:269
 msgid "Use audios"
 msgstr "Utilizar audios"
 
-#: includes/class-hostpn-common.php:218
+#: includes/class-hostpn-common.php:274
 msgid "Use file"
 msgstr "Utilice el archivo"
 
-#: includes/class-hostpn-common.php:219
+#: includes/class-hostpn-common.php:275
 msgid "Use files"
 msgstr "Utilice archivos"
 
-#: includes/class-hostpn-common.php:199
+#: includes/class-hostpn-common.php:255
 msgid "Use image"
 msgstr "Utilizar imagen"
 
-#: includes/class-hostpn-common.php:200
+#: includes/class-hostpn-common.php:256
 msgid "Use images"
 msgstr "Utilizar imágenes"
 
-#: includes/class-hostpn-common.php:206
+#: includes/class-hostpn-contract-templates.php:285
+msgid "Use the property solely as tourist accommodation."
+msgstr "Utilice la propiedad exclusivamente como alojamiento turístico."
+
+#: includes/class-hostpn-common.php:262
 msgid "Use video"
 msgstr "Utilizar vídeo"
 
-#: includes/class-hostpn-common.php:207
+#: includes/class-hostpn-common.php:263
 msgid "Use videos"
 msgstr "Utilizar vídeos"
 
@@ -5391,7 +7394,7 @@ msgstr "No se encontró el ID de usuario %d."
 msgid "user not found"
 msgstr "Usuario no encontrado"
 
-#: includes/class-hostpn-settings.php:225
+#: includes/class-hostpn-settings.php:239
 msgid "User Role Management"
 msgstr "Gestión de roles de usuario"
 
@@ -5404,11 +7407,11 @@ msgstr "Usuarios con el rol %s"
 msgid "UUID for tracking import batches"
 msgstr "UUID para el seguimiento de lotes de importación"
 
-#: hostpn.php:305
+#: hostpn.php:307
 msgid "UV Filter"
 msgstr "Filtro UV"
 
-#: hostpn.php:299
+#: hostpn.php:301
 msgid "UV Sterilizer"
 msgstr "Esterilizador UV"
 
@@ -5420,7 +7423,7 @@ msgstr "Uzbekistán"
 msgid "Uzbekistani"
 msgstr "Uzbekistán"
 
-#: hostpn.php:328
+#: hostpn.php:330
 msgid "Vanity"
 msgstr "Vanidad"
 
@@ -5452,9 +7455,13 @@ msgstr "Venezuela (República Bolivariana de)"
 msgid "Venezuelan"
 msgstr "venezolano"
 
-#: hostpn.php:329
+#: hostpn.php:331
 msgid "Ventilation"
 msgstr "Ventilación"
+
+#: includes/class-hostpn-post-type-contract.php:127
+msgid "Version"
+msgstr "Versión"
 
 #: includes/class-hostpn-data.php:275
 msgid "Viet Nam"
@@ -5464,17 +7471,23 @@ msgstr "Vietnam"
 msgid "Vietnamese"
 msgstr "vietnamita"
 
-#: includes/class-hostpn-settings.php:400
+#: includes/class-hostpn-settings.php:423
 msgid "View"
 msgstr "Vista"
 
-#: includes/class-hostpn-post-type-accommodation.php:1153
+#: includes/class-hostpn-post-type-accommodation.php:1595
 msgid "View Accommodation"
 msgstr "Ver alojamiento"
 
-#: includes/class-hostpn-post-type-accommodation.php:485
+#: includes/class-hostpn-post-type-accommodation.php:857
+#: includes/class-hostpn-notifications.php:237
 msgid "View accommodation"
 msgstr "Ver alojamiento"
+
+#: includes/class-hostpn-post-type-contract.php:465
+#: includes/class-hostpn-post-type-contract.php:935
+msgid "View Contract"
+msgstr "Ver contrato"
 
 #: templates/public/archive-hostpn_accommodation.php:104
 msgid "View Details"
@@ -5484,12 +7497,12 @@ msgstr "Ver detalles"
 msgid "View Financial Record"
 msgstr "Ver historial financiero"
 
-#: includes/class-hostpn-post-type-guest.php:270
-#: includes/class-hostpn-post-type-guest.php:722
+#: includes/class-hostpn-post-type-guest.php:284
+#: includes/class-hostpn-post-type-guest.php:745
 msgid "View Guest"
 msgstr "Ver huésped"
 
-#: includes/class-hostpn-notifications.php:422
+#: includes/class-hostpn-notifications.php:475
 msgid "View guest in dashboard"
 msgstr "Ver invitados en el panel de control"
 
@@ -5501,19 +7514,46 @@ msgstr "Ver parte"
 msgid "View Part of traveler"
 msgstr "Ver Parte del viajero"
 
+#: includes/class-hostpn-post-type-room.php:308
+#: includes/class-hostpn-post-type-room.php:727
+msgid "View Room"
+msgstr "Ver habitación"
+
 #: includes/class-hostpn-data.php:533
 msgid "Villa"
 msgstr "Villa"
 
-#: hostpn.php:293
+#: includes/class-hostpn-contract-templates.php:211
+msgid "Visitors and overnight stays:"
+msgstr "Visitantes y pernoctaciones:"
+
+#: includes/class-hostpn-contract-templates.php:211
+msgid ""
+"Visits are limited to daytime hours. Overnight stays by persons not party to "
+"this contract are expressly prohibited without prior written consent from "
+"the LANDLORD and the other cohabitants."
+msgstr ""
+"Las visitas se limitan al horario diurno. Quedan expresamente prohibidas las "
+"pernoctaciones de personas ajenas a este contrato sin el consentimiento "
+"previo por escrito del arrendador y de los demás convivientes."
+
+#: includes/public/class-hostpn-public.php:85
+msgid "Waiting list"
+msgstr "Lista de espera"
+
+#: templates/public/single-hostpn_accommodation.php:133
+msgid "Waiting list (%d)"
+msgstr "Lista de espera (%d)"
+
+#: hostpn.php:295
 msgid "Wall Fan"
 msgstr "Ventilador de pared"
 
-#: hostpn.php:280
+#: hostpn.php:282
 msgid "Wall Lamp"
 msgstr "Lámpara de pared"
 
-#: hostpn.php:270
+#: hostpn.php:272
 msgid "Wardrobe"
 msgstr "Armario"
 
@@ -5521,17 +7561,25 @@ msgstr "Armario"
 msgid "Warning:"
 msgstr "Advertencia:"
 
-#: hostpn.php:243
+#: hostpn.php:245
 msgid "Washing Machine"
 msgstr "Lavadora"
 
-#: hostpn.php:260
+#: hostpn.php:262
 msgid "Water Filter"
 msgstr "Filtro de agua"
 
 #: includes/class-hostpn-functions-user.php:435
 msgid "We have successfully received your registration and application."
 msgstr "Hemos recibido exitosamente su registro y solicitud."
+
+#: includes/public/class-hostpn-public.php:81
+msgid "We will notify you when available."
+msgstr "Le avisaremos cuando esté disponible."
+
+#: includes/class-hostpn-post-type-room.php:955
+msgid "We will notify you when this room becomes available."
+msgstr "Le avisaremos cuando esta habitación esté disponible."
 
 #: templates/hostpn-popups.php:40
 msgid ""
@@ -5540,15 +7588,15 @@ msgid ""
 msgstr ""
 "Se eliminarán por completo. Este proceso no se puede revertir ni recuperar."
 
-#: hostpn.php:255
+#: hostpn.php:257
 msgid "Wine Cooler"
 msgstr "Enfriador de vino"
 
-#: hostpn.php:263
+#: hostpn.php:265
 msgid "Wine Rack"
 msgstr "Botellero"
 
-#: hostpn.php:348
+#: hostpn.php:350
 msgid "Wood Stove"
 msgstr "Estufa de leña"
 
@@ -5573,6 +7621,11 @@ msgstr "yemenita"
 msgid "Yes"
 msgstr "Sí"
 
+#: includes/class-hostpn-post-type-room.php:945
+#: includes/public/class-hostpn-public.php:83
+msgid "You are already on the waiting list."
+msgstr "Ya estás en la lista de espera."
+
 #: includes/class-hostpn-ajax-nopriv.php:143
 #: includes/class-hostpn-ajax-nopriv.php:183
 #: includes/class-hostpn-ajax-nopriv.php:192
@@ -5587,7 +7640,7 @@ msgstr ""
 "Ahora puedes agregar más huéspedes tú mismo o compartir el enlace con otros "
 "compañeros para permitirles completar su propio formulario."
 
-#: includes/class-hostpn-post-type-accommodation.php:1342
+#: includes/class-hostpn-post-type-accommodation.php:1784
 msgid ""
 "You can share accommodation link to allow companions to fill out their "
 "guests forms directly in the platform."
@@ -5595,6 +7648,10 @@ msgstr ""
 "Puedes compartir el enlace del alojamiento para permitir que los "
 "acompañantes completen los formularios de sus huéspedes directamente en la "
 "plataforma."
+
+#: includes/class-hostpn-private-storage.php:191
+msgid "You do not have permission to access this file."
+msgstr "No tienes permiso para acceder a este archivo."
 
 #: includes/class-hostpn-debug.php:35
 msgid "You do not have permission to access this page."
@@ -5608,15 +7665,28 @@ msgstr "No tienes permiso para eliminar este registro."
 msgid "You do not have permission to manage user roles."
 msgstr "No tienes permiso para administrar los roles de usuario."
 
-#: includes/class-hostpn-ajax.php:527
+#: includes/class-hostpn-ajax.php:788
 msgid "You do not have permission to perform this action."
 msgstr "No tienes permiso para realizar esta acción."
 
+#: includes/class-hostpn-private-storage.php:271
+msgid "You do not have permission."
+msgstr "No tienes permiso."
+
+#: includes/class-hostpn-private-storage.php:218
+#: includes/class-hostpn-private-storage.php:252
+msgid "You must be logged in."
+msgstr "Debes iniciar sesión."
+
 #: includes/class-hostpn-post-type-part.php:796
-#: includes/class-hostpn-post-type-guest.php:649
-#: includes/class-hostpn-post-type-accommodation.php:1087
+#: includes/class-hostpn-post-type-guest.php:672
+#: includes/class-hostpn-post-type-accommodation.php:1529
 msgid "You need a valid account to see this content. Please"
 msgstr "Necesita una cuenta válida para ver este contenido. Por favor."
+
+#: templates/public/single-hostpn_accommodation.php:114
+msgid "Your email"
+msgstr "Tu correo electrónico"
 
 #: includes/class-hostpn-data.php:277
 msgid "Zambia"

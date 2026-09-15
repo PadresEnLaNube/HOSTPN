@@ -107,16 +107,16 @@
 
 .hostpn-contract-live-preview h2 {
   font-size: 12pt;
-  margin-top: 14pt;
-  margin-bottom: 6pt;
+  margin-top: 22pt;
+  margin-bottom: 8pt;
   font-weight: bold;
   text-transform: uppercase;
 }
 
 .hostpn-contract-live-preview h3 {
   font-size: 11pt;
-  margin-top: 10pt;
-  margin-bottom: 4pt;
+  margin-top: 18pt;
+  margin-bottom: 6pt;
   font-weight: bold;
 }
 
@@ -154,14 +154,18 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 10pt;
+  table-layout: fixed;
 }
 
 .hostpn-contract-live-preview .contract-inventory-table th,
 .hostpn-contract-live-preview .contract-inventory-table td {
   border: 1px solid #333;
-  padding: 6pt 10pt;
+  padding: 4pt 8pt;
   text-align: left;
-  font-size: 10pt;
+  font-size: 8pt;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: none;
 }
 
 .hostpn-contract-live-preview .contract-inventory-table th {
@@ -171,13 +175,88 @@
 
 .hostpn-contract-live-preview .contract-inventory-table a {
   color: #6c5ce7;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   word-break: break-all;
-  font-size: 9pt;
+  hyphens: none;
+  font-size: 8pt;
 }
 
 .hostpn-contract-live-preview .contract-page-break {
   border-top: 2px dashed #ccc;
   margin: 20pt 0;
+}
+
+/* ── Room summary block (habitacion — read-only guest/contract data) ── */
+#hostpn-contract-room-summary {
+  margin: 10px 0 15px;
+}
+
+#hostpn-contract-room-summary:empty {
+  display: none;
+}
+
+.hostpn-room-summary-section {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  background: #f9f9fb;
+}
+
+.hostpn-room-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.hostpn-room-summary-header strong {
+  font-size: 13px;
+  color: #333;
+}
+
+.hostpn-room-summary-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  color: #6c5ce7;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.hostpn-room-summary-edit:hover {
+  color: #5a4bd1;
+}
+
+.hostpn-room-summary-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.hostpn-room-summary-label {
+  font-weight: 600;
+  color: #555;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.hostpn-room-summary-value {
+  color: #333;
+  flex: 1;
+}
+
+.hostpn-room-summary-empty {
+  font-style: italic;
+  color: #aaa;
 }
 
 /* ── Generate button ────────────────────────────────────────────── */
@@ -239,16 +318,16 @@
 
 #hostpn-contract-render h2 {
   font-size: 13pt;
-  margin-top: 16pt;
-  margin-bottom: 8pt;
+  margin-top: 24pt;
+  margin-bottom: 10pt;
   font-weight: bold;
   text-transform: uppercase;
 }
 
 #hostpn-contract-render h3 {
   font-size: 12pt;
-  margin-top: 12pt;
-  margin-bottom: 6pt;
+  margin-top: 20pt;
+  margin-bottom: 8pt;
   font-weight: bold;
 }
 
@@ -280,19 +359,31 @@
   border-collapse: collapse;
   margin-top: 10pt;
   page-break-inside: avoid;
+  table-layout: fixed;
 }
 
 #hostpn-contract-render .contract-inventory-table th,
 #hostpn-contract-render .contract-inventory-table td {
   border: 1px solid #333;
-  padding: 6pt 10pt;
+  padding: 5pt 8pt;
   text-align: left;
-  font-size: 11pt;
+  font-size: 9pt;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: none;
 }
 
 #hostpn-contract-render .contract-inventory-table th {
   background: #f0f0f0;
   font-weight: bold;
+}
+
+#hostpn-contract-render .contract-inventory-table a {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  hyphens: none;
+  font-size: 9pt;
 }
 
 #hostpn-contract-render .contract-page-break {

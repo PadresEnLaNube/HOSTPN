@@ -500,45 +500,70 @@ class HOSTPN_Post_Type_Accommodation {
       'class' => 'hostpn-input hostpn-width-100-percent',
       'input' => 'input',
       'type' => 'text',
-      'label' => esc_html(__('Landlord address (for notifications)', 'hostpn')),
-      'placeholder' => esc_html(__('Address for notifications', 'hostpn')),
+      'label' => esc_html(__('Landlord address', 'hostpn')),
+      'placeholder' => esc_html(__('Domicile address of the landlord', 'hostpn')),
     ];
-
-    // --- Common: Tenant fields ---
-    $hostpn_fields['hostpn_contract_tenant_name'] = [
-      'id' => 'hostpn_contract_tenant_name',
-      'class' => 'hostpn-input hostpn-width-100-percent',
-      'input' => 'input',
-      'type' => 'text',
-      'label' => esc_html(__('Tenant full name', 'hostpn')),
-      'placeholder' => esc_html(__('Full name of the tenant', 'hostpn')),
-    ];
-    $hostpn_fields['hostpn_contract_tenant_nif'] = [
-      'id' => 'hostpn_contract_tenant_nif',
-      'class' => 'hostpn-input hostpn-width-100-percent',
-      'input' => 'input',
-      'type' => 'text',
-      'label' => esc_html(__('Tenant NIF/NIE', 'hostpn')),
-      'placeholder' => esc_html(__('NIF or NIE of the tenant', 'hostpn')),
-    ];
-    $hostpn_fields['hostpn_contract_tenant_email'] = [
-      'id' => 'hostpn_contract_tenant_email',
+    $hostpn_fields['hostpn_contract_landlord_email'] = [
+      'id' => 'hostpn_contract_landlord_email',
       'class' => 'hostpn-input hostpn-width-100-percent',
       'input' => 'input',
       'type' => 'email',
-      'label' => esc_html(__('Tenant email', 'hostpn')),
-      'placeholder' => esc_html(__('Email of the tenant', 'hostpn')),
+      'label' => esc_html(__('Landlord email', 'hostpn')),
+      'placeholder' => esc_html(__('Email of the landlord', 'hostpn')),
     ];
 
-    // --- Room-only fields ---
+    // --- Room-only fields (before tenant so room selection auto-fills tenant data) ---
     if ($contract_type === 'habitacion') {
       $hostpn_fields['hostpn_contract_room_id'] = [
         'id' => 'hostpn_contract_room_id',
+        'class' => 'hostpn-select hostpn-width-100-percent hostpn-contract-room-select',
+        'input' => 'select',
+        'options' => HOSTPN_Post_Type_Room::hostpn_get_rooms_options($accommodation_id),
+        'label' => esc_html(__('Room', 'hostpn')),
+        'placeholder' => esc_html(__('Select room', 'hostpn')),
+      ];
+
+      // Room summary placeholder — JS will populate with guest/contract data from Room/Guest CPTs
+      $hostpn_fields['hostpn_contract_room_summary'] = [
+        'id' => 'hostpn_contract_room_summary',
+        'input' => 'html',
+        'html_content' => '<div id="hostpn-contract-room-summary"></div>',
+      ];
+    }
+
+    // --- Tenant fields (non-habitacion only — habitacion reads from Guest CPT) ---
+    if ($contract_type !== 'habitacion') {
+      $hostpn_fields['hostpn_contract_tenant_name'] = [
+        'id' => 'hostpn_contract_tenant_name',
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'text',
-        'label' => esc_html(__('Room identification', 'hostpn')),
-        'placeholder' => esc_html(__('Room number or name', 'hostpn')),
+        'label' => esc_html(__('Tenant full name', 'hostpn')),
+        'placeholder' => esc_html(__('Full name of the tenant', 'hostpn')),
+      ];
+      $hostpn_fields['hostpn_contract_tenant_nif'] = [
+        'id' => 'hostpn_contract_tenant_nif',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'label' => esc_html(__('Tenant NIF/NIE', 'hostpn')),
+        'placeholder' => esc_html(__('NIF or NIE of the tenant', 'hostpn')),
+      ];
+      $hostpn_fields['hostpn_contract_tenant_address'] = [
+        'id' => 'hostpn_contract_tenant_address',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'label' => esc_html(__('Tenant address', 'hostpn')),
+        'placeholder' => esc_html(__('Domicile address of the tenant', 'hostpn')),
+      ];
+      $hostpn_fields['hostpn_contract_tenant_email'] = [
+        'id' => 'hostpn_contract_tenant_email',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'email',
+        'label' => esc_html(__('Tenant email', 'hostpn')),
+        'placeholder' => esc_html(__('Email of the tenant', 'hostpn')),
       ];
     }
 
@@ -568,32 +593,34 @@ class HOSTPN_Post_Type_Accommodation {
       ];
     }
 
-    // --- Common: Contract dates ---
-    $hostpn_fields['hostpn_contract_duration'] = [
-      'id' => 'hostpn_contract_duration',
-      'class' => 'hostpn-input hostpn-width-100-percent',
-      'input' => 'input',
-      'type' => 'text',
-      'label' => esc_html(__('Contract duration', 'hostpn')),
-      'placeholder' => esc_html(__('e.g. 11 months', 'hostpn')),
-    ];
-    $hostpn_fields['hostpn_contract_start_date'] = [
-      'id' => 'hostpn_contract_start_date',
-      'class' => 'hostpn-input hostpn-width-100-percent',
-      'input' => 'input',
-      'type' => 'date',
-      'label' => esc_html(__('Start date', 'hostpn')),
-    ];
-    $hostpn_fields['hostpn_contract_end_date'] = [
-      'id' => 'hostpn_contract_end_date',
-      'class' => 'hostpn-input hostpn-width-100-percent',
-      'input' => 'input',
-      'type' => 'date',
-      'label' => esc_html(__('End date', 'hostpn')),
-    ];
+    // --- Contract dates (non-habitacion only — habitacion reads from Room CPT) ---
+    if ($contract_type !== 'habitacion') {
+      $hostpn_fields['hostpn_contract_duration'] = [
+        'id' => 'hostpn_contract_duration',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'label' => esc_html(__('Contract duration', 'hostpn')),
+        'placeholder' => esc_html(__('e.g. 11 months', 'hostpn')),
+      ];
+      $hostpn_fields['hostpn_contract_start_date'] = [
+        'id' => 'hostpn_contract_start_date',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'date',
+        'label' => esc_html(__('Start date', 'hostpn')),
+      ];
+      $hostpn_fields['hostpn_contract_end_date'] = [
+        'id' => 'hostpn_contract_end_date',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'date',
+        'label' => esc_html(__('End date', 'hostpn')),
+      ];
+    }
 
-    // --- Room and LAU: Notice days ---
-    if ($contract_type === 'habitacion' || $contract_type === 'lau') {
+    // --- Long-stay only: Notice days (habitacion reads from Room CPT) ---
+    if ($contract_type === 'lau') {
       $hostpn_fields['hostpn_contract_notice_days'] = [
         'id' => 'hostpn_contract_notice_days',
         'class' => 'hostpn-input hostpn-width-100-percent',
@@ -604,7 +631,7 @@ class HOSTPN_Post_Type_Accommodation {
       ];
     }
 
-    // --- Common: Financial details ---
+    // --- Financial details ---
     if ($contract_type === 'turistico') {
       $hostpn_fields['hostpn_contract_total_price'] = [
         'id' => 'hostpn_contract_total_price',
@@ -614,7 +641,8 @@ class HOSTPN_Post_Type_Accommodation {
         'label' => esc_html(__('Total price (EUR)', 'hostpn')),
         'placeholder' => esc_html(__('Total price for the stay', 'hostpn')),
       ];
-    } else {
+    } elseif ($contract_type !== 'habitacion') {
+      // LAU — habitacion reads rent from Room CPT
       $hostpn_fields['hostpn_contract_rent_amount'] = [
         'id' => 'hostpn_contract_rent_amount',
         'class' => 'hostpn-input hostpn-width-100-percent',
@@ -641,7 +669,7 @@ class HOSTPN_Post_Type_Accommodation {
       ];
     }
 
-    // --- Room and LAU: Bank details ---
+    // --- Room and long-stay: Bank details ---
     if ($contract_type === 'habitacion' || $contract_type === 'lau') {
       $hostpn_fields['hostpn_contract_bank_name'] = [
         'id' => 'hostpn_contract_bank_name',
@@ -661,55 +689,35 @@ class HOSTPN_Post_Type_Accommodation {
       ];
     }
 
-    // --- Room-only: Supplies ---
-    if ($contract_type === 'habitacion') {
-      $hostpn_fields['hostpn_contract_supplies_option'] = [
-        'id' => 'hostpn_contract_supplies_option',
-        'class' => 'hostpn-select hostpn-width-100-percent',
-        'input' => 'select',
-        'options' => [
-          'A' => esc_html(__('Option A - Supplies included', 'hostpn')),
-          'B' => esc_html(__('Option B - Supplies not included', 'hostpn')),
-        ],
-        'label' => esc_html(__('Supplies option', 'hostpn')),
-      ];
-      $hostpn_fields['hostpn_contract_supplies_limit'] = [
-        'id' => 'hostpn_contract_supplies_limit',
+    // --- Supplies and deposit (non-habitacion only — habitacion reads from Room CPT) ---
+    if ($contract_type !== 'habitacion') {
+      $hostpn_fields['hostpn_contract_deposit_amount'] = [
+        'id' => 'hostpn_contract_deposit_amount',
         'class' => 'hostpn-input hostpn-width-100-percent',
         'input' => 'input',
         'type' => 'number',
-        'label' => esc_html(__('Supplies limit per person/month (EUR)', 'hostpn')),
-        'placeholder' => esc_html(__('Maximum supplies amount', 'hostpn')),
+        'label' => esc_html(__('Deposit amount (EUR)', 'hostpn')),
+        'placeholder' => esc_html(__('Deposit amount', 'hostpn')),
+      ];
+      $hostpn_fields['hostpn_contract_deposit_words'] = [
+        'id' => 'hostpn_contract_deposit_words',
+        'class' => 'hostpn-input hostpn-width-100-percent',
+        'input' => 'input',
+        'type' => 'text',
+        'label' => esc_html(__('Deposit in words', 'hostpn')),
+        'placeholder' => esc_html(__('e.g. trescientos cincuenta', 'hostpn')),
+      ];
+      $hostpn_fields['hostpn_contract_deposit_months'] = [
+        'id' => 'hostpn_contract_deposit_months',
+        'class' => 'hostpn-select hostpn-width-100-percent',
+        'input' => 'select',
+        'options' => [
+          '1' => '1 ' . esc_html(__('month', 'hostpn')),
+          '2' => '2 ' . esc_html(__('months', 'hostpn')),
+        ],
+        'label' => esc_html(__('Deposit months', 'hostpn')),
       ];
     }
-
-    // --- Common: Deposit ---
-    $hostpn_fields['hostpn_contract_deposit_amount'] = [
-      'id' => 'hostpn_contract_deposit_amount',
-      'class' => 'hostpn-input hostpn-width-100-percent',
-      'input' => 'input',
-      'type' => 'number',
-      'label' => esc_html(__('Deposit amount (EUR)', 'hostpn')),
-      'placeholder' => esc_html(__('Deposit amount', 'hostpn')),
-    ];
-    $hostpn_fields['hostpn_contract_deposit_words'] = [
-      'id' => 'hostpn_contract_deposit_words',
-      'class' => 'hostpn-input hostpn-width-100-percent',
-      'input' => 'input',
-      'type' => 'text',
-      'label' => esc_html(__('Deposit in words', 'hostpn')),
-      'placeholder' => esc_html(__('e.g. trescientos cincuenta', 'hostpn')),
-    ];
-    $hostpn_fields['hostpn_contract_deposit_months'] = [
-      'id' => 'hostpn_contract_deposit_months',
-      'class' => 'hostpn-select hostpn-width-100-percent',
-      'input' => 'select',
-      'options' => [
-        '1' => '1 ' . esc_html(__('month', 'hostpn')),
-        '2' => '2 ' . esc_html(__('months', 'hostpn')),
-      ],
-      'label' => esc_html(__('Deposit months', 'hostpn')),
-    ];
 
     // --- Inventory annex ---
     $hostpn_fields['hostpn_contract_inventory_enabled'] = [
@@ -719,32 +727,42 @@ class HOSTPN_Post_Type_Accommodation {
       'type' => 'checkbox',
       'label' => esc_html(__('Add inventory annex to contract', 'hostpn')),
     ];
-    $hostpn_fields['hostpn_contract_inventory_items'] = [
-      'id' => 'hostpn_contract_inventory_items',
-      'input' => 'html_multi',
-      'class' => 'hostpn-input hostpn-width-100-percent hostpn-contract-inventory-items',
-      'html_multi_fields' => [
-        [
-          'id' => 'hostpn_contract_inventory_name',
-          'class' => 'hostpn-input hostpn-width-100-percent',
-          'input' => 'input',
-          'type' => 'text',
-          'multiple' => true,
-          'label' => esc_html(__('Item name', 'hostpn')),
-          'placeholder' => esc_html(__('Name of the item', 'hostpn')),
-        ],
-        [
-          'id' => 'hostpn_contract_inventory_url',
-          'class' => 'hostpn-input hostpn-width-100-percent',
-          'input' => 'input',
-          'type' => 'url',
-          'multiple' => true,
-          'label' => esc_html(__('Item URL', 'hostpn')),
-          'placeholder' => esc_html(__('Link to the product', 'hostpn')),
-        ],
-      ],
-      'label' => esc_html(__('Inventory items', 'hostpn')),
+    $inventory_categories = [
+      'mobiliario'              => __('Furniture', 'hostpn'),
+      'equipamiento_individual' => __('Individual equipment', 'hostpn'),
+      'menaje_individual'       => __('Individual kitchenware', 'hostpn'),
+      'equipamiento_comunitario' => __('Community equipment', 'hostpn'),
+      'otros_enseres'           => __('Other items', 'hostpn'),
     ];
+
+    foreach ($inventory_categories as $cat_key => $cat_label) {
+      $hostpn_fields['hostpn_contract_inv_' . $cat_key] = [
+        'id' => 'hostpn_contract_inv_' . $cat_key,
+        'input' => 'html_multi',
+        'class' => 'hostpn-input hostpn-width-100-percent hostpn-contract-inventory-items',
+        'html_multi_fields' => [
+          [
+            'id' => 'hostpn_contract_inv_' . $cat_key . '_name',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'text',
+            'multiple' => true,
+            'label' => esc_html(__('Item name', 'hostpn')),
+            'placeholder' => esc_html(__('Name of the item', 'hostpn')),
+          ],
+          [
+            'id' => 'hostpn_contract_inv_' . $cat_key . '_url',
+            'class' => 'hostpn-input hostpn-width-100-percent',
+            'input' => 'input',
+            'type' => 'url',
+            'multiple' => true,
+            'label' => esc_html(__('Item URL', 'hostpn')),
+            'placeholder' => esc_html(__('Link to the product', 'hostpn')),
+          ],
+        ],
+        'label' => $cat_label,
+      ];
+    }
 
     // --- Share link ---
     $post_id = $accommodation_id ? $accommodation_id : get_the_ID();
@@ -755,19 +773,49 @@ class HOSTPN_Post_Type_Accommodation {
         update_post_meta($post_id, 'hostpn_contract_token', $token);
       }
     }
-    $share_url = add_query_arg('hostpn_contract', $token, home_url('/'));
+
+    $share_html = '<div class="hostpn-contract-share-wrapper" style="margin-top:15px;">'
+      . '<label class="hostpn-label">' . esc_html(__('Contract shared link', 'hostpn')) . '</label>';
+
+    if ($contract_type === 'habitacion') {
+      // Per-room URLs
+      $rooms = HOSTPN_Post_Type_Room::hostpn_get_rooms_options($post_id);
+      if (!empty($rooms)) {
+        $share_html .= '<div class="hostpn-contract-share-rooms" style="display:flex;flex-direction:column;gap:6px;">';
+        foreach ($rooms as $rid => $rlabel) {
+          $room_url = add_query_arg([
+            'hostpn_contract'      => $token,
+            'hostpn_contract_room' => $rid,
+          ], home_url('/'));
+          $code_id = 'hostpn-contract-share-url-' . intval($rid);
+          $share_html .= '<div style="display:flex;align-items:center;gap:8px;">'
+            . '<span class="hostpn-label" style="min-width:100px;font-weight:600;">' . esc_html($rlabel) . '</span>'
+            . '<code id="' . esc_attr($code_id) . '" style="flex:1;word-break:break-all;padding:8px;background:#f5f5f5;border-radius:4px;font-size:12px;">' . esc_url($room_url) . '</code>'
+            . '<a href="' . esc_url($room_url) . '" target="_blank" class="hostpn-cursor-pointer hostpn-tooltip" title="' . esc_attr(__('Open', 'hostpn')) . '" style="font-size:20px;text-decoration:none;color:inherit;"><i class="material-icons-outlined">open_in_new</i></a>'
+            . '<i class="material-icons-outlined hostpn-btn-copy hostpn-cursor-pointer hostpn-tooltip" title="' . esc_attr(__('Copy URL', 'hostpn')) . '" data-hostpn-copy-content="#' . esc_attr($code_id) . '" style="font-size:20px;">content_copy</i>'
+            . '</div>';
+        }
+        $share_html .= '</div>';
+      } else {
+        $share_html .= '<p class="description">' . esc_html(__('No rooms found. Add rooms to generate per-room contract links.', 'hostpn')) . '</p>';
+      }
+    } else {
+      // Single URL for non-habitacion types
+      $share_url = add_query_arg('hostpn_contract', $token, home_url('/'));
+      $share_html .= '<div style="display:flex;align-items:center;gap:8px;">'
+        . '<code id="hostpn-contract-share-url" style="flex:1;word-break:break-all;padding:8px;background:#f5f5f5;border-radius:4px;font-size:12px;">' . esc_url($share_url) . '</code>'
+        . '<a href="' . esc_url($share_url) . '" target="_blank" class="hostpn-cursor-pointer hostpn-tooltip" title="' . esc_attr(__('Open', 'hostpn')) . '" style="font-size:20px;text-decoration:none;color:inherit;"><i class="material-icons-outlined">open_in_new</i></a>'
+        . '<i class="material-icons-outlined hostpn-btn-copy hostpn-cursor-pointer hostpn-tooltip" title="' . esc_attr(__('Copy URL', 'hostpn')) . '" data-hostpn-copy-content="#hostpn-contract-share-url" style="font-size:20px;">content_copy</i>'
+        . '</div>';
+    }
+
+    $share_html .= '<p class="description" style="margin-top:5px;">' . esc_html(__('Share this link with the tenant to view, sign, and download the contract.', 'hostpn')) . '</p>'
+      . '</div>';
 
     $hostpn_fields['hostpn_contract_share_link'] = [
       'id' => 'hostpn_contract_share_link',
       'input' => 'html',
-      'html_content' => '<div class="hostpn-contract-share-wrapper" style="margin-top:15px;">'
-        . '<label class="hostpn-label">' . esc_html(__('Contract shared link', 'hostpn')) . '</label>'
-        . '<div style="display:flex;align-items:center;gap:8px;">'
-        . '<code id="hostpn-contract-share-url" style="flex:1;word-break:break-all;padding:8px;background:#f5f5f5;border-radius:4px;font-size:12px;">' . esc_url($share_url) . '</code>'
-        . '<i class="material-icons-outlined hostpn-btn-copy hostpn-cursor-pointer hostpn-tooltip" title="' . esc_attr(__('Copy URL', 'hostpn')) . '" data-hostpn-copy-content="#hostpn-contract-share-url" style="font-size:20px;">content_copy</i>'
-        . '</div>'
-        . '<p class="description" style="margin-top:5px;">' . esc_html(__('Share this link with the tenant to view, sign, and download the contract.', 'hostpn')) . '</p>'
-        . '</div>',
+      'html_content' => $share_html,
     ];
 
     return $hostpn_fields;
@@ -780,8 +828,8 @@ class HOSTPN_Post_Type_Accommodation {
    */
   public static function hostpn_contract_get_all_field_keys() {
     $all_keys = [
-      'hostpn_contract_landlord_name', 'hostpn_contract_landlord_nif', 'hostpn_contract_landlord_address',
-      'hostpn_contract_tenant_name', 'hostpn_contract_tenant_nif', 'hostpn_contract_tenant_email',
+      'hostpn_contract_landlord_name', 'hostpn_contract_landlord_nif', 'hostpn_contract_landlord_address', 'hostpn_contract_landlord_email',
+      'hostpn_contract_tenant_name', 'hostpn_contract_tenant_nif', 'hostpn_contract_tenant_address', 'hostpn_contract_tenant_email',
       'hostpn_contract_room_id', 'hostpn_contract_duration', 'hostpn_contract_start_date', 'hostpn_contract_end_date',
       'hostpn_contract_notice_days', 'hostpn_contract_rent_amount', 'hostpn_contract_rent_words',
       'hostpn_contract_payment_day', 'hostpn_contract_bank_name', 'hostpn_contract_iban',
@@ -900,7 +948,6 @@ class HOSTPN_Post_Type_Accommodation {
     echo '<div class="hostpn-contract-top-actions">';
     echo '<a href="' . esc_url($settings_url) . '#hostpn-contracts-editor" target="_blank" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent" title="' . esc_attr__('Edit templates', 'hostpn') . '"><span class="material-icons-outlined">edit_note</span> ' . esc_html__('Edit templates', 'hostpn') . '</a>';
     echo '<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent hostpn-contract-refresh-btn" title="' . esc_attr__('Refresh preview', 'hostpn') . '"><span class="material-icons-outlined">refresh</span></button>';
-    echo '<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-contract-generate-btn"><span class="material-icons-outlined">picture_as_pdf</span> <span>' . esc_html__('Generate PDF', 'hostpn') . '</span></button>';
     echo '</div>';
     echo '</div>';
 
@@ -1776,6 +1823,7 @@ class HOSTPN_Post_Type_Accommodation {
    */
   public function hostpn_contract_query_vars($vars) {
     $vars[] = 'hostpn_contract';
+    $vars[] = 'hostpn_contract_room';
     return $vars;
   }
 
@@ -1878,5 +1926,138 @@ class HOSTPN_Post_Type_Accommodation {
       include $template_path;
       exit;
     }
+  }
+
+  /**
+   * AJAX handler: switch contract locale and return re-rendered HTML.
+   */
+  public static function hostpn_contract_switch_locale() {
+    check_ajax_referer('hostpn-contract-public', 'hostpn_contract_nonce');
+
+    $token   = isset($_POST['hostpn_contract_token']) ? sanitize_text_field(wp_unslash($_POST['hostpn_contract_token'])) : '';
+    $room_id = isset($_POST['hostpn_contract_room']) ? absint($_POST['hostpn_contract_room']) : 0;
+    $locale  = isset($_POST['hostpn_locale']) ? sanitize_text_field(wp_unslash($_POST['hostpn_locale'])) : '';
+
+    if (empty($token) || empty($locale)) {
+      echo wp_json_encode(['error_key' => 'invalid_request']);
+      wp_die();
+    }
+
+    // Validate locale
+    $available = HOSTPN_Contract_Templates::hostpn_get_available_contract_languages();
+    if (!isset($available[$locale])) {
+      echo wp_json_encode(['error_key' => 'invalid_locale']);
+      wp_die();
+    }
+
+    // Find accommodation by token
+    $posts = get_posts([
+      'post_type'   => 'hostpn_accommodation',
+      'post_status' => 'any',
+      'numberposts' => 1,
+      'meta_key'    => 'hostpn_contract_token',
+      'meta_value'  => $token,
+    ]);
+
+    if (empty($posts)) {
+      echo wp_json_encode(['error_key' => 'not_found']);
+      wp_die();
+    }
+
+    $accommodation_id = $posts[0]->ID;
+
+    // Validate room belongs to accommodation
+    if ($room_id) {
+      $room_acc = get_post_meta($room_id, 'hostpn_room_accommodation_id', true);
+      if (intval($room_acc) !== $accommodation_id) {
+        $room_id = 0;
+      }
+    }
+
+    // Get contract type
+    $accommodation_type = get_post_meta($accommodation_id, 'hostpn_accommodation_type', true);
+    $contract_type = HOSTPN_Contract_Templates::hostpn_get_type_for_accommodation($accommodation_type);
+
+    // ── DEBUG: collect diagnostic info ──
+    $debug = [];
+    $debug['requested_locale'] = $locale;
+    $debug['site_WPLANG'] = get_option('WPLANG', '(not set)');
+    $debug['get_locale_before'] = get_locale();
+    $debug['HOSTPN_DIR'] = defined('HOSTPN_DIR') ? HOSTPN_DIR : '(not defined)';
+    $debug['contract_type'] = $contract_type;
+
+    $mo_file = HOSTPN_DIR . 'languages/hostpn-' . $locale . '.mo';
+    $debug['mo_file_exists'] = file_exists($mo_file);
+
+    // ── Switch locale ──
+    // Key fix: call unload_textdomain AFTER switch_to_locale, because
+    // switch_to_locale auto-reloads textdomains (possibly from WP_LANG_DIR
+    // with outdated/empty translations). We must unload that auto-loaded
+    // version before loading our own plugin file.
+    $locale_switched = false;
+    $textdomain_loaded = false;
+
+    if ($locale !== 'en_US') {
+      $locale_switched = switch_to_locale($locale);
+      $debug['switch_to_locale_result'] = $locale_switched;
+      $debug['get_locale_after_switch'] = get_locale();
+
+      // Unload whatever switch_to_locale auto-loaded, then load our own file
+      unload_textdomain('hostpn');
+      if (file_exists($mo_file)) {
+        $textdomain_loaded = load_textdomain('hostpn', $mo_file);
+        $debug['load_textdomain_result'] = $textdomain_loaded;
+      }
+    } else {
+      // English: just unload so __() returns source strings
+      unload_textdomain('hostpn');
+      $debug['load_textdomain_result'] = 'skipped (en_US)';
+    }
+
+    // Test translations
+    $debug['test___PARTIES'] = __('PARTIES', 'hostpn');
+    $debug['test___THE_LANDLORD'] = __('THE LANDLORD', 'hostpn');
+    $debug['test___Clear'] = __('Clear', 'hostpn');
+
+    // Check if textdomain is loaded
+    global $l10n;
+    $debug['textdomain_in_l10n'] = isset($l10n['hostpn']);
+
+    // Always use the default template (translatable __() calls)
+    $template = HOSTPN_Contract_Templates::hostpn_get_default_template($contract_type);
+
+    // Check first section content (snippet)
+    $first_key = array_key_first($template);
+    if ($first_key) {
+      $debug['first_section_snippet'] = mb_substr(strip_tags($template[$first_key]), 0, 120);
+    }
+
+    // Render
+    $contract_html  = HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $accommodation_id, $room_id);
+    $inventory_html = HOSTPN_Contract_Templates::hostpn_render_inventory($accommodation_id, $room_id);
+
+    // Translated signature labels
+    $signature_labels = [
+      'landlord' => $contract_type === 'turistico' ? __('THE OWNER', 'hostpn') : __('THE LANDLORD', 'hostpn'),
+      'tenant'   => $contract_type === 'turistico' ? __('THE GUEST', 'hostpn') : __('THE TENANT', 'hostpn'),
+      'clear'    => __('Clear', 'hostpn'),
+      'download' => __('Download PDF', 'hostpn'),
+    ];
+
+    // Restore locale
+    if ($locale_switched) {
+      restore_current_locale();
+    }
+    unload_textdomain('hostpn');
+    load_plugin_textdomain('hostpn', false, 'hostpn/languages/');
+
+    echo wp_json_encode([
+      'error_key'        => '',
+      'contract_html'    => $contract_html,
+      'inventory_html'   => $inventory_html,
+      'signature_labels' => $signature_labels,
+      'debug'            => $debug,
+    ]);
+    wp_die();
   }
 }

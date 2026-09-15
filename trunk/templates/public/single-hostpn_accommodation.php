@@ -70,15 +70,21 @@ if (wp_is_block_theme()) {
                                     'maintenance' => __('Maintenance', 'hostpn'),
                                 ];
                         ?>
-                            <div class="hostpn-rooms-listing">
-                                <div class="hostpn-toggle-header" data-toggle="rooms-listing">
-                                    <h4>
-                                        <i class="material-icons-outlined hostpn-icon-small">meeting_room</i>
-                                        <?php esc_html_e('Rooms', 'hostpn'); ?>
-                                    </h4>
-                                    <i class="material-icons-outlined hostpn-toggle-icon">sort</i>
-                                </div>
-                                <div class="hostpn-toggle-content hostpn-toggle-rooms-listing">
+                            <div class="hostpn-rooms-listing hostpn-toggle-wrapper hostpn-section-wrapper">
+                                <a href="#" class="hostpn-toggle hostpn-width-100-percent hostpn-text-decoration-none">
+                                    <div class="hostpn-display-table hostpn-width-100-percent hostpn-mb-20">
+                                        <div class="hostpn-display-inline-table hostpn-width-90-percent">
+                                            <label class="hostpn-cursor-pointer hostpn-color-main-0">
+                                                <i class="material-icons-outlined hostpn-icon-small">meeting_room</i>
+                                                <?php esc_html_e('Rooms', 'hostpn'); ?>
+                                            </label>
+                                        </div>
+                                        <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
+                                            <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0 hostpn-toggle-indicator">add</i>
+                                        </div>
+                                    </div>
+                                </a>
+                                <div class="hostpn-toggle-content hostpn-display-none-soft">
                                 <div class="hostpn-rooms-grid">
                                     <?php foreach ($rooms as $room_id):
                                         $room_number   = get_post_meta($room_id, 'hostpn_room_number', true);
@@ -105,14 +111,50 @@ if (wp_is_block_theme()) {
                                                 <div class="hostpn-room-notify-form" data-room-id="<?php echo esc_attr($room_id); ?>">
                                                     <p><?php esc_html_e('Interested in this room?', 'hostpn'); ?></p>
                                                     <div class="hostpn-room-notify-input-wrapper">
-                                                        <input type="email" placeholder="<?php esc_attr_e('Your email', 'hostpn'); ?>" class="hostpn-room-notify-email">
-                                                        <button type="button" class="hostpn-btn hostpn-btn-mini hostpn-room-notify-btn">
+                                                        <input type="email" name="hostpn_notify_email_<?php echo esc_attr($room_id); ?>" id="hostpn_notify_email_<?php echo esc_attr($room_id); ?>" autocomplete="off" placeholder="<?php esc_attr_e('Your email', 'hostpn'); ?>" class="hostpn-room-notify-email">
+                                                        <button type="button" class="hostpn-btn hostpn-btn-mini hostpn-room-notify-btn" data-room-id="<?php echo esc_attr($room_id); ?>">
                                                             <i class="material-icons-outlined">notifications</i> <?php esc_html_e('Notify me', 'hostpn'); ?>
                                                         </button>
                                                     </div>
                                                     <div class="hostpn-room-notify-feedback"></div>
                                                 </div>
                                             <?php endif; ?>
+                                            <?php
+                                            if (current_user_can('manage_options')):
+                                                $waitlist = get_post_meta($room_id, 'hostpn_room_waitlist', true);
+                                                if (!empty($waitlist) && is_array($waitlist)):
+                                            ?>
+                                                <div class="hostpn-room-waitlist-admin">
+                                                    <a href="#" class="hostpn-toggle hostpn-width-100-percent hostpn-text-decoration-none">
+                                                        <div class="hostpn-display-table hostpn-width-100-percent">
+                                                            <div class="hostpn-display-inline-table hostpn-width-90-percent">
+                                                                <label class="hostpn-cursor-pointer hostpn-color-main-0">
+                                                                    <i class="material-icons-outlined hostpn-icon-small">mail</i>
+                                                                    <?php echo esc_html(sprintf(__('Waiting list (%d)', 'hostpn'), count($waitlist))); ?>
+                                                                </label>
+                                                            </div>
+                                                            <div class="hostpn-display-inline-table hostpn-width-10-percent hostpn-text-align-right">
+                                                                <i class="material-icons-outlined hostpn-cursor-pointer hostpn-color-main-0 hostpn-toggle-indicator">add</i>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                    <div class="hostpn-toggle-content hostpn-display-none-soft">
+                                                        <ul class="hostpn-waitlist-emails" data-room-id="<?php echo esc_attr($room_id); ?>">
+                                                            <?php foreach ($waitlist as $wl_email): ?>
+                                                                <li class="hostpn-waitlist-email-item">
+                                                                    <span class="hostpn-waitlist-email-text"><?php echo esc_html($wl_email); ?></span>
+                                                                    <button type="button" class="hostpn-waitlist-remove-btn" data-room-id="<?php echo esc_attr($room_id); ?>" data-email="<?php echo esc_attr($wl_email); ?>">
+                                                                        <i class="material-icons-outlined">delete</i>
+                                                                    </button>
+                                                                </li>
+                                                            <?php endforeach; ?>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            <?php
+                                                endif;
+                                            endif;
+                                            ?>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>

@@ -72,16 +72,17 @@ class HOSTPN_Public {
 
 		// Enqueue rooms block JS on single accommodation
 		if (is_singular('hostpn_accommodation')) {
-			wp_enqueue_script($this->plugin_name . '-rooms-block', HOSTPN_URL . 'assets/js/public/hostpn-rooms-block.js', ['jquery'], $this->version, true);
+			wp_enqueue_script($this->plugin_name . '-rooms-block', HOSTPN_URL . 'assets/js/public/hostpn-rooms-block.js', ['jquery'], $this->version, false);
 			wp_localize_script($this->plugin_name . '-rooms-block', 'hostpnRoomsBlock', [
 				'ajaxUrl' => admin_url('admin-ajax.php'),
 				'nonce'   => wp_create_nonce('hostpn-nonce'),
 				'i18n'    => [
-					'subscribing'     => __('Sending...', 'hostpn'),
-					'subscribed'      => __('We will notify you when available.', 'hostpn'),
-					'invalidEmail'    => __('Please enter a valid email.', 'hostpn'),
+					'subscribing'       => __('Sending...', 'hostpn'),
+					'subscribed'        => __('We will notify you when available.', 'hostpn'),
+					'invalidEmail'      => __('Please enter a valid email.', 'hostpn'),
 					'alreadySubscribed' => __('You are already on the waiting list.', 'hostpn'),
-					'notifyMe'        => __('Notify me', 'hostpn'),
+					'notifyMe'          => __('Notify me', 'hostpn'),
+					'waitingList'       => __('Waiting list', 'hostpn'),
 				],
 			]);
 		}

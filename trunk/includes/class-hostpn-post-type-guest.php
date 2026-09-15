@@ -12,6 +12,12 @@
  */
 class HOSTPN_Post_Type_Guest
 {
+    /**
+     * Recursion guard for save_post hook.
+     * Prevents infinite loop when wp_update_post() re-triggers save_post_hostpn_guest.
+     */
+    private static $saving = false;
+
     public function hostpn_guest_get_fields($guest_id = 0)
     {
         $hostpn_fields = [];
@@ -304,7 +310,7 @@ class HOSTPN_Post_Type_Guest
             'publicly_queryable' => false,
             'capability_type' => 'page',
             'taxonomies' => HOSTPN_ROLE_CAPABILITIES,
-            'show_in_rest' => false, /* REST API */
+            'show_in_rest' => true, /* REST API - Gutenberg requires this; public:false restricts access to authenticated users */
         ];
 
         register_post_type('hostpn_guest', $args);
@@ -342,13 +348,18 @@ class HOSTPN_Post_Type_Guest
 
     public function hostpn_guest_save_post($post_id, $cpt, $update)
     {
+        // Prevent infinite recursion: wp_update_post() below re-triggers this hook
+        if (self::$saving) {
+            return;
+        }
+
         // Skip this function if we're creating/editing a guest via AJAX form
         // The hostpn_guest_form_save function will handle it properly
-        if ($cpt->post_type == 'hostpn_guest' && array_key_exists('hostpn_guest_form', $_POST) && 
+        if ($cpt->post_type == 'hostpn_guest' && array_key_exists('hostpn_guest_form', $_POST) &&
             array_key_exists('hostpn_form_subtype', $_POST)) {
             return; // Skip this function, let hostpn_guest_form_save handle it
         }
-        
+
         if ($cpt->post_type == 'hostpn_guest' && array_key_exists('hostpn_guest_form', $_POST)) {
             // Always require nonce verification
             if (!array_key_exists('hostpn_ajax_nonce', $_POST)) {
@@ -368,6 +379,8 @@ class HOSTPN_Post_Type_Guest
 
                 exit;
             }
+
+            self::$saving = true;
 
             // The author of the guest post is always the logged-in user who creates it
             // This ensures guests appear in the creator's list
@@ -481,6 +494,8 @@ class HOSTPN_Post_Type_Guest
             clean_post_cache($post_id);
             wp_cache_delete('last_changed', 'posts');
             wp_cache_flush();
+
+            self::$saving = false;
         }
     }
 

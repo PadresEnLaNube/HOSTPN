@@ -1133,11 +1133,12 @@ window.hostpn_auto_fill_user_data = function(user_id) {
 
     var hostpn_toggle = $(this);
 
-    if (hostpn_toggle.find('i').length) {
+    var hostpn_indicator = hostpn_toggle.find('.hostpn-toggle-indicator');
+    if (hostpn_indicator.length) {
       if (hostpn_toggle.siblings('.hostpn-toggle-content').is(':visible')) {
-        hostpn_toggle.find('i').text('add');
+        hostpn_indicator.text('add');
       }else{
-        hostpn_toggle.find('i').text('clear');
+        hostpn_indicator.text('close');
       }
     }
 

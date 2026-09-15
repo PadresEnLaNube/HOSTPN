@@ -47,13 +47,6 @@
       }
     });
 
-    // Print button
-    $('#hostpn-contract-print-btn').on('click', function (e) {
-      e.preventDefault();
-      embedSignatureImages();
-      window.print();
-    });
-
     // PDF download button
     $('#hostpn-contract-pdf-btn').on('click', function (e) {
       e.preventDefault();
@@ -84,6 +77,72 @@
 
     // Store original button text
     $('#hostpn-contract-pdf-btn').data('original-text', $('#hostpn-contract-pdf-btn').find('span').text());
+
+    // Language switch handler
+    $('#hostpn-contract-lang-select').on('change', function () {
+      if (typeof hostpnContractPublic === 'undefined') {
+        console.error('[HOSTPN Lang Switch] hostpnContractPublic is undefined');
+        return;
+      }
+
+      var locale = $(this).val();
+      var $doc = $('#hostpn-contract-document');
+      var $select = $(this);
+
+      console.log('[HOSTPN Lang Switch] Switching to locale:', locale);
+      console.log('[HOSTPN Lang Switch] AJAX URL:', hostpnContractPublic.ajaxUrl);
+      console.log('[HOSTPN Lang Switch] Token:', hostpnContractPublic.token);
+      console.log('[HOSTPN Lang Switch] Room ID:', hostpnContractPublic.roomId);
+
+      $doc.css('opacity', '0.5');
+      $select.prop('disabled', true);
+
+      $.post(hostpnContractPublic.ajaxUrl, {
+        action: 'hostpn_contract_switch_locale',
+        hostpn_contract_nonce: hostpnContractPublic.nonce,
+        hostpn_contract_token: hostpnContractPublic.token,
+        hostpn_contract_room: hostpnContractPublic.roomId,
+        hostpn_locale: locale
+      }, function (response) {
+        console.log('[HOSTPN Lang Switch] Raw response type:', typeof response);
+        console.log('[HOSTPN Lang Switch] Raw response:', response);
+        var data = typeof response === 'string' ? JSON.parse(response) : response;
+        console.log('[HOSTPN Lang Switch] Parsed data:', data);
+        console.log('[HOSTPN Lang Switch] error_key:', JSON.stringify(data.error_key));
+        if (data.debug) {
+          console.log('[HOSTPN Lang Switch] === SERVER DEBUG ===');
+          console.table(data.debug);
+          console.log('[HOSTPN Lang Switch] Full debug object:', JSON.stringify(data.debug, null, 2));
+        }
+        if (data.error_key === '') {
+          console.log('[HOSTPN Lang Switch] Applying contract HTML (length: ' + (data.contract_html || '').length + ')');
+          console.log('[HOSTPN Lang Switch] Contract HTML snippet:', (data.contract_html || '').substring(0, 200));
+          $('#hostpn-contract-text').html(data.contract_html);
+          $('#hostpn-contract-inventory').html(data.inventory_html);
+          if (data.signature_labels) {
+            console.log('[HOSTPN Lang Switch] Signature labels:', data.signature_labels);
+            $('[data-sig-label="landlord"]').text(data.signature_labels.landlord);
+            $('[data-sig-label="tenant"]').text(data.signature_labels.tenant);
+            $('.hostpn-signature-clear-btn').text(data.signature_labels.clear);
+            var $pdfSpan = $('#hostpn-contract-pdf-btn span');
+            $pdfSpan.text(data.signature_labels.download);
+            $('#hostpn-contract-pdf-btn').data('original-text', data.signature_labels.download);
+          }
+        } else {
+          console.error('[HOSTPN Lang Switch] Server returned error_key:', data.error_key);
+        }
+        $doc.css('opacity', '1');
+        $select.prop('disabled', false);
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error('[HOSTPN Lang Switch] AJAX FAILED');
+        console.error('[HOSTPN Lang Switch] Status:', jqXHR.status);
+        console.error('[HOSTPN Lang Switch] textStatus:', textStatus);
+        console.error('[HOSTPN Lang Switch] errorThrown:', errorThrown);
+        console.error('[HOSTPN Lang Switch] Response text:', jqXHR.responseText);
+        $doc.css('opacity', '1');
+        $select.prop('disabled', false);
+      });
+    });
   });
 
   /**

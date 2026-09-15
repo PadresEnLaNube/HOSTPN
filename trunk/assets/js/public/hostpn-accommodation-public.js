@@ -42,7 +42,8 @@
         // Feature category toggle functionality
         $('.hostpn-toggle-header').on('click', function() {
             var $header = $(this);
-            var $content = $header.next('.hostpn-toggle-content');
+            var $category = $header.closest('.hostpn-feature-category');
+            var $content = $category.find('.hostpn-toggle-content');
             var $icon = $header.find('.hostpn-toggle-icon');
 
             // Toggle content visibility
@@ -55,13 +56,13 @@
             $header.toggleClass('hostpn-expanded');
         });
         
-        // Initialize all toggles as collapsed on desktop, expanded on mobile
+        // Initialize feature category toggles as collapsed on desktop, expanded on mobile
         if (window.innerWidth <= 768) {
-            $('.hostpn-toggle-content').show();
+            $('.hostpn-feature-category .hostpn-toggle-content').show();
             $('.hostpn-toggle-header').addClass('hostpn-expanded');
             $('.hostpn-toggle-icon').addClass('hostpn-rotated');
         } else {
-            $('.hostpn-toggle-content').hide();
+            $('.hostpn-feature-category .hostpn-toggle-content').hide();
             $('.hostpn-toggle-header').removeClass('hostpn-expanded');
             $('.hostpn-toggle-icon').removeClass('hostpn-rotated');
         }
