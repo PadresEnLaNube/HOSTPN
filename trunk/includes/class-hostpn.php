@@ -54,7 +54,7 @@ class HOSTPN
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.80';
+			$this->version = '1.0.82';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -186,6 +186,11 @@ class HOSTPN
 		 * The class defining attahcments management functions.
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-functions-attachment.php';
+
+		/**
+		 * The class defining contract templates and shortcode resolution.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-contract-templates.php';
 
 		/**
 		 * The class defining settings.
@@ -347,6 +352,11 @@ class HOSTPN
 
 		// Add template filters for accommodation - register after init to ensure plugin is loaded
 		$this->loader->hostpn_add_action('init', $plugin_post_type_accommodation, 'hostpn_accommodation_register_template_filters', 20);
+
+		// Contract public view via shared link
+		$this->loader->hostpn_add_filter('query_vars', $plugin_post_type_accommodation, 'hostpn_contract_query_vars');
+		$this->loader->hostpn_add_action('wp_enqueue_scripts', $plugin_post_type_accommodation, 'hostpn_contract_enqueue_scripts');
+		$this->loader->hostpn_add_action('template_redirect', $plugin_post_type_accommodation, 'hostpn_contract_template_redirect', 1);
 
 		$plugin_post_type_guest = new HOSTPN_Post_Type_Guest();
 		$this->loader->hostpn_add_action('init', $plugin_post_type_guest, 'hostpn_guest_register_post_type');

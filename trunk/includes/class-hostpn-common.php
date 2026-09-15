@@ -77,6 +77,7 @@ class HOSTPN_Common {
 		// Enqueue financial management styles (admin only)
 		if (is_admin()) {
 			wp_enqueue_style($this->plugin_name . '-financial', HOSTPN_URL . 'assets/css/admin/hostpn-financial.css', [$this->plugin_name], $this->version, 'all');
+			wp_enqueue_style($this->plugin_name . '-contract', HOSTPN_URL . 'assets/css/admin/hostpn-contract.css', [$this->plugin_name], $this->version, 'all');
 		}
 	}
 
@@ -121,6 +122,40 @@ class HOSTPN_Common {
 
 		// Enqueue financial management script
 		wp_enqueue_script($this->plugin_name . '-financial', HOSTPN_URL . 'assets/js/hostpn-financial.js', ['jquery', $this->plugin_name . '-ajax'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+
+		// Enqueue contract generation scripts (admin only)
+		if (is_admin()) {
+			wp_enqueue_script($this->plugin_name . '-html2pdf', HOSTPN_URL . 'assets/js/vendor/html2pdf.bundle.min.js', [], '0.10.1', false, ['in_footer' => true, 'strategy' => 'defer']);
+			wp_enqueue_script($this->plugin_name . '-contract', HOSTPN_URL . 'assets/js/admin/hostpn-contract.js', ['jquery', $this->plugin_name . '-html2pdf'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+
+			wp_localize_script($this->plugin_name . '-contract', 'hostpn_contract_data', [
+				'shortcode_field_map' => HOSTPN_Contract_Templates::hostpn_get_shortcode_field_map(),
+				'type_map' => [
+					'habitacion' => 'habitacion',
+					'vut'        => 'turistico',
+					'vft'        => 'turistico',
+				],
+				'i18n' => [
+					'generating' => esc_html__('Generating PDF...', 'hostpn'),
+					'generate_pdf' => esc_html__('Generate PDF', 'hostpn'),
+				],
+			]);
+
+			// Enqueue contract settings JS on the settings page
+			$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+			if ($screen && strpos($screen->id, 'hostpn') !== false) {
+				wp_enqueue_script($this->plugin_name . '-contract-settings', HOSTPN_URL . 'assets/js/admin/hostpn-contract-settings.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+				wp_localize_script($this->plugin_name . '-contract-settings', 'hostpn_contract_settings_i18n', [
+					'save_template' => esc_html__('Save template', 'hostpn'),
+					'saved' => esc_html__('Saved successfully', 'hostpn'),
+					'confirm_restore' => esc_html__('Restore default texts? Unsaved changes will be lost.', 'hostpn'),
+				]);
+			}
+		}
+
+		// Note: Public contract scripts (signature pad, html2pdf, contract-public.js)
+		// are enqueued conditionally via hostpn_contract_template_redirect() when the
+		// contract shared link is accessed.
 
 		// Get loader HTML from HOSTPN_Data
 		ob_start();

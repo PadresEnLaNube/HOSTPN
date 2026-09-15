@@ -103,6 +103,20 @@ class HOSTPN_Settings
       'section' => 'end',
     ];
 
+    // ── CONTRACTS SECTION ─────────────────────────────────────────────
+    $hostpn_options['hostpn_contracts_section_start'] = [
+      'section' => 'start',
+      'label' => __('Contracts', 'hostpn'),
+      'description' => __('Configure contract templates for each rental type. Use shortcodes to insert dynamic data.', 'hostpn'),
+    ];
+    $hostpn_options['hostpn_contracts_editor'] = [
+      'id' => 'hostpn_contracts_editor',
+      'input' => 'contracts_editor',
+    ];
+    $hostpn_options['hostpn_contracts_section_end'] = [
+      'section' => 'end',
+    ];
+
     // ── SYSTEM PARENT SECTION ────────────────────────────────────────
     $hostpn_options['hostpn_system_parent_section_start'] = [
       'section' => 'start',
@@ -414,6 +428,88 @@ class HOSTPN_Settings
     <?php
   }
 
+  private function render_contracts_editor() {
+    $contract_types = HOSTPN_Contract_Templates::hostpn_get_contract_types();
+    $shortcodes = HOSTPN_Contract_Templates::hostpn_get_shortcodes_registry();
+    ?>
+    <div id="hostpn-contracts-editor" class="hostpn-contracts-editor">
+      <div class="hostpn-contracts-tabs">
+        <?php $first = true; foreach ($contract_types as $type_key => $type_label): ?>
+          <button type="button" class="hostpn-contracts-tab <?php echo $first ? 'active' : ''; ?>" data-contract-type="<?php echo esc_attr($type_key); ?>">
+            <?php echo esc_html($type_label); ?>
+          </button>
+        <?php $first = false; endforeach; ?>
+      </div>
+
+      <?php foreach ($contract_types as $type_key => $type_label):
+        $sections = HOSTPN_Contract_Templates::hostpn_get_contract_sections($type_key);
+        $template = HOSTPN_Contract_Templates::hostpn_get_saved_template($type_key);
+        ?>
+        <div class="hostpn-contracts-panel" data-contract-type="<?php echo esc_attr($type_key); ?>" style="<?php echo $type_key !== 'habitacion' ? 'display:none;' : ''; ?>">
+          <?php foreach ($sections as $section_key => $section_label):
+            $field_id = 'hostpn_ct_' . $type_key . '_' . $section_key;
+            $field_value = isset($template[$section_key]) ? $template[$section_key] : '';
+
+            $field = [
+              'id'    => $field_id,
+              'input' => 'editor',
+              'class' => 'hostpn-input hostpn-width-100-percent hostpn-contract-section-editor',
+              'label' => $section_label,
+              'value' => $field_value,
+            ];
+
+            $rendered = HOSTPN_Forms::hostpn_input_wrapper_builder($field, 'option', 0);
+            if (!is_null($rendered)) {
+              echo wp_kses($rendered, HOSTPN_KSES);
+            }
+          endforeach; ?>
+
+          <div class="hostpn-contracts-actions">
+            <?php
+            $save_btn = [
+              'id'    => 'hostpn_ct_save_' . $type_key,
+              'input' => 'html',
+              'html_content' => '<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-contract-save-template" data-contract-type="' . esc_attr($type_key) . '">'
+                . esc_html__('Save template', 'hostpn')
+                . '</button>'
+                . '<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent hostpn-contract-restore-defaults" data-contract-type="' . esc_attr($type_key) . '">'
+                . esc_html__('Restore defaults', 'hostpn')
+                . '</button>',
+            ];
+            $rendered = HOSTPN_Forms::hostpn_input_wrapper_builder($save_btn, 'option', 0);
+            if (!is_null($rendered)) {
+              echo wp_kses($rendered, HOSTPN_KSES);
+            }
+            ?>
+          </div>
+        </div>
+      <?php endforeach; ?>
+
+      <details class="hostpn-shortcodes-reference">
+        <summary><?php esc_html_e('Available shortcodes reference', 'hostpn'); ?></summary>
+        <div class="hostpn-shortcodes-reference-content">
+          <table class="hostpn-shortcodes-table">
+            <thead>
+              <tr>
+                <th><?php esc_html_e('Shortcode', 'hostpn'); ?></th>
+                <th><?php esc_html_e('Description', 'hostpn'); ?></th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($shortcodes as $shortcode => $description): ?>
+                <tr>
+                  <td><code>[<?php echo esc_html($shortcode); ?>]</code></td>
+                  <td><?php echo esc_html($description); ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+    <?php
+  }
+
   public function hostpn_options()
   {
     $hostpn_pages_config = [
@@ -445,6 +541,8 @@ class HOSTPN_Settings
           <?php foreach ($this->get_options() as $hostpn_option): ?>
             <?php if (isset($hostpn_option['input']) && $hostpn_option['input'] === 'pages_table'): ?>
               <?php $this->render_pages_table($hostpn_pages_config); ?>
+            <?php elseif (isset($hostpn_option['input']) && $hostpn_option['input'] === 'contracts_editor'): ?>
+              <?php $this->render_contracts_editor(); ?>
             <?php else: ?>
               <?php HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_option, 'option', 0, 0, 'half'); ?>
             <?php endif; ?>

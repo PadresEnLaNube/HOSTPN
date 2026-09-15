@@ -6,6 +6,6 @@ tags/
 
 # Excluir estructura SVN
 .svn/
-assets/
+/assets/
 
 # Solo rastrear el contenido del plugin en trunk/

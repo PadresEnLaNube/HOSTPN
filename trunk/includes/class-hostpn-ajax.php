@@ -702,6 +702,88 @@ class HOSTPN_Ajax {
           exit;
           break;
 
+        case 'hostpn_save_contract_template':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $contract_type = !empty($_POST['contract_type']) ? sanitize_key(wp_unslash($_POST['contract_type'])) : '';
+          $sections_raw = !empty($_POST['sections']) ? wp_unslash($_POST['sections']) : [];
+
+          $valid_types = array_keys(HOSTPN_Contract_Templates::hostpn_get_contract_types());
+          if (!in_array($contract_type, $valid_types, true)) {
+            echo wp_json_encode(['error_key' => 'invalid_type', 'error_content' => esc_html__('Invalid contract type.', 'hostpn')]);
+            exit;
+          }
+
+          $sections = [];
+          if (is_array($sections_raw)) {
+            foreach ($sections_raw as $key => $content) {
+              $sections[sanitize_key($key)] = wp_kses_post($content);
+            }
+          }
+
+          HOSTPN_Contract_Templates::hostpn_save_template($contract_type, $sections);
+          echo wp_json_encode(['error_key' => '']);
+          exit;
+          break;
+
+        case 'hostpn_get_contract_template':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $contract_type = !empty($_POST['contract_type']) ? sanitize_key(wp_unslash($_POST['contract_type'])) : '';
+          $valid_types = array_keys(HOSTPN_Contract_Templates::hostpn_get_contract_types());
+          if (!in_array($contract_type, $valid_types, true)) {
+            echo wp_json_encode(['error_key' => 'invalid_type']);
+            exit;
+          }
+
+          $template = HOSTPN_Contract_Templates::hostpn_get_saved_template($contract_type);
+          $sections = HOSTPN_Contract_Templates::hostpn_get_contract_sections($contract_type);
+          echo wp_json_encode(['error_key' => '', 'template' => $template, 'sections' => $sections]);
+          exit;
+          break;
+
+        case 'hostpn_get_contract_preview':
+          $contract_type = !empty($_POST['contract_type']) ? sanitize_key(wp_unslash($_POST['contract_type'])) : '';
+          $aid = !empty($_POST['hostpn_accommodation_id']) ? absint($_POST['hostpn_accommodation_id']) : 0;
+
+          $valid_types = array_keys(HOSTPN_Contract_Templates::hostpn_get_contract_types());
+          if (!in_array($contract_type, $valid_types, true)) {
+            echo wp_json_encode(['error_key' => 'invalid_type']);
+            exit;
+          }
+
+          $template = HOSTPN_Contract_Templates::hostpn_get_saved_template($contract_type);
+          $html = HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $aid);
+          echo wp_json_encode(['error_key' => '', 'html' => $html, 'template' => $template]);
+          exit;
+          break;
+
+        case 'hostpn_restore_contract_defaults':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $contract_type = !empty($_POST['contract_type']) ? sanitize_key(wp_unslash($_POST['contract_type'])) : '';
+          $valid_types = array_keys(HOSTPN_Contract_Templates::hostpn_get_contract_types());
+          if (!in_array($contract_type, $valid_types, true)) {
+            echo wp_json_encode(['error_key' => 'invalid_type']);
+            exit;
+          }
+
+          delete_option('hostpn_contract_template_' . $contract_type);
+          $template = HOSTPN_Contract_Templates::hostpn_get_default_template($contract_type);
+          $sections = HOSTPN_Contract_Templates::hostpn_get_contract_sections($contract_type);
+          echo wp_json_encode(['error_key' => '', 'template' => $template, 'sections' => $sections]);
+          exit;
+          break;
+
         case 'hostpn_settings_import':
           if (!current_user_can('manage_options')) {
             echo wp_json_encode(['error_key' => 'permission_denied']);

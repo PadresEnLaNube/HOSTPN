@@ -1,0 +1,401 @@
+/* Contract Generation Metabox - Admin */
+
+/* ── Top bar ────────────────────────────────────────────────────── */
+.hostpn-contract-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hostpn-contract-type-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background: #6c5ce7;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.hostpn-contract-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Two-column layout ──────────────────────────────────────────── */
+.hostpn-contract-columns {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.hostpn-contract-fields-column {
+  flex: 0 0 45%;
+  min-width: 0;
+}
+
+.hostpn-contract-preview-column {
+  flex: 1;
+  min-width: 0;
+  position: sticky;
+  top: 40px;
+}
+
+@media (max-width: 1200px) {
+  .hostpn-contract-columns {
+    flex-direction: column;
+  }
+  .hostpn-contract-fields-column,
+  .hostpn-contract-preview-column {
+    flex: none;
+    width: 100%;
+  }
+  .hostpn-contract-preview-column {
+    position: static;
+  }
+}
+
+/* Force stacked single-column layout for contract fields */
+.hostpn-contract-metabox-fields {
+  display: block !important;
+}
+
+.hostpn-contract-metabox-fields .hostpn-input-wrapper {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: none !important;
+  min-width: 0 !important;
+  margin-bottom: 15px;
+}
+
+#hostpn_contract_meta_box .hostpn-section-start {
+  border-left-color: #6c5ce7;
+}
+
+/* ── Live preview (A4 paper style) ──────────────────────────────── */
+.hostpn-contract-live-preview {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 30px;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 11pt;
+  line-height: 1.6;
+  color: #000;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.hostpn-contract-live-preview h1 {
+  font-size: 14pt;
+  text-align: center;
+  margin-bottom: 16pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.hostpn-contract-live-preview h2 {
+  font-size: 12pt;
+  margin-top: 14pt;
+  margin-bottom: 6pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.hostpn-contract-live-preview h3 {
+  font-size: 11pt;
+  margin-top: 10pt;
+  margin-bottom: 4pt;
+  font-weight: bold;
+}
+
+.hostpn-contract-live-preview p {
+  text-align: justify;
+  margin-bottom: 6pt;
+}
+
+.hostpn-contract-live-preview .contract-signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30pt;
+}
+
+.hostpn-contract-live-preview .contract-signature-block {
+  width: 45%;
+  text-align: center;
+}
+
+.hostpn-contract-live-preview .contract-signature-line {
+  border-top: 1px solid #000;
+  margin-top: 50pt;
+  padding-top: 5pt;
+}
+
+.hostpn-contract-placeholder {
+  background: #fff3cd;
+  padding: 0 4px;
+  border-radius: 2px;
+  color: #856404;
+  font-style: italic;
+}
+
+/* ── Generate button ────────────────────────────────────────────── */
+.hostpn-contract-generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #6c5ce7;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.hostpn-contract-generate-btn:hover {
+  background: #5a4bd1;
+  color: #fff;
+}
+
+.hostpn-contract-generate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hostpn-contract-generate-btn .material-icons-outlined {
+  font-size: 18px;
+}
+
+/* ── PDF render container (off-screen for html2canvas) ──────────── */
+#hostpn-contract-render {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  background: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 12pt;
+  line-height: 1.6;
+  color: #000;
+  box-sizing: border-box;
+}
+
+#hostpn-contract-render h1 {
+  font-size: 16pt;
+  text-align: center;
+  margin-bottom: 20pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#hostpn-contract-render h2 {
+  font-size: 13pt;
+  margin-top: 16pt;
+  margin-bottom: 8pt;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#hostpn-contract-render h3 {
+  font-size: 12pt;
+  margin-top: 12pt;
+  margin-bottom: 6pt;
+  font-weight: bold;
+}
+
+#hostpn-contract-render p {
+  text-align: justify;
+  margin-bottom: 8pt;
+}
+
+#hostpn-contract-render .contract-signatures {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40pt;
+  page-break-inside: avoid;
+}
+
+#hostpn-contract-render .contract-signature-block {
+  width: 45%;
+  text-align: center;
+}
+
+#hostpn-contract-render .contract-signature-line {
+  border-top: 1px solid #000;
+  margin-top: 60pt;
+  padding-top: 5pt;
+}
+
+#hostpn-contract-render .contract-inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10pt;
+  page-break-inside: avoid;
+}
+
+#hostpn-contract-render .contract-inventory-table th,
+#hostpn-contract-render .contract-inventory-table td {
+  border: 1px solid #333;
+  padding: 6pt 10pt;
+  text-align: left;
+  font-size: 11pt;
+}
+
+#hostpn-contract-render .contract-inventory-table th {
+  background: #f0f0f0;
+  font-weight: bold;
+}
+
+#hostpn-contract-render .contract-page-break {
+  page-break-before: always;
+}
+
+/* ── Settings: Contract template editor ─────────────────────────── */
+.hostpn-contracts-editor {
+  margin: 10px 0;
+}
+
+.hostpn-contracts-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+.hostpn-contracts-tab {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s ease;
+}
+
+.hostpn-contracts-tab:hover {
+  color: #333;
+}
+
+.hostpn-contracts-tab.active {
+  color: #6c5ce7;
+  border-bottom-color: #6c5ce7;
+}
+
+.hostpn-contract-section-editor {
+  margin-bottom: 20px;
+}
+
+.hostpn-contract-section-editor .hostpn-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.hostpn-contract-section-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.hostpn-contract-section-textarea:focus {
+  border-color: #6c5ce7;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.15);
+}
+
+.hostpn-contracts-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.hostpn-contract-save-notice {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #d4edda;
+  color: #155724;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+/* Shortcodes reference panel */
+.hostpn-shortcodes-reference {
+  margin-top: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.hostpn-shortcodes-reference summary {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #666;
+  background: #f9f9f9;
+  border-radius: 4px;
+}
+
+.hostpn-shortcodes-reference summary:hover {
+  color: #333;
+}
+
+.hostpn-shortcodes-reference-content {
+  padding: 15px;
+}
+
+.hostpn-shortcodes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.hostpn-shortcodes-table th,
+.hostpn-shortcodes-table td {
+  padding: 6px 10px;
+  border: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.hostpn-shortcodes-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.hostpn-shortcodes-table code {
+  background: #f0f0f0;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
