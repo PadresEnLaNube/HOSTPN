@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Filkers WooCommerce Marketing\n"
+"Project-Id-Version: HostPN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-31 14:12+0000\n"
-"PO-Revision-Date: 2026-09-15 21:16+0000\n"
+"PO-Revision-Date: 2026-09-15 21:55+0000\n"
 "Last-Translator: Sea Suite Spain\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Loco https://localise.biz/\n"
 "X-Loco-Version: 2.8.8; wp-7.1; php-8.2.33\n"
-"X-Domain: filkers"
+"X-Domain: hostpn"
 
 #: includes/class-hostpn-ajax.php:776
 #, php-format
@@ -1626,7 +1626,7 @@ msgid ""
 "expressly agreed otherwise."
 msgstr ""
 "Los gastos de comunidad y el impuesto sobre la propiedad correrán a cargo "
-"del PROPIETARIO, a menos que se acuerde expresamente lo contrario."
+"del ARRENDADOR, a menos que se acuerde expresamente lo contrario."
 
 #: includes/class-hostpn-contract-templates.php:214
 msgid ""
@@ -3597,7 +3597,7 @@ msgid ""
 "Keeping animals in the property is prohibited unless expressly authorized in "
 "writing by the LANDLORD."
 msgstr ""
-"Queda prohibido tener animales en la propiedad a menos que el PROPIETARIO lo "
+"Queda prohibido tener animales en la propiedad a menos que el ARRENDADOR lo "
 "autorice expresamente por escrito."
 
 #: includes/class-hostpn-data.php:173
@@ -3661,7 +3661,7 @@ msgstr "Kirguistán"
 #: includes/class-hostpn-contract-templates.php:168
 #: includes/class-hostpn-contract-templates.php:321
 msgid "LANDLORD"
-msgstr "PROPIETARIO"
+msgstr "ARRENDADOR"
 
 #: includes/class-hostpn-post-type-contract.php:166
 #: includes/class-hostpn-post-type-accommodation.php:503
@@ -4932,7 +4932,7 @@ msgstr "Título de la pieza"
 #: includes/class-hostpn-contract-templates.php:250
 #: includes/class-hostpn-contract-templates.php:320
 msgid "PARTIES"
-msgstr "FIESTAS"
+msgstr "REUNIDOS"
 
 #: includes/class-hostpn-shortcodes.php:38 includes/class-hostpn-ajax.php:807
 #: includes/class-hostpn-activator.php:151
@@ -6649,23 +6649,24 @@ msgstr "EL INVITADO"
 
 #: includes/class-hostpn-contract-templates.php:284
 msgid "The GUEST agrees to:"
-msgstr "El HUÉSPED acepta:"
+msgstr "El ARRENDATARIO acepta:"
 
 #: includes/class-hostpn-contract-templates.php:279
 msgid ""
 "The GUEST delivers to the OWNER <strong>[hostpn-contract-deposit-amount] "
 "EUR</strong> ([hostpn-contract-deposit-words]) as a security deposit."
 msgstr ""
-"El HUÉSPED entrega al PROPIETARIO <strong>[hostpn-contract-deposit-amount] "
-"EUR</strong> ([hostpn-contract-deposit-words]) como depósito de seguridad."
+"El ARRENDATARIO entrega al ARRENDADOR <strong>[hostpn-contract-deposit-"
+"amount] EUR</strong> ([hostpn-contract-deposit-words]) como depósito de "
+"seguridad."
 
 #: includes/class-hostpn-contract-templates.php:298
 msgid ""
 "The GUEST shall be liable for any damage caused to the property, contents or "
 "common areas during their stay, except for normal wear and tear."
 msgstr ""
-"El HUÉSPED será responsable de cualquier daño causado a la propiedad, su "
-"contenido o las áreas comunes durante su estancia, excepto el desgaste "
+"El ARRENDATARIO será responsable de cualquier daño causado a la propiedad, "
+"su contenido o las áreas comunes durante su estancia, excepto el desgaste "
 "normal por el uso."
 
 #: includes/class-hostpn-contract-templates.php:258
@@ -6673,7 +6674,7 @@ msgid ""
 "The GUEST wishes to stay temporarily in said property for tourist or holiday "
 "purposes."
 msgstr ""
-"El HUÉSPED desea alojarse temporalmente en dicha propiedad con fines "
+"El ARRENDATARIO desea alojarse temporalmente en dicha propiedad con fines "
 "turísticos o vacacionales."
 
 #: includes/class-hostpn-post-type-accommodation.php:2009
@@ -6681,7 +6682,7 @@ msgstr ""
 #: includes/class-hostpn-contract-templates.php:379
 #: templates/public/hostpn-contract-view.php:89
 msgid "THE LANDLORD"
-msgstr "EL PROPIETARIO"
+msgstr "EL ARRENDADOR"
 
 #: includes/class-hostpn-contract-templates.php:327
 msgid ""
@@ -6689,7 +6690,7 @@ msgid ""
 "[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]"
 "</strong>."
 msgstr ""
-"El PROPIETARIO es el legítimo dueño de la propiedad ubicada en <strong>"
+"El ARRENDADOR es el legítimo dueño de la propiedad ubicada en <strong>"
 "[hostpn-accommodation-address]</strong>, <strong>[hostpn-accommodation-city]"
 "</strong>."
 
@@ -6699,7 +6700,7 @@ msgid ""
 "<strong>[hostpn-accommodation-address]</strong>, a flat consisting of "
 "several rooms and common areas."
 msgstr ""
-"El PROPIETARIO es el legítimo propietario/administrador de la propiedad "
+"El ARRENDADOR es el legítimo propietario/administrador de la propiedad "
 "ubicada en <strong>[hostpn-accommodation-address]</strong>, un piso que "
 "consta de varias habitaciones y áreas comunes."
 
@@ -6729,7 +6730,7 @@ msgid ""
 "The LANDLORD shall carry out the necessary repairs to keep the property in "
 "habitable condition, except for damage attributable to the TENANT."
 msgstr ""
-"El PROPIETARIO deberá realizar las reparaciones necesarias para mantener la "
+"El ARRENDADOR deberá realizar las reparaciones necesarias para mantener la "
 "propiedad en condiciones habitables, excepto los daños atribuibles al "
 "ARRENDATARIO."
 
@@ -6754,7 +6755,7 @@ msgstr ""
 #: includes/class-hostpn-contract-templates.php:308
 #: templates/public/hostpn-contract-view.php:89
 msgid "THE OWNER"
-msgstr "EL PROPIETARIO"
+msgstr "EL ARRENDADOR"
 
 #: includes/class-hostpn-contract-templates.php:263
 msgid ""
@@ -6762,7 +6763,7 @@ msgid ""
 "<strong>[hostpn-accommodation-address]</strong>, furnished and equipped as "
 "per inventory, for the exclusive purpose of tourist accommodation."
 msgstr ""
-"El PROPIETARIO otorga el uso temporal de la propiedad turística ubicada en "
+"El ARRENDADOR otorga el uso temporal de la propiedad turística ubicada en "
 "<strong>[hostpn-accommodation-address]</strong>, amueblada y equipada según "
 "inventario, para el propósito exclusivo de alojamiento turístico."
 
@@ -6772,15 +6773,15 @@ msgid ""
 "located at <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-"
 "accommodation-city]</strong>."
 msgstr ""
-"El PROPIETARIO es el legítimo propietario del alojamiento turístico situado "
+"El ARRENDADOR es el legítimo propietario del alojamiento turístico situado "
 "en <strong>[hostpn-accommodation-address]</strong>, <strong>[hostpn-"
 "accommodation-city]</strong>."
 
 #: includes/class-hostpn-contract-templates.php:299
 msgid "The OWNER shall not be liable for the GUEST's personal belongings."
 msgstr ""
-"El PROPIETARIO no será responsable de las pertenencias personales del "
-"HUÉSPED."
+"El ARRENDADOR no será responsable de las pertenencias personales del "
+"ARRENDATARIO."
 
 #: includes/class-hostpn-contract-templates.php:270
 msgid "The property must be vacated by the indicated check-out time."
@@ -6868,7 +6869,7 @@ msgid ""
 "without written consent from the LANDLORD."
 msgstr ""
 "El ARRENDATARIO no podrá realizar obras que alteren la distribución de la "
-"propiedad sin el consentimiento por escrito del PROPIETARIO."
+"propiedad sin el consentimiento por escrito del ARRENDADOR."
 
 #: includes/class-hostpn-contract-templates.php:218
 msgid ""

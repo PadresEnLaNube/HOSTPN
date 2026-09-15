@@ -54,7 +54,7 @@ class HOSTPN
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.97';
+			$this->version = '1.0.101';
 		}
 
 		$this->plugin_name = 'hostpn';

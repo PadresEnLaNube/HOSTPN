@@ -1981,47 +1981,49 @@ class HOSTPN_Post_Type_Accommodation {
     // ── DEBUG: collect diagnostic info ──
     $debug = [];
     $debug['requested_locale'] = $locale;
-    $debug['site_WPLANG'] = get_option('WPLANG', '(not set)');
     $debug['get_locale_before'] = get_locale();
-    $debug['HOSTPN_DIR'] = defined('HOSTPN_DIR') ? HOSTPN_DIR : '(not defined)';
-    $debug['contract_type'] = $contract_type;
 
     $mo_file = HOSTPN_DIR . 'languages/hostpn-' . $locale . '.mo';
+    $l10n_file = HOSTPN_DIR . 'languages/hostpn-' . $locale . '.l10n.php';
     $debug['mo_file_exists'] = file_exists($mo_file);
+    $debug['l10n_file_exists'] = file_exists($l10n_file);
 
     // ── Switch locale ──
-    // Key fix: call unload_textdomain AFTER switch_to_locale, because
-    // switch_to_locale auto-reloads textdomains (possibly from WP_LANG_DIR
-    // with outdated/empty translations). We must unload that auto-loaded
-    // version before loading our own plugin file.
+    // Bypass WP's translation loading entirely: WP 7.x's WP_Translation_Controller
+    // caches failed loads and checks x-domain headers in .l10n.php files, making
+    // load_textdomain unreliable for runtime locale switching.
+    // Instead, read the .l10n.php file directly and use the gettext filter.
     $locale_switched = false;
-    $textdomain_loaded = false;
 
     if ($locale !== 'en_US') {
       $locale_switched = switch_to_locale($locale);
       $debug['switch_to_locale_result'] = $locale_switched;
-      $debug['get_locale_after_switch'] = get_locale();
 
-      // Unload whatever switch_to_locale auto-loaded, then load our own file
-      unload_textdomain('hostpn');
-      if (file_exists($mo_file)) {
-        $textdomain_loaded = load_textdomain('hostpn', $mo_file);
-        $debug['load_textdomain_result'] = $textdomain_loaded;
+      // Load translations directly from .l10n.php file
+      $hostpn_messages = [];
+      if (file_exists($l10n_file)) {
+        $l10n_data = @include $l10n_file;
+        if (is_array($l10n_data) && !empty($l10n_data['messages'])) {
+          $hostpn_messages = $l10n_data['messages'];
+          $debug['direct_load'] = true;
+          $debug['messages_count'] = count($hostpn_messages);
+        }
       }
-    } else {
-      // English: just unload so __() returns source strings
-      unload_textdomain('hostpn');
-      $debug['load_textdomain_result'] = 'skipped (en_US)';
+
+      // Override __() via gettext filter for the hostpn domain
+      if (!empty($hostpn_messages)) {
+        add_filter('gettext', function ($translation, $text, $domain) use ($hostpn_messages) {
+          if ($domain === 'hostpn' && isset($hostpn_messages[$text]) && $hostpn_messages[$text] !== '') {
+            return $hostpn_messages[$text];
+          }
+          return $translation;
+        }, 1, 3);
+      }
     }
 
     // Test translations
     $debug['test___PARTIES'] = __('PARTIES', 'hostpn');
     $debug['test___THE_LANDLORD'] = __('THE LANDLORD', 'hostpn');
-    $debug['test___Clear'] = __('Clear', 'hostpn');
-
-    // Check if textdomain is loaded
-    global $l10n;
-    $debug['textdomain_in_l10n'] = isset($l10n['hostpn']);
 
     // Always use the default template (translatable __() calls)
     $template = HOSTPN_Contract_Templates::hostpn_get_default_template($contract_type);
@@ -2044,12 +2046,11 @@ class HOSTPN_Post_Type_Accommodation {
       'download' => __('Download PDF', 'hostpn'),
     ];
 
-    // Restore locale
+    // Restore locale and remove our gettext override
+    remove_all_filters('gettext');
     if ($locale_switched) {
       restore_current_locale();
     }
-    unload_textdomain('hostpn');
-    load_plugin_textdomain('hostpn', false, 'hostpn/languages/');
 
     echo wp_json_encode([
       'error_key'        => '',

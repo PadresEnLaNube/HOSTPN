@@ -48,10 +48,34 @@ if ($room_id) {
   }
 }
 
+// Determine the site's default locale (WPLANG) for initial rendering.
+// get_locale() may return a user-profile override (e.g. en_GB), so read WPLANG directly.
+$site_locale = get_option('WPLANG', '');
+if (empty($site_locale)) {
+  $site_locale = 'en_US';
+}
+
+// Load translations directly from .l10n.php (bypasses WP 7.x x-domain validation)
+if ($site_locale !== 'en_US') {
+  $l10n_file = HOSTPN_DIR . 'languages/hostpn-' . $site_locale . '.l10n.php';
+  if (file_exists($l10n_file)) {
+    $l10n_data = @include $l10n_file;
+    if (is_array($l10n_data) && !empty($l10n_data['messages'])) {
+      $hostpn_messages = $l10n_data['messages'];
+      add_filter('gettext', function ($translation, $text, $domain) use ($hostpn_messages) {
+        if ($domain === 'hostpn' && isset($hostpn_messages[$text]) && $hostpn_messages[$text] !== '') {
+          return $hostpn_messages[$text];
+        }
+        return $translation;
+      }, 1, 3);
+    }
+  }
+}
+
 // Get contract type and rendered HTML via templates
 $accommodation_type = get_post_meta($accommodation_id, 'hostpn_accommodation_type', true);
 $contract_type = HOSTPN_Contract_Templates::hostpn_get_type_for_accommodation($accommodation_type);
-$template = HOSTPN_Contract_Templates::hostpn_get_saved_template($contract_type);
+$template = HOSTPN_Contract_Templates::hostpn_get_default_template($contract_type);
 $contract_html = HOSTPN_Contract_Templates::hostpn_render_contract($contract_type, $template, $accommodation_id, $room_id);
 $inventory_html = HOSTPN_Contract_Templates::hostpn_render_inventory($accommodation_id, $room_id);
 
@@ -72,7 +96,7 @@ if ($room_id) {
 
 // Language selector data
 $available_languages = HOSTPN_Contract_Templates::hostpn_get_available_contract_languages();
-$current_locale = get_locale();
+$current_locale = $site_locale;
 if (!isset($available_languages[$current_locale])) {
   $current_locale = 'en_US';
 }

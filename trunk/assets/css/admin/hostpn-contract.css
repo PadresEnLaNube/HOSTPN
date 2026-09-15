@@ -390,6 +390,21 @@
   page-break-before: always;
 }
 
+#hostpn-contract-render .contract-inventory-title {
+  page-break-before: always;
+  break-before: page;
+}
+
+#hostpn-contract-render .contract-inventory-section {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+#hostpn-contract-render .contract-inventory-section h3 {
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
 /* ── Settings: Contract template editor ─────────────────────────── */
 .hostpn-contracts-editor {
   margin: 10px 0;

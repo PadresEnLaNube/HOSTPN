@@ -783,8 +783,10 @@ class HOSTPN_Contract_Templates {
       $merged = array_merge($accom_items, $room_items);
       if (!empty($merged)) {
         $has_any = true;
+        $html .= '<div class="contract-inventory-section">';
         $html .= '<h3>' . esc_html($cat_label) . '</h3>';
         $html .= self::hostpn_render_inventory_table($merged);
+        $html .= '</div>';
       }
     }
 
@@ -792,8 +794,7 @@ class HOSTPN_Contract_Templates {
       return '';
     }
 
-    $result = '<div class="contract-page-break"></div>';
-    $result .= '<h2>' . esc_html__('ANNEX: LEASED ITEMS INVENTORY', 'hostpn') . '</h2>';
+    $result = '<h2 class="contract-inventory-title">' . esc_html__('ANNEX: LEASED ITEMS INVENTORY', 'hostpn') . '</h2>';
     $result .= $html;
     return $result;
   }

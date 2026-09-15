@@ -214,6 +214,25 @@
 .hostpn-contract-page-break,
 .hostpn-contract-document .contract-page-break {
   page-break-before: always;
+  break-before: page;
+}
+
+/* Inventory annex title: always starts on a new page */
+.hostpn-contract-document .contract-inventory-title {
+  page-break-before: always;
+  break-before: page;
+}
+
+/* Each inventory section (heading + table) stays together */
+.hostpn-contract-document .contract-inventory-section {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Prevent heading from being orphaned at the bottom of a page */
+.hostpn-contract-document .contract-inventory-section h3 {
+  page-break-after: avoid;
+  break-after: avoid;
 }
 
 /* Responsive */
