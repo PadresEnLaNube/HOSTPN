@@ -101,6 +101,9 @@ class HOSTPN_Public {
 					'signed'        => __('Signed', 'hostpn'),
 				],
 			]);
+			// Management tabs CSS+JS are enqueued from the template itself
+			// (templates/public/hostpn-management-tabs.php) to guarantee they load
+			// whenever the panel renders.
 		}
 	}
 }

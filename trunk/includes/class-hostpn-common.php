@@ -281,6 +281,12 @@ class HOSTPN_Common {
 			'sort_oldest' => esc_html(__('Sort: Oldest first', 'hostpn')),
 			'sort_name_az' => esc_html(__('Sort: A-Z', 'hostpn')),
 			'sort_name_za' => esc_html(__('Sort: Z-A', 'hostpn')),
+			'creating_user' => esc_html(__('Creating user...', 'hostpn')),
+			'user_created' => esc_html(__('User created successfully.', 'hostpn')),
+			'user_linked' => esc_html(__('Guest linked to existing user.', 'hostpn')),
+			'user_already_exists' => esc_html(__('This guest already has a linked user.', 'hostpn')),
+			'create_user' => esc_html(__('Create user', 'hostpn')),
+			'view_user' => esc_html(__('View user', 'hostpn')),
 		]);
 
 		// Pass CPTs to JavaScript

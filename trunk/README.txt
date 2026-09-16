@@ -4,7 +4,7 @@ Donate link: https://padresenlanube.com/
 Tags: hospedajes España, Spain, hosting, check-in, host register
 Requires at least: 3.5
 Tested up to: 7.0
-Stable tag: 1.0.120
+Stable tag: 1.0.130
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,20 @@ Allow you to ask for, save and send the information required by spanish Royal De
 
 The Hospedajes España - HOSTPN application has been created to allow the sending of the information required by Royal Decree 933/2021, of October 26, which establishes the documentary and information registration obligations of natural or legal persons who carry out lodging and motor vehicle rental activities.
 
+**Key features:**
+
+* **Accommodation, Guest, Room & Contract management** — full CRUD for all property-related Custom Post Types with admin columns, meta boxes and AJAX-powered dashboard lists.
+* **Part of Traveller (Parte de Viajero)** — create, edit, export to XML compliant with the SES/Hospedajes format, and download CSV reports filtered by year.
+* **Multi-type rental contracts** — translatable contract templates for room rentals, tourist accommodations and long-stay leases with shortcode-based field resolution, inventory annexes and per-room share links.
+* **Public contract view** — shared-link contract pages with signature pad, language selector and PDF download.
+* **Frontend management panel** — tabbed interface on single accommodation pages for logged-in users with Contracts, Financial management, Cleaning task tracker and Inventory inspection checklist tabs (role-based visibility).
+* **Cleaning task tracker** — per-room cleaning checklist with area-based tasks, date tracking, notes and save/mark-all-done actions.
+* **Checkout inventory inspection** — generate a per-room inspection checklist from accommodation and room inventory items, mark OK/Issue per item with comments, save the inspection to the contract, and send the report by email to the landlord.
+* **Create WordPress user from Guest** — one-click WP user creation from any Guest record, copying all personal data and sending a welcome email; auto-links to existing users when the email already matches.
+* **Room availability waitlist** — visitors can subscribe to occupied rooms and receive automatic email notifications when the room becomes available.
+* **Guest registration notifications** — configurable email notifications on guest registration to selected users and external addresses, with resend capability from both the dashboard list and the admin post list.
+* **Financial management** — income/expense tracking per accommodation with admin dashboard and read-only frontend view.
+* **Internationalization** — all UI strings are translatable; ships with Spanish (es_ES) translations and supports runtime locale switching for contracts.
 
 == Credits ==
 This plugin stands on the shoulders of giants
@@ -93,6 +107,29 @@ To uninstall the plugin, go to the 'Plugins' screen in WordPress, find the Hospe
 
 
 == Changelog ==
+
+= 1.0.130 =
+
+- Add frontend management panel with tabbed interface (Contracts, Financial management, Cleaning, Inventory) for logged-in admins and guests on single accommodation pages
+- Add cleaning task tracker per room with checklist areas (Bedroom, Bathroom, Kitchen, Common areas, Other), date tracking, notes and save/mark-all-done functionality via AJAX
+- Add checkout inventory inspection checklist that loads all inventory items (accommodation + room level) merged by category, with OK/Issue status and per-item comments
+- Add save inspection and send-inspection-by-email actions for checkout inventory checklist, storing data in contract or room meta
+- Add send_inventory_inspection_email() method in HOSTPN_Notifications that builds an HTML table with item statuses and sends it to the landlord email
+- Add frontend financial dashboard loading via AJAX within the management tabs panel (read-only view of the admin financial dashboard)
+- Move the standalone contracts block from the bottom of the single accommodation template into the Contracts tab of the new management panel
+- Add "Create user" button in the Guest CPT meta box that creates a WordPress user from the guest's data, copies all guest meta to the user, links guest to user, and sends a welcome email via wp_new_user_notification()
+- Add "Create user" / "View user" menu item in the guest list dropdown on the plugin dashboard, showing "View user" with a link to the user profile when a WP user is already linked
+- Add hostpn_guest_create_user AJAX handler that verifies nonce and permissions, validates guest email, checks for existing linked user, and either creates a new subscriber user or links to an existing WP user with matching email
+- Register wp_ajax_hostpn_guest_create_user action in the core plugin class
+- Add JS click handler for .hostpn-guest-create-user supporting both meta box buttons and dropdown links with loading state and dynamic UI update on success
+- Add i18n strings for guest user creation: creating_user, user_created, user_linked, user_already_exists, create_user, view_user
+- Add AJAX cases hostpn_cleaning_load, hostpn_cleaning_save, hostpn_inventory_checklist_load, hostpn_inventory_inspection_save, hostpn_inventory_inspection_email, and hostpn_financial_frontend_load in the AJAX server
+- Change hostpn_collect_inventory_items() visibility from private to public in HOSTPN_Contract_Templates to allow access from the management tabs inventory checklist
+- Remove all debug console.log and console.error statements from hostpn-rooms-block.js
+- Add management tabs CSS (hostpn-management-tabs.css) with styles for tab buttons, cleaning areas grid, inventory checklist, room selectors, action buttons, success/error messages, and responsive layout
+- Add management tabs JS (hostpn-management-tabs.js) with tab switching, cleaning CRUD, inventory inspection checklist generation, and financial dashboard AJAX loading
+- Add management tabs PHP template (hostpn-management-tabs.php) with role-based tab visibility: admins see all tabs, guests see only Contracts and Inventory (if assigned to a room)
+- Update Spanish translation files (.po, .mo, .l10n.php) and translation template (.pot) with all new translatable strings
 
 = 1.0.2 =
 

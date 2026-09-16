@@ -344,6 +344,31 @@ class HOSTPN_Post_Type_Guest
         foreach (self::hostpn_guest_get_fields_meta() as $hostpn_field_meta) {
             HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field_meta, 'post', $post->ID);
         }
+
+        // Create User / View User section
+        if ($post->ID && get_post_status($post->ID) !== 'auto-draft') {
+            $guest_email = get_post_meta($post->ID, 'hostpn_email', true);
+            $wp_user_id  = get_post_meta($post->ID, 'hostpn_guest_wp_user_id', true);
+            $wp_user     = !empty($wp_user_id) ? get_userdata($wp_user_id) : false;
+
+            echo '<div class="hostpn-guest-user-section" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">';
+            if ($wp_user) {
+                // Show link to existing user profile
+                $edit_url = admin_url('user-edit.php?user_id=' . $wp_user_id);
+                echo '<a href="' . esc_url($edit_url) . '" class="button button-secondary" target="_blank" style="display: inline-flex; align-items: center; gap: 5px;">';
+                echo '<i class="material-icons-outlined" style="font-size: 18px;">person</i> ';
+                echo esc_html(__('View user', 'hostpn')) . ' (#' . esc_html($wp_user_id) . ')';
+                echo '</a>';
+            } elseif (!empty($guest_email)) {
+                // Show create user button
+                echo '<button type="button" class="button button-primary hostpn-guest-create-user" data-guest-id="' . esc_attr($post->ID) . '" style="display: inline-flex; align-items: center; gap: 5px;">';
+                echo '<i class="material-icons-outlined" style="font-size: 18px;">person_add</i> ';
+                echo esc_html(__('Create user', 'hostpn'));
+                echo '</button>';
+                echo '<span class="hostpn-guest-create-user-message" style="margin-left: 10px;"></span>';
+            }
+            echo '</div>';
+        }
     }
 
     public function hostpn_guest_save_post($post_id, $cpt, $update)
@@ -796,6 +821,35 @@ class HOSTPN_Post_Type_Guest
                                                 </div>
                                             </a>
                                         </li>
+                                        <?php
+                                        $guest_wp_user_id = get_post_meta($guest_id, 'hostpn_guest_wp_user_id', true);
+                                        $guest_wp_user    = !empty($guest_wp_user_id) ? get_userdata($guest_wp_user_id) : false;
+                                        ?>
+                                        <li>
+                                            <?php if ($guest_wp_user): ?>
+                                                <a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $guest_wp_user_id)); ?>" class="hostpn-text-decoration-none" target="_blank">
+                                                    <div class="hostpn-display-table hostpn-width-100-percent">
+                                                        <div class="hostpn-display-inline-table hostpn-width-70-percent">
+                                                            <p><?php esc_html_e('View user', 'hostpn'); ?></p>
+                                                        </div>
+                                                        <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
+                                                            <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">person</i>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            <?php else: ?>
+                                                <a href="#" class="hostpn-guest-create-user hostpn-text-decoration-none">
+                                                    <div class="hostpn-display-table hostpn-width-100-percent">
+                                                        <div class="hostpn-display-inline-table hostpn-width-70-percent">
+                                                            <p><?php esc_html_e('Create user', 'hostpn'); ?></p>
+                                                        </div>
+                                                        <div class="hostpn-display-inline-table hostpn-width-20-percent  hostpn-text-align-right">
+                                                            <i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">person_add</i>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            <?php endif; ?>
+                                        </li>
                                         <li>
                                             <a href="#" class="hostpn-popup-open" data-hostpn-popup-id="hostpn-popup-guest-remove">
                                                 <div class="hostpn-display-table hostpn-width-100-percent">
@@ -1242,5 +1296,163 @@ class HOSTPN_Post_Type_Guest
                 'message' => esc_html(__('El sistema de notificaciones no está disponible.', 'hostpn')),
             ]);
         }
+    }
+
+    /**
+     * AJAX handler to create a WordPress user from a Guest CPT.
+     *
+     * Creates a new WP user (or links to an existing one) using the guest's data,
+     * copies all guest meta to the user, and sends a welcome email.
+     *
+     * @since    1.0.55
+     */
+    public function hostpn_guest_create_user()
+    {
+        // 1. Verify nonce - accept both admin and frontend nonces
+        $nonce_verified = false;
+        if (isset($_POST['nonce'])) {
+            $nonce = sanitize_text_field(wp_unslash($_POST['nonce']));
+            if (wp_verify_nonce($nonce, 'hostpn-admin-nonce')) {
+                $nonce_verified = true;
+            } elseif (wp_verify_nonce($nonce, 'hostpn-nonce')) {
+                $nonce_verified = true;
+            }
+        }
+
+        if (!$nonce_verified) {
+            wp_send_json_error([
+                'message' => esc_html(__('Security check failed: Invalid nonce.', 'hostpn')),
+            ]);
+        }
+
+        // 2. Check manage_options capability
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error([
+                'message' => esc_html(__('You do not have permission to perform this action.', 'hostpn')),
+            ]);
+        }
+
+        // 3. Get/validate guest_id
+        $guest_id = !empty($_POST['guest_id']) ? intval($_POST['guest_id']) : 0;
+
+        if (empty($guest_id)) {
+            wp_send_json_error([
+                'message' => esc_html(__('Invalid guest ID.', 'hostpn')),
+            ]);
+        }
+
+        $post = get_post($guest_id);
+        if (!$post || $post->post_type !== 'hostpn_guest') {
+            wp_send_json_error([
+                'message' => esc_html(__('The guest does not exist.', 'hostpn')),
+            ]);
+        }
+
+        // 4. Get guest email, validate non-empty
+        $guest_email = get_post_meta($guest_id, 'hostpn_email', true);
+        if (empty($guest_email) || !is_email($guest_email)) {
+            wp_send_json_error([
+                'message' => esc_html(__('The guest does not have a valid email address.', 'hostpn')),
+            ]);
+        }
+
+        // 5. Check hostpn_guest_wp_user_id not already set
+        $existing_wp_user_id = get_post_meta($guest_id, 'hostpn_guest_wp_user_id', true);
+        if (!empty($existing_wp_user_id) && get_userdata($existing_wp_user_id)) {
+            wp_send_json_error([
+                'message' => esc_html(__('This guest already has a linked user.', 'hostpn')),
+            ]);
+        }
+
+        // Guest meta to copy to user meta
+        $meta_map = [
+            'hostpn_phone'                   => 'hostpn_phone',
+            'hostpn_phone_alt'               => 'hostpn_phone_alt',
+            'hostpn_identity'                => 'hostpn_identity',
+            'hostpn_identity_number'         => 'hostpn_identity_number',
+            'hostpn_identity_support_number' => 'hostpn_identity_support_number',
+            'hostpn_birthdate'               => 'hostpn_birthdate',
+            'hostpn_nationality'             => 'hostpn_nationality',
+            'hostpn_gender'                  => 'hostpn_gender',
+            'hostpn_address'                 => 'hostpn_address',
+            'hostpn_address_alt'             => 'hostpn_address_alt',
+            'hostpn_country'                 => 'hostpn_country',
+            'hostpn_postal_code'             => 'hostpn_postal_code',
+            'hostpn_city_code'               => 'hostpn_city_code',
+            'hostpn_city'                    => 'hostpn_city',
+            'hostpn_surname_alt'             => 'hostpn_surname_alt',
+        ];
+
+        $first_name = get_post_meta($guest_id, 'hostpn_name', true);
+        $last_name  = get_post_meta($guest_id, 'hostpn_surname', true);
+
+        // 6. Check if a WP user with this email already exists
+        $existing_user = get_user_by('email', $guest_email);
+
+        if ($existing_user) {
+            // Link the guest to the existing user
+            $user_id = $existing_user->ID;
+            update_post_meta($guest_id, 'hostpn_guest_wp_user_id', $user_id);
+
+            // Copy meta from guest to user
+            update_user_meta($user_id, 'first_name', $first_name);
+            update_user_meta($user_id, 'last_name', $last_name);
+            foreach ($meta_map as $guest_key => $user_key) {
+                $value = get_post_meta($guest_id, $guest_key, true);
+                if (!empty($value)) {
+                    update_user_meta($user_id, $user_key, $value);
+                }
+            }
+
+            wp_send_json_success([
+                'message'  => esc_html(__('Guest linked to existing user.', 'hostpn')),
+                'user_id'  => $user_id,
+                'edit_url' => admin_url('user-edit.php?user_id=' . $user_id),
+                'linked'   => true,
+            ]);
+        }
+
+        // User does not exist - create a new one
+        $display_name = trim($first_name . ' ' . $last_name);
+        $password     = wp_generate_password(12, true, true);
+
+        $user_data = [
+            'user_login'   => $guest_email,
+            'user_email'   => $guest_email,
+            'user_pass'    => $password,
+            'first_name'   => $first_name,
+            'last_name'    => $last_name,
+            'display_name' => !empty($display_name) ? $display_name : $guest_email,
+            'role'         => 'subscriber',
+        ];
+
+        $user_id = wp_insert_user($user_data);
+
+        if (is_wp_error($user_id)) {
+            wp_send_json_error([
+                'message' => $user_id->get_error_message(),
+            ]);
+        }
+
+        // Copy meta from guest to user
+        foreach ($meta_map as $guest_key => $user_key) {
+            $value = get_post_meta($guest_id, $guest_key, true);
+            if (!empty($value)) {
+                update_user_meta($user_id, $user_key, $value);
+            }
+        }
+
+        // Link guest ↔ user
+        update_post_meta($guest_id, 'hostpn_guest_wp_user_id', $user_id);
+
+        // Send welcome email
+        wp_new_user_notification($user_id, null, 'both');
+
+        wp_send_json_success([
+            'message'  => esc_html(__('User created successfully.', 'hostpn')),
+            'user_id'  => $user_id,
+            'edit_url' => admin_url('user-edit.php?user_id=' . $user_id),
+            'linked'   => false,
+        ]);
     }
 }

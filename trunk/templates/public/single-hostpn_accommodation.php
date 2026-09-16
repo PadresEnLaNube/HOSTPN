@@ -42,6 +42,13 @@ if (wp_is_block_theme()) {
 
             <article class="hostpn-accommodation-single" data-accommodation-id="<?php echo esc_attr($accommodation_id); ?>">
 
+                <?php
+                // Management tabs panel for logged-in admins and guests
+                if (is_user_logged_in()) {
+                    include HOSTPN_DIR . 'templates/public/hostpn-management-tabs.php';
+                }
+                ?>
+
                 <!-- Header Section -->
                 <header class="hostpn-accommodation-header">
                     <div class="hostpn-accommodation-header-content">
@@ -360,22 +367,6 @@ if (wp_is_block_theme()) {
                         <?php
                     endif;
                 endif;
-                ?>
-
-                <!-- Contracts Block for logged-in guests -->
-                <?php
-                if (is_user_logged_in()) {
-                    $guest_id = HOSTPN_Post_Type_Contract::hostpn_get_guest_id_for_user(get_current_user_id());
-                    if ($guest_id) {
-                        $contracts = HOSTPN_Post_Type_Contract::hostpn_get_contracts([
-                            'accommodation_id' => $accommodation_id,
-                            'guest_id'         => $guest_id,
-                        ]);
-                        if (!empty($contracts)) {
-                            include HOSTPN_DIR . 'templates/public/hostpn-contracts-block.php';
-                        }
-                    }
-                }
                 ?>
 
                 <!-- Navigation -->

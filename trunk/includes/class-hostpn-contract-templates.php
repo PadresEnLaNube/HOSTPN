@@ -806,7 +806,7 @@ class HOSTPN_Contract_Templates {
    * @param mixed $urls  URL meta values (array or empty).
    * @return array Items with 'name' and 'url' keys.
    */
-  private static function hostpn_collect_inventory_items($names, $urls) {
+  public static function hostpn_collect_inventory_items($names, $urls) {
     if (!is_array($names)) {
       $names = [];
     }

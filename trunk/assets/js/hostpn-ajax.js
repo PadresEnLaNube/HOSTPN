@@ -336,6 +336,75 @@
       });
     });
 
+    $(document).on('click', '.hostpn-guest-create-user', function(e) {
+      e.preventDefault();
+
+      var hostpn_btn = $(this);
+      var hostpn_guest_id = hostpn_btn.data('guest-id') || hostpn_btn.closest('.hostpn-guest').attr('data-hostpn_guest-id');
+
+      // Loading state
+      var original_html = hostpn_btn.html();
+      var is_meta_box = hostpn_btn.is('button'); // meta box button vs dropdown link
+
+      if (is_meta_box) {
+        hostpn_btn.prop('disabled', true).html('<i class="material-icons-outlined" style="font-size: 18px;">hourglass_empty</i> ' + (hostpn_i18n.creating_user || 'Creating user...'));
+      } else {
+        hostpn_btn.html('<div class="hostpn-display-table hostpn-width-100-percent"><div class="hostpn-display-inline-table hostpn-width-70-percent"><p>' + (hostpn_i18n.creating_user || 'Creating user...') + '</p></div><div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right"><i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">hourglass_empty</i></div></div>');
+      }
+
+      var ajax_url = hostpn_ajax.ajax_url;
+      var data = {
+        action: 'hostpn_guest_create_user',
+        guest_id: hostpn_guest_id,
+        nonce: hostpn_ajax.hostpn_ajax_nonce,
+      };
+
+      $.post(ajax_url, data, function(response) {
+        if (response.success) {
+          var msg = response.data.message || (hostpn_i18n.user_created || 'User created successfully.');
+          hostpn_get_main_message(msg);
+
+          var edit_url = response.data.edit_url || '#';
+          var user_id = response.data.user_id || '';
+
+          if (is_meta_box) {
+            // Replace button with link to user profile
+            var $section = hostpn_btn.closest('.hostpn-guest-user-section');
+            $section.html('<a href="' + edit_url + '" class="button button-secondary" target="_blank" style="display: inline-flex; align-items: center; gap: 5px;"><i class="material-icons-outlined" style="font-size: 18px;">person</i> ' + (hostpn_i18n.view_user || 'View user') + ' (#' + user_id + ')</a>');
+          } else {
+            // Replace the dropdown link with a "View user" link
+            hostpn_btn.attr('href', edit_url).attr('target', '_blank').removeClass('hostpn-guest-create-user');
+            hostpn_btn.html('<div class="hostpn-display-table hostpn-width-100-percent"><div class="hostpn-display-inline-table hostpn-width-70-percent"><p>' + (hostpn_i18n.view_user || 'View user') + '</p></div><div class="hostpn-display-inline-table hostpn-width-20-percent hostpn-text-align-right"><i class="material-icons-outlined hostpn-vertical-align-middle hostpn-font-size-30 hostpn-ml-30">person</i></div></div>');
+          }
+        } else {
+          var error_message = (response.data && response.data.message) ? response.data.message : (hostpn_i18n.an_error_has_occurred);
+          hostpn_get_main_message(error_message);
+
+          // Restore button
+          if (is_meta_box) {
+            hostpn_btn.prop('disabled', false).html(original_html);
+          } else {
+            hostpn_btn.html(original_html);
+          }
+        }
+
+        // Close the contextual menu
+        $('.hostpn-menu-more.hostpn-active').fadeOut('fast').removeClass('hostpn-active');
+        $('.hostpn-menu-more-overlay').fadeOut('fast');
+      }).fail(function() {
+        hostpn_get_main_message(hostpn_i18n.an_error_has_occurred);
+
+        if (is_meta_box) {
+          hostpn_btn.prop('disabled', false).html(original_html);
+        } else {
+          hostpn_btn.html(original_html);
+        }
+
+        $('.hostpn-menu-more.hostpn-active').fadeOut('fast').removeClass('hostpn-active');
+        $('.hostpn-menu-more-overlay').fadeOut('fast');
+      });
+    });
+
     $(document).on('click', '.hostpn-guest-remove', function(e) {
       e.preventDefault();
 

@@ -1,14 +1,6 @@
 (function ($) {
   'use strict';
 
-  console.log('[hostpn-rooms-block] Script loaded');
-  console.log('[hostpn-rooms-block] hostpnRoomsBlock available:', typeof hostpnRoomsBlock !== 'undefined');
-  if (typeof hostpnRoomsBlock !== 'undefined') {
-    console.log('[hostpn-rooms-block] ajaxUrl:', hostpnRoomsBlock.ajaxUrl);
-    console.log('[hostpn-rooms-block] nonce:', hostpnRoomsBlock.nonce ? 'SET' : 'MISSING');
-  }
-  console.log('[hostpn-rooms-block] .hostpn-room-notify-btn count:', $('.hostpn-room-notify-btn').length);
-
   // Toggle handler for .hostpn-toggle (hostpn-forms.js not loaded on frontend)
   $(document).on('click', '.hostpn-rooms-listing .hostpn-toggle, .hostpn-room-waitlist-admin .hostpn-toggle', function (e) {
     e.preventDefault();
@@ -34,8 +26,6 @@
     e.preventDefault();
     e.stopPropagation();
 
-    console.log('[hostpn-rooms-block] Notify button clicked');
-
     var $btn = $(this);
     var $form = $btn.closest('.hostpn-room-notify-form');
     var $input = $form.find('.hostpn-room-notify-email');
@@ -43,17 +33,13 @@
     var email = $.trim($input.val());
     var roomId = $form.data('room-id');
 
-    console.log('[hostpn-rooms-block] email:', email, 'roomId:', roomId);
-
     $feedback.removeClass('hostpn-success hostpn-error').text('');
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      console.log('[hostpn-rooms-block] Email validation failed');
       $feedback.addClass('hostpn-error').text(hostpnRoomsBlock.i18n.invalidEmail);
       return;
     }
 
-    console.log('[hostpn-rooms-block] Sending subscribe AJAX...');
     $btn.prop('disabled', true).text(hostpnRoomsBlock.i18n.subscribing);
 
     $.ajax({
@@ -67,7 +53,6 @@
       },
       dataType: 'json',
       success: function (response) {
-        console.log('[hostpn-rooms-block] Subscribe response:', response);
         if (response.error_key === '') {
           $feedback.addClass('hostpn-success').text(hostpnRoomsBlock.i18n.subscribed);
           $input.val('');
@@ -77,8 +62,7 @@
           $feedback.addClass('hostpn-error').text(response.error_content || '');
         }
       },
-      error: function (xhr, status, error) {
-        console.error('[hostpn-rooms-block] Subscribe error:', status, error, xhr.responseText);
+      error: function () {
         $feedback.addClass('hostpn-error').text('Error');
       },
       complete: function () {
@@ -99,8 +83,6 @@
     var roomId = $btn.data('room-id');
     var email = $btn.data('email');
 
-    console.log('[hostpn-rooms-block] Remove waitlist email:', email, 'roomId:', roomId);
-
     $btn.prop('disabled', true);
 
     $.ajax({
@@ -114,7 +96,6 @@
       },
       dataType: 'json',
       success: function (response) {
-        console.log('[hostpn-rooms-block] Remove response:', response);
         if (response.error_key === '') {
           $item.fadeOut(300, function () {
             var $ul = $item.closest('.hostpn-waitlist-emails');
@@ -130,8 +111,7 @@
           });
         }
       },
-      error: function (xhr, status, error) {
-        console.error('[hostpn-rooms-block] Remove error:', status, error, xhr.responseText);
+      error: function () {
         $btn.prop('disabled', false);
       },
     });

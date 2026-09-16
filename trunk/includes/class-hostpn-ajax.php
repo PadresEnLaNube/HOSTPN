@@ -1075,6 +1075,219 @@ class HOSTPN_Ajax {
           exit;
           break;
 
+        // ── MANAGEMENT TABS AJAX CASES ────────────────────────────────
+
+        case 'hostpn_cleaning_load':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_room_id)) {
+            $tasks = get_post_meta($hostpn_room_id, 'hostpn_room_cleaning_tasks', true);
+            echo wp_json_encode(['error_key' => '', 'tasks' => !empty($tasks) ? $tasks : new stdClass()]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_room']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_cleaning_save':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_room_id)) {
+            $raw_tasks = !empty($_POST['cleaning_tasks']) ? wp_unslash($_POST['cleaning_tasks']) : '{}';
+            $tasks = json_decode($raw_tasks, true);
+            if (is_array($tasks)) {
+              // Sanitize each task
+              $clean_tasks = [];
+              foreach ($tasks as $area_key => $area_data) {
+                $safe_key = sanitize_key($area_key);
+                $clean_tasks[$safe_key] = [
+                  'done'  => !empty($area_data['done']) && $area_data['done'] === '1' ? '1' : '0',
+                  'date'  => !empty($area_data['date']) ? sanitize_text_field($area_data['date']) : '',
+                  'notes' => !empty($area_data['notes']) ? sanitize_textarea_field($area_data['notes']) : '',
+                ];
+              }
+              update_post_meta($hostpn_room_id, 'hostpn_room_cleaning_tasks', $clean_tasks);
+              echo wp_json_encode(['error_key' => '']);
+            } else {
+              echo wp_json_encode(['error_key' => 'invalid_data']);
+            }
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_room']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_inventory_checklist_load':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_room_id) && !empty($hostpn_accommodation_id)) {
+            $categories = [
+              'mobiliario'               => __('Furniture', 'hostpn'),
+              'equipamiento_individual'  => __('Individual equipment', 'hostpn'),
+              'menaje_individual'        => __('Individual kitchenware', 'hostpn'),
+              'equipamiento_comunitario' => __('Community equipment', 'hostpn'),
+              'otros_enseres'            => __('Other items', 'hostpn'),
+            ];
+
+            $all_items = [];
+            foreach ($categories as $cat_key => $cat_label) {
+              $accom_items = HOSTPN_Contract_Templates::hostpn_collect_inventory_items(
+                get_post_meta($hostpn_accommodation_id, 'hostpn_contract_inv_' . $cat_key . '_name', true),
+                get_post_meta($hostpn_accommodation_id, 'hostpn_contract_inv_' . $cat_key . '_url', true)
+              );
+              $room_items = HOSTPN_Contract_Templates::hostpn_collect_inventory_items(
+                get_post_meta($hostpn_room_id, 'hostpn_room_inv_' . $cat_key . '_name', true),
+                get_post_meta($hostpn_room_id, 'hostpn_room_inv_' . $cat_key . '_url', true)
+              );
+              $merged = array_merge($accom_items, $room_items);
+              foreach ($merged as $item) {
+                $all_items[] = [
+                  'category'       => $cat_key,
+                  'category_label' => $cat_label,
+                  'name'           => $item['name'],
+                ];
+              }
+            }
+
+            // Find active contract for this room
+            $contract_id = 0;
+            $existing = null;
+            $contracts = HOSTPN_Post_Type_Contract::hostpn_get_contracts(0, $hostpn_accommodation_id);
+            foreach ($contracts as $cid) {
+              $c_room = get_post_meta($cid, 'hostpn_contract_room_id', true);
+              $c_status = get_post_meta($cid, 'hostpn_contract_status', true);
+              if (intval($c_room) === intval($hostpn_room_id) && !in_array($c_status, ['cancelled', 'expired'])) {
+                $contract_id = $cid;
+                $existing = get_post_meta($cid, 'hostpn_contract_checkout_inspection', true);
+                break;
+              }
+            }
+
+            if (!empty($all_items)) {
+              echo wp_json_encode([
+                'error_key'   => '',
+                'items'       => $all_items,
+                'contract_id' => $contract_id,
+                'existing'    => !empty($existing) ? $existing : null,
+              ]);
+            } else {
+              echo wp_json_encode(['error_key' => 'no_items', 'error_content' => esc_html__('No inventory items found.', 'hostpn')]);
+            }
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_params']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_inventory_inspection_save':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $raw_inspection = !empty($_POST['inspection_data']) ? wp_unslash($_POST['inspection_data']) : '{}';
+          $inspection = json_decode($raw_inspection, true);
+
+          if (!is_array($inspection) || empty($inspection['items'])) {
+            echo wp_json_encode(['error_key' => 'invalid_data']);
+            exit;
+          }
+
+          // Sanitize inspection data
+          $clean_items = [];
+          foreach ($inspection['items'] as $item) {
+            $clean_items[] = [
+              'category' => sanitize_key($item['category']),
+              'name'     => sanitize_text_field($item['name']),
+              'status'   => in_array($item['status'], ['ok', 'issue']) ? $item['status'] : 'ok',
+              'comment'  => sanitize_textarea_field($item['comment']),
+            ];
+          }
+
+          $current_user = wp_get_current_user();
+          $inspection_data = [
+            'date'          => current_time('Y-m-d'),
+            'inspector'     => $current_user->display_name,
+            'room_id'       => intval($hostpn_room_id),
+            'items'         => $clean_items,
+            'overall_notes' => sanitize_textarea_field($inspection['overall_notes']),
+          ];
+
+          // Save to contract meta if contract exists, otherwise to room meta
+          if (!empty($hostpn_contract_id) && get_post($hostpn_contract_id)) {
+            update_post_meta($hostpn_contract_id, 'hostpn_contract_checkout_inspection', $inspection_data);
+          } else {
+            update_post_meta($hostpn_room_id, 'hostpn_room_checkout_inspection', $inspection_data);
+          }
+
+          echo wp_json_encode(['error_key' => '']);
+          exit;
+          break;
+
+        case 'hostpn_inventory_inspection_email':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          $raw_inspection = !empty($_POST['inspection_data']) ? wp_unslash($_POST['inspection_data']) : '{}';
+          $inspection = json_decode($raw_inspection, true);
+
+          if (!is_array($inspection) || empty($inspection['items'])) {
+            echo wp_json_encode(['error_key' => 'invalid_data']);
+            exit;
+          }
+
+          // Get landlord email
+          $landlord_email = get_post_meta($hostpn_accommodation_id, 'hostpn_contract_landlord_email', true);
+          if (empty($landlord_email) || !is_email($landlord_email)) {
+            // Fallback to admin email
+            $landlord_email = get_option('admin_email');
+          }
+
+          $current_user = wp_get_current_user();
+          $inspection_data = [
+            'date'          => current_time('Y-m-d'),
+            'inspector'     => $current_user->display_name,
+            'room_id'       => intval($hostpn_room_id),
+            'items'         => $inspection['items'],
+            'overall_notes' => !empty($inspection['overall_notes']) ? $inspection['overall_notes'] : '',
+          ];
+
+          $result = HOSTPN_Notifications::send_inventory_inspection_email(
+            $inspection_data,
+            $hostpn_accommodation_id,
+            $hostpn_room_id
+          );
+
+          echo wp_json_encode(['error_key' => $result ? '' : 'email_failed', 'error_content' => $result ? '' : esc_html__('Failed to send email.', 'hostpn')]);
+          exit;
+          break;
+
+        case 'hostpn_financial_frontend_load':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+
+          if (class_exists('HOSTPN_Financial') && !empty($hostpn_accommodation_id)) {
+            ob_start();
+            $read_only = true;
+            include HOSTPN_DIR . 'templates/admin/financial/hostpn-financial-dashboard.php';
+            $html = ob_get_clean();
+            echo wp_json_encode(['error_key' => '', 'html' => $html]);
+          } else {
+            echo wp_json_encode(['error_key' => 'unavailable', 'html' => '']);
+          }
+          exit;
+          break;
+
       }
 
       echo wp_json_encode([

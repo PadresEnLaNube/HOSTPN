@@ -1,0 +1,396 @@
+/* Management Tabs Panel - Frontend
+ * Extends the plugin's standard tab system (.hostpn-tabs / .hostpn-tab-content)
+ * defined in hostpn.css.
+ */
+
+.hostpn-mgmt-panel {
+  margin: 0 0 30px;
+}
+
+/* Tab button overrides for management panel */
+.hostpn-mgmt-panel .hostpn-tabs button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.hostpn-mgmt-panel .hostpn-tabs button i {
+  font-size: 18px;
+}
+
+/* Override contracts block inside tab */
+.hostpn-mgmt-tab-pane .hostpn-contracts-block {
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Loading spinner */
+.hostpn-mgmt-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  padding: 30px;
+  justify-content: center;
+}
+
+/* Room selector */
+.hostpn-mgmt-room-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.hostpn-mgmt-room-selector label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.hostpn-mgmt-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  min-width: 180px;
+}
+
+.hostpn-mgmt-select:focus {
+  outline: none;
+  border-color: #999;
+}
+
+/* Empty state */
+.hostpn-mgmt-empty {
+  color: #888;
+  font-style: italic;
+  padding: 20px 0;
+}
+
+/* ── Cleaning ── */
+.hostpn-mgmt-cleaning-areas {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hostpn-mgmt-cleaning-area {
+  display: grid;
+  grid-template-columns: 30px 1fr 120px 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.hostpn-mgmt-cleaning-area:last-child {
+  border-bottom: none;
+}
+
+.hostpn-mgmt-cleaning-check {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #000;
+}
+
+.hostpn-mgmt-cleaning-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.hostpn-mgmt-cleaning-name.done {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.hostpn-mgmt-cleaning-date {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.hostpn-mgmt-cleaning-notes {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  resize: none;
+  min-height: 32px;
+}
+
+.hostpn-mgmt-cleaning-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* ── Inventory Checklist (Admin) ── */
+.hostpn-mgmt-inv-checklist-category {
+  margin-bottom: 20px;
+}
+
+.hostpn-mgmt-inv-checklist-category h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #eee;
+}
+
+.hostpn-mgmt-inv-checklist-item {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f8f8f8;
+}
+
+.hostpn-mgmt-inv-checklist-item:last-child {
+  border-bottom: none;
+}
+
+.hostpn-mgmt-inv-item-name {
+  font-size: 14px;
+  color: #333;
+}
+
+.hostpn-mgmt-inv-status-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.hostpn-mgmt-inv-status-group label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #555;
+}
+
+.hostpn-mgmt-inv-status-group input[type="radio"] {
+  accent-color: #000;
+}
+
+.hostpn-mgmt-inv-item-comment {
+  padding: 6px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  resize: none;
+  min-height: 32px;
+}
+
+.hostpn-mgmt-inv-overall {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.hostpn-mgmt-inv-overall label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.hostpn-mgmt-inv-overall textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 80px;
+  box-sizing: border-box;
+}
+
+.hostpn-mgmt-inv-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* ── Inventory Read-only (Guest) ── */
+.hostpn-mgmt-inventory-guest h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 16px;
+}
+
+.hostpn-mgmt-inv-category {
+  margin-bottom: 16px;
+}
+
+.hostpn-mgmt-inv-category h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.hostpn-mgmt-inv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.hostpn-mgmt-inv-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: #f8f8f8;
+  border-bottom: 2px solid #e8e8e8;
+  font-weight: 600;
+  color: #555;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.hostpn-mgmt-inv-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.hostpn-mgmt-inv-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Common buttons ── */
+.hostpn-mgmt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.hostpn-mgmt-btn:hover {
+  background: #333;
+}
+
+.hostpn-mgmt-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hostpn-mgmt-btn i {
+  font-size: 18px;
+}
+
+.hostpn-mgmt-btn-secondary {
+  background: #fff;
+  color: #333;
+  border-color: #ddd;
+}
+
+.hostpn-mgmt-btn-secondary:hover {
+  background: #f5f5f5;
+}
+
+/* Success / Error messages */
+.hostpn-mgmt-message {
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hostpn-mgmt-message-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.hostpn-mgmt-message-error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* ── Financial ── */
+.hostpn-mgmt-financial-content .hostpn-financial-dashboard {
+  margin: 0;
+  padding: 0;
+}
+
+.hostpn-mgmt-financial-unavailable {
+  color: #888;
+  font-style: italic;
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hostpn-mgmt-panel .hostpn-tabs button {
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+
+  .hostpn-mgmt-cleaning-area {
+    grid-template-columns: 30px 1fr;
+    gap: 8px;
+  }
+
+  .hostpn-mgmt-cleaning-date,
+  .hostpn-mgmt-cleaning-notes {
+    grid-column: 2;
+  }
+
+  .hostpn-mgmt-inv-checklist-item {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .hostpn-mgmt-room-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hostpn-mgmt-cleaning-actions,
+  .hostpn-mgmt-inv-actions {
+    flex-direction: column;
+  }
+
+  .hostpn-mgmt-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

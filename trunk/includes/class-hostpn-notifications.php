@@ -634,6 +634,87 @@ class HOSTPN_Notifications {
   }
 
   /**
+   * Send inventory inspection checklist email.
+   *
+   * Builds an HTML table from inspection data and sends it
+   * to the landlord email configured for the accommodation.
+   *
+   * @param array $inspection_data Inspection data with items, overall_notes, etc.
+   * @param int   $accommodation_id The accommodation post ID.
+   * @param int   $room_id The room post ID.
+   * @return bool True on success, false on failure.
+   */
+  public static function send_inventory_inspection_email( $inspection_data, $accommodation_id, $room_id ) {
+    $landlord_email = get_post_meta( $accommodation_id, 'hostpn_contract_landlord_email', true );
+    if ( empty( $landlord_email ) || ! is_email( $landlord_email ) ) {
+      $landlord_email = get_option( 'admin_email' );
+    }
+
+    $accommodation_name = get_the_title( $accommodation_id );
+    $room_number = get_post_meta( $room_id, 'hostpn_room_number', true );
+    $room_label = ! empty( $room_number ) ? sprintf( __( 'Room %s', 'hostpn' ), $room_number ) : get_the_title( $room_id );
+
+    $subject = sprintf(
+      /* translators: %1$s: room label, %2$s: accommodation name */
+      __( 'Checkout inspection - %1$s - %2$s', 'hostpn' ),
+      $room_label,
+      $accommodation_name
+    );
+
+    $date = ! empty( $inspection_data['date'] ) ? $inspection_data['date'] : current_time( 'Y-m-d' );
+    $inspector = ! empty( $inspection_data['inspector'] ) ? $inspection_data['inspector'] : '';
+
+    ob_start();
+    ?>
+    <h2><?php echo esc_html( sprintf( __( 'Checkout Inspection - %s', 'hostpn' ), $room_label ) ); ?></h2>
+    <p>
+      <strong><?php esc_html_e( 'Date', 'hostpn' ); ?>:</strong> <?php echo esc_html( $date ); ?>
+      <?php if ( ! empty( $inspector ) ) : ?>
+        &nbsp;&middot;&nbsp;<strong><?php esc_html_e( 'Inspector', 'hostpn' ); ?>:</strong> <?php echo esc_html( $inspector ); ?>
+      <?php endif; ?>
+    </p>
+
+    <?php if ( ! empty( $inspection_data['items'] ) && is_array( $inspection_data['items'] ) ) : ?>
+      <table style="border-collapse:collapse;width:100%;max-width:600px;" cellpadding="8" cellspacing="0">
+        <thead>
+          <tr style="background:#f0f0f0;">
+            <th style="border:1px solid #dee2e6;text-align:left;"><?php esc_html_e( 'Item', 'hostpn' ); ?></th>
+            <th style="border:1px solid #dee2e6;text-align:center;width:80px;"><?php esc_html_e( 'Status', 'hostpn' ); ?></th>
+            <th style="border:1px solid #dee2e6;text-align:left;"><?php esc_html_e( 'Comment', 'hostpn' ); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $i = 0;
+          foreach ( $inspection_data['items'] as $item ) :
+            $bg = ( $i % 2 === 0 ) ? ' style="background:#f8f9fa;"' : '';
+            $status_icon = ( $item['status'] === 'ok' ) ? '✓' : '✗';
+            $status_color = ( $item['status'] === 'ok' ) ? '#2e7d32' : '#c62828';
+            $i++;
+          ?>
+          <tr<?php echo $bg; ?>>
+            <td style="border:1px solid #dee2e6;"><?php echo esc_html( $item['name'] ); ?></td>
+            <td style="border:1px solid #dee2e6;text-align:center;color:<?php echo esc_attr( $status_color ); ?>;font-weight:bold;"><?php echo esc_html( $status_icon ); ?></td>
+            <td style="border:1px solid #dee2e6;"><?php echo esc_html( $item['comment'] ); ?></td>
+          </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+    <?php endif; ?>
+
+    <?php if ( ! empty( $inspection_data['overall_notes'] ) ) : ?>
+      <div style="margin-top:20px;padding:12px;background:#f8f9fa;border:1px solid #dee2e6;">
+        <strong><?php esc_html_e( 'General notes', 'hostpn' ); ?>:</strong><br>
+        <?php echo nl2br( esc_html( $inspection_data['overall_notes'] ) ); ?>
+      </div>
+    <?php endif; ?>
+    <?php
+    $content = ob_get_clean();
+
+    return self::send_notification( $landlord_email, $subject, $content );
+  }
+
+  /**
    * Diagnose mailpn exception filters that could block delivery.
    *
    * Checks the same conditions that mailpn_sender() checks internally,

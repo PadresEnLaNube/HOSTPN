@@ -54,7 +54,7 @@ class HOSTPN
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.120';
+			$this->version = '1.0.130';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -494,6 +494,7 @@ class HOSTPN
 
 		$plugin_guest = new HOSTPN_Post_Type_Guest();
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_guest_resend_notification', $plugin_guest, 'hostpn_guest_resend_notification');
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_guest_create_user', $plugin_guest, 'hostpn_guest_create_user');
 
 		// Private storage AJAX handlers
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_contract_download_pdf', 'HOSTPN_Private_Storage', 'hostpn_contract_download_pdf');
