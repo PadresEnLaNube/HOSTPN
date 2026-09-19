@@ -77,6 +77,7 @@ class HOSTPN_Common {
 		// Enqueue financial management styles (admin only)
 		if (is_admin()) {
 			wp_enqueue_style($this->plugin_name . '-financial', HOSTPN_URL . 'assets/css/admin/hostpn-financial.css', [$this->plugin_name], $this->version, 'all');
+			wp_enqueue_style($this->plugin_name . '-mgmt-tabs-css', HOSTPN_URL . 'assets/css/public/hostpn-management-tabs.css', [$this->plugin_name], $this->version, 'all');
 			wp_enqueue_style($this->plugin_name . '-contract', HOSTPN_URL . 'assets/css/admin/hostpn-contract.css', [$this->plugin_name], $this->version, 'all');
 		}
 	}
@@ -120,8 +121,25 @@ class HOSTPN_Common {
 		wp_enqueue_script($this->plugin_name . '-forms', HOSTPN_URL . 'assets/js/hostpn-forms.js', ['jquery', 'jquery-ui-sortable'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
 		wp_enqueue_script($this->plugin_name . '-ajax', HOSTPN_URL . 'assets/js/hostpn-ajax.js', ['jquery'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
 
-		// Enqueue financial management script
-		wp_enqueue_script($this->plugin_name . '-financial', HOSTPN_URL . 'assets/js/hostpn-financial.js', ['jquery', $this->plugin_name . '-ajax'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+		// Enqueue Chart.js for financial charts
+		if (!wp_script_is($this->plugin_name . '-chartjs', 'enqueued')) {
+			wp_enqueue_script($this->plugin_name . '-chartjs', HOSTPN_URL . 'assets/js/vendor/chart.min.js', [], '4.4.1', false, ['in_footer' => true, 'strategy' => 'defer']);
+		}
+
+		// Enqueue financial management script & management tabs JS
+		wp_enqueue_script($this->plugin_name . '-financial', HOSTPN_URL . 'assets/js/hostpn-financial.js', ['jquery', $this->plugin_name . '-ajax', $this->plugin_name . '-chartjs'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+		wp_enqueue_script($this->plugin_name . '-mgmt-tabs-js', HOSTPN_URL . 'assets/js/public/hostpn-management-tabs.js', ['jquery', $this->plugin_name . '-ajax', $this->plugin_name . '-chartjs'], $this->version, false, ['in_footer' => true, 'strategy' => 'defer']);
+		wp_localize_script($this->plugin_name . '-mgmt-tabs-js', 'hostpnMgmtTabs', [
+			'ajaxUrl' => admin_url('admin-ajax.php'),
+			'nonce'   => wp_create_nonce('hostpn-nonce'),
+			'isAdmin' => current_user_can('manage_options') ? 1 : 0,
+			'i18n'    => [
+				'occupancy' => esc_html__('Tasa de Ocupación', 'hostpn'),
+				'roomLabel' => esc_html__('Habitación', 'hostpn'),
+				'guestName' => esc_html__('Huésped Actual', 'hostpn'),
+				'monthlyRent' => esc_html__('Renta Mensual', 'hostpn'),
+			]
+		]);
 
 		// Enqueue contract generation scripts (admin only)
 		if (is_admin()) {

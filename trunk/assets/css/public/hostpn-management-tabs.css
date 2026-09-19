@@ -394,3 +394,702 @@
     justify-content: center;
   }
 }
+
+/* ── Shared Cleaning Styles ── */
+.hostpn-mgmt-cleaning-system-switch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+}
+
+.hostpn-mgmt-system-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+}
+
+.hostpn-mgmt-sys-btn-group {
+  display: inline-flex;
+  gap: 8px;
+  background: #f5f5f5;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.hostpn-mgmt-sys-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: none;
+  background: transparent;
+  color: #555;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hostpn-mgmt-sys-btn.active {
+  background: #fff;
+  color: #2c3e50;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.hostpn-mgmt-sys-btn:hover:not(.active) {
+  color: #111;
+}
+
+/* Shared Cleaning Status Card */
+.hostpn-shared-status-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.hostpn-shared-turn-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px dashed #e0e0e0;
+}
+
+/* Shared Cleaning Status Card (Minimalist) */
+.hostpn-shared-status-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: none;
+}
+
+.hostpn-shared-turn-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.hostpn-shared-turn-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.hostpn-shared-turn-badge i {
+  color: #334155;
+  font-size: 20px;
+}
+
+.hostpn-shared-turn-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.hostpn-shared-turn-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.hostpn-shared-turn-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.hostpn-shared-date-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.hostpn-shared-date-box i {
+  color: #334155;
+  font-size: 20px;
+}
+
+.hostpn-shared-date-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.hostpn-shared-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.hostpn-shared-detail-item {
+  background: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.hostpn-shared-detail-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.hostpn-shared-detail-val {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Stays Pills */
+.hostpn-shared-stays-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.hostpn-shared-stay-pill {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Rotation Queue */
+.hostpn-shared-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 18px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hostpn-shared-queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.hostpn-shared-queue-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.hostpn-shared-queue-item.is-turn {
+  border-left: 3px solid #0f172a;
+  background: #f8fafc;
+}
+
+.hostpn-shared-queue-room {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.hostpn-shared-queue-guest {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.hostpn-shared-queue-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.hostpn-shared-queue-tag.active {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+.hostpn-shared-queue-tag.upcoming {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+
+/* Actions bar */
+.hostpn-shared-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+/* Group Comments Section */
+.hostpn-shared-comments-wrapper {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+.hostpn-shared-comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 350px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+
+.hostpn-shared-comment-item {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  box-shadow: none;
+}
+
+.hostpn-shared-comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.hostpn-shared-comment-author {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.hostpn-shared-comment-room {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  margin-left: 6px;
+}
+
+.hostpn-shared-comment-date {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.hostpn-shared-comment-text {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+
+.hostpn-shared-comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.hostpn-shared-comment-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 13px;
+  resize: vertical;
+  min-height: 60px;
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.hostpn-shared-comment-form .hostpn-shared-post-comment-btn {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Config modal / panel */
+.hostpn-shared-config-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 14px;
+  margin-top: 16px;
+}
+
+.hostpn-shared-config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.hostpn-shared-config-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hostpn-shared-config-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.hostpn-shared-config-field input,
+.hostpn-shared-config-field textarea {
+  padding: 6px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+/* ── Top Hero Summary Header Panel (Minimalist) ── */
+.hostpn-mgmt-hero-header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hostpn-hero-card {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.hostpn-hero-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.hostpn-hero-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.hostpn-hero-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.hostpn-hero-sub {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.hostpn-hero-progress-wrapper {
+  height: 4px;
+  background: #f1f5f9;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.hostpn-hero-progress-bar {
+  height: 100%;
+  background: #334155;
+  border-radius: 2px;
+}
+
+.hostpn-unlocked-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── Minimalist Tab Navigation ── */
+.hostpn-mgmt-panel .hostpn-tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+.hostpn-mgmt-panel .hostpn-tabs button {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 14px;
+  text-transform: none;
+  letter-spacing: normal;
+  border-radius: 0;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.hostpn-mgmt-panel .hostpn-tabs button:hover {
+  color: #0f172a;
+}
+
+.hostpn-mgmt-panel .hostpn-tabs button.active {
+  color: #0f172a;
+  font-weight: 600;
+  border-bottom-color: #0f172a;
+  background: transparent;
+}
+
+/* ── Minimalist Promotions ── */
+.hostpn-mgmt-promotions-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hostpn-mgmt-stay-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+}
+
+.hostpn-mgmt-stay-badge {
+  display: flex;
+  flex-direction: column;
+}
+
+.hostpn-mgmt-stay-badge strong {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.hostpn-mgmt-stay-badge span {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.hostpn-mgmt-stay-start {
+  font-size: 13px;
+  color: #475569;
+}
+
+.hostpn-mgmt-promos-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hostpn-mgmt-promo-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.hostpn-mgmt-promo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.hostpn-mgmt-promo-title-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.hostpn-mgmt-promo-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.hostpn-mgmt-promo-target {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.hostpn-mgmt-promo-reward-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.hostpn-mgmt-promo-body {
+  padding: 18px;
+}
+
+.hostpn-mgmt-promo-progress-box {
+  margin-bottom: 14px;
+}
+
+.hostpn-mgmt-promo-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.hostpn-mgmt-promo-percent {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.hostpn-mgmt-promo-progress-track {
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.hostpn-mgmt-promo-progress-fill {
+  height: 100%;
+  background: #334155;
+  border-radius: 3px;
+}
+
+.hostpn-mgmt-promo-rem-text {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.hostpn-mgmt-unlocked-text {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.hostpn-mgmt-promo-conditions {
+  padding: 10px 14px;
+  background: #f8fafc;
+  border-left: 2px solid #cbd5e1;
+  font-size: 12px;
+  color: #475569;
+}
+
+.hostpn-mgmt-promo-conditions p {
+  margin: 2px 0 0;
+}
+
+.hostpn-inv-item-link {
+  color: #0f172a;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.hostpn-inv-item-link:hover {
+  color: #334155;
+}
+
+/* Financial status badges & subrow styling */
+.hostpn-badge-paid {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #166534;
+  color: #4ade80;
+  border: 1px solid #15803d;
+}
+
+.hostpn-badge-partial {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #854d0e;
+  color: #fde047;
+  border: 1px solid #a16207;
+}
+
+.hostpn-badge-pending {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #1e293b;
+  color: #94a3b8;
+  border: 1px solid #334155;
+}
+
+.hostpn-payments-subrow table tr:hover {
+  background: #1e293b;
+}
+

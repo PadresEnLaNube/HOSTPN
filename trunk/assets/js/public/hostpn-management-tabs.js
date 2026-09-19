@@ -2,12 +2,36 @@
   'use strict';
 
   var cfg = window.hostpnMgmtTabs || {};
-  var ajaxUrl = cfg.ajaxUrl || '';
-  var nonce = cfg.nonce || '';
   var accommodationId = cfg.accommodationId || 0;
   var i18n = cfg.i18n || {};
 
-  console.log('[hostpn-mgmt] External JS loaded. ajaxUrl:', ajaxUrl ? 'SET' : 'MISSING', 'nonce:', nonce ? 'SET' : 'MISSING', 'accommodationId:', accommodationId);
+  function getNonce() {
+    if (window.hostpn_ajax && window.hostpn_ajax.hostpn_ajax_nonce) {
+      return window.hostpn_ajax.hostpn_ajax_nonce;
+    }
+    if (window.hostpnMgmtTabs && window.hostpnMgmtTabs.nonce) {
+      return window.hostpnMgmtTabs.nonce;
+    }
+    if (window.hostpn && window.hostpn.nonce) {
+      return window.hostpn.nonce;
+    }
+    if (window.hostpn_action && window.hostpn_action.hostpn_get_nonce) {
+      return window.hostpn_action.hostpn_get_nonce;
+    }
+    return (window.hostpnMgmtTabs && window.hostpnMgmtTabs.nonce) || '';
+  }
+
+  function getAjaxUrl() {
+    if (window.hostpn_ajax && window.hostpn_ajax.ajax_url) {
+      return window.hostpn_ajax.ajax_url;
+    }
+    if (window.hostpnMgmtTabs && window.hostpnMgmtTabs.ajaxUrl) {
+      return window.hostpnMgmtTabs.ajaxUrl;
+    }
+    return '/wp-admin/admin-ajax.php';
+  }
+
+  console.log('[hostpn-mgmt] External JS loaded. accommodationId:', accommodationId);
 
   /* ── Tab switching ── */
   $(document).on('click', '.hostpn-mgmt-tab-btn', function (e) {
@@ -28,10 +52,12 @@
 
     if (tab === 'financial') {
       loadFinancialTab(panel);
+    } else if (tab === 'cleaning') {
+      checkCleaningTabLoad(panel);
     }
   });
 
-  /* ── Auto-load financial tab if it is the default visible tab ── */
+  /* ── Auto-load active tab ── */
   $(function () {
     var $panel = $('.hostpn-mgmt-panel');
     console.log('[hostpn-mgmt] DOM ready. Panel found:', $panel.length, 'Buttons:', $panel.find('.hostpn-mgmt-tab-btn').length, 'Panes:', $panel.find('.hostpn-mgmt-tab-pane').length);
@@ -40,9 +66,19 @@
       console.log('[hostpn-mgmt] Active tab on load:', activeTab);
       if (activeTab === 'financial') {
         loadFinancialTab($panel);
+      } else if (activeTab === 'cleaning') {
+        checkCleaningTabLoad($panel);
       }
     }
   });
+
+  function checkCleaningTabLoad(panel) {
+    var wrapper = panel.find('.hostpn-mgmt-cleaning-wrapper');
+    var sys = wrapper.attr('data-system') || 'punctual';
+    if (sys === 'shared') {
+      loadSharedCleaning(panel);
+    }
+  }
 
   /* ── Financial tab ── */
   var financialLoaded = false;
@@ -54,32 +90,397 @@
     var wrapper = panel.find('.hostpn-mgmt-financial-wrapper');
     var loading = wrapper.find('.hostpn-mgmt-loading');
     var content = wrapper.find('.hostpn-mgmt-financial-content');
+    var accomId = getAccommodationId(panel);
+
+    if (content.children().length > 0) {
+      loading.hide();
+      return;
+    }
+
+    loading.show();
 
     $.ajax({
-      url: ajaxUrl,
+      url: getAjaxUrl(),
       type: 'POST',
       dataType: 'json',
       data: {
         action: 'hostpn_ajax',
-        hostpn_ajax_type: 'hostpn_financial_frontend_load',
-        hostpn_ajax_nonce: nonce,
-        hostpn_accommodation_id: accommodationId
+        hostpn_ajax_type: 'hostpn_get_financial_data',
+        hostpn_ajax_nonce: getNonce(),
+        accommodation_id: accomId,
+        hostpn_accommodation_id: accomId
       },
-      success: function (data) {
-        console.log('[hostpn-mgmt] Financial AJAX success:', data);
+      success: function (res) {
+        console.log('[hostpn-mgmt] Financial AJAX response:', res);
         loading.hide();
-        if (data && data.error_key === '' && data.html) {
-          content.html(data.html);
+        if (res && res.success && res.data) {
+          renderFinancialTab(content, res.data);
         } else {
           content.html('<p class="hostpn-mgmt-financial-unavailable">' + (i18n.noFinancialData || 'No financial data available.') + '</p>');
         }
       },
       error: function (xhr, status, err) {
-        console.error('[hostpn-mgmt] Financial AJAX error:', status, err, xhr.responseText && xhr.responseText.substring(0, 300));
+        console.error('[hostpn-mgmt] Financial AJAX error:', status, err);
         loading.hide();
         content.html('<p class="hostpn-mgmt-financial-unavailable">' + (i18n.noFinancialData || 'No financial data available.') + '</p>');
       }
     });
+  }
+
+  function renderFinancialTab(container, data) {
+    window.hostpnRenderFinancialTab = renderFinancialTab;
+    if (!container || !container.length) return;
+
+    if (data && data.html) {
+      container.html(data.html);
+      if (data.chart_months && window.hostpnInitFinancialChart) {
+        window.hostpnInitFinancialChart(data.chart_months);
+      }
+      return;
+    }
+
+    var rooms = data.rooms || [];
+    var expenses = data.expenses || [];
+    var isAdmin = (cfg.isAdmin === 1 || cfg.isAdmin === '1');
+    var accomId = data.accommodation_id || cfg.accommodationId || 0;
+    var nonce = cfg.nonce || (window.hostpn_ajax ? window.hostpn_ajax.hostpn_ajax_nonce : '');
+    var ajaxUrl = cfg.ajaxUrl || (window.hostpn_ajax ? window.hostpn_ajax.ajax_url : '/wp-admin/admin-ajax.php');
+
+    var html = '';
+
+    var expectedRent = data.total_monthly_rent_expected || 0;
+    var collectedRent = data.total_monthly_rent_collected || 0;
+    var expectedDep = data.total_deposits_expected || 0;
+    var collectedDep = data.total_deposits_collected || 0;
+    var totalExpenses = data.total_expenses || 0;
+    var netIncome = (typeof data.net_income !== 'undefined') ? data.net_income : (collectedRent - totalExpenses);
+
+    // Minimalist Metric Cards (5 Cards Grid)
+    html += '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:12px; margin-bottom:20px;">';
+    
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">' + (i18n.occupancy || 'Tasa de Ocupación') + '</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#f8fafc; margin-top:2px;">' + data.occupied_rooms + ' / ' + data.total_rooms + ' (' + data.occupancy_rate + '%)</div>';
+    html += '</div>';
+
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Cobrado este Mes</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:2px;">€ ' + formatMoney(collectedRent) + '</div>';
+    html += '<div style="font-size:11px; color:#64748b; margin-top:2px;">Previsto: € ' + formatMoney(expectedRent) + '</div>';
+    html += '</div>';
+
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Fianzas Custodiadas</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#f8fafc; margin-top:2px;">€ ' + formatMoney(collectedDep) + '</div>';
+    html += '<div style="font-size:11px; color:#64748b; margin-top:2px;">Previsto: € ' + formatMoney(expectedDep) + '</div>';
+    html += '</div>';
+
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Gastos Totales</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#f87171; margin-top:2px;">€ ' + formatMoney(totalExpenses) + '</div>';
+    html += '</div>';
+
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Beneficio Neto</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:' + (netIncome >= 0 ? '#4ade80' : '#f87171') + '; margin-top:2px;">€ ' + formatMoney(netIncome) + '</div>';
+    html += '</div>';
+
+    html += '</div>'; // metric cards end
+
+    // Chart.js Monthly Evolution Chart
+    if (data.chart_months && data.chart_months.length) {
+      html += renderFinancialChartJS(data.chart_months);
+    }
+
+    // Room table
+    html += '<div style="margin-bottom:28px;">';
+    html += '<h4 style="margin:0 0 12px; font-size:14px; font-weight:700; color:#f8fafc; text-transform:uppercase; letter-spacing:0.5px;">Estado Financiero de Habitaciones</h4>';
+    if (rooms.length === 0) {
+      html += '<p class="hostpn-mgmt-empty">' + (i18n.noFinancialData || 'No financial data available.') + '</p>';
+    } else {
+      html += '<table class="hostpn-mgmt-inv-table" style="width:100%; border-collapse:collapse; font-size:13px; background:#0f172a; color:#f8fafc; border-radius:6px; overflow:hidden;">';
+      html += '<thead><tr style="background:#1e293b; color:#cbd5e1;">';
+      html += '<th style="padding:10px 12px; text-align:left;">' + (i18n.roomLabel || 'Habitación') + '</th>';
+      html += '<th style="padding:10px 12px; text-align:left;">' + (i18n.guestName || 'Huésped Actual') + '</th>';
+      html += '<th style="padding:10px 12px; text-align:left;">Fianza</th>';
+      html += '<th style="padding:10px 12px; text-align:left;">' + (i18n.monthlyRent || 'Renta Mensual') + '</th>';
+      html += '<th style="padding:10px 12px; text-align:center;">Acciones / Historial</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var i = 0; i < rooms.length; i++) {
+        var r = rooms[i];
+        var rName = (i18n.roomLabel || 'Habitación') + ' ' + escHtml(r.room_number);
+        var payments = r.payments_log || [];
+
+        // Determine Deposit Badge & Text
+        var depPaidAmount = r.deposit_paid_amount || 0;
+        var depExpected = r.deposit_amount || 0;
+        var depBadgeHtml = '';
+        if (depExpected > 0 && depPaidAmount >= depExpected) {
+          depBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#166534; color:#4ade80; border:1px solid #15803d; margin-top:2px;">Pagado (€ ' + formatMoney(depPaidAmount) + ')</span>';
+        } else if (depPaidAmount > 0) {
+          depBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#854d0e; color:#fde047; border:1px solid #a16207; margin-top:2px;">Parcial (€ ' + formatMoney(depPaidAmount) + ' / € ' + formatMoney(depExpected) + ')</span>';
+        } else {
+          depBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#1e293b; color:#94a3b8; border:1px solid #334155; margin-top:2px;">Pendiente</span>';
+        }
+
+        // Determine Rent Badge & Text
+        var rentPaidAmount = r.rent_paid_amount || 0;
+        var rentExpected = r.rent_amount || 0;
+        var rentBadgeHtml = '';
+        if (rentExpected > 0 && rentPaidAmount >= rentExpected) {
+          rentBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#166534; color:#4ade80; border:1px solid #15803d; margin-top:2px;">Pagado (€ ' + formatMoney(rentPaidAmount) + ')</span>';
+        } else if (rentPaidAmount > 0) {
+          rentBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#854d0e; color:#fde047; border:1px solid #a16207; margin-top:2px;">Parcial (€ ' + formatMoney(rentPaidAmount) + ' / € ' + formatMoney(rentExpected) + ')</span>';
+        } else {
+          rentBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#1e293b; color:#94a3b8; border:1px solid #334155; margin-top:2px;">Pendiente</span>';
+        }
+
+        html += '<tr style="border-bottom:1px solid #1e293b;">';
+        html += '<td style="padding:10px 12px; font-weight:600; vertical-align:top;">' + rName + '</td>';
+        html += '<td style="padding:10px 12px; vertical-align:top;">' + (r.is_occupied ? ('<strong>' + escHtml(r.guest_name) + '</strong>') : '<span style="color:#64748b; font-style:italic;">Disponible</span>') + '</td>';
+        
+        // Fianza
+        html += '<td style="padding:10px 12px; vertical-align:top;">';
+        html += '<div><strong>€ ' + formatMoney(r.deposit_amount) + '</strong></div>';
+        html += depBadgeHtml;
+        html += '</td>';
+
+        // Renta Mensual
+        html += '<td style="padding:10px 12px; vertical-align:top;">';
+        html += '<div><strong>€ ' + formatMoney(r.rent_amount) + '</strong></div>';
+        if (r.payment_day) {
+          html += '<div style="font-size:11px; color:#94a3b8;">Día de pago: ' + escHtml(r.payment_day) + '</div>';
+        }
+        html += rentBadgeHtml;
+        html += '</td>';
+
+        // Actions / Toggle Button
+        html += '<td style="padding:12px 14px; text-align:center; vertical-align:top;">';
+        if (r.is_occupied && isAdmin) {
+          html += '<div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; margin-bottom:6px;">';
+          html += '<a href="#" class="hostpn-add-rent-btn" data-room-id="' + r.room_id + '" data-rent="' + r.rent_amount + '" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none;">+ Pago Mensual</a>';
+          html += '<a href="#" class="hostpn-add-deposit-btn" data-room-id="' + r.room_id + '" data-deposit="' + r.deposit_amount + '" style="color:#2563eb; font-weight:600; font-size:12px; text-decoration:none;">+ Pago Fianza</a>';
+          html += '</div>';
+        }
+        html += '<a href="#" class="hostpn-toggle-payments-btn" data-room-id="' + r.room_id + '" style="color:#475569; font-weight:600; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:2px;"><i class="material-icons-outlined" style="font-size:16px; vertical-align:middle;">expand_more</i> Historial (' + payments.length + ')</a>';
+        html += '</td>';
+        html += '</tr>';
+
+        // Collapsible subrow for payment history
+        html += '<tr id="hostpn-payments-subrow-' + r.room_id + '" class="hostpn-payments-subrow" style="display:none; background:#f8fafc; border-bottom:1px solid #e2e8f0;">';
+        html += '<td colspan="5" style="padding:14px 18px;">';
+        html += '<div style="font-size:12px; font-weight:700; color:#334155; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">';
+        html += '<span>Historial de Pagos Registrados - ' + rName + '</span>';
+        if (r.is_occupied && isAdmin) {
+          html += '<a href="#" class="hostpn-add-payment-btn" data-room-id="' + r.room_id + '" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none;">+ Añadir Otro Pago</a>';
+        }
+        html += '</div>';
+
+        if (payments.length === 0) {
+          html += '<div style="font-size:12px; color:#64748b; font-style:italic;">No hay pagos registrados para esta habitación.</div>';
+        } else {
+          html += '<table style="width:100%; border-collapse:collapse; font-size:12px; color:#334155; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">';
+          html += '<thead><tr style="border-bottom:1px solid #e2e8f0; background:#f1f5f9; color:#475569; text-align:left;">';
+          html += '<th style="padding:8px 10px; font-weight:600;">Fecha</th>';
+          html += '<th style="padding:8px 10px; font-weight:600;">Tipo</th>';
+          html += '<th style="padding:8px 10px; font-weight:600;">Mes</th>';
+          html += '<th style="padding:8px 10px; font-weight:600;">Importe</th>';
+          html += '<th style="padding:8px 10px; font-weight:600;">Notas</th>';
+          if (isAdmin) html += '<th style="padding:8px 10px; text-align:center; font-weight:600;">Acciones</th>';
+          html += '</tr></thead><tbody>';
+
+          for (var pIdx = 0; pIdx < payments.length; pIdx++) {
+            var pay = payments[pIdx];
+            var typeLabel = pay.payment_type === 'deposit' ? 'Fianza' : (pay.payment_type === 'rent' ? 'Renta Mensual' : 'Otro');
+            var payJson = escHtml(JSON.stringify(pay));
+
+            html += '<tr style="border-bottom:1px solid #f1f5f9;">';
+            html += '<td style="padding:8px 10px; color:#0f172a; font-weight:500;">' + escHtml(pay.payment_date || pay.date || '--') + '</td>';
+            html += '<td style="padding:8px 10px;"><span style="background:#f1f5f9; color:#334155; padding:2px 8px; border-radius:4px; font-size:11px; border:1px solid #e2e8f0; font-weight:500;">' + typeLabel + '</span></td>';
+            html += '<td style="padding:8px 10px; color:#475569;">' + escHtml(pay.month_key || '--') + '</td>';
+            html += '<td style="padding:8px 10px; color:#0284c7; font-weight:700;">€ ' + formatMoney(pay.amount) + '</td>';
+            html += '<td style="padding:8px 10px; font-style:italic; color:#64748b;">' + escHtml(pay.notes || '--') + '</td>';
+
+            if (isAdmin) {
+              html += '<td style="padding:8px 10px; text-align:center;">';
+              html += '<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent hostpn-edit-payment-btn hostpn-tooltip" title="Editar pago" data-room-id="' + r.room_id + '" data-payment="' + payJson + '"><i class="material-icons-outlined" style="font-size:15px; color:#475569; vertical-align:middle;">edit</i></button>';
+              html += '<button type="button" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent hostpn-delete-payment-btn hostpn-tooltip" title="Eliminar pago" data-room-id="' + r.room_id + '" data-payment-id="' + pay.id + '"><i class="material-icons-outlined" style="font-size:15px; color:#dc2626; vertical-align:middle;">delete</i></button>';
+              html += '</td>';
+            }
+
+            html += '</tr>';
+          }
+          html += '</tbody></table>';
+        }
+
+        html += '</td></tr>';
+      }
+      html += '</tbody></table>';
+    }
+    html += '</div>';
+
+    // Expenses ("Gastos del Alojamiento") Section
+    html += '<div style="margin-top:28px; background:#0f172a; border:1px solid #1e293b; border-radius:6px; padding:18px; color:#f8fafc;">';
+    html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">';
+    html += '<div>';
+    html += '<h4 style="margin:0; font-size:14px; font-weight:700; color:#f8fafc; text-transform:uppercase; letter-spacing:0.5px;">Gastos del Alojamiento</h4>';
+    html += '<span style="font-size:11px; color:#94a3b8;">Registro de suministros, mantenimientos, reparaciones y otros costes.</span>';
+    html += '</div>';
+    if (isAdmin) {
+      html += '<button type="button" class="hostpn-add-expense-btn" data-accom-id="' + accomId + '" style="background:#0284c7; color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer;">+ Añadir Gasto</button>';
+    }
+    html += '</div>';
+
+    if (expenses.length === 0) {
+      html += '<div style="font-size:12px; color:#64748b; font-style:italic; padding:10px 0;">No hay gastos registrados en este alojamiento.</div>';
+    } else {
+      html += '<table style="width:100%; border-collapse:collapse; font-size:12px; color:#cbd5e1;">';
+      html += '<thead><tr style="background:#1e293b; color:#94a3b8; text-align:left;">';
+      html += '<th style="padding:8px 10px;">Fecha</th>';
+      html += '<th style="padding:8px 10px;">Proveedor</th>';
+      html += '<th style="padding:8px 10px;">Categoría / Concepto</th>';
+      html += '<th style="padding:8px 10px;">Importe</th>';
+      html += '<th style="padding:8px 10px;">Fichero Adjunto</th>';
+      html += '<th style="padding:8px 10px;">Notas</th>';
+      if (isAdmin) html += '<th style="padding:8px 10px; text-align:center;">Acciones</th>';
+      html += '</tr></thead><tbody>';
+
+      for (var eIdx = 0; eIdx < expenses.length; eIdx++) {
+        var exp = expenses[eIdx];
+        var expJson = escHtml(JSON.stringify(exp));
+
+        html += '<tr style="border-bottom:1px solid #1e293b;">';
+        html += '<td style="padding:8px 10px; font-weight:600;">' + escHtml(exp.date || '--') + '</td>';
+        html += '<td style="padding:8px 10px;">' + escHtml(exp.provider || '--') + '</td>';
+        html += '<td style="padding:8px 10px;"><span style="background:#1e293b; padding:2px 6px; border-radius:3px; font-size:11px;">' + escHtml(exp.category || 'General') + '</span></td>';
+        html += '<td style="padding:8px 10px; color:#f87171; font-weight:700;">€ ' + formatMoney(exp.amount) + '</td>';
+
+        // Protected Attachment Link
+        html += '<td style="padding:8px 10px;">';
+        if (exp.attachment_filename) {
+          var fileUrl = ajaxUrl + '?action=hostpn_expense_download_attachment&accommodation_id=' + accomId + '&filename=' + encodeURIComponent(exp.attachment_filename) + '&hostpn_ajax_nonce=' + nonce;
+          html += '<a href="' + fileUrl + '" target="_blank" style="color:#38bdf8; text-decoration:none; font-weight:600;"><i class="material-icons-outlined" style="font-size:13px; vertical-align:middle;">attach_file</i> ' + escHtml(exp.attachment_original_name || exp.attachment_filename) + '</a>';
+        } else {
+          html += '<span style="color:#64748b; font-style:italic;">Sin adjunto</span>';
+        }
+        html += '</td>';
+
+        html += '<td style="padding:8px 10px; font-style:italic; color:#94a3b8;">' + escHtml(exp.notes || '--') + '</td>';
+
+        if (isAdmin) {
+          html += '<td style="padding:8px 10px; text-align:center;">';
+          html += '<button type="button" class="hostpn-edit-expense-btn" data-accom-id="' + accomId + '" data-expense="' + expJson + '" style="background:#334155; color:#f8fafc; border:none; border-radius:3px; padding:3px 8px; font-size:10px; cursor:pointer; margin-right:4px;">Editar</button>';
+          html += '<button type="button" class="hostpn-delete-expense-btn" data-accom-id="' + accomId + '" data-expense-id="' + exp.id + '" style="background:#991b1b; color:#fca5a5; border:none; border-radius:3px; padding:3px 8px; font-size:10px; cursor:pointer;">Eliminar</button>';
+          html += '</td>';
+        }
+
+        html += '</tr>';
+      }
+      html += '</tbody></table>';
+    }
+    html += '</div>';
+
+    // Bottom CSV Import Section
+    if (isAdmin) {
+      html += '<div style="margin-top:24px; padding-top:16px; border-top:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:#1e293b; border-radius:6px; padding:16px;">';
+      html += '<div>';
+      html += '<strong style="display:block; font-size:13px; color:#f8fafc;">Importación masiva desde CSV (Booking.com / Airbnb)</strong>';
+      html += '<span style="font-size:11px; color:#94a3b8;">Sube extractos o facturas de Booking o Airbnb para automatizar el registro de cobranzas.</span>';
+      html += '</div>';
+      html += '<button type="button" class="hostpn-btn hostpn-financial-import-btn" data-accommodation-id="' + accomId + '" style="background:#334155; color:#ffffff; border:1px solid #475569; padding:8px 16px; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer;">';
+      html += '<i class="material-icons-outlined hostpn-vertical-align-middle">upload_file</i> ';
+      html += '<span class="hostpn-vertical-align-middle">Importar Extracto CSV</span>';
+      html += '</button>';
+      html += '</div>';
+    }
+
+    container.html(html);
+  }
+
+  function renderFinancialChartJS(months) {
+    if (!months || !months.length) return '';
+    var chartContainerId = 'hostpn-financial-chart-canvas';
+    var labels = [];
+    var expectedData = [];
+    var collectedData = [];
+
+    for (var i = 0; i < months.length; i++) {
+      labels.push(months[i].label);
+      expectedData.push(months[i].expected || 0);
+      collectedData.push(months[i].collected || 0);
+    }
+
+    var html = '<div class="hostpn-fin-chart-wrapper" style="margin-bottom:20px; padding:18px; background:#0f172a; border:1px solid #1e293b; border-radius:6px; color:#f8fafc;">';
+    html += '<div style="font-size:12px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">';
+    html += '<span>Evolución de Ingresos Mensuales</span>';
+    html += '</div>';
+    html += '<div style="position:relative; height:200px; width:100%;">';
+    html += '<canvas id="' + chartContainerId + '"></canvas>';
+    html += '</div></div>';
+
+    setTimeout(function () {
+      var canvas = document.getElementById(chartContainerId);
+      if (!canvas) return;
+      if (window.Chart) {
+        if (window.hostpnFinChartInstance) {
+          window.hostpnFinChartInstance.destroy();
+        }
+        window.hostpnFinChartInstance = new window.Chart(canvas, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: 'Cobrado Real',
+                data: collectedData,
+                backgroundColor: '#38bdf8',
+                borderRadius: 4
+              },
+              {
+                label: 'Previsto',
+                data: expectedData,
+                backgroundColor: '#334155',
+                borderRadius: 4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: { color: '#cbd5e1', font: { size: 11 } }
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (ctx) {
+                    return ctx.dataset.label + ': €' + ctx.raw.toLocaleString('es-ES', { minimumFractionDigits: 2 });
+                  }
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: '#94a3b8', font: { size: 10 } },
+                grid: { color: '#1e293b' }
+              },
+              y: {
+                ticks: { color: '#94a3b8', font: { size: 10 } },
+                grid: { color: '#1e293b' }
+              }
+            }
+          }
+        });
+      }
+    }, 50);
+
+    return html;
+  }
+
+  function formatMoney(num) {
+    var val = parseFloat(num) || 0;
+    return val.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
   /* ── Cleaning tab ── */
@@ -218,6 +619,542 @@
       error: function () {
         btn.prop('disabled', false);
         showMessage(wrapper, 'error', i18n.errorSaving || 'Error saving.');
+      }
+    });
+  });
+
+  /* ── Shared Cleaning System ── */
+  $(document).on('click', '.hostpn-mgmt-sys-btn', function () {
+    var btn = $(this);
+    var sys = btn.data('sys');
+    var wrapper = btn.closest('.hostpn-mgmt-cleaning-wrapper');
+
+    wrapper.find('.hostpn-mgmt-sys-btn').removeClass('active');
+    btn.addClass('active');
+    wrapper.attr('data-system', sys);
+
+    if (sys === 'punctual') {
+      wrapper.find('.hostpn-mgmt-cleaning-shared-pane').hide();
+      wrapper.find('.hostpn-mgmt-cleaning-punctual-pane').show();
+    } else {
+      wrapper.find('.hostpn-mgmt-cleaning-punctual-pane').hide();
+      wrapper.find('.hostpn-mgmt-cleaning-shared-pane').show();
+      loadSharedCleaning(wrapper.closest('.hostpn-mgmt-panel'));
+    }
+
+    $.ajax({
+      url: ajaxUrl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_cleaning_system_save',
+        hostpn_ajax_nonce: nonce,
+        hostpn_accommodation_id: accommodationId,
+        cleaning_system: sys
+      }
+    });
+  });
+
+  function getAccommodationId(panel) {
+    var id = (cfg && cfg.accommodationId) ? cfg.accommodationId : 0;
+    if (!id && panel && panel.length) {
+      id = panel.data('accommodation-id');
+    }
+    if (!id) {
+      id = $('.hostpn-mgmt-panel').data('accommodation-id');
+    }
+    return id || 0;
+  }
+
+  function loadSharedCleaning(panel) {
+    var wrapper = panel.find('.hostpn-mgmt-cleaning-wrapper');
+    var sharedPane = wrapper.find('.hostpn-mgmt-cleaning-shared-pane');
+    var loading = sharedPane.find('.hostpn-mgmt-loading');
+    var content = sharedPane.find('.hostpn-mgmt-shared-content');
+    var accomId = getAccommodationId(panel);
+
+    loading.show();
+    content.empty();
+
+    $.ajax({
+      url: getAjaxUrl(),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_shared_cleaning_load',
+        hostpn_ajax_nonce: getNonce(),
+        hostpn_accommodation_id: accomId
+      },
+      success: function (data) {
+        loading.hide();
+        if (data && data.error_key === '' && data.info) {
+          try {
+            renderSharedCleaning(content, data.info);
+          } catch (err) {
+            console.error('[hostpn-mgmt] Error rendering shared cleaning:', err);
+            content.html('<p class="hostpn-mgmt-empty">' + (i18n.errorLoading || 'Error loading data.') + '</p>');
+          }
+        } else {
+          content.html('<p class="hostpn-mgmt-empty">' + (data && data.error_content ? data.error_content : (i18n.errorLoading || 'Error loading data.')) + '</p>');
+        }
+      },
+      error: function (xhr, status, err) {
+        console.error('[hostpn-mgmt] Shared cleaning AJAX error:', status, err);
+        loading.hide();
+        content.html('<p class="hostpn-mgmt-empty">' + (i18n.errorLoading || 'Error loading data.') + '</p>');
+      }
+    });
+  }
+
+  function renderSharedCleaning(container, info) {
+    var isAdmin = (cfg.isAdmin === 1 || cfg.isAdmin === '1');
+    var currentTurn = info.current_turn;
+    var occupied = info.occupied_rooms || [];
+    var comments = info.comments || [];
+
+    var html = '';
+
+    // Status Card
+    html += '<div class="hostpn-shared-status-card">';
+    html += '<div class="hostpn-shared-turn-hero">';
+    html += '<div class="hostpn-shared-turn-badge">';
+    html += '<div class="hostpn-shared-turn-info">';
+    html += '<span class="hostpn-shared-turn-title">' + (i18n.currentTurn || 'Current turn') + '</span>';
+    if (currentTurn) {
+      html += '<span class="hostpn-shared-turn-value">' + escHtml(currentTurn.room_label) + ' (' + escHtml(currentTurn.guest_name) + ')</span>';
+    } else {
+      html += '<span class="hostpn-shared-turn-value">--</span>';
+    }
+    html += '</div></div>';
+
+    html += '<div class="hostpn-shared-date-box">';
+    html += '<div class="hostpn-shared-turn-info">';
+    html += '<span class="hostpn-shared-turn-title">' + (i18n.nextCleaningDate || 'Next cleaning date') + '</span>';
+    html += '<span class="hostpn-shared-date-val">' + escHtml(info.next_date) + '</span>';
+    html += '</div></div>';
+    html += '</div>'; // hero end
+
+    // Details Grid
+    html += '<div class="hostpn-shared-details-grid">';
+    html += '<div class="hostpn-shared-detail-item">';
+    html += '<div class="hostpn-shared-detail-label">' + (i18n.frequency || 'Frequency') + '</div>';
+    html += '<div class="hostpn-shared-detail-val">' + (i18n.everyXDays ? i18n.everyXDays.replace('%d', info.frequency_days) : (info.frequency_days + ' ' + (i18n.daysUnit || 'días'))) + '</div>';
+    html += '</div>';
+
+    html += '<div class="hostpn-shared-detail-item">';
+    html += '<div class="hostpn-shared-detail-label">' + (i18n.noticeDays || 'Notice days') + '</div>';
+    html += '<div class="hostpn-shared-detail-val">' + info.notice_days + ' ' + (i18n.daysUnit || 'días') + '</div>';
+    html += '</div>';
+
+    html += '<div class="hostpn-shared-detail-item" style="grid-column: 1 / -1;">';
+    html += '<div class="hostpn-shared-detail-label">' + (i18n.staysToClean || 'Stays to clean') + '</div>';
+    html += '<div class="hostpn-shared-stays-list">';
+    var staysArr = info.stays ? info.stays.split(',') : [];
+    for (var s = 0; s < staysArr.length; s++) {
+      if (staysArr[s].trim()) {
+        html += '<span class="hostpn-shared-stay-pill">' + escHtml(staysArr[s].trim()) + '</span>';
+      }
+    }
+    html += '</div></div>';
+    html += '</div>'; // grid end
+
+    if (info.instructions && info.instructions.trim()) {
+      html += '<div class="hostpn-shared-instructions-box" style="margin-top:14px; padding:12px 14px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px;">';
+      html += '<div style="font-size:12px; font-weight:700; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">' + (i18n.cleaningInstructions || 'Instrucciones y pasos para la limpieza') + '</div>';
+      html += '<div style="font-size:13px; color:#334155; line-height:1.5; white-space:pre-wrap;">' + escHtml(info.instructions) + '</div>';
+      html += '</div>';
+    }
+
+    html += '</div>'; // card end
+
+    // Action buttons
+    html += '<div class="hostpn-shared-actions">';
+    html += '<button type="button" class="hostpn-mgmt-btn hostpn-shared-complete-btn">';
+    html += '<i class="material-icons-outlined">check_circle</i> ' + (i18n.markCompleted || 'Mark cleaning completed');
+    html += '</button>';
+
+    if (isAdmin) {
+      html += '<button type="button" class="hostpn-mgmt-btn hostpn-mgmt-btn-secondary hostpn-shared-reminder-btn">';
+      html += '<i class="material-icons-outlined">email</i> ' + (i18n.sendReminderEmail || 'Send email reminder');
+      html += '</button>';
+      html += '<button type="button" class="hostpn-mgmt-btn hostpn-mgmt-btn-secondary hostpn-shared-toggle-config-btn">';
+      html += '<i class="material-icons-outlined">settings</i> ' + (i18n.adminConfig || 'Configuration');
+      html += '</button>';
+    }
+    html += '</div>';
+
+    // Rotation Queue
+    html += '<div class="hostpn-shared-section-title"><i class="material-icons-outlined">autorenew</i> ' + (i18n.rotationQueue || 'Rotation queue') + '</div>';
+    html += '<div class="hostpn-shared-queue-list">';
+    if (occupied.length === 0) {
+      html += '<p class="hostpn-mgmt-empty">No occupied rooms available in rotation.</p>';
+    } else {
+      for (var r = 0; r < occupied.length; r++) {
+        var rm = occupied[r];
+        var isTurn = (r === info.turn_index);
+        html += '<div class="hostpn-shared-queue-item' + (isTurn ? ' is-turn' : '') + '" data-room-id="' + rm.room_id + '">';
+        html += '<div>';
+        html += '<span class="hostpn-shared-queue-room">' + escHtml(rm.room_label) + '</span> ';
+        html += '<span class="hostpn-shared-queue-guest">(' + escHtml(rm.guest_name) + ')</span>';
+        if (rm.estimated_next_date) {
+          html += '<br><small style="color:#64748b; font-size:12px;">' + (i18n.estNextCleaning || 'Fecha prevista:') + ' <strong>' + escHtml(rm.estimated_next_date) + '</strong></small>';
+        }
+        html += '</div>';
+
+        html += '<div style="display:flex; align-items:center; gap:8px;">';
+        if (isAdmin) {
+          html += '<div class="hostpn-queue-reorder-controls" style="display:inline-flex; gap:4px; align-items:center;">';
+          if (r > 0) {
+            html += '<button type="button" class="hostpn-queue-move-btn hostpn-queue-move-up" data-room-id="' + rm.room_id + '" title="Subir orden" style="padding:2px 8px; border:1px solid #cbd5e1; background:#ffffff; border-radius:4px; font-size:11px; cursor:pointer;">▲</button>';
+          }
+          if (r < occupied.length - 1) {
+            html += '<button type="button" class="hostpn-queue-move-btn hostpn-queue-move-down" data-room-id="' + rm.room_id + '" title="Bajar orden" style="padding:2px 8px; border:1px solid #cbd5e1; background:#ffffff; border-radius:4px; font-size:11px; cursor:pointer;">▼</button>';
+          }
+          if (!isTurn) {
+            html += '<button type="button" class="hostpn-queue-set-turn-btn" data-room-id="' + rm.room_id + '" style="padding:2px 8px; border:1px solid #0f172a; background:#0f172a; color:#fff; border-radius:4px; font-size:11px; cursor:pointer; font-weight:600;">Establecer turno actual</button>';
+          }
+          html += '</div>';
+        }
+        html += '<span class="hostpn-shared-queue-tag ' + (isTurn ? 'active' : 'upcoming') + '">' + (isTurn ? 'TURNO ACTUAL' : 'TURNO ' + (r + 1)) + '</span>';
+        html += '</div>';
+
+        html += '</div>';
+      }
+    }
+    html += '</div>';
+
+    // Group Comments
+    html += '<div class="hostpn-shared-section-title"><i class="material-icons-outlined">forum</i> ' + (i18n.groupComments || 'Group comments') + '</div>';
+    html += '<div class="hostpn-shared-comments-wrapper">';
+    html += '<div class="hostpn-shared-comments-list">';
+    if (comments.length === 0) {
+      html += '<p class="hostpn-mgmt-empty">' + (i18n.noGroupComments || 'Aún no hay comentarios del grupo.') + '</p>';
+    } else {
+      for (var c = 0; c < comments.length; c++) {
+        var cm = comments[c];
+        html += '<div class="hostpn-shared-comment-item">';
+        html += '<div class="hostpn-shared-comment-header">';
+        html += '<div><span class="hostpn-shared-comment-author">' + escHtml(cm.author_name) + '</span>';
+        if (cm.room_label) {
+          html += '<span class="hostpn-shared-comment-room">' + escHtml(cm.room_label) + '</span>';
+        }
+        html += '</div>';
+        html += '<span class="hostpn-shared-comment-date">' + escHtml(cm.date) + '</span>';
+        html += '</div>';
+        html += '<div class="hostpn-shared-comment-text">' + escHtml(cm.text) + '</div>';
+        html += '</div>';
+      }
+    }
+    html += '</div>';
+
+    // Comment form
+    html += '<div class="hostpn-shared-comment-form">';
+    html += '<textarea class="hostpn-shared-comment-input" placeholder="' + escAttr(i18n.writeComment || 'Write a comment...') + '"></textarea>';
+    html += '<button type="button" class="hostpn-mgmt-btn hostpn-shared-post-comment-btn"><i class="material-icons-outlined">send</i> ' + (i18n.addComment || 'Post') + '</button>';
+    html += '</div>';
+    html += '</div>';
+
+    // Admin Config Box
+    if (isAdmin) {
+      html += '<div class="hostpn-shared-config-box" style="display:none;">';
+      html += '<h4 style="margin-top:0;"><i class="material-icons-outlined">settings</i> ' + (i18n.adminConfig || 'Cleaning system configuration') + '</h4>';
+      html += '<div class="hostpn-shared-config-grid">';
+
+      html += '<div class="hostpn-shared-config-field">';
+      html += '<label>' + (i18n.frequency || 'Frequency (days)') + '</label>';
+      html += '<input type="number" id="hostpn-cfg-freq" value="' + escAttr(info.frequency_days) + '" min="1">';
+      html += '</div>';
+
+      html += '<div class="hostpn-shared-config-field">';
+      html += '<label>' + (i18n.noticeDays || 'Notice days prior') + '</label>';
+      html += '<input type="number" id="hostpn-cfg-notice" value="' + escAttr(info.notice_days) + '" min="1">';
+      html += '</div>';
+
+      html += '<div class="hostpn-shared-config-field">';
+      html += '<label>' + (i18n.nextCleaningDate || 'Next cleaning date') + '</label>';
+      html += '<input type="date" id="hostpn-cfg-next-date" value="' + escAttr(info.next_date) + '">';
+      html += '</div>';
+
+      html += '<div class="hostpn-shared-config-field" style="grid-column: 1 / -1;">';
+      html += '<label>' + (i18n.staysToClean || 'Stays / areas to clean') + '</label>';
+      html += '<textarea id="hostpn-cfg-stays">' + escHtml(info.stays) + '</textarea>';
+      html += '</div>';
+
+      html += '<div class="hostpn-shared-config-field" style="grid-column: 1 / -1;">';
+      html += '<label>' + (i18n.cleaningInstructions || 'Instrucciones y pasos para la limpieza') + '</label>';
+      html += '<textarea id="hostpn-cfg-instructions" rows="3" placeholder="Escribe aquí los pasos e instrucciones detalladas para el turno de limpieza...">' + escHtml(info.instructions || '') + '</textarea>';
+      html += '</div>';
+
+      html += '</div>'; // config grid end
+
+      html += '<button type="button" class="hostpn-mgmt-btn hostpn-shared-save-config-btn"><i class="material-icons-outlined">save</i> ' + (i18n.saveConfig || 'Save configuration') + '</button>';
+      html += '</div>';
+    }
+
+    container.html(html);
+  }
+
+  $(document).on('click', '.hostpn-shared-toggle-config-btn', function () {
+    var box = $(this).closest('.hostpn-mgmt-shared-content').find('.hostpn-shared-config-box');
+    box.slideToggle(200, function () {
+      if (box.is(':visible')) {
+        $('html, body').animate({
+          scrollTop: box.offset().top - 80
+        }, 400);
+      }
+    });
+  });
+
+  $(document).on('click', '.hostpn-shared-complete-btn', function () {
+    var btn = $(this);
+    var panel = btn.closest('.hostpn-mgmt-panel');
+
+    btn.prop('disabled', true);
+    $.ajax({
+      url: ajaxUrl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_shared_cleaning_complete',
+        hostpn_ajax_nonce: nonce,
+        hostpn_accommodation_id: accommodationId
+      },
+      success: function (data) {
+        btn.prop('disabled', false);
+        if (data && data.error_key === '') {
+          showMessage(panel, 'success', i18n.saved || 'Cleaning recorded successfully.');
+          loadSharedCleaning(panel);
+        } else {
+          showMessage(panel, 'error', (data && data.error_content) || i18n.errorSaving || 'Error saving.');
+        }
+      },
+      error: function () {
+        btn.prop('disabled', false);
+        showMessage(panel, 'error', i18n.errorSaving || 'Error saving.');
+      }
+    });
+  });
+
+  $(document).on('click', '.hostpn-shared-post-comment-btn', function () {
+    var btn = $(this);
+    var panel = btn.closest('.hostpn-mgmt-panel');
+    var input = btn.siblings('.hostpn-shared-comment-input');
+    var text = input.val();
+
+    if (!text.trim()) return;
+
+    btn.prop('disabled', true);
+    $.ajax({
+      url: ajaxUrl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_shared_cleaning_add_comment',
+        hostpn_ajax_nonce: nonce,
+        hostpn_accommodation_id: accommodationId,
+        comment: text
+      },
+      success: function (data) {
+        btn.prop('disabled', false);
+        if (data && data.error_key === '') {
+          input.val('');
+          loadSharedCleaning(panel);
+        } else {
+          showMessage(panel, 'error', i18n.errorSaving || 'Error adding comment.');
+        }
+      },
+      error: function () {
+        btn.prop('disabled', false);
+        showMessage(panel, 'error', i18n.errorSaving || 'Error adding comment.');
+      }
+    });
+  });
+
+  $(document).on('click', '.hostpn-shared-reminder-btn', function () {
+    var btn = $(this);
+    var panel = btn.closest('.hostpn-mgmt-panel');
+
+    btn.prop('disabled', true);
+    $.ajax({
+      url: ajaxUrl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_shared_cleaning_send_reminder',
+        hostpn_ajax_nonce: nonce,
+        hostpn_accommodation_id: accommodationId
+      },
+      success: function (data) {
+        btn.prop('disabled', false);
+        if (data && data.error_key === '') {
+          showMessage(panel, 'success', i18n.emailSent || 'Email sent successfully.');
+        } else {
+          showMessage(panel, 'error', (data && data.error_content) || i18n.errorSending || 'Error sending email.');
+        }
+      },
+      error: function () {
+        btn.prop('disabled', false);
+        showMessage(panel, 'error', i18n.errorSending || 'Error sending email.');
+      }
+    });
+  });
+
+  $(document).on('click', '.hostpn-queue-set-turn-btn', function () {
+    var btn = $(this);
+    var targetRoomId = parseInt(btn.data('room-id'), 10);
+    var panel = btn.closest('.hostpn-mgmt-panel');
+    var accomId = getAccommodationId(panel);
+    var items = panel.find('.hostpn-shared-queue-item');
+    var roomOrder = [];
+
+    roomOrder.push(targetRoomId);
+    items.each(function () {
+      var rId = parseInt($(this).data('room-id'), 10);
+      if (rId && rId !== targetRoomId) {
+        roomOrder.push(rId);
+      }
+    });
+
+    saveQueueOrder(panel, accomId, roomOrder);
+  });
+
+  $(document).on('click', '.hostpn-queue-move-btn', function () {
+    var btn = $(this);
+    var targetRoomId = parseInt(btn.data('room-id'), 10);
+    var isUp = btn.hasClass('hostpn-queue-move-up');
+    var panel = btn.closest('.hostpn-mgmt-panel');
+    var accomId = getAccommodationId(panel);
+    var items = panel.find('.hostpn-shared-queue-item');
+    var roomOrder = [];
+
+    items.each(function () {
+      var rId = parseInt($(this).data('room-id'), 10);
+      if (rId) {
+        roomOrder.push(rId);
+      }
+    });
+
+    var idx = roomOrder.indexOf(targetRoomId);
+    if (idx !== -1) {
+      if (isUp && idx > 0) {
+        var temp = roomOrder[idx - 1];
+        roomOrder[idx - 1] = roomOrder[idx];
+        roomOrder[idx] = temp;
+      } else if (!isUp && idx < roomOrder.length - 1) {
+        var temp = roomOrder[idx + 1];
+        roomOrder[idx + 1] = roomOrder[idx];
+        roomOrder[idx] = temp;
+      }
+    }
+
+    saveQueueOrder(panel, accomId, roomOrder);
+  });
+
+  function saveQueueOrder(panel, accomId, roomOrder) {
+    var wrapper = panel.find('.hostpn-mgmt-cleaning-wrapper');
+    var sharedPane = wrapper.find('.hostpn-mgmt-cleaning-shared-pane');
+    var content = sharedPane.find('.hostpn-mgmt-shared-content');
+
+    $.ajax({
+      url: ajaxUrl || (window.hostpnMgmtTabs && window.hostpnMgmtTabs.ajaxUrl) || '/wp-admin/admin-ajax.php',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_shared_cleaning_reorder_queue',
+        hostpn_ajax_nonce: nonce || (window.hostpnMgmtTabs && window.hostpnMgmtTabs.nonce) || '',
+        hostpn_accommodation_id: accomId,
+        room_order: roomOrder
+      },
+      success: function (data) {
+        if (data && data.error_key === '' && data.info) {
+          renderSharedCleaning(content, data.info);
+        }
+      }
+    });
+  }
+
+  $(document).on('change', '.hostpn-admin-fin-toggle, .hostpn-frontend-fin-toggle', function () {
+    var cb = $(this);
+    var roomId = cb.data('room-id');
+    var field = cb.data('field');
+    var isChecked = cb.is(':checked') ? '1' : '0';
+    var panel = cb.closest('.hostpn-mgmt-panel, .hostpn-admin-financial-wrapper');
+    var accomId = getAccommodationId(panel);
+
+    cb.prop('disabled', true);
+
+    $.ajax({
+      url: getAjaxUrl(),
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_save_financial_room_status',
+        hostpn_ajax_nonce: getNonce(),
+        accommodation_id: accomId,
+        room_id: roomId,
+        field: field,
+        value: isChecked
+      },
+      success: function (res) {
+        cb.prop('disabled', false);
+        if (res && res.success) {
+          if (panel.hasClass('hostpn-admin-financial-wrapper')) {
+            panel.parent().html(res.html);
+          } else if (res.data) {
+            renderFinancialTab(panel.find('.hostpn-mgmt-financial-content'), res.data);
+          }
+        }
+      },
+      error: function () {
+        cb.prop('disabled', false);
+      }
+    });
+  });
+
+  $(document).on('click', '.hostpn-shared-save-config-btn', function () {
+    var btn = $(this);
+    var panel = btn.closest('.hostpn-mgmt-panel');
+    var freq = $('#hostpn-cfg-freq').val();
+    var notice = $('#hostpn-cfg-notice').val();
+    var nextDate = $('#hostpn-cfg-next-date').val();
+    var stays = $('#hostpn-cfg-stays').val();
+    var instructions = $('#hostpn-cfg-instructions').val();
+
+    btn.prop('disabled', true);
+    $.ajax({
+      url: ajaxUrl,
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        action: 'hostpn_ajax',
+        hostpn_ajax_type: 'hostpn_shared_cleaning_save_config',
+        hostpn_ajax_nonce: nonce,
+        hostpn_accommodation_id: accommodationId,
+        frequency_days: freq,
+        notice_days: notice,
+        next_date: nextDate,
+        stays: stays,
+        instructions: instructions
+      },
+      success: function (data) {
+        btn.prop('disabled', false);
+        if (data && data.error_key === '') {
+          showMessage(panel, 'success', i18n.saved || 'Configuration saved.');
+          loadSharedCleaning(panel);
+        } else {
+          showMessage(panel, 'error', i18n.errorSaving || 'Error saving configuration.');
+        }
+      },
+      error: function () {
+        btn.prop('disabled', false);
+        showMessage(panel, 'error', i18n.errorSaving || 'Error saving configuration.');
       }
     });
   });

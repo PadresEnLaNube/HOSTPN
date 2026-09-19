@@ -97,9 +97,9 @@ if (wp_is_block_theme()) {
                                         $room_number   = get_post_meta($room_id, 'hostpn_room_number', true);
                                         $room_capacity = get_post_meta($room_id, 'hostpn_room_capacity', true);
                                         $room_floor    = get_post_meta($room_id, 'hostpn_room_floor', true);
-                                        $room_status   = get_post_meta($room_id, 'hostpn_room_status', true);
-                                        $room_status   = !empty($room_status) ? $room_status : 'available';
-                                        $status_label  = isset($status_labels[$room_status]) ? $status_labels[$room_status] : $room_status;
+                                        $assigned_guest = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+                                        $room_status    = (!empty($assigned_guest) && intval($assigned_guest) > 0) ? 'occupied' : 'available';
+                                        $status_label   = isset($status_labels[$room_status]) ? $status_labels[$room_status] : $room_status;
                                     ?>
                                         <div class="hostpn-room-card hostpn-room-status-<?php echo esc_attr($room_status); ?>">
                                             <div class="hostpn-room-card-header">

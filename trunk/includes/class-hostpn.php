@@ -54,7 +54,7 @@ class HOSTPN
 		if (defined('HOSTPN_VERSION')) {
 			$this->version = HOSTPN_VERSION;
 		} else {
-			$this->version = '1.0.130';
+			$this->version = '1.0.145';
 		}
 
 		$this->plugin_name = 'hostpn';
@@ -193,6 +193,11 @@ class HOSTPN
 		require_once HOSTPN_DIR . 'includes/class-hostpn-contract-templates.php';
 
 		/**
+		 * The class handling CSV financial imports for Booking and Airbnb.
+		 */
+		require_once HOSTPN_DIR . 'includes/class-hostpn-financial-importer.php';
+
+		/**
 		 * The class responsible for create the Room custom post type.
 		 */
 		require_once HOSTPN_DIR . 'includes/class-hostpn-post-type-room.php';
@@ -320,6 +325,13 @@ class HOSTPN
 		$plugin_notifications = new HOSTPN_Notifications();
 		$this->loader->hostpn_add_action('hostpn_form_save', $plugin_notifications, 'hostpn_guest_notification', 1000, 5);
 		$this->loader->hostpn_add_action('hostpn_send_delayed_guest_notification', $plugin_notifications, 'hostpn_send_delayed_guest_notification', 10, 1);
+
+		// Daily cron for shared cleaning reminders
+		$this->loader->hostpn_add_action('hostpn_daily_shared_cleaning_cron', 'HOSTPN_Post_Type_Accommodation', 'hostpn_process_shared_cleaning_reminders');
+
+		if (!wp_next_scheduled('hostpn_daily_shared_cleaning_cron')) {
+			wp_schedule_event(time(), 'daily', 'hostpn_daily_shared_cleaning_cron');
+		}
 	}
 
 	/**
@@ -499,6 +511,7 @@ class HOSTPN
 		// Private storage AJAX handlers
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_contract_download_pdf', 'HOSTPN_Private_Storage', 'hostpn_contract_download_pdf');
 		$this->loader->hostpn_add_action('wp_ajax_hostpn_contract_upload_signed', 'HOSTPN_Private_Storage', 'hostpn_contract_upload_signed');
+		$this->loader->hostpn_add_action('wp_ajax_hostpn_expense_download_attachment', 'HOSTPN_Private_Storage', 'hostpn_expense_download_attachment');
 
 		// Room AJAX handler
 		$plugin_room = new HOSTPN_Post_Type_Room();

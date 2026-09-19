@@ -346,12 +346,17 @@
   function toggleInventoryFields() {
     var $checkbox = $('#hostpn_contract_inventory_enabled');
     var $wrappers = $('.hostpn-contract-inventory-items');
-    if (!$checkbox.length || !$wrappers.length) return;
+    if (!$checkbox.length) return;
+
+    var $containers = $wrappers.closest('.hostpn-input-wrapper, .hostpn-field-wrapper, [class*="hostpn_contract_inv_"]');
+    if (!$containers.length) {
+      $containers = $wrappers;
+    }
 
     if ($checkbox.is(':checked')) {
-      $wrappers.show();
+      $containers.show();
     } else {
-      $wrappers.hide();
+      $containers.hide();
     }
   }
 
@@ -387,9 +392,9 @@
 
   // --- Initialize on page load ---
   $(document).ready(function () {
-    if ($('#hostpn-contract-live-preview').length) {
-      toggleInventoryFields();
+    toggleInventoryFields();
 
+    if ($('#hostpn-contract-live-preview').length) {
       // If a room is already selected, trigger load of its data for the summary
       var $roomSelect = $('.hostpn-contract-room-select');
       if ($roomSelect.length && $roomSelect.val()) {

@@ -55,6 +55,17 @@ class HOSTPN_Validation {
         if (empty($value) && empty($field_config['required'])) {
             return true;
         }
+
+        // Handle array values recursively if type is not select-multiple
+        if (is_array($value) && $type !== 'select-multiple') {
+            foreach ($value as $item) {
+                $res = self::hostpn_validate($item, $type, $field_config);
+                if (is_wp_error($res)) {
+                    return $res;
+                }
+            }
+            return true;
+        }
         
         // Type-specific validation
         switch ($type) {
@@ -184,6 +195,15 @@ class HOSTPN_Validation {
     public static function hostpn_sanitize($value, $node = '', $type = '') {
         if ( is_null( $value ) ) {
             return '';
+        }
+
+        if ( is_array( $value ) ) {
+            $sanitized = array();
+            foreach ( $value as $key => $sub_val ) {
+                $clean_key = is_int( $key ) ? $key : sanitize_key( $key );
+                $sanitized[ $clean_key ] = self::hostpn_sanitize( $sub_val, $node, $type );
+            }
+            return $sanitized;
         }
 
         switch (strtolower($node)) {

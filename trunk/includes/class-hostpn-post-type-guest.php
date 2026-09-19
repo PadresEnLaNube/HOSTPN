@@ -572,6 +572,8 @@ class HOSTPN_Post_Type_Guest
 
                             if (!empty($key_value)) {
                                 foreach ($key_value as $key => $value) {
+                                    $meta_key = (strpos($key, 'hostpn_') === 0) ? $key : 'hostpn_' . $key;
+                                    update_post_meta($guest_id, $meta_key, $value);
                                     update_post_meta($guest_id, $key, $value);
                                 }
                             }
@@ -582,12 +584,15 @@ class HOSTPN_Post_Type_Guest
                             }
 
                             // Build title from form data
-                            $guest_name = !empty($key_value['hostpn_name']) ? $key_value['hostpn_name'] : '';
-                            $guest_surname = !empty($key_value['hostpn_surname']) ? $key_value['hostpn_surname'] : '';
-                            $guest_surname_alt = !empty($key_value['hostpn_surname_alt']) ? $key_value['hostpn_surname_alt'] : '';
+                            $guest_name = !empty($key_value['hostpn_name']) ? $key_value['hostpn_name'] : (!empty($key_value['name']) ? $key_value['name'] : '');
+                            $guest_surname = !empty($key_value['hostpn_surname']) ? $key_value['hostpn_surname'] : (!empty($key_value['surname']) ? $key_value['surname'] : '');
+                            $guest_surname_alt = !empty($key_value['hostpn_surname_alt']) ? $key_value['hostpn_surname_alt'] : (!empty($key_value['surname_alt']) ? $key_value['surname_alt'] : '');
                             update_post_meta($guest_id, 'hostpn_title', trim($guest_name . ' ' . $guest_surname . ' ' . $guest_surname_alt));
 
-                            wp_update_post(['ID' => $guest_id, 'post_author' => $guest_user_id,]);
+                            wp_update_post(['ID' => $guest_id, 'post_author' => $guest_user_id]);
+
+                            // Store created guest ID in GLOBALS so notification hook gets the valid post ID
+                            $GLOBALS['hostpn_last_created_guest_id'] = $guest_id;
 
                             // Clear caches to ensure guest is immediately available
                             clean_post_cache($guest_id);
@@ -1015,6 +1020,7 @@ class HOSTPN_Post_Type_Guest
         $new_columns['guest_info'] = esc_html(__('Guest Information', 'hostpn'));
         $new_columns['author_info'] = esc_html(__('Author', 'hostpn'));
         $new_columns['creation_date'] = esc_html(__('Fecha de creación', 'hostpn'));
+        $new_columns['create_user'] = esc_html(__('Usuario', 'hostpn'));
         $new_columns['resend_notification'] = esc_html(__('Notificación', 'hostpn'));
         return $new_columns;
     }
@@ -1136,6 +1142,49 @@ class HOSTPN_Post_Type_Guest
                     <i class="material-icons-outlined" style="font-size: 18px;">email</i>
                     <?php echo esc_html(__('Reenviar', 'hostpn')); ?>
                 </button>
+                <?php
+                break;
+
+            case 'create_user':
+                $wp_user_id = get_post_meta($post_id, 'hostpn_guest_wp_user_id', true);
+                if (empty($wp_user_id)) {
+                    $wp_user_id = get_post_meta($post_id, 'hostpn_guest_user_id', true);
+                }
+
+                if (empty($wp_user_id)) {
+                    $guest_email = get_post_meta($post_id, 'hostpn_email', true);
+                    if (!empty($guest_email) && is_email($guest_email)) {
+                        $user_by_email = get_user_by('email', $guest_email);
+                        if ($user_by_email) {
+                            $wp_user_id = $user_by_email->ID;
+                            update_post_meta($post_id, 'hostpn_guest_wp_user_id', $wp_user_id);
+                            update_post_meta($post_id, 'hostpn_guest_user_id', $wp_user_id);
+                        }
+                    }
+                }
+
+                $user = !empty($wp_user_id) ? get_userdata($wp_user_id) : false;
+                ?>
+                <div class="hostpn-guest-user-section">
+                    <?php if ($user): ?>
+                        <a href="<?php echo esc_url(admin_url('user-edit.php?user_id=' . $wp_user_id)); ?>"
+                            class="button button-secondary"
+                            target="_blank"
+                            style="display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="material-icons-outlined" style="font-size: 18px;">person</i>
+                            <?php echo esc_html(__('Ver usuario', 'hostpn')); ?> (#<?php echo esc_html($wp_user_id); ?>)
+                        </a>
+                    <?php else: ?>
+                        <button
+                            type="button"
+                            class="button button-secondary hostpn-guest-create-user"
+                            data-guest-id="<?php echo esc_attr($post_id); ?>"
+                            style="display: inline-flex; align-items: center; gap: 5px;">
+                            <i class="material-icons-outlined" style="font-size: 18px;">person_add</i>
+                            <?php echo esc_html(__('Crear usuario', 'hostpn')); ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
                 <?php
                 break;
         }
@@ -1393,6 +1442,12 @@ class HOSTPN_Post_Type_Guest
             // Link the guest to the existing user
             $user_id = $existing_user->ID;
             update_post_meta($guest_id, 'hostpn_guest_wp_user_id', $user_id);
+            update_post_meta($guest_id, 'hostpn_guest_user_id', $user_id);
+            wp_update_post(['ID' => $guest_id, 'post_author' => $user_id]);
+            update_user_meta($user_id, 'hostpn_user_to_guest', current_time('timestamp'));
+            update_user_meta($user_id, 'hostpn_guest_post_id', $guest_id);
+
+            $existing_user->add_role('hostpn_role_guest');
 
             // Copy meta from guest to user
             update_user_meta($user_id, 'first_name', $first_name);
@@ -1434,6 +1489,12 @@ class HOSTPN_Post_Type_Guest
             ]);
         }
 
+        // Add guest role & user meta
+        $user = new WP_User($user_id);
+        $user->add_role('hostpn_role_guest');
+        update_user_meta($user_id, 'hostpn_user_to_guest', current_time('timestamp'));
+        update_user_meta($user_id, 'hostpn_guest_post_id', $guest_id);
+
         // Copy meta from guest to user
         foreach ($meta_map as $guest_key => $user_key) {
             $value = get_post_meta($guest_id, $guest_key, true);
@@ -1444,6 +1505,8 @@ class HOSTPN_Post_Type_Guest
 
         // Link guest ↔ user
         update_post_meta($guest_id, 'hostpn_guest_wp_user_id', $user_id);
+        update_post_meta($guest_id, 'hostpn_guest_user_id', $user_id);
+        wp_update_post(['ID' => $guest_id, 'post_author' => $user_id]);
 
         // Send welcome email
         wp_new_user_notification($user_id, null, 'both');

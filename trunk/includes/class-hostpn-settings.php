@@ -117,6 +117,34 @@ class HOSTPN_Settings
       'section' => 'end',
     ];
 
+    // ── PROMOTIONS SECTION ───────────────────────────────────────────
+    $hostpn_options['hostpn_promotions_section_start'] = [
+      'section' => 'start',
+      'label' => __('Promotions', 'hostpn'),
+      'description' => __('Configure guest stay duration promotions and loyalty reward offers.', 'hostpn'),
+    ];
+    $hostpn_options['hostpn_promotions_enabled'] = [
+      'id' => 'hostpn_promotions_enabled',
+      'class' => 'hostpn-input hostpn-width-100-percent',
+      'input' => 'input',
+      'type' => 'checkbox',
+      'value' => 'on',
+      'label' => __('Enable stay duration promotions', 'hostpn'),
+      'description' => __('Show loyalty stay duration counter and promotion rewards to guests.', 'hostpn'),
+    ];
+    $hostpn_options['hostpn_promotions_manager'] = [
+      'id' => 'hostpn_promotions_manager',
+      'input' => 'promotions_manager',
+    ];
+    $hostpn_options['hostpn_promotions_data'] = [
+      'id' => 'hostpn_promotions_data',
+      'input' => 'input',
+      'type' => 'hidden',
+    ];
+    $hostpn_options['hostpn_promotions_section_end'] = [
+      'section' => 'end',
+    ];
+
     // ── SYSTEM PARENT SECTION ────────────────────────────────────────
     $hostpn_options['hostpn_system_parent_section_start'] = [
       'section' => 'start',
@@ -519,6 +547,109 @@ class HOSTPN_Settings
     <?php
   }
 
+  private function render_promotions_manager() {
+    $promotions = get_option('hostpn_promotions_data');
+    if (!is_array($promotions)) {
+      $promotions = [
+        [
+          'id'                      => 'promo_' . time(),
+          'title'                   => __('2-Year Loyalty Promotion', 'hostpn'),
+          'source_accommodation_id' => 0,
+          'required_days'           => 730,
+          'target_accommodation_name'=> __('Any other accommodation in our group', 'hostpn'),
+          'reward_desc'             => __('1 week free stay', 'hostpn'),
+          'conditions'              => __('Valid upon completing 24 continuous months of stay. Subject to availability with 30 days prior booking notice.', 'hostpn'),
+          'active'                  => '1',
+        ],
+      ];
+    }
+
+    $accommodations = get_posts([
+      'post_type'      => 'hostpn_accommodation',
+      'post_status'    => 'publish',
+      'numberposts'    => -1,
+      'orderby'        => 'title',
+      'order'          => 'ASC',
+    ]);
+    ?>
+    <div id="hostpn-promotions-manager" class="hostpn-promotions-manager hostpn-mb-30">
+      <div class="hostpn-promotions-list">
+        <?php foreach ($promotions as $index => $promo):
+          $p_id = !empty($promo['id']) ? $promo['id'] : 'promo_' . $index;
+          $p_title = !empty($promo['title']) ? $promo['title'] : '';
+          $p_source = isset($promo['source_accommodation_id']) ? intval($promo['source_accommodation_id']) : 0;
+          $p_days = isset($promo['required_days']) ? intval($promo['required_days']) : 730;
+          $p_target = !empty($promo['target_accommodation_name']) ? $promo['target_accommodation_name'] : '';
+          $p_reward = !empty($promo['reward_desc']) ? $promo['reward_desc'] : '';
+          $p_conditions = !empty($promo['conditions']) ? $promo['conditions'] : '';
+          $p_active = isset($promo['active']) ? (string)$promo['active'] : '1';
+        ?>
+          <div class="hostpn-promo-card-item hostpn-p-20 hostpn-mb-20" style="border: 1px solid #e0e0e0; border-radius: 8px; background: #fff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+              <h4 style="margin: 0; font-weight: 600;">
+                <?php echo !empty($p_title) ? esc_html($p_title) : esc_html__('New Promotion', 'hostpn'); ?>
+              </h4>
+              <button type="button" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent hostpn-remove-promo-btn" style="color: #dc3545;">
+                <?php esc_html_e('Remove', 'hostpn'); ?>
+              </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+              <div>
+                <label style="display:block; font-weight:600; font-size:13px; margin-bottom:5px;"><?php esc_html_e('Promotion title', 'hostpn'); ?></label>
+                <input type="text" name="hostpn_promo_title[]" class="hostpn-input hostpn-width-100-percent" value="<?php echo esc_attr($p_title); ?>" placeholder="<?php esc_attr_e('e.g. 2-Year Loyalty Reward', 'hostpn'); ?>">
+              </div>
+
+              <div>
+                <label style="display:block; font-weight:600; font-size:13px; margin-bottom:5px;"><?php esc_html_e('Source accommodation', 'hostpn'); ?></label>
+                <select name="hostpn_promo_source[]" class="hostpn-select hostpn-width-100-percent">
+                  <option value="0" <?php selected($p_source, 0); ?>><?php esc_html_e('All accommodations', 'hostpn'); ?></option>
+                  <?php foreach ($accommodations as $accom): ?>
+                    <option value="<?php echo esc_attr($accom->ID); ?>" <?php selected($p_source, $accom->ID); ?>><?php echo esc_html($accom->post_title); ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+
+              <div>
+                <label style="display:block; font-weight:600; font-size:13px; margin-bottom:5px;"><?php esc_html_e('Required stay duration (days)', 'hostpn'); ?></label>
+                <input type="number" name="hostpn_promo_days[]" class="hostpn-input hostpn-width-100-percent" value="<?php echo esc_attr($p_days); ?>" placeholder="730">
+                <span style="font-size:11px; color:#888;"><?php esc_html_e('730 days = 2 years, 365 days = 1 year', 'hostpn'); ?></span>
+              </div>
+
+              <div>
+                <label style="display:block; font-weight:600; font-size:13px; margin-bottom:5px;"><?php esc_html_e('Target reward accommodation', 'hostpn'); ?></label>
+                <input type="text" name="hostpn_promo_target[]" class="hostpn-input hostpn-width-100-percent" value="<?php echo esc_attr($p_target); ?>" placeholder="<?php esc_attr_e('e.g. Apartment Beach or Any property', 'hostpn'); ?>">
+              </div>
+
+              <div>
+                <label style="display:block; font-weight:600; font-size:13px; margin-bottom:5px;"><?php esc_html_e('Reward / Free duration', 'hostpn'); ?></label>
+                <input type="text" name="hostpn_promo_reward[]" class="hostpn-input hostpn-width-100-percent" value="<?php echo esc_attr($p_reward); ?>" placeholder="<?php esc_attr_e('e.g. 1 week free stay', 'hostpn'); ?>">
+              </div>
+
+              <div>
+                <label style="display:block; font-weight:600; font-size:13px; margin-bottom:5px;"><?php esc_html_e('Status', 'hostpn'); ?></label>
+                <select name="hostpn_promo_active[]" class="hostpn-select hostpn-width-100-percent">
+                  <option value="1" <?php selected($p_active, '1'); ?>><?php esc_html_e('Active', 'hostpn'); ?></option>
+                  <option value="0" <?php selected($p_active, '0'); ?>><?php esc_html_e('Inactive', 'hostpn'); ?></option>
+                </select>
+              </div>
+
+              <div style="grid-column: 1 / -1;">
+                <label style="display:block; font-weight:600; font-size:13px; margin-bottom:5px;"><?php esc_html_e('Terms & Conditions', 'hostpn'); ?></label>
+                <textarea name="hostpn_promo_conditions[]" class="hostpn-input hostpn-width-100-percent" rows="2" placeholder="<?php esc_attr_e('Conditions for redeeming promotion...', 'hostpn'); ?>"><?php echo esc_textarea($p_conditions); ?></textarea>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <button type="button" id="hostpn-add-promo-btn" class="hostpn-btn hostpn-btn-mini hostpn-btn-transparent">
+        <span class="material-icons-outlined hostpn-vertical-align-middle">add</span> <?php esc_html_e('Add new promotion', 'hostpn'); ?>
+      </button>
+    </div>
+    <?php
+  }
+
   public function hostpn_options()
   {
     $hostpn_pages_config = [
@@ -552,6 +683,8 @@ class HOSTPN_Settings
               <?php $this->render_pages_table($hostpn_pages_config); ?>
             <?php elseif (isset($hostpn_option['input']) && $hostpn_option['input'] === 'contracts_editor'): ?>
               <?php $this->render_contracts_editor(); ?>
+            <?php elseif (isset($hostpn_option['input']) && $hostpn_option['input'] === 'promotions_manager'): ?>
+              <?php $this->render_promotions_manager(); ?>
             <?php else: ?>
               <?php HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_option, 'option', 0, 0, 'half'); ?>
             <?php endif; ?>

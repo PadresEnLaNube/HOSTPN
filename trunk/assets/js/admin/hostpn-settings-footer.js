@@ -214,4 +214,46 @@
       badge.textContent = count;
     }
   }
+
+  // Promotions Manager event handlers
+  var addPromoBtn = document.getElementById('hostpn-add-promo-btn');
+  if (addPromoBtn) {
+    addPromoBtn.addEventListener('click', function () {
+      var list = document.querySelector('.hostpn-promotions-list');
+      if (!list) return;
+      var firstCard = list.querySelector('.hostpn-promo-card-item');
+      if (firstCard) {
+        var clone = firstCard.cloneNode(true);
+        var inputs = clone.querySelectorAll('input, select, textarea');
+        inputs.forEach(function (inp) {
+          if (inp.name === 'hostpn_promo_days[]') {
+            inp.value = '730';
+          } else if (inp.name === 'hostpn_promo_active[]') {
+            inp.value = '1';
+          } else if (inp.name === 'hostpn_promo_source[]') {
+            inp.value = '0';
+          } else {
+            inp.value = '';
+          }
+        });
+        list.appendChild(clone);
+      } else {
+        location.reload();
+      }
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var rmBtn = e.target.closest('.hostpn-remove-promo-btn');
+    if (rmBtn) {
+      var card = rmBtn.closest('.hostpn-promo-card-item');
+      var list = document.querySelectorAll('.hostpn-promo-card-item');
+      if (list.length > 1 && card) {
+        card.remove();
+      } else if (card) {
+        var inputs = card.querySelectorAll('input, select, textarea');
+        inputs.forEach(function (inp) { inp.value = ''; });
+      }
+    }
+  });
 })();

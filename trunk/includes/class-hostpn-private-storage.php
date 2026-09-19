@@ -24,6 +24,11 @@ class HOSTPN_Private_Storage
     const CONTRACTS_DIR = 'contracts';
 
     /**
+     * Expenses subdirectory.
+     */
+    const EXPENSES_DIR = 'expenses';
+
+    /**
      * Get the base private directory path.
      *
      * @return string Full path to the private directory.
@@ -57,6 +62,24 @@ class HOSTPN_Private_Storage
         }
 
         return $contract_dir;
+    }
+
+    /**
+     * Get the accommodation expense directory path.
+     *
+     * @param int $accommodation_id Accommodation post ID.
+     * @return string Full path to the expense directory.
+     */
+    public static function hostpn_get_expense_dir($accommodation_id)
+    {
+        $base = self::hostpn_get_private_dir();
+        $expense_dir = $base . DIRECTORY_SEPARATOR . self::EXPENSES_DIR . DIRECTORY_SEPARATOR . absint($accommodation_id);
+
+        if (!file_exists($expense_dir)) {
+            wp_mkdir_p($expense_dir);
+        }
+
+        return $expense_dir;
     }
 
     /**
@@ -290,5 +313,97 @@ class HOSTPN_Private_Storage
             'status' => 'signed',
         ]);
         exit;
+    }
+
+    /**
+     * Store an expense attachment file in protected directory.
+     *
+     * @param int   $accommodation_id Accommodation ID.
+     * @param array $file             $_FILES array entry.
+     * @return array|WP_Error Array with 'filename' and 'filepath' or WP_Error.
+     */
+    public static function hostpn_store_expense_attachment($accommodation_id, $file)
+    {
+        if (empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
+            return new WP_Error('no_file', __('No valid file uploaded.', 'hostpn'));
+        }
+
+        $allowed_exts = ['pdf', 'jpg', 'jpeg', 'png', 'webp', 'doc', 'docx'];
+        $file_type = wp_check_filetype($file['name']);
+        $ext = strtolower($file_type['ext']);
+
+        if (!in_array($ext, $allowed_exts, true)) {
+            return new WP_Error('invalid_type', __('File type not allowed.', 'hostpn'));
+        }
+
+        $dir = self::hostpn_get_expense_dir($accommodation_id);
+        $filename = time() . '_' . sanitize_file_name($file['name']);
+        $filepath = $dir . DIRECTORY_SEPARATOR . $filename;
+
+        if (!move_uploaded_file($file['tmp_name'], $filepath)) {
+            return new WP_Error('upload_failed', __('Could not save attachment.', 'hostpn'));
+        }
+
+        return [
+            'filename' => $filename,
+            'filepath' => $filepath,
+            'original_name' => sanitize_file_name($file['name']),
+        ];
+    }
+
+    /**
+     * Serve an expense attachment with permission checks.
+     *
+     * @param int    $accommodation_id Accommodation ID.
+     * @param string $filename         Filename to serve.
+     */
+    public static function hostpn_serve_expense_file($accommodation_id, $filename)
+    {
+        if (!current_user_can('edit_posts')) {
+            wp_die(esc_html__('Permission denied.', 'hostpn'), 403);
+        }
+
+        $dir = self::hostpn_get_expense_dir($accommodation_id);
+        $filepath = $dir . DIRECTORY_SEPARATOR . sanitize_file_name($filename);
+
+        if (!file_exists($filepath)) {
+            wp_die(esc_html__('File not found.', 'hostpn'), 404);
+        }
+
+        $file_type = wp_check_filetype($filename);
+        $mime = !empty($file_type['type']) ? $file_type['type'] : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime);
+        header('Content-Disposition: inline; filename="' . sanitize_file_name($filename) . '"');
+        header('Content-Length: ' . filesize($filepath));
+        header('Cache-Control: private, max-age=3600');
+        header('Pragma: private');
+
+        readfile($filepath);
+        exit;
+    }
+
+    /**
+     * AJAX handler: Download/View expense attachment file.
+     */
+    public static function hostpn_expense_download_attachment()
+    {
+        if (!is_user_logged_in()) {
+            wp_die(esc_html__('You must be logged in.', 'hostpn'), 403);
+        }
+
+        $nonce = !empty($_REQUEST['hostpn_ajax_nonce']) ? sanitize_text_field(wp_unslash($_REQUEST['hostpn_ajax_nonce'])) : '';
+        if (!wp_verify_nonce($nonce, 'hostpn-nonce')) {
+            wp_die(esc_html__('Security check failed.', 'hostpn'), 403);
+        }
+
+        $accommodation_id = !empty($_REQUEST['accommodation_id']) ? absint($_REQUEST['accommodation_id']) : 0;
+        $filename = !empty($_REQUEST['filename']) ? sanitize_file_name(wp_unslash($_REQUEST['filename'])) : '';
+
+        if (!$accommodation_id || empty($filename)) {
+            wp_die(esc_html__('Invalid request parameters.', 'hostpn'), 400);
+        }
+
+        self::hostpn_serve_expense_file($accommodation_id, $filename);
     }
 }

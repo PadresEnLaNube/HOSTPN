@@ -84,18 +84,6 @@ class HOSTPN_Post_Type_Room
             'label' => __('Maximum capacity', 'hostpn'),
             'placeholder' => __('Number of guests', 'hostpn'),
         ];
-        $hostpn_fields_meta['hostpn_room_status'] = [
-            'id' => 'hostpn_room_status',
-            'class' => 'hostpn-select hostpn-width-100-percent',
-            'input' => 'select',
-            'options' => [
-                'available' => __('Available', 'hostpn'),
-                'occupied' => __('Occupied', 'hostpn'),
-                'maintenance' => __('Maintenance', 'hostpn'),
-            ],
-            'label' => __('Status', 'hostpn'),
-            'placeholder' => __('Select status', 'hostpn'),
-        ];
         // --- Guest assignment ---
         $guest_options = [];
         $guests = get_posts([
@@ -452,10 +440,14 @@ class HOSTPN_Post_Type_Room
                 }
             }
 
+            // Automatically infer status from assigned guest
+            $assigned_guest = get_post_meta($post_id, 'hostpn_room_guest_id', true);
+            $new_status = (!empty($assigned_guest) && intval($assigned_guest) > 0) ? 'occupied' : 'available';
+            update_post_meta($post_id, 'hostpn_room_status', $new_status);
+
             clean_post_cache($post_id);
 
             // Notify waitlist if status changed to available from occupied
-            $new_status = get_post_meta($post_id, 'hostpn_room_status', true);
             if ($previous_status === 'occupied' && $new_status === 'available') {
                 HOSTPN_Notifications::hostpn_notify_room_available($post_id);
             }
@@ -502,6 +494,11 @@ class HOSTPN_Post_Type_Room
                                 }
                             }
 
+                            // Automatically infer status from assigned guest
+                            $assigned_guest = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+                            $new_status = (!empty($assigned_guest) && intval($assigned_guest) > 0) ? 'occupied' : 'available';
+                            update_post_meta($room_id, 'hostpn_room_status', $new_status);
+
                             // Build title from room number + accommodation
                             $room_number = !empty($key_value['hostpn_room_number']) ? $key_value['hostpn_room_number'] : '';
                             $acc_id = !empty($key_value['hostpn_room_accommodation_id']) ? $key_value['hostpn_room_accommodation_id'] : 0;
@@ -534,6 +531,11 @@ class HOSTPN_Post_Type_Room
                                 }
                             }
 
+                            // Automatically infer status from assigned guest
+                            $assigned_guest = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+                            $new_status = (!empty($assigned_guest) && intval($assigned_guest) > 0) ? 'occupied' : 'available';
+                            update_post_meta($room_id, 'hostpn_room_status', $new_status);
+
                             // Update title
                             $room_number = !empty($key_value['hostpn_room_number']) ? $key_value['hostpn_room_number'] : '';
                             $acc_id = !empty($key_value['hostpn_room_accommodation_id']) ? $key_value['hostpn_room_accommodation_id'] : 0;
@@ -544,7 +546,9 @@ class HOSTPN_Post_Type_Room
                             }
 
                             // Notify waitlist if status changed to available from occupied
-                            $new_status = !empty($key_value['hostpn_room_status']) ? $key_value['hostpn_room_status'] : '';
+                            if ($previous_status === 'occupied' && $new_status === 'available') {
+                                HOSTPN_Notifications::hostpn_notify_room_available($room_id);
+                            }
                             if ($previous_status === 'occupied' && $new_status === 'available') {
                                 HOSTPN_Notifications::hostpn_notify_room_available($room_id);
                             }
@@ -614,14 +618,13 @@ class HOSTPN_Post_Type_Room
         $new_columns['room_accommodation'] = __('Accommodation', 'hostpn');
         $new_columns['room_capacity'] = __('Capacity', 'hostpn');
         $new_columns['room_status'] = __('Status', 'hostpn');
-        $new_columns['creation_date'] = __('Date', 'hostpn');
+        $new_columns['room_financial_info'] = __('Información Financiera', 'hostpn');
         return $new_columns;
     }
 
     public function hostpn_room_sortable_columns($columns)
     {
         $columns['room_info'] = 'title';
-        $columns['creation_date'] = 'date';
         return $columns;
     }
 
@@ -656,19 +659,44 @@ class HOSTPN_Post_Type_Room
                 break;
 
             case 'room_status':
-                $status = get_post_meta($post_id, 'hostpn_room_status', true);
-                $status_labels = [
-                    'available' => __('Available', 'hostpn'),
-                    'occupied' => __('Occupied', 'hostpn'),
-                    'maintenance' => __('Maintenance', 'hostpn'),
-                ];
-                $label = isset($status_labels[$status]) ? $status_labels[$status] : $status;
-                echo '<p>' . esc_html($label) . '</p>';
+                $assigned_guest = get_post_meta($post_id, 'hostpn_room_guest_id', true);
+                $is_occupied = (!empty($assigned_guest) && intval($assigned_guest) > 0);
+                if ($is_occupied) {
+                    $name_str = trim(get_post_meta($assigned_guest, 'hostpn_name', true) . ' ' . get_post_meta($assigned_guest, 'hostpn_surname', true));
+                    $guest_name = !empty($name_str) ? $name_str : get_the_title($assigned_guest);
+                    $guest_edit_link = get_edit_post_link($assigned_guest);
+                    echo '<p><strong style="color:#166534; background:#dcfce7; padding:3px 8px; border-radius:4px; border:1px solid #86efac; font-size:11px;">' . esc_html__('Occupied', 'hostpn') . '</strong>';
+                    if ($guest_edit_link) {
+                        echo '<br><small style="color:#475569;"><a href="' . esc_url($guest_edit_link) . '" style="color:#475569; font-weight:600;">' . esc_html($guest_name) . '</a></small>';
+                    } else {
+                        echo '<br><small style="color:#475569;">' . esc_html($guest_name) . '</small>';
+                    }
+                    echo '</p>';
+                } else {
+                    $manual_status = get_post_meta($post_id, 'hostpn_room_status', true);
+                    if ($manual_status === 'maintenance') {
+                        echo '<p><strong style="color:#9a3412; background:#ffedd5; padding:3px 8px; border-radius:4px; border:1px solid #fed7aa; font-size:11px;">' . esc_html__('Maintenance', 'hostpn') . '</strong></p>';
+                    } else {
+                        echo '<p><strong style="color:#1e293b; background:#f1f5f9; padding:3px 8px; border-radius:4px; border:1px solid #cbd5e1; font-size:11px;">' . esc_html__('Available', 'hostpn') . '</strong></p>';
+                    }
+                }
                 break;
 
-            case 'creation_date':
-                $post = get_post($post_id);
-                echo '<p>' . esc_html(date_i18n(get_option('date_format'), strtotime($post->post_date))) . '</p>';
+            case 'room_financial_info':
+                $rent = get_post_meta($post_id, 'hostpn_room_contract_rent_amount', true);
+                if (empty($rent) || !is_numeric($rent)) $rent = get_post_meta($post_id, 'hostpn_room_rent', true);
+                if (empty($rent) || !is_numeric($rent)) $rent = get_post_meta($post_id, 'hostpn_room_price', true);
+
+                $deposit = get_post_meta($post_id, 'hostpn_room_contract_deposit_amount', true);
+                if (empty($deposit) || !is_numeric($deposit)) $deposit = get_post_meta($post_id, 'hostpn_room_deposit', true);
+
+                $r_val = is_numeric($rent) ? floatval($rent) : 0.0;
+                $d_val = is_numeric($deposit) ? floatval($deposit) : 0.0;
+
+                echo '<p style="margin:0; font-size:12px; line-height:1.5;">';
+                echo '<strong>' . esc_html__('Renta:', 'hostpn') . '</strong> € ' . esc_html(number_format($r_val, 2, ',', '.')) . '<br>';
+                echo '<span style="color:#64748b;"><strong>' . esc_html__('Fianza:', 'hostpn') . '</strong> € ' . esc_html(number_format($d_val, 2, ',', '.')) . '</span>';
+                echo '</p>';
                 break;
         }
     }

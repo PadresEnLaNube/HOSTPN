@@ -52,9 +52,22 @@ if ($is_admin) {
     $tabs['financial'] = __('Financial mgmt.', 'hostpn');
 }
 
-// Cleaning tab: admin only
+// Cleaning tab: admin always, guest if shared cleaning mode is active and they belong to this accommodation
+$cleaning_system = get_post_meta($accommodation_id, 'hostpn_cleaning_system', true);
+if (empty($cleaning_system)) {
+    $cleaning_system = 'punctual';
+}
+
 if ($is_admin) {
     $tabs['cleaning'] = __('Cleaning', 'hostpn');
+} elseif ($guest_id && $cleaning_system === 'shared') {
+    foreach ($rooms as $room_id) {
+        $room_guest_id = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+        if (intval($room_guest_id) === intval($guest_id)) {
+            $tabs['cleaning'] = __('Cleaning', 'hostpn');
+            break;
+        }
+    }
 }
 
 // Inventory tab: admin always, guest if they have a room with inventory
@@ -71,10 +84,24 @@ if ($is_admin) {
     }
 }
 
+// Promotions tab: visible if promotions enabled
+$promotions_enabled = get_option('hostpn_promotions_enabled', 'on');
+if ($promotions_enabled === 'on') {
+    $tabs['promotions'] = __('Promotions', 'hostpn');
+}
+
 // Don't render panel if no tabs visible
 if (empty($tabs)) {
     return;
 }
+
+// Compute summary data for top hero header panel and promotions tab
+$promo_summary = HOSTPN_Post_Type_Accommodation::hostpn_get_guest_promotions_summary($accommodation_id, $guest_id);
+$stay_info = $promo_summary['stay_info'];
+$primary_promo = $promo_summary['primary'];
+
+$shared_info = HOSTPN_Post_Type_Accommodation::hostpn_get_shared_cleaning_info($accommodation_id);
+$next_cleaning_str = !empty($shared_info['next_date']) ? $shared_info['next_date'] : '--';
 
 // Build config for inline output (bypasses wp_enqueue_script entirely)
 $mgmt_css_url = HOSTPN_URL . 'assets/css/public/hostpn-management-tabs.css?ver=' . HOSTPN_VERSION;
@@ -83,6 +110,8 @@ $mgmt_config  = [
     'ajaxUrl'         => admin_url('admin-ajax.php'),
     'nonce'           => wp_create_nonce('hostpn-nonce'),
     'accommodationId' => $accommodation_id,
+    'isAdmin'         => $is_admin ? 1 : 0,
+    'cleaningSystem'  => $cleaning_system,
     'i18n'            => [
         'loading'          => __('Loading...', 'hostpn'),
         'save'             => __('Save', 'hostpn'),
@@ -107,14 +136,46 @@ $mgmt_config  = [
         'sendEmail'        => __('Send by email', 'hostpn'),
         'inspectionSaved'  => __('Inspection saved.', 'hostpn'),
         'emailSent'        => __('Email sent successfully.', 'hostpn'),
+        'punctualCleaning' => __('Punctual per room', 'hostpn'),
+        'sharedCleaning'   => __('Shared periodic rotation', 'hostpn'),
+        'currentTurn'      => __('Current turn', 'hostpn'),
+        'nextCleaningDate' => __('Next cleaning date', 'hostpn'),
+        'frequency'        => __('Frequency (days)', 'hostpn'),
+        'noticeDays'       => __('Notice days prior', 'hostpn'),
+        'staysToClean'          => __('Stays / areas to clean', 'hostpn'),
+        'cleaningInstructions'  => __('Cleaning instructions & steps', 'hostpn'),
+        'rotationQueue'         => __('Rotation queue', 'hostpn'),
+        'markCompleted'    => __('Mark cleaning completed', 'hostpn'),
+        'sendReminderEmail'=> __('Send email reminder', 'hostpn'),
+        'groupComments'    => __('Group comments', 'hostpn'),
+        'noGroupComments'  => __('No group comments yet.', 'hostpn'),
+        'addComment'       => __('Add comment', 'hostpn'),
+        'writeComment'     => __('Write a comment for the group...', 'hostpn'),
+        'cleaningHistory'  => __('Cleaning history', 'hostpn'),
+        'adminConfig'      => __('Cleaning system configuration', 'hostpn'),
+        'saveConfig'       => __('Save configuration', 'hostpn'),
+        'roomLabel'        => __('Room', 'hostpn'),
+        'everyXDays'       => __('Every %d days', 'hostpn'),
+        'daysUnit'         => __('days', 'hostpn'),
+        'estNextCleaning'  => __('Est. next cleaning:', 'hostpn'),
+        'monthlyRent'      => __('Monthly Rent', 'hostpn'),
+        'totalRent'        => __('Total Monthly Revenue', 'hostpn'),
+        'totalDeposits'    => __('Total Deposits', 'hostpn'),
+        'occupancy'        => __('Occupancy Rate', 'hostpn'),
+        'guestName'        => __('Current Guest', 'hostpn'),
+        'deposit'          => __('Deposit', 'hostpn'),
+        'paymentDay'       => __('Payment Day', 'hostpn'),
+        'available'        => __('Available', 'hostpn'),
+        'occupied'         => __('Occupied', 'hostpn'),
     ],
 ];
 
 $tab_icons = [
-    'contracts' => 'description',
-    'financial' => 'account_balance',
-    'cleaning'  => 'cleaning_services',
-    'inventory' => 'inventory_2',
+    'contracts'  => 'description',
+    'financial'  => 'account_balance',
+    'cleaning'   => 'cleaning_services',
+    'inventory'  => 'inventory_2',
+    'promotions' => 'card_giftcard',
 ];
 
 $first_tab = array_key_first($tabs);
@@ -123,13 +184,61 @@ $tab_width_style = 'width:' . (100 / $tab_count) . '%';
 ?>
 
 <div class="hostpn-mgmt-panel" data-accommodation-id="<?php echo esc_attr($accommodation_id); ?>">
+    <!-- Top Hero Summary Header Panel (Minimalist) -->
+    <div class="hostpn-mgmt-hero-header">
+        <div class="hostpn-hero-card hostpn-hero-card-stay">
+            <div class="hostpn-hero-info">
+                <span class="hostpn-hero-label"><?php esc_html_e('Days stayed', 'hostpn'); ?></span>
+                <span class="hostpn-hero-val"><?php echo esc_html($stay_info['days']); ?> <?php esc_html_e('days', 'hostpn'); ?></span>
+                <span class="hostpn-hero-sub"><?php echo esc_html($stay_info['formatted_duration']); ?></span>
+            </div>
+        </div>
+
+        <div class="hostpn-hero-card hostpn-hero-card-cleaning">
+            <div class="hostpn-hero-info">
+                <span class="hostpn-hero-label"><?php esc_html_e('Next cleaning', 'hostpn'); ?></span>
+                <span class="hostpn-hero-val"><?php echo esc_html($next_cleaning_str); ?></span>
+                <span class="hostpn-hero-sub">
+                    <?php
+                    if (!empty($shared_info['current_turn'])) {
+                        echo esc_html(sprintf(__('Turn: %s', 'hostpn'), $shared_info['current_turn']['room_label']));
+                    } else {
+                        echo esc_html($cleaning_system === 'shared' ? __('Shared rotation', 'hostpn') : __('Punctual per room', 'hostpn'));
+                    }
+                    ?>
+                </span>
+            </div>
+        </div>
+
+        <div class="hostpn-hero-card hostpn-hero-card-promo">
+            <div class="hostpn-hero-info">
+                <span class="hostpn-hero-label"><?php esc_html_e('Active promotion', 'hostpn'); ?></span>
+                <?php if ($primary_promo): ?>
+                    <span class="hostpn-hero-val">
+                        <?php if ($primary_promo['unlocked']): ?>
+                            <span class="hostpn-unlocked-badge"><?php esc_html_e('Unlocked!', 'hostpn'); ?></span>
+                        <?php else: ?>
+                            <?php echo esc_html(sprintf(__('Remaining: %d days', 'hostpn'), $primary_promo['days_remaining'])); ?>
+                        <?php endif; ?>
+                    </span>
+                    <div class="hostpn-hero-progress-wrapper">
+                        <div class="hostpn-hero-progress-bar" style="width: <?php echo esc_attr($primary_promo['progress_percent']); ?>%;"></div>
+                    </div>
+                    <span class="hostpn-hero-sub"><?php echo esc_html($primary_promo['title']); ?> (<?php echo esc_html($primary_promo['progress_percent']); ?>%)</span>
+                <?php else: ?>
+                    <span class="hostpn-hero-val">--</span>
+                    <span class="hostpn-hero-sub"><?php esc_html_e('No active promotions', 'hostpn'); ?></span>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
     <div class="hostpn-tabs">
         <?php foreach ($tabs as $tab_key => $tab_label): ?>
             <button type="button"
                 style="<?php echo esc_attr($tab_width_style); ?>"
                 class="hostpn-mgmt-tab-btn<?php echo $tab_key === $first_tab ? ' active' : ''; ?>"
                 data-tab="<?php echo esc_attr($tab_key); ?>">
-                <i class="material-icons-outlined hostpn-icon-small"><?php echo esc_attr($tab_icons[$tab_key]); ?></i>
                 <?php echo esc_html($tab_label); ?>
             </button>
         <?php endforeach; ?>
@@ -153,11 +262,17 @@ $tab_width_style = 'width:' . (100 / $tab_count) . '%';
     <?php if (isset($tabs['financial'])): ?>
         <div class="hostpn-tab-content hostpn-mgmt-tab-pane" data-tab="financial"<?php echo $first_tab !== 'financial' ? ' style="display:none"' : ''; ?>>
             <div class="hostpn-mgmt-financial-wrapper">
-                <div class="hostpn-mgmt-loading">
-                    <i class="material-icons-outlined hostpn-spin">sync</i>
-                    <?php esc_html_e('Loading financial data...', 'hostpn'); ?>
-                </div>
-                <div class="hostpn-mgmt-financial-content"></div>
+                <?php if (!empty($accommodation_id)): ?>
+                    <div class="hostpn-mgmt-financial-content">
+                        <?php echo HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accommodation_id); ?>
+                    </div>
+                <?php else: ?>
+                    <div class="hostpn-mgmt-loading">
+                        <i class="material-icons-outlined hostpn-spin">sync</i>
+                        <?php esc_html_e('Loading financial data...', 'hostpn'); ?>
+                    </div>
+                    <div class="hostpn-mgmt-financial-content"></div>
+                <?php endif; ?>
             </div>
         </div>
     <?php endif; ?>
@@ -165,23 +280,55 @@ $tab_width_style = 'width:' . (100 / $tab_count) . '%';
     <!-- Cleaning Tab -->
     <?php if (isset($tabs['cleaning'])): ?>
         <div class="hostpn-tab-content hostpn-mgmt-tab-pane" data-tab="cleaning"<?php echo $first_tab !== 'cleaning' ? ' style="display:none"' : ''; ?>>
-            <div class="hostpn-mgmt-cleaning-wrapper">
-                <div class="hostpn-mgmt-room-selector">
-                    <label for="hostpn-mgmt-cleaning-room"><?php esc_html_e('Select room', 'hostpn'); ?></label>
-                    <select id="hostpn-mgmt-cleaning-room" class="hostpn-mgmt-select">
-                        <option value=""><?php esc_html_e('-- Select a room --', 'hostpn'); ?></option>
-                        <?php foreach ($rooms as $room_id):
-                            $room_number = get_post_meta($room_id, 'hostpn_room_number', true);
-                            $room_label = !empty($room_number) ? sprintf(__('Room %s', 'hostpn'), $room_number) : get_the_title($room_id);
-                        ?>
-                            <option value="<?php echo esc_attr($room_id); ?>"><?php echo esc_html($room_label); ?></option>
-                        <?php endforeach; ?>
-                    </select>
+            <div class="hostpn-mgmt-cleaning-wrapper" data-system="<?php echo esc_attr($cleaning_system); ?>">
+                
+                <?php if ($is_admin): ?>
+                    <!-- System Mode Switcher for Admin -->
+                    <div class="hostpn-mgmt-cleaning-system-switch">
+                        <span class="hostpn-mgmt-system-label"><?php esc_html_e('Cleaning system:', 'hostpn'); ?></span>
+                        <div class="hostpn-mgmt-sys-btn-group">
+                            <button type="button" class="hostpn-mgmt-sys-btn<?php echo $cleaning_system === 'punctual' ? ' active' : ''; ?>" data-sys="punctual">
+                                <i class="material-icons-outlined hostpn-icon-small">cleaning_services</i>
+                                <?php esc_html_e('Punctual per room', 'hostpn'); ?>
+                            </button>
+                            <button type="button" class="hostpn-mgmt-sys-btn<?php echo $cleaning_system === 'shared' ? ' active' : ''; ?>" data-sys="shared">
+                                <i class="material-icons-outlined hostpn-icon-small">published_with_changes</i>
+                                <?php esc_html_e('Shared periodic rotation', 'hostpn'); ?>
+                            </button>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Punctual Cleaning Pane -->
+                <div class="hostpn-mgmt-cleaning-punctual-pane"<?php echo $cleaning_system !== 'punctual' ? ' style="display:none"' : ''; ?>>
+                    <div class="hostpn-mgmt-room-selector">
+                        <label for="hostpn-mgmt-cleaning-room"><?php esc_html_e('Select room', 'hostpn'); ?></label>
+                        <select id="hostpn-mgmt-cleaning-room" class="hostpn-mgmt-select">
+                            <option value=""><?php esc_html_e('-- Select a room --', 'hostpn'); ?></option>
+                            <?php foreach ($rooms as $room_id):
+                                $room_number = get_post_meta($room_id, 'hostpn_room_number', true);
+                                $room_label = !empty($room_number) ? sprintf(__('Room %s', 'hostpn'), $room_number) : get_the_title($room_id);
+                            ?>
+                                <option value="<?php echo esc_attr($room_id); ?>"><?php echo esc_html($room_label); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="hostpn-mgmt-cleaning-content"></div>
                 </div>
-                <div class="hostpn-mgmt-cleaning-content"></div>
+
+                <!-- Shared Cleaning Pane -->
+                <div class="hostpn-mgmt-cleaning-shared-pane"<?php echo $cleaning_system !== 'shared' ? ' style="display:none"' : ''; ?>>
+                    <div class="hostpn-mgmt-loading">
+                        <i class="material-icons-outlined hostpn-spin">sync</i>
+                        <?php esc_html_e('Loading shared cleaning status...', 'hostpn'); ?>
+                    </div>
+                    <div class="hostpn-mgmt-shared-content"></div>
+                </div>
+
             </div>
         </div>
     <?php endif; ?>
+
 
     <!-- Inventory Tab -->
     <?php if (isset($tabs['inventory'])): ?>
@@ -251,7 +398,11 @@ $tab_width_style = 'width:' . (100 / $tab_count) . '%';
                                 $inventory_html .= '<th>' . esc_html__('Item', 'hostpn') . '</th>';
                                 $inventory_html .= '</tr></thead><tbody>';
                                 foreach ($merged as $item) {
-                                    $inventory_html .= '<tr><td>' . esc_html($item['name']) . '</td></tr>';
+                                    if (!empty($item['url'])) {
+                                        $inventory_html .= '<tr><td><a href="' . esc_url($item['url']) . '" target="_blank" rel="noopener noreferrer" class="hostpn-inv-item-link"><i class="material-icons-outlined hostpn-icon-small">link</i> ' . esc_html($item['name']) . '</a></td></tr>';
+                                    } else {
+                                        $inventory_html .= '<tr><td>' . esc_html($item['name']) . '</td></tr>';
+                                    }
                                 }
                                 $inventory_html .= '</tbody></table></div>';
                             }
@@ -270,6 +421,79 @@ $tab_width_style = 'width:' . (100 / $tab_count) . '%';
                     ?>
                 </div>
             <?php endif; ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- Promotions Tab -->
+    <?php if (isset($tabs['promotions'])): ?>
+        <div class="hostpn-tab-content hostpn-mgmt-tab-pane" data-tab="promotions"<?php echo $first_tab !== 'promotions' ? ' style="display:none"' : ''; ?>>
+            <div class="hostpn-mgmt-promotions-wrapper">
+                <div class="hostpn-mgmt-stay-banner">
+                    <div class="hostpn-mgmt-stay-badge">
+                        <div>
+                            <strong><?php esc_html_e('Your stay in this accommodation:', 'hostpn'); ?></strong>
+                            <span><?php echo esc_html($stay_info['days']); ?> <?php esc_html_e('days', 'hostpn'); ?> (<?php echo esc_html($stay_info['formatted_duration']); ?>)</span>
+                        </div>
+                    </div>
+                    <?php if (!empty($stay_info['start_date'])): ?>
+                        <div class="hostpn-mgmt-stay-start">
+                            <span><?php esc_html_e('Check-in:', 'hostpn'); ?> <?php echo esc_html($stay_info['start_date']); ?></span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <?php if (!empty($promo_summary['promotions'])): ?>
+                    <div class="hostpn-mgmt-promos-grid">
+                        <?php foreach ($promo_summary['promotions'] as $promo_item): ?>
+                            <div class="hostpn-mgmt-promo-card <?php echo $promo_item['unlocked'] ? 'unlocked' : ''; ?>">
+                                <div class="hostpn-mgmt-promo-header">
+                                    <div class="hostpn-mgmt-promo-title-wrap">
+                                        <div>
+                                            <h3 class="hostpn-mgmt-promo-title"><?php echo esc_html($promo_item['title']); ?></h3>
+                                            <?php if (!empty($promo_item['target_accommodation_name'])): ?>
+                                                <span class="hostpn-mgmt-promo-target"><?php echo esc_html($promo_item['target_accommodation_name']); ?></span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <?php if (!empty($promo_item['reward_desc'])): ?>
+                                        <div class="hostpn-mgmt-promo-reward-badge">
+                                            <?php echo esc_html($promo_item['reward_desc']); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="hostpn-mgmt-promo-body">
+                                    <div class="hostpn-mgmt-promo-progress-box">
+                                        <div class="hostpn-mgmt-promo-progress-labels">
+                                            <span><?php esc_html_e('Progress:', 'hostpn'); ?> <strong><?php echo esc_html($promo_item['days_stayed']); ?> / <?php echo esc_html($promo_item['required_days']); ?> <?php esc_html_e('days', 'hostpn'); ?></strong></span>
+                                            <span class="hostpn-mgmt-promo-percent"><?php echo esc_html($promo_item['progress_percent']); ?>%</span>
+                                        </div>
+                                        <div class="hostpn-mgmt-promo-progress-track">
+                                            <div class="hostpn-mgmt-promo-progress-fill" style="width: <?php echo esc_attr($promo_item['progress_percent']); ?>%;"></div>
+                                        </div>
+                                        <div class="hostpn-mgmt-promo-rem-text">
+                                            <?php if ($promo_item['unlocked']): ?>
+                                                <span class="hostpn-mgmt-unlocked-text"><?php esc_html_e('Promotion unlocked! Contact administration to redeem your reward.', 'hostpn'); ?></span>
+                                            <?php else: ?>
+                                                <span><?php esc_html_e('Time remaining:', 'hostpn'); ?> <strong><?php echo esc_html($promo_item['rem_formatted']); ?> (<?php echo esc_html($promo_item['days_remaining']); ?> <?php esc_html_e('days', 'hostpn'); ?>)</strong></span>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+
+                                    <?php if (!empty($promo_item['conditions'])): ?>
+                                        <div class="hostpn-mgmt-promo-conditions">
+                                            <strong><?php esc_html_e('Terms & Conditions:', 'hostpn'); ?></strong>
+                                            <p><?php echo esc_html($promo_item['conditions']); ?></p>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p class="hostpn-mgmt-empty"><?php esc_html_e('No active promotions available at this moment.', 'hostpn'); ?></p>
+                <?php endif; ?>
+            </div>
         </div>
     <?php endif; ?>
 </div>

@@ -766,14 +766,27 @@ class HOSTPN_Post_Type_Contract
      */
     public static function hostpn_get_guest_id_for_user($user_id)
     {
-        // First check by hostpn_guest_wp_user_id meta
+        if (empty($user_id)) {
+            return false;
+        }
+
+        // First check by hostpn_guest_wp_user_id or hostpn_user_id meta
         $guests = get_posts([
             'post_type' => 'hostpn_guest',
             'post_status' => 'any',
             'numberposts' => 1,
             'fields' => 'ids',
-            'meta_key' => 'hostpn_guest_wp_user_id',
-            'meta_value' => $user_id,
+            'meta_query' => [
+                'relation' => 'OR',
+                [
+                    'key' => 'hostpn_guest_wp_user_id',
+                    'value' => $user_id,
+                ],
+                [
+                    'key' => 'hostpn_user_id',
+                    'value' => $user_id,
+                ],
+            ],
         ]);
 
         if (!empty($guests)) {

@@ -344,6 +344,11 @@ class HOSTPN_Functions_User {
       return;
     }
 
+    // Skip auto guest post creation if creating user from an existing guest
+    if (doing_action('wp_ajax_hostpn_guest_create_user') || (isset($_POST['action']) && $_POST['action'] === 'hostpn_guest_create_user')) {
+      return;
+    }
+
     // Check if user data has been populated yet (prevent creating empty guest)
     // During auto-registration: first hook (user_register) fires BEFORE data is saved
     // Second hook (userspn_profile_create) fires AFTER data is saved

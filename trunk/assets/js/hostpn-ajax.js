@@ -28,16 +28,17 @@
       }
 
       $(hostpn_form.find('input:not([type="submit"]), select, textarea')).each(function(index, element) {
-        var is_multiple = $(this).parents('.userspn-html-multi-group').length;
+        var is_multiple = $(this).parents('.userspn-html-multi-group, .hostpn-html-multi-group, .hostpn-promo-card-item').length || (element.name && element.name.indexOf('[]') !== -1);
         
         if (is_multiple) {
-          if (!(typeof window['hostpn_window_vars']['form_field_' + element.name] !== 'undefined')) {
-            window['hostpn_window_vars']['form_field_' + element.name] = [];
+          var cleanName = element.name ? element.name.replace('[]', '') : '';
+          if (!(typeof window['hostpn_window_vars']['form_field_' + cleanName] !== 'undefined')) {
+            window['hostpn_window_vars']['form_field_' + cleanName] = [];
           }
 
-          window['hostpn_window_vars']['form_field_' + element.name].push($(element).val());
+          window['hostpn_window_vars']['form_field_' + cleanName].push($(element).val());
 
-          data[element.name] = window['hostpn_window_vars']['form_field_' + element.name];
+          data[cleanName] = window['hostpn_window_vars']['form_field_' + cleanName];
         }else{
           if ($(this).is(':checkbox')) {
             if ($(this).is(':checked')) {
@@ -58,7 +59,7 @@
           id: element.name,
           node: element.nodeName,
           type: element.type,
-          multiple: (is_multiple == 'multiple' ? true : false),
+          multiple: (is_multiple ? 'true' : 'false'),
         });
       });
 

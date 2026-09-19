@@ -180,6 +180,45 @@ class HOSTPN_Post_Type_Accommodation {
         'description' => esc_html(__('Describe internet speed and features', 'hostpn')),
       ];
 
+      // Cleaning system options
+      $hostpn_fields_meta['hostpn_cleaning_system'] = [
+        'id'          => 'hostpn_cleaning_system',
+        'class'       => 'hostpn-select hostpn-width-100-percent',
+        'input'       => 'select',
+        'options'     => [
+          'punctual' => __('Punctual per room', 'hostpn'),
+          'shared'   => __('Shared periodic rotation', 'hostpn'),
+        ],
+        'label'       => esc_html(__('Cleaning System', 'hostpn')),
+        'description' => esc_html(__('Choose between punctual room cleaning or shared periodic rotation between occupied rooms.', 'hostpn')),
+      ];
+
+      $hostpn_fields_meta['hostpn_shared_cleaning_frequency_days'] = [
+        'id'          => 'hostpn_shared_cleaning_frequency_days',
+        'class'       => 'hostpn-input hostpn-width-100-percent',
+        'input'       => 'input',
+        'type'        => 'number',
+        'label'       => esc_html(__('Shared Cleaning Frequency (days)', 'hostpn')),
+        'description' => esc_html(__('Interval in days between periodic cleanings (e.g. 7 for weekly).', 'hostpn')),
+      ];
+
+      $hostpn_fields_meta['hostpn_shared_cleaning_notice_days'] = [
+        'id'          => 'hostpn_shared_cleaning_notice_days',
+        'class'       => 'hostpn-input hostpn-width-100-percent',
+        'input'       => 'input',
+        'type'        => 'number',
+        'label'       => esc_html(__('Notice Days Prior to Cleaning', 'hostpn')),
+        'description' => esc_html(__('How many days before the cleaning date to send email notifications.', 'hostpn')),
+      ];
+
+      $hostpn_fields_meta['hostpn_shared_cleaning_stays'] = [
+        'id'          => 'hostpn_shared_cleaning_stays',
+        'class'       => 'hostpn-input hostpn-width-100-percent',
+        'input'       => 'textarea',
+        'label'       => esc_html(__('Stays / Areas to Clean', 'hostpn')),
+        'description' => esc_html(__('Comma separated list of rooms or areas to clean during shared cleaning.', 'hostpn')),
+      ];
+
       // Accommodation features - Kitchen Section Start
       $hostpn_fields_meta['hostpn_kitchen_section_start'] = [
         'id' => 'hostpn_kitchen_section_start',
@@ -433,29 +472,608 @@ class HOSTPN_Post_Type_Accommodation {
 
   /**
    * Get financial management fields for separate metabox.
+   */  /**
+   * Helper to record a payment for a room (Monthly Rent, Deposit, Custom).
+   *
+   * @param int    $room_id
+   * @param float  $amount
+   * @param string $payment_type 'rent' | 'deposit' | 'custom'
+   * @param string $month_key    'YYYY_MM'
+   * @param string $payment_date 'YYYY-MM-DD'
+   * @param string $source       'manual' | 'airbnb' | 'booking' | 'csv'
+   * @param string $notes
+   * @return array
+   */
+  /**
+   * Recalculate room payment status for rent or deposit based on accumulated payments.
+   */
+  public static function hostpn_recalculate_room_payment_status($room_id, $payment_type = 'rent', $month_key = '') {
+    if (!$room_id) {
+      return;
+    }
+
+    $history = get_post_meta($room_id, 'hostpn_room_payment_history', true);
+    if (!is_array($history)) {
+      $history = get_post_meta($room_id, 'hostpn_room_payments_log', true);
+    }
+    if (!is_array($history)) {
+      $history = [];
+    }
+
+    // Always recalculate deposit
+    $deposit_expected = 0.0;
+    $r_dep = get_post_meta($room_id, 'hostpn_room_contract_deposit_amount', true);
+    if (empty($r_dep) || !is_numeric($r_dep)) $r_dep = get_post_meta($room_id, 'hostpn_room_deposit', true);
+    if (is_numeric($r_dep)) $deposit_expected = floatval($r_dep);
+
+    $total_deposit_paid = 0.0;
+    foreach ($history as $rec) {
+      $p_type = isset($rec['payment_type']) ? $rec['payment_type'] : '';
+      if ($p_type === 'deposit') {
+        $total_deposit_paid += floatval(isset($rec['amount']) ? $rec['amount'] : 0);
+      }
+    }
+    update_post_meta($room_id, 'hostpn_room_deposit_paid_amount', $total_deposit_paid);
+    if ($deposit_expected > 0 && $total_deposit_paid >= $deposit_expected) {
+      update_post_meta($room_id, 'hostpn_room_deposit_paid', '1');
+    } else {
+      update_post_meta($room_id, 'hostpn_room_deposit_paid', '0');
+    }
+
+    // Recalculate rent for month_key
+    if (empty($month_key)) {
+      $month_key = date('Y_m');
+    }
+
+    $rent_expected = 0.0;
+    $r_rent = get_post_meta($room_id, 'hostpn_room_contract_rent_amount', true);
+    if (empty($r_rent) || !is_numeric($r_rent)) $r_rent = get_post_meta($room_id, 'hostpn_room_rent', true);
+    if (empty($r_rent) || !is_numeric($r_rent)) $r_rent = get_post_meta($room_id, 'hostpn_room_price', true);
+    if (is_numeric($r_rent)) $rent_expected = floatval($r_rent);
+
+    $total_rent_paid = 0.0;
+    foreach ($history as $rec) {
+      $p_type = isset($rec['payment_type']) ? $rec['payment_type'] : 'rent';
+      $p_mkey = isset($rec['month_key']) ? $rec['month_key'] : (isset($rec['payment_date']) ? date('Y_m', strtotime($rec['payment_date'])) : '');
+      if ($p_type === 'rent' && $p_mkey === $month_key) {
+        $total_rent_paid += floatval(isset($rec['amount']) ? $rec['amount'] : 0);
+      }
+    }
+
+    update_post_meta($room_id, 'hostpn_room_rent_paid_amount_' . $month_key, $total_rent_paid);
+    if ($rent_expected > 0 && $total_rent_paid >= $rent_expected) {
+      update_post_meta($room_id, 'hostpn_room_rent_paid_' . $month_key, '1');
+    } else {
+      update_post_meta($room_id, 'hostpn_room_rent_paid_' . $month_key, '0');
+    }
+  }
+
+  public static function hostpn_record_room_payment($room_id, $amount, $payment_type = 'rent', $month_key = '', $payment_date = '', $source = 'manual', $notes = '') {
+    if (!$room_id || $amount <= 0) {
+      return ['success' => false, 'message' => __('Invalid payment data', 'hostpn')];
+    }
+
+    if (empty($payment_date)) {
+      $payment_date = current_time('Y-m-d');
+    }
+    if (empty($month_key)) {
+      $month_key = date('Y_m', strtotime($payment_date));
+    }
+
+    $history = get_post_meta($room_id, 'hostpn_room_payment_history', true);
+    if (!is_array($history)) {
+      $history = [];
+    }
+
+    $payment_record = [
+      'id'           => uniqid('pay_'),
+      'amount'       => floatval($amount),
+      'payment_type' => sanitize_key($payment_type),
+      'month_key'    => sanitize_key($month_key),
+      'payment_date' => sanitize_text_field($payment_date),
+      'source'       => sanitize_key($source),
+      'notes'        => sanitize_textarea_field($notes),
+      'created_at'   => current_time('mysql'),
+    ];
+
+    array_unshift($history, $payment_record);
+    update_post_meta($room_id, 'hostpn_room_payment_history', $history);
+
+    // Recalculate payment statuses dynamically
+    self::hostpn_recalculate_room_payment_status($room_id, $payment_type, $month_key);
+
+    return [
+      'success' => true,
+      'record'  => $payment_record,
+    ];
+  }
+
+  /**
+   * Render financial dashboard content for metabox.
+   *
+   * @param int $accommodation_id
+   * @return string HTML
+   */
+  public static function hostpn_render_admin_financial_dashboard_content($accommodation_id) {
+    if (!$accommodation_id) {
+      return '<p class="hostpn-mgmt-empty">' . esc_html__('Please save the accommodation post to view financial management.', 'hostpn') . '</p>';
+    }
+
+    $data = self::hostpn_get_financial_summary($accommodation_id);
+    $rooms = isset($data['rooms']) ? $data['rooms'] : [];
+    $expenses = isset($data['expenses']) ? $data['expenses'] : [];
+    $chart_months = isset($data['chart_months']) ? $data['chart_months'] : [];
+
+    $expected_rent  = floatval($data['total_monthly_rent_expected']);
+    $collected_rent = floatval($data['total_monthly_rent_collected']);
+    $expected_dep   = floatval($data['total_deposits_expected']);
+    $collected_dep  = floatval($data['total_deposits_collected']);
+    $total_expenses = floatval($data['total_expenses']);
+    $net_income     = floatval($data['net_income']);
+
+    $nonce = wp_create_nonce('hostpn-nonce');
+    $ajax_url = admin_url('admin-ajax.php');
+
+    ob_start();
+    ?>
+    <div class="hostpn-mgmt-panel hostpn-admin-financial-panel" data-accommodation-id="<?php echo esc_attr($accommodation_id); ?>">
+      <div class="hostpn-mgmt-financial-content">
+        <!-- 5 Metric Cards Grid -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:14px; margin-bottom:24px;">
+          <div style="background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+            <div style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; letter-spacing:0.5px;"><?php esc_html_e('Tasa de Ocupación', 'hostpn'); ?></div>
+            <div style="font-size:20px; font-weight:700; color:#0f172a; margin-top:4px;"><?php echo esc_html($data['occupied_rooms']); ?> / <?php echo esc_html($data['total_rooms']); ?> (<?php echo esc_html($data['occupancy_rate']); ?>%)</div>
+          </div>
+
+          <div style="background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+            <div style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; letter-spacing:0.5px;"><?php esc_html_e('Cobrado este Mes', 'hostpn'); ?></div>
+            <div style="font-size:20px; font-weight:700; color:#0284c7; margin-top:4px;">€ <?php echo esc_html(number_format($collected_rent, 2, ',', '.')); ?></div>
+            <div style="font-size:11px; color:#64748b; margin-top:4px; font-weight:500;"><?php esc_html_e('Previsto:', 'hostpn'); ?> € <?php echo esc_html(number_format($expected_rent, 2, ',', '.')); ?></div>
+          </div>
+
+          <div style="background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+            <div style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; letter-spacing:0.5px;"><?php esc_html_e('Fianzas Custodiadas', 'hostpn'); ?></div>
+            <div style="font-size:20px; font-weight:700; color:#2563eb; margin-top:4px;">€ <?php echo esc_html(number_format($collected_dep, 2, ',', '.')); ?></div>
+            <div style="font-size:11px; color:#64748b; margin-top:4px; font-weight:500;"><?php esc_html_e('Previsto:', 'hostpn'); ?> € <?php echo esc_html(number_format($expected_dep, 2, ',', '.')); ?></div>
+          </div>
+
+          <div style="background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+            <div style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; letter-spacing:0.5px;"><?php esc_html_e('Gastos Totales', 'hostpn'); ?></div>
+            <div style="font-size:20px; font-weight:700; color:#dc2626; margin-top:4px;">€ <?php echo esc_html(number_format($total_expenses, 2, ',', '.')); ?></div>
+          </div>
+
+          <div style="background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+            <div style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600; letter-spacing:0.5px;"><?php esc_html_e('Beneficio Neto', 'hostpn'); ?></div>
+            <div style="font-size:20px; font-weight:700; color:<?php echo ($net_income >= 0) ? '#16a34a' : '#dc2626'; ?>; margin-top:4px;">€ <?php echo esc_html(number_format($net_income, 2, ',', '.')); ?></div>
+          </div>
+        </div>
+
+        <!-- Historical Evolution Chart Canvas -->
+        <?php if (!empty($chart_months)): ?>
+          <div class="hostpn-fin-chart-wrapper" style="margin-bottom:24px; padding:20px; background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; color:#0f172a; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+            <div style="font-size:12px; font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:14px;">
+              <span><?php esc_html_e('Evolución de Ingresos Mensuales', 'hostpn'); ?></span>
+            </div>
+            <div style="position:relative; height:200px; width:100%;">
+              <canvas id="hostpn-financial-chart-canvas"></canvas>
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <!-- Room Financial Details Table -->
+        <div style="margin-bottom:28px;">
+          <h4 style="margin:0 0 14px; font-size:14px; font-weight:700; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px;">
+            <?php esc_html_e('Estado Financiero de Habitaciones', 'hostpn'); ?>
+          </h4>
+          <?php if (empty($rooms)): ?>
+            <p class="hostpn-mgmt-empty"><?php esc_html_e('No financial data available.', 'hostpn'); ?></p>
+          <?php else: ?>
+            <table class="hostpn-mgmt-inv-table" style="width:100%; border-collapse:collapse; font-size:13px; background:#ffffff; color:#0f172a; border:1px solid #e2e8f0; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+              <thead>
+                <tr style="background:#f8fafc; color:#475569; border-bottom:1px solid #e2e8f0; font-size:12px; text-transform:uppercase;">
+                  <th style="padding:12px 14px; text-align:left; font-weight:600;"><?php esc_html_e('Habitación', 'hostpn'); ?></th>
+                  <th style="padding:12px 14px; text-align:left; font-weight:600;"><?php esc_html_e('Huésped Actual', 'hostpn'); ?></th>
+                  <th style="padding:12px 14px; text-align:left; font-weight:600;"><?php esc_html_e('Fianza', 'hostpn'); ?></th>
+                  <th style="padding:12px 14px; text-align:left; font-weight:600;"><?php esc_html_e('Renta Mensual', 'hostpn'); ?></th>
+                  <th style="padding:12px 14px; text-align:center; font-weight:600;"><?php esc_html_e('Acciones / Historial', 'hostpn'); ?></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($rooms as $r): ?>
+                  <?php
+                  $room_name = sprintf(__('Habitación %s', 'hostpn'), $r['room_number']);
+                  $payments = isset($r['payments_log']) ? $r['payments_log'] : [];
+
+                  $dep_paid = isset($r['deposit_paid_amount']) ? floatval($r['deposit_paid_amount']) : 0.0;
+                  $dep_exp  = floatval($r['deposit_amount']);
+
+                  $rent_paid = isset($r['rent_paid_amount']) ? floatval($r['rent_paid_amount']) : 0.0;
+                  $rent_exp  = floatval($r['rent_amount']);
+                  ?>
+                  <tr style="border-bottom:1px solid #f1f5f9;">
+                    <td style="padding:12px 14px; font-weight:600; color:#0f172a; vertical-align:top;"><?php echo esc_html($room_name); ?></td>
+                    <td style="padding:12px 14px; vertical-align:top; color:#0f172a;">
+                      <?php if ($r['is_occupied']): ?>
+                        <strong style="color:#0f172a;"><?php echo esc_html($r['guest_name']); ?></strong>
+                      <?php else: ?>
+                        <span style="color:#94a3b8; font-style:italic;"><?php esc_html_e('Disponible', 'hostpn'); ?></span>
+                      <?php endif; ?>
+                    </td>
+                    <td class="hostpn-fin-deposit-cell">
+                      <?php
+                      // Get deposit payment dates
+                      $dep_payment_dates = [];
+                      foreach ($payments as $pay) {
+                        if (isset($pay['payment_type']) && $pay['payment_type'] === 'deposit') {
+                          $dep_payment_dates[] = isset($pay['payment_date']) ? $pay['payment_date'] : (isset($pay['date']) ? $pay['date'] : '');
+                        }
+                      }
+                      $dep_last_payment_date = !empty($dep_payment_dates) ? max($dep_payment_dates) : '';
+                      $dep_pending = $dep_exp - $dep_paid;
+
+                      ob_start();
+                      if ($dep_exp > 0 && $dep_paid >= $dep_exp) {
+                        $dep_title = sprintf(__('Fianza custodiada completada: € %s', 'hostpn'), number_format($dep_paid, 2, ',', '.'));
+                        if (!empty($dep_last_payment_date)) {
+                          $dep_title .= sprintf(__(' | Fecha de pago: %s', 'hostpn'), $dep_last_payment_date);
+                        }
+                        ?>
+                        <div class="hostpn-fin-status-wrapper">
+                          <strong class="hostpn-fin-amount">€ <?php echo esc_html(number_format($dep_exp, 2, ',', '.')); ?></strong>
+                          <i class="material-icons-outlined hostpn-tooltip hostpn-fin-icon-paid" title="<?php echo esc_attr($dep_title); ?>">check_circle</i>
+                        </div>
+                        <?php
+                      } elseif ($dep_paid > 0) {
+                        $dep_title = sprintf(__('Fianza parcial: € %s de € %s', 'hostpn'), number_format($dep_paid, 2, ',', '.'), number_format($dep_exp, 2, ',', '.'));
+                        $dep_title .= sprintf(__(' | Pendiente: € %s', 'hostpn'), number_format($dep_pending, 2, ',', '.'));
+                        if (!empty($dep_last_payment_date)) {
+                          $dep_title .= sprintf(__(' | Último pago: %s', 'hostpn'), $dep_last_payment_date);
+                        }
+                        ?>
+                        <div class="hostpn-fin-status-wrapper">
+                          <strong class="hostpn-fin-amount">€ <?php echo esc_html(number_format($dep_exp, 2, ',', '.')); ?></strong>
+                          <i class="material-icons-outlined hostpn-tooltip hostpn-fin-icon-partial" title="<?php echo esc_attr($dep_title); ?>">timelapse</i>
+                        </div>
+                        <?php
+                      } else {
+                        $dep_title = sprintf(__('Fianza pendiente: € %s', 'hostpn'), number_format($dep_pending, 2, ',', '.'));
+                        ?>
+                        <div class="hostpn-fin-status-wrapper">
+                          <strong class="hostpn-fin-amount">€ <?php echo esc_html(number_format($dep_exp, 2, ',', '.')); ?></strong>
+                          <i class="material-icons-outlined hostpn-tooltip hostpn-fin-icon-pending" title="<?php echo esc_attr($dep_title); ?>">error_outline</i>
+                        </div>
+                        <?php
+                      }
+                      echo ob_get_clean();
+                      ?>
+                    </td>
+                    <td class="hostpn-fin-rent-cell">
+                      <?php
+                      // Get current month key and rent payment info
+                      $curr_month_key = date('Y_m');
+                      $rent_payment_dates = [];
+                      foreach ($payments as $pay) {
+                        if (isset($pay['payment_type']) && $pay['payment_type'] === 'rent') {
+                          $p_mkey = isset($pay['month_key']) ? $pay['month_key'] : (isset($pay['payment_date']) ? date('Y_m', strtotime($pay['payment_date'])) : '');
+                          if ($p_mkey === $curr_month_key) {
+                            $rent_payment_dates[] = isset($pay['payment_date']) ? $pay['payment_date'] : (isset($pay['date']) ? $pay['date'] : '');
+                          }
+                        }
+                      }
+                      $rent_last_payment_date = !empty($rent_payment_dates) ? max($rent_payment_dates) : '';
+                      $rent_pending = $rent_exp - $rent_paid;
+
+                      // Check for overdue months
+                      $start_date = !empty($r['start_date']) ? $r['start_date'] : '';
+                      $overdue_months = [];
+                      if (!empty($start_date) && $r['is_occupied']) {
+                        $start_month = new DateTime($start_date);
+                        $start_month->modify('first day of this month');
+                        $current_month = new DateTime();
+                        $current_month->modify('first day of this month');
+
+                        while ($start_month < $current_month) {
+                          $check_month_key = $start_month->format('Y_m');
+                          $month_paid = 0.0;
+                          foreach ($payments as $pay) {
+                            if (isset($pay['payment_type']) && $pay['payment_type'] === 'rent') {
+                              $p_mkey = isset($pay['month_key']) ? $pay['month_key'] : (isset($pay['payment_date']) ? date('Y_m', strtotime($pay['payment_date'])) : '');
+                              if ($p_mkey === $check_month_key) {
+                                $month_paid += floatval(isset($pay['amount']) ? $pay['amount'] : 0);
+                              }
+                            }
+                          }
+                          if ($month_paid < $rent_exp) {
+                            $overdue_months[] = [
+                              'month' => $start_month->format('Y-m'),
+                              'pending' => $rent_exp - $month_paid
+                            ];
+                          }
+                          $start_month->modify('+1 month');
+                        }
+                      }
+
+                      ob_start();
+                      if ($rent_exp > 0 && $rent_paid >= $rent_exp) {
+                        $rent_title = sprintf(__('Cobrado este mes: € %s', 'hostpn'), number_format($rent_paid, 2, ',', '.'));
+                        if (!empty($rent_last_payment_date)) {
+                          $rent_title .= sprintf(__(' | Fecha de pago: %s', 'hostpn'), $rent_last_payment_date);
+                        }
+                        if (!empty($overdue_months)) {
+                          $rent_title .= __(' | Meses atrasados: ', 'hostpn');
+                          $overdue_list = [];
+                          foreach ($overdue_months as $om) {
+                            $overdue_list[] = sprintf('%s (€ %s)', $om['month'], number_format($om['pending'], 2, ',', '.'));
+                          }
+                          $rent_title .= implode(', ', $overdue_list);
+                        }
+                        ?>
+                        <div class="hostpn-fin-status-wrapper">
+                          <strong class="hostpn-fin-amount">€ <?php echo esc_html(number_format($rent_exp, 2, ',', '.')); ?></strong>
+                          <i class="material-icons-outlined hostpn-tooltip hostpn-fin-icon-paid" title="<?php echo esc_attr($rent_title); ?>">check_circle</i>
+                        </div>
+                        <?php
+                      } elseif ($rent_paid > 0) {
+                        $rent_title = sprintf(__('Pago parcial este mes: € %s de € %s', 'hostpn'), number_format($rent_paid, 2, ',', '.'), number_format($rent_exp, 2, ',', '.'));
+                        $rent_title .= sprintf(__(' | Pendiente: € %s', 'hostpn'), number_format($rent_pending, 2, ',', '.'));
+                        if (!empty($rent_last_payment_date)) {
+                          $rent_title .= sprintf(__(' | Último pago: %s', 'hostpn'), $rent_last_payment_date);
+                        }
+                        if (!empty($overdue_months)) {
+                          $rent_title .= __(' | Meses atrasados: ', 'hostpn');
+                          $overdue_list = [];
+                          foreach ($overdue_months as $om) {
+                            $overdue_list[] = sprintf('%s (€ %s)', $om['month'], number_format($om['pending'], 2, ',', '.'));
+                          }
+                          $rent_title .= implode(', ', $overdue_list);
+                        }
+                        ?>
+                        <div class="hostpn-fin-status-wrapper">
+                          <strong class="hostpn-fin-amount">€ <?php echo esc_html(number_format($rent_exp, 2, ',', '.')); ?></strong>
+                          <i class="material-icons-outlined hostpn-tooltip hostpn-fin-icon-partial" title="<?php echo esc_attr($rent_title); ?>">timelapse</i>
+                        </div>
+                        <?php
+                      } else {
+                        $rent_title = sprintf(__('Pendiente este mes: € %s', 'hostpn'), number_format($rent_pending, 2, ',', '.'));
+                        if (!empty($overdue_months)) {
+                          $rent_title .= __(' | Meses atrasados: ', 'hostpn');
+                          $overdue_list = [];
+                          foreach ($overdue_months as $om) {
+                            $overdue_list[] = sprintf('%s (€ %s)', $om['month'], number_format($om['pending'], 2, ',', '.'));
+                          }
+                          $rent_title .= implode(', ', $overdue_list);
+                        }
+                        ?>
+                        <div class="hostpn-fin-status-wrapper">
+                          <strong class="hostpn-fin-amount">€ <?php echo esc_html(number_format($rent_exp, 2, ',', '.')); ?></strong>
+                          <i class="material-icons-outlined hostpn-tooltip hostpn-fin-icon-pending" title="<?php echo esc_attr($rent_title); ?>">error_outline</i>
+                        </div>
+                        <?php
+                      }
+                      echo ob_get_clean();
+                      ?>
+                    </td>
+                    <td style="padding:12px 14px; text-align:center; vertical-align:top;">
+                      <?php if ($r['is_occupied']): ?>
+                        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; margin-bottom:6px;">
+                          <a href="#" class="hostpn-add-rent-btn" data-room-id="<?php echo esc_attr($r['room_id']); ?>" data-rent="<?php echo esc_attr($r['rent_amount']); ?>" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none;">
+                            + <?php esc_html_e('Pago Mensual', 'hostpn'); ?>
+                          </a>
+                          <a href="#" class="hostpn-add-deposit-btn" data-room-id="<?php echo esc_attr($r['room_id']); ?>" data-deposit="<?php echo esc_attr($r['deposit_amount']); ?>" style="color:#2563eb; font-weight:600; font-size:12px; text-decoration:none;">
+                            + <?php esc_html_e('Pago Fianza', 'hostpn'); ?>
+                          </a>
+                        </div>
+                      <?php endif; ?>
+                      <a href="#" class="hostpn-toggle-payments-btn" data-room-id="<?php echo esc_attr($r['room_id']); ?>" style="color:#475569; font-weight:600; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:2px;">
+                        <i class="material-icons-outlined" style="font-size:16px; vertical-align:middle;">expand_more</i> <?php echo esc_html(sprintf(__('Historial (%d)', 'hostpn'), count($payments))); ?>
+                      </a>
+                    </td>
+                  </tr>
+
+                  <!-- Collapsible payment history subrow -->
+                  <tr id="hostpn-payments-subrow-<?php echo esc_attr($r['room_id']); ?>" class="hostpn-payments-subrow" style="display:none; background:#f8fafc; border-bottom:1px solid #e2e8f0;">
+                    <td colspan="5" style="padding:14px 18px;">
+                      <div style="font-size:12px; font-weight:700; color:#334155; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <span><?php echo esc_html(sprintf(__('Historial de Pagos Registrados - %s', 'hostpn'), $room_name)); ?></span>
+                        <?php if ($r['is_occupied']): ?>
+                          <a href="#" class="hostpn-add-payment-btn" data-room-id="<?php echo esc_attr($r['room_id']); ?>" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none;">
+                            + <?php esc_html_e('Añadir Otro Pago', 'hostpn'); ?>
+                          </a>
+                        <?php endif; ?>
+                      </div>
+
+                      <?php if (empty($payments)): ?>
+                        <div style="font-size:12px; color:#64748b; font-style:italic;"><?php esc_html_e('No hay pagos registrados para esta habitación.', 'hostpn'); ?></div>
+                      <?php else: ?>
+                        <table style="width:100%; border-collapse:collapse; font-size:12px; color:#334155; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">
+                          <thead>
+                            <tr style="border-bottom:1px solid #e2e8f0; background:#f1f5f9; color:#475569; text-align:left;">
+                              <th style="padding:8px 10px; font-weight:600;"><?php esc_html_e('Fecha', 'hostpn'); ?></th>
+                              <th style="padding:8px 10px; font-weight:600;"><?php esc_html_e('Tipo', 'hostpn'); ?></th>
+                              <th style="padding:8px 10px; font-weight:600;"><?php esc_html_e('Mes', 'hostpn'); ?></th>
+                              <th style="padding:8px 10px; font-weight:600;"><?php esc_html_e('Importe', 'hostpn'); ?></th>
+                              <th style="padding:8px 10px; font-weight:600;"><?php esc_html_e('Notas', 'hostpn'); ?></th>
+                              <th style="padding:8px 10px; text-align:center; font-weight:600;"><?php esc_html_e('Acciones', 'hostpn'); ?></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach ($payments as $pay): ?>
+                              <?php
+                              $type_label = ($pay['payment_type'] === 'deposit') ? __('Fianza', 'hostpn') : (($pay['payment_type'] === 'rent') ? __('Renta Mensual', 'hostpn') : __('Otro', 'hostpn'));
+                              $pay_json = wp_json_encode($pay);
+                              ?>
+                              <tr style="border-bottom:1px solid #f1f5f9;">
+                                <td style="padding:8px 10px; color:#0f172a; font-weight:500;"><?php echo esc_html(isset($pay['payment_date']) ? $pay['payment_date'] : (isset($pay['date']) ? $pay['date'] : '--')); ?></td>
+                                <td style="padding:8px 10px;"><span style="background:#f1f5f9; color:#334155; padding:2px 8px; border-radius:4px; font-size:11px; border:1px solid #e2e8f0; font-weight:500;"><?php echo esc_html($type_label); ?></span></td>
+                                <td style="padding:8px 10px; color:#475569;"><?php echo esc_html(isset($pay['month_key']) ? $pay['month_key'] : '--'); ?></td>
+                                <td style="padding:8px 10px; color:#0284c7; font-weight:700;">€ <?php echo esc_html(number_format(floatval($pay['amount']), 2, ',', '.')); ?></td>
+                                <td style="padding:8px 10px; font-style:italic; color:#64748b;"><?php echo esc_html(isset($pay['notes']) ? $pay['notes'] : '--'); ?></td>
+                                <td style="padding:8px 10px; text-align:center;">
+                                  <a href="#" class="hostpn-edit-payment-btn hostpn-tooltip" title="<?php esc_attr_e('Editar pago', 'hostpn'); ?>" data-room-id="<?php echo esc_attr($r['room_id']); ?>" data-payment="<?php echo esc_attr($pay_json); ?>" style="text-decoration:none; margin-right:8px; display:inline-block;">
+                                    <i class="material-icons-outlined" style="font-size:16px; color:#475569; vertical-align:middle;">edit</i>
+                                  </a>
+                                  <a href="#" class="hostpn-delete-payment-btn hostpn-tooltip" title="<?php esc_attr_e('Eliminar pago', 'hostpn'); ?>" data-room-id="<?php echo esc_attr($r['room_id']); ?>" data-payment-id="<?php echo esc_attr($pay['id']); ?>" style="text-decoration:none; display:inline-block;">
+                                    <i class="material-icons-outlined" style="font-size:16px; color:#dc2626; vertical-align:middle;">delete</i>
+                                  </a>
+                                </td>
+                              </tr>
+                            <?php endforeach; ?>
+                          </tbody>
+                        </table>
+                      <?php endif; ?>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          <?php endif; ?>
+        </div>
+
+        <!-- Expenses ("Gastos del Alojamiento") Section -->
+        <div style="margin-top:28px; background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:20px; color:#0f172a; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+            <div>
+              <h4 style="margin:0; font-size:14px; font-weight:700; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px;">
+                <?php esc_html_e('Gastos del Alojamiento', 'hostpn'); ?>
+              </h4>
+              <span style="font-size:12px; color:#64748b;"><?php esc_html_e('Registro de suministros, mantenimientos, reparaciones y otros costes.', 'hostpn'); ?></span>
+            </div>
+            <a href="#" class="hostpn-add-expense-btn" data-accom-id="<?php echo esc_attr($accommodation_id); ?>" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none;">
+              + <?php esc_html_e('Añadir Gasto', 'hostpn'); ?>
+            </a>
+          </div>
+
+          <?php if (empty($expenses)): ?>
+            <div style="font-size:13px; color:#64748b; font-style:italic; padding:12px 0;"><?php esc_html_e('No hay gastos registrados en este alojamiento.', 'hostpn'); ?></div>
+          <?php else: ?>
+            <table style="width:100%; border-collapse:collapse; font-size:12px; color:#334155; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">
+              <thead>
+                <tr style="background:#f8fafc; color:#475569; text-align:left; border-bottom:1px solid #e2e8f0; font-size:11px; text-transform:uppercase;">
+                  <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Fecha', 'hostpn'); ?></th>
+                  <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Proveedor', 'hostpn'); ?></th>
+                  <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Categoría / Concepto', 'hostpn'); ?></th>
+                  <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Importe', 'hostpn'); ?></th>
+                  <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Fichero Adjunto', 'hostpn'); ?></th>
+                  <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Notas', 'hostpn'); ?></th>
+                  <th style="padding:10px 12px; text-align:center; font-weight:600;"><?php esc_html_e('Acciones', 'hostpn'); ?></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($expenses as $exp): ?>
+                  <?php $exp_json = wp_json_encode($exp); ?>
+                  <tr style="border-bottom:1px solid #f1f5f9;">
+                    <td style="padding:10px 12px; font-weight:600; color:#0f172a;"><?php echo esc_html(isset($exp['date']) ? $exp['date'] : '--'); ?></td>
+                    <td style="padding:10px 12px; color:#0f172a;"><?php echo esc_html(isset($exp['provider']) ? $exp['provider'] : '--'); ?></td>
+                    <td style="padding:10px 12px;"><span style="background:#f1f5f9; color:#334155; padding:2px 8px; border-radius:4px; font-size:11px; border:1px solid #e2e8f0; font-weight:500;"><?php echo esc_html(isset($exp['category']) ? $exp['category'] : 'General'); ?></span></td>
+                    <td style="padding:10px 12px; color:#dc2626; font-weight:700;">€ <?php echo esc_html(number_format(floatval($exp['amount']), 2, ',', '.')); ?></td>
+                    <td style="padding:10px 12px;">
+                      <?php if (!empty($exp['attachment_filename'])): ?>
+                        <?php $file_url = add_query_arg(['action' => 'hostpn_expense_download_attachment', 'accommodation_id' => $accommodation_id, 'filename' => urlencode($exp['attachment_filename']), 'hostpn_ajax_nonce' => $nonce], $ajax_url); ?>
+                        <a href="<?php echo esc_url($file_url); ?>" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:600;">
+                          <i class="material-icons-outlined" style="font-size:14px; vertical-align:middle;">attach_file</i> <?php echo esc_html(!empty($exp['attachment_original_name']) ? $exp['attachment_original_name'] : $exp['attachment_filename']); ?>
+                        </a>
+                      <?php else: ?>
+                        <span style="color:#94a3b8; font-style:italic;"><?php esc_html_e('Sin adjunto', 'hostpn'); ?></span>
+                      <?php endif; ?>
+                    </td>
+                    <td style="padding:10px 12px; font-style:italic; color:#64748b;"><?php echo esc_html(isset($exp['notes']) ? $exp['notes'] : '--'); ?></td>
+                    <td style="padding:10px 12px; text-align:center;">
+                      <a href="#" class="hostpn-edit-expense-btn hostpn-tooltip" title="<?php esc_attr_e('Editar gasto', 'hostpn'); ?>" data-accom-id="<?php echo esc_attr($accommodation_id); ?>" data-expense="<?php echo esc_attr($exp_json); ?>" style="text-decoration:none; margin-right:8px; display:inline-block;">
+                        <i class="material-icons-outlined" style="font-size:16px; color:#475569; vertical-align:middle;">edit</i>
+                      </a>
+                      <a href="#" class="hostpn-delete-expense-btn hostpn-tooltip" title="<?php esc_attr_e('Eliminar gasto', 'hostpn'); ?>" data-accom-id="<?php echo esc_attr($accommodation_id); ?>" data-expense-id="<?php echo esc_attr($exp['id']); ?>" style="text-decoration:none; display:inline-block;">
+                        <i class="material-icons-outlined" style="font-size:16px; color:#dc2626; vertical-align:middle;">delete</i>
+                      </a>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          <?php endif; ?>
+        </div>
+
+        <!-- Bottom CSV Import Section -->
+        <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+          <div>
+            <strong style="display:block; font-size:13px; color:#0f172a;"><?php esc_html_e('Importación masiva desde CSV (Booking.com / Airbnb)', 'hostpn'); ?></strong>
+            <span style="font-size:11px; color:#64748b;"><?php esc_html_e('Sube extractos o facturas de Booking o Airbnb para automatizar el registro de cobranzas.', 'hostpn'); ?></span>
+          </div>
+          <a href="#" class="hostpn-financial-import-btn" data-accommodation-id="<?php echo esc_attr($accommodation_id); ?>" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+            <i class="material-icons-outlined hostpn-vertical-align-middle" style="font-size:16px;">upload_file</i>
+            <span class="hostpn-vertical-align-middle"><?php esc_html_e('Importar Extracto CSV', 'hostpn'); ?></span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Script to render Chart.js on page load in Admin if chart_months present -->
+    <script>
+    (function($) {
+      $(document).ready(function() {
+        if (window.Chart && <?php echo wp_json_encode(!empty($chart_months)); ?>) {
+          var months = <?php echo wp_json_encode($chart_months); ?>;
+          var labels = [];
+          var expectedData = [];
+          var collectedData = [];
+          for (var i = 0; i < months.length; i++) {
+            labels.push(months[i].label);
+            expectedData.push(months[i].expected || 0);
+            collectedData.push(months[i].collected || 0);
+          }
+          var canvas = document.getElementById('hostpn-financial-chart-canvas');
+          if (canvas) {
+            if (window.hostpnFinChartInstance) {
+              window.hostpnFinChartInstance.destroy();
+            }
+            window.hostpnFinChartInstance = new window.Chart(canvas, {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: [
+                  { label: 'Cobrado Real', data: collectedData, backgroundColor: '#0284c7', borderRadius: 4 },
+                  { label: 'Previsto', data: expectedData, backgroundColor: '#cbd5e1', borderRadius: 4 }
+                ]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: { labels: { color: '#334155', font: { size: 11, weight: '600' } } },
+                  tooltip: {
+                    callbacks: {
+                      label: function(ctx) { return ctx.dataset.label + ': €' + ctx.raw.toLocaleString('es-ES', { minimumFractionDigits: 2 }); }
+                    }
+                  }
+                },
+                scales: {
+                  x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#f1f5f9' } },
+                  y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#f1f5f9' } }
+                }
+              }
+            });
+          }
+        }
+      });
+    })(jQuery);
+    </script>
+    <?php
+    return ob_get_clean();
+  }
+
+  /**
+   * Get financial management fields for separate metabox.
    */
   public static function hostpn_financial_get_fields() {
     $hostpn_fields = [];
+    $accommodation_id = get_the_ID();
 
-    // Import button
-    $hostpn_fields['hostpn_financial_import_btn'] = [
-      'id' => 'hostpn_financial_import_btn',
-      'input' => 'html',
-      'html_content' => '<button type="button" class="hostpn-btn hostpn-financial-import-btn hostpn-mb-20" data-accommodation-id="' . get_the_ID() . '">
-        <i class="material-icons-outlined hostpn-vertical-align-middle">upload_file</i>
-        <span class="hostpn-vertical-align-middle">' . esc_html(__('Import CSV', 'hostpn')) . '</span>
-      </button>',
-    ];
-
-    // Dashboard container (loaded via AJAX)
-    ob_start();
-    HOSTPN_Data::hostpn_popup_loader();
-    $loader_html = ob_get_clean();
+    $html_content = self::hostpn_render_admin_financial_dashboard_content($accommodation_id);
 
     $hostpn_fields['hostpn_financial_dashboard'] = [
       'id' => 'hostpn_financial_dashboard',
       'input' => 'html',
-      'html_content' => '<div id="hostpn-financial-dashboard" data-accommodation-id="' . get_the_ID() . '">' . $loader_html . '</div>',
+      'html_content' => '<div id="hostpn-financial-dashboard" data-accommodation-id="' . esc_attr($accommodation_id) . '">' . $html_content . '</div>',
     ];
 
     return $hostpn_fields;
@@ -740,6 +1358,8 @@ class HOSTPN_Post_Type_Accommodation {
         'id' => 'hostpn_contract_inv_' . $cat_key,
         'input' => 'html_multi',
         'class' => 'hostpn-input hostpn-width-100-percent hostpn-contract-inventory-items',
+        'parent' => 'hostpn_contract_inventory_enabled',
+        'parent_option' => 'on',
         'html_multi_fields' => [
           [
             'id' => 'hostpn_contract_inv_' . $cat_key . '_name',
@@ -915,6 +1535,7 @@ class HOSTPN_Post_Type_Accommodation {
    * @since    1.0.0
    */
   public function hostpn_accommodation_meta_box_function($post) {
+    self::hostpn_render_accommodation_rooms_summary_block($post->ID);
     foreach (self::hostpn_accommodation_get_fields_meta() as $hostpn_field) {
       if (!is_null(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $post->ID))) {
         echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $post->ID), HOSTPN_KSES);
@@ -926,11 +1547,7 @@ class HOSTPN_Post_Type_Accommodation {
    * Renders Financial Management metabox contents.
    */
   public function hostpn_financial_meta_box_function($post) {
-    foreach (self::hostpn_financial_get_fields() as $hostpn_field) {
-      if (!is_null(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $post->ID))) {
-        echo wp_kses(HOSTPN_Forms::hostpn_input_wrapper_builder($hostpn_field, 'post', $post->ID), HOSTPN_KSES);
-      }
-    }
+    echo self::hostpn_render_admin_financial_dashboard_content($post->ID);
   }
 
   /**
@@ -2060,5 +2677,957 @@ class HOSTPN_Post_Type_Accommodation {
       'debug'            => $debug,
     ]);
     wp_die();
+  }
+
+  /**
+   * Get list of occupied rooms for an accommodation (rooms with assigned guest).
+   *
+   * @param int $accommodation_id
+   * @return array
+   */
+  public static function hostpn_get_occupied_rooms($accommodation_id) {
+    $rooms = HOSTPN_Post_Type_Room::hostpn_get_rooms_by_accommodation($accommodation_id);
+    $occupied_rooms = [];
+
+    foreach ($rooms as $room_id) {
+      $guest_id = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+      if (!empty($guest_id)) {
+        $room_number = get_post_meta($room_id, 'hostpn_room_number', true);
+        $room_title = !empty($room_number) ? sprintf(__('Room %s', 'hostpn'), $room_number) : get_the_title($room_id);
+        
+        $guest_name = get_the_title($guest_id);
+        $guest_user_id = get_post_meta($guest_id, 'hostpn_guest_user_id', true);
+
+        $occupied_rooms[] = [
+          'room_id'       => $room_id,
+          'room_label'    => $room_title,
+          'room_number'   => $room_number,
+          'guest_id'      => $guest_id,
+          'guest_name'    => $guest_name,
+          'guest_user_id' => intval($guest_user_id),
+        ];
+      }
+    }
+
+    $custom_order = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_room_order', true);
+    if (is_array($custom_order) && !empty($custom_order)) {
+      usort($occupied_rooms, function($a, $b) use ($custom_order) {
+        $pos_a = array_search($a['room_id'], $custom_order);
+        $pos_b = array_search($b['room_id'], $custom_order);
+        if ($pos_a === false) $pos_a = 9999;
+        if ($pos_b === false) $pos_b = 9999;
+        return $pos_a - $pos_b;
+      });
+    }
+
+    return $occupied_rooms;
+  }
+
+  /**
+   * Save custom room rotation order for shared cleaning and reset turn index to 0.
+   *
+   * @param int   $accommodation_id
+   * @param array $room_order Array of room IDs in desired rotation order.
+   * @return bool
+   */
+  public static function hostpn_save_shared_cleaning_queue_order($accommodation_id, $room_order = []) {
+    if (!is_array($room_order)) {
+      $room_order = [];
+    }
+    $clean_order = array_map('intval', $room_order);
+    update_post_meta($accommodation_id, 'hostpn_shared_cleaning_room_order', $clean_order);
+    update_post_meta($accommodation_id, 'hostpn_shared_cleaning_turn_index', 0);
+    return true;
+  }
+
+  /**
+   * Get shared cleaning configuration, rotation status, comments, and history.
+   *
+   * @param int $accommodation_id
+   * @return array
+   */
+  public static function hostpn_get_shared_cleaning_info($accommodation_id) {
+    $system = get_post_meta($accommodation_id, 'hostpn_cleaning_system', true);
+    if (empty($system)) {
+      $system = 'punctual';
+    }
+    $frequency_days = intval(get_post_meta($accommodation_id, 'hostpn_shared_cleaning_frequency_days', true));
+    if ($frequency_days <= 0) {
+      $frequency_days = 7;
+    }
+    $notice_days = intval(get_post_meta($accommodation_id, 'hostpn_shared_cleaning_notice_days', true));
+    if ($notice_days <= 0) {
+      $notice_days = 2;
+    }
+    $next_date = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_next_date', true);
+    if (empty($next_date)) {
+      $next_date = date('Y-m-d', strtotime('+' . $frequency_days . ' days'));
+    }
+    $stays = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_stays', true);
+    if (empty($stays)) {
+      $stays = __('Kitchen, Shared Bathroom, Living Room, Hallway', 'hostpn');
+    }
+    $turn_index = intval(get_post_meta($accommodation_id, 'hostpn_shared_cleaning_turn_index', true));
+
+    $occupied_rooms = self::hostpn_get_occupied_rooms($accommodation_id);
+    $total_occ = count($occupied_rooms);
+    if (!empty($occupied_rooms) && !empty($next_date)) {
+      $next_ts = strtotime($next_date);
+      foreach ($occupied_rooms as $idx => &$room_info) {
+        $steps = ($idx - $turn_index + $total_occ) % $total_occ;
+        $est_ts = strtotime('+' . ($steps * $frequency_days) . ' days', $next_ts);
+        $room_info['estimated_next_date'] = date('Y-m-d', $est_ts);
+      }
+      unset($room_info);
+    }
+
+    if (empty($occupied_rooms)) {
+      $current_turn = null;
+    } else {
+      if ($turn_index >= count($occupied_rooms)) {
+        $turn_index = 0;
+      }
+      $current_turn = $occupied_rooms[$turn_index];
+    }
+
+    $comments = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_comments', true);
+    if (!is_array($comments)) {
+      $comments = [];
+    }
+
+    $history = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_history', true);
+    if (!is_array($history)) {
+      $history = [];
+    }
+
+    $instructions = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_instructions', true);
+
+    return [
+      'system'          => $system,
+      'frequency_days'  => $frequency_days,
+      'notice_days'     => $notice_days,
+      'next_date'       => $next_date,
+      'stays'           => $stays,
+      'turn_index'      => $turn_index,
+      'occupied_rooms'  => $occupied_rooms,
+      'current_turn'    => $current_turn,
+      'instructions'    => $instructions,
+      'comments'        => $comments,
+      'history'         => $history,
+    ];
+  }
+
+  /**
+   * Complete shared cleaning turn, record history, advance turn and next date.
+   *
+   * @param int    $accommodation_id
+   * @param string $notes
+   * @param int    $user_id
+   * @return array
+   */
+  public static function hostpn_complete_shared_cleaning_turn($accommodation_id, $notes = '', $user_id = 0) {
+    $info = self::hostpn_get_shared_cleaning_info($accommodation_id);
+    $occupied_rooms = $info['occupied_rooms'];
+    $current_turn = $info['current_turn'];
+
+    $history_item = [
+      'date'         => current_time('mysql'),
+      'room_id'      => $current_turn ? $current_turn['room_id'] : 0,
+      'room_label'   => $current_turn ? $current_turn['room_label'] : __('General', 'hostpn'),
+      'guest_name'   => $current_turn ? $current_turn['guest_name'] : '',
+      'completed_by' => $user_id ? get_userdata($user_id)->display_name : __('System', 'hostpn'),
+      'notes'        => sanitize_textarea_field($notes),
+    ];
+
+    $history = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_history', true);
+    if (!is_array($history)) {
+      $history = [];
+    }
+    array_unshift($history, $history_item);
+    if (count($history) > 50) {
+      $history = array_slice($history, 0, 50);
+    }
+    update_post_meta($accommodation_id, 'hostpn_shared_cleaning_history', $history);
+
+    $turn_index = $info['turn_index'];
+    if (!empty($occupied_rooms)) {
+      $turn_index = ($turn_index + 1) % count($occupied_rooms);
+    } else {
+      $turn_index = 0;
+    }
+    update_post_meta($accommodation_id, 'hostpn_shared_cleaning_turn_index', $turn_index);
+
+    $frequency_days = $info['frequency_days'];
+    $next_date_ts = strtotime($info['next_date']);
+    if ($next_date_ts < time()) {
+      $next_date_ts = time();
+    }
+    $new_next_date = date('Y-m-d', $next_date_ts + ($frequency_days * DAY_IN_SECONDS));
+    update_post_meta($accommodation_id, 'hostpn_shared_cleaning_next_date', $new_next_date);
+
+    delete_post_meta($accommodation_id, 'hostpn_shared_cleaning_reminder_sent_for_date');
+
+    return [
+      'success'        => true,
+      'new_next_date'  => $new_next_date,
+      'new_turn_index' => $turn_index,
+    ];
+  }
+
+  /**
+   * Add a comment to the group shared cleaning timeline.
+   *
+   * @param int    $accommodation_id
+   * @param int    $user_id
+   * @param string $comment_text
+   * @return array|false
+   */
+  public static function hostpn_add_shared_cleaning_comment($accommodation_id, $user_id, $comment_text) {
+    $comment_text = sanitize_textarea_field($comment_text);
+    if (empty($comment_text)) {
+      return false;
+    }
+
+    $user = get_userdata($user_id);
+    $author_name = $user ? $user->display_name : __('Guest', 'hostpn');
+
+    $guest_id = HOSTPN_Post_Type_Contract::hostpn_get_guest_id_for_user($user_id);
+    $room_label = '';
+    if ($guest_id) {
+      $rooms = HOSTPN_Post_Type_Room::hostpn_get_rooms_by_accommodation($accommodation_id);
+      foreach ($rooms as $r_id) {
+        if (intval(get_post_meta($r_id, 'hostpn_room_guest_id', true)) === intval($guest_id)) {
+          $num = get_post_meta($r_id, 'hostpn_room_number', true);
+          $room_label = !empty($num) ? sprintf(__('Room %s', 'hostpn'), $num) : get_the_title($r_id);
+          break;
+        }
+      }
+    }
+
+    $new_comment = [
+      'id'          => uniqid('cm_'),
+      'user_id'     => $user_id,
+      'author_name' => $author_name,
+      'room_label'  => $room_label,
+      'text'        => $comment_text,
+      'date'        => current_time('mysql'),
+    ];
+
+    $comments = get_post_meta($accommodation_id, 'hostpn_shared_cleaning_comments', true);
+    if (!is_array($comments)) {
+      $comments = [];
+    }
+    array_unshift($comments, $new_comment);
+    if (count($comments) > 100) {
+      $comments = array_slice($comments, 0, 100);
+    }
+
+    update_post_meta($accommodation_id, 'hostpn_shared_cleaning_comments', $comments);
+    return $new_comment;
+  }
+
+  /**
+   * Send shared cleaning email reminder to the current turn room's occupant.
+   * Uses MailPN if installed, otherwise wp_mail().
+   *
+   * @param int $accommodation_id
+   * @return bool
+   */
+  public static function hostpn_send_shared_cleaning_reminder($accommodation_id) {
+    $info = self::hostpn_get_shared_cleaning_info($accommodation_id);
+    if ($info['system'] !== 'shared') {
+      return false;
+    }
+
+    $current_turn = $info['current_turn'];
+    if (!$current_turn || empty($current_turn['guest_user_id'])) {
+      return false;
+    }
+
+    $accommodation_title = get_the_title($accommodation_id);
+    $guest_user_id = $current_turn['guest_user_id'];
+    $guest_name    = $current_turn['guest_name'];
+    $room_label    = $current_turn['room_label'];
+    $next_date     = date_i18n(get_option('date_format'), strtotime($info['next_date']));
+    $stays         = $info['stays'];
+
+    $subject = sprintf(__('Shared Cleaning Reminder — %s', 'hostpn'), $accommodation_title);
+
+    $content  = '<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333; line-height: 1.6;">';
+    $content .= '<h2 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px;">' . sprintf(__('Shared Cleaning Reminder — %s', 'hostpn'), esc_html($accommodation_title)) . '</h2>';
+    $content .= '<p>' . sprintf(__('Hello %s,', 'hostpn'), esc_html($guest_name)) . '</p>';
+    $content .= '<p>' . sprintf(__('This is a friendly reminder that your room (%s) is assigned for the upcoming shared cleaning cycle scheduled for <strong>%s</strong>.', 'hostpn'), esc_html($room_label), esc_html($next_date)) . '</p>';
+    $content .= '<div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 15px 0;">';
+    $content .= '<strong>' . __('Stays to clean:', 'hostpn') . '</strong><br>' . esc_html($stays);
+    $content .= '</div>';
+    $content .= '<p>' . __('Please remember to mark the cleaning as completed in the accommodation management portal once finished.', 'hostpn') . '</p>';
+    $content .= '<p style="color: #7f8c8d; font-size: 13px; margin-top: 30px;">' . __('Automated message from accommodation management platform.', 'hostpn') . '</p>';
+    $content .= '</div>';
+
+    $sent = HOSTPN_Notifications::send_notification_to_user($guest_user_id, $subject, $content);
+    if ($sent) {
+      update_post_meta($accommodation_id, 'hostpn_shared_cleaning_reminder_sent_for_date', $info['next_date']);
+    }
+    return $sent;
+  }
+
+  /**
+   * Process daily shared cleaning reminders via WP-Cron.
+   */
+  public static function hostpn_process_shared_cleaning_reminders() {
+    $args = [
+      'post_type'      => 'hostpn_accommodation',
+      'post_status'    => 'publish',
+      'posts_per_page' => -1,
+      'meta_query'     => [
+        [
+          'key'     => 'hostpn_cleaning_system',
+          'value'   => 'shared',
+          'compare' => '=',
+        ],
+      ],
+    ];
+
+    $accommodations = get_posts($args);
+    $today = date('Y-m-d');
+
+    foreach ($accommodations as $accom) {
+      $accom_id = $accom->ID;
+      $info = self::hostpn_get_shared_cleaning_info($accom_id);
+      if (empty($info['next_date'])) {
+        continue;
+      }
+
+      $notice_days = $info['notice_days'];
+      $target_notice_date = date('Y-m-d', strtotime($info['next_date'] . ' -' . $notice_days . ' days'));
+
+      $last_sent_date = get_post_meta($accom_id, 'hostpn_shared_cleaning_reminder_sent_for_date', true);
+
+      if ($today >= $target_notice_date && $today <= $info['next_date'] && $last_sent_date !== $info['next_date']) {
+        self::hostpn_send_shared_cleaning_reminder($accom_id);
+      }
+    }
+  }
+
+  /**
+   * Get guest stay duration info in an accommodation.
+   *
+   * @param int $accommodation_id
+   * @param int $guest_id
+   * @return array
+   */
+  public static function hostpn_get_guest_stay_info($accommodation_id, $guest_id) {
+    if (!$guest_id || !$accommodation_id) {
+      return [
+        'days'               => 0,
+        'formatted_duration' => '0 ' . __('days', 'hostpn'),
+        'start_date'         => '',
+      ];
+    }
+
+    $start_date_str = '';
+
+    // 1. Check contracts for this guest in this accommodation
+    if (class_exists('HOSTPN_Post_Type_Contract')) {
+      $contracts = HOSTPN_Post_Type_Contract::hostpn_get_contracts($guest_id, $accommodation_id);
+      if (!empty($contracts)) {
+        foreach ($contracts as $cid) {
+          $c_start = get_post_meta($cid, 'hostpn_contract_start_date', true);
+          if (!empty($c_start)) {
+            if (empty($start_date_str) || strtotime($c_start) < strtotime($start_date_str)) {
+              $start_date_str = $c_start;
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Check rooms assigned to guest in this accommodation
+    if (empty($start_date_str)) {
+      $rooms = HOSTPN_Post_Type_Room::hostpn_get_rooms_by_accommodation($accommodation_id);
+      foreach ($rooms as $rid) {
+        $r_guest = get_post_meta($rid, 'hostpn_room_guest_id', true);
+        if (intval($r_guest) === intval($guest_id)) {
+          $r_start = get_post_meta($rid, 'hostpn_room_contract_start_date', true);
+          if (!empty($r_start)) {
+            $start_date_str = $r_start;
+            break;
+          }
+        }
+      }
+    }
+
+    // 3. Fallback to guest post meta or post date
+    if (empty($start_date_str)) {
+      $entry = get_post_meta($guest_id, 'hostpn_entry_date', true);
+      if (!empty($entry)) {
+        $start_date_str = $entry;
+      } else {
+        $start_date_str = get_the_date('Y-m-d', $guest_id);
+      }
+    }
+
+    $start_time = !empty($start_date_str) ? strtotime($start_date_str) : time();
+    $now = current_time('timestamp');
+    $diff_seconds = max(0, $now - $start_time);
+    $days = max(1, floor($diff_seconds / DAY_IN_SECONDS));
+
+    $years = floor($days / 365);
+    $rem_days = $days % 365;
+    $months = floor($rem_days / 30);
+    $days_only = $rem_days % 30;
+
+    $parts = [];
+    if ($years > 0) {
+      $parts[] = sprintf(_n('%d year', '%d years', $years, 'hostpn'), $years);
+    }
+    if ($months > 0) {
+      $parts[] = sprintf(_n('%d month', '%d months', $months, 'hostpn'), $months);
+    }
+    if ($days_only > 0 || empty($parts)) {
+      $parts[] = sprintf(_n('%d day', '%d days', $days_only, 'hostpn'), $days_only);
+    }
+    $formatted = implode(', ', $parts);
+
+    return [
+      'days'               => intval($days),
+      'formatted_duration' => $formatted,
+      'start_date'         => $start_date_str,
+    ];
+  }
+
+  /**
+   * Get active promotions list from options.
+   *
+   * @param int $accommodation_id Optional filter for source accommodation.
+   * @return array
+   */
+  public static function hostpn_get_promotions($accommodation_id = 0) {
+    $enabled = get_option('hostpn_promotions_enabled', 'on');
+    if ($enabled !== 'on') {
+      return [];
+    }
+
+    $promos = get_option('hostpn_promotions_data');
+    if (!is_array($promos) || empty($promos)) {
+      // Default 2-year loyalty promotion
+      $promos = [
+        [
+          'id'                      => 'promo_2_years_default',
+          'title'                   => __('2-Year Loyalty Promotion', 'hostpn'),
+          'source_accommodation_id' => 0,
+          'required_days'           => 730,
+          'target_accommodation_name'=> __('Any other accommodation in our group', 'hostpn'),
+          'reward_desc'             => __('1 week free stay', 'hostpn'),
+          'conditions'              => __('Valid upon completing 24 continuous months of stay. Subject to availability with 30 days prior booking notice.', 'hostpn'),
+          'active'                  => '1',
+        ],
+      ];
+    }
+
+    $filtered = [];
+    foreach ($promos as $promo) {
+      $p_active = isset($promo['active']) ? (string)$promo['active'] : '1';
+      if ($p_active !== '1') {
+        continue;
+      }
+
+      $source_id = isset($promo['source_accommodation_id']) ? intval($promo['source_accommodation_id']) : 0;
+      if ($accommodation_id > 0 && $source_id > 0 && $source_id !== intval($accommodation_id)) {
+        continue;
+      }
+
+      $filtered[] = $promo;
+    }
+
+    return $filtered;
+  }
+
+  /**
+   * Get promotions summary for a specific guest and accommodation.
+   *
+   * @param int $accommodation_id
+   * @param int $guest_id
+   * @return array
+   */
+  public static function hostpn_get_guest_promotions_summary($accommodation_id, $guest_id) {
+    $stay_info = self::hostpn_get_guest_stay_info($accommodation_id, $guest_id);
+    $promos = self::hostpn_get_promotions($accommodation_id);
+
+    $processed = [];
+    $primary = null;
+
+    foreach ($promos as $p) {
+      $req_days = max(1, intval(isset($p['required_days']) ? $p['required_days'] : 730));
+      $days_stayed = $stay_info['days'];
+      $rem_days = max(0, $req_days - $days_stayed);
+      $progress = min(100, round(($days_stayed / $req_days) * 100));
+      $unlocked = ($days_stayed >= $req_days);
+
+      // Human-readable remaining time
+      $rem_years = floor($rem_days / 365);
+      $rem_months = floor(($rem_days % 365) / 30);
+      $rem_d_only = ($rem_days % 365) % 30;
+
+      $rem_parts = [];
+      if ($rem_years > 0) {
+        $rem_parts[] = sprintf(_n('%d year', '%d years', $rem_years, 'hostpn'), $rem_years);
+      }
+      if ($rem_months > 0) {
+        $rem_parts[] = sprintf(_n('%d month', '%d months', $rem_months, 'hostpn'), $rem_months);
+      }
+      if ($rem_d_only > 0 || empty($rem_parts)) {
+        $rem_parts[] = sprintf(_n('%d day', '%d days', $rem_d_only, 'hostpn'), $rem_d_only);
+      }
+      $rem_formatted = implode(', ', $rem_parts);
+
+      $item = array_merge($p, [
+        'days_stayed'        => $days_stayed,
+        'required_days'      => $req_days,
+        'days_remaining'     => $rem_days,
+        'rem_formatted'      => $rem_formatted,
+        'progress_percent'   => $progress,
+        'unlocked'           => $unlocked,
+      ]);
+
+      $processed[] = $item;
+
+      if (!$primary || ($unlocked && !$primary['unlocked']) || ($rem_days < $primary['days_remaining'])) {
+        $primary = $item;
+      }
+    }
+
+    return [
+      'stay_info'  => $stay_info,
+      'promotions' => $processed,
+      'primary'    => $primary,
+    ];
+  }
+
+  /**
+   * Get financial summary metrics and room-by-room details for an accommodation.
+   *
+   * @param int $accommodation_id
+   * @return array
+   */
+  public static function hostpn_get_financial_summary($accommodation_id) {
+    $rooms = HOSTPN_Post_Type_Room::hostpn_get_rooms_by_accommodation($accommodation_id);
+    $total_rooms = count($rooms);
+    $occupied_count = 0;
+    
+    $total_monthly_rent_expected  = 0.0;
+    $total_monthly_rent_collected = 0.0;
+    $total_deposits_expected      = 0.0;
+    $total_deposits_collected     = 0.0;
+
+    $curr_month_key = date('Y_m');
+    $curr_month_label = date_i18n('F Y');
+
+    $rooms_financial = [];
+    $all_contracts = HOSTPN_Post_Type_Contract::hostpn_get_contracts(0, $accommodation_id);
+
+    foreach ($rooms as $room_id) {
+      $room_number = get_post_meta($room_id, 'hostpn_room_number', true);
+      if (empty($room_number)) {
+        $room_number = get_the_title($room_id);
+      }
+      $guest_id = get_post_meta($room_id, 'hostpn_room_guest_id', true);
+      $is_occupied = (!empty($guest_id) && intval($guest_id) > 0);
+
+      $guest_name = '--';
+      $guest_email = '';
+      $guest_phone = '';
+      $guest_dni = '';
+      $stay_days = 0;
+      $stay_duration = '--';
+      $start_date = '';
+      $end_date = '';
+
+      if ($is_occupied) {
+        $occupied_count++;
+        $name_str = trim(get_post_meta($guest_id, 'hostpn_name', true) . ' ' . get_post_meta($guest_id, 'hostpn_surname', true));
+        $guest_name = !empty($name_str) ? $name_str : get_the_title($guest_id);
+        $guest_email = get_post_meta($guest_id, 'hostpn_email', true);
+        $guest_phone = get_post_meta($guest_id, 'hostpn_phone', true);
+        $guest_dni = get_post_meta($guest_id, 'hostpn_dni', true);
+
+        $stay_info = self::hostpn_get_guest_stay_info($accommodation_id, $guest_id);
+        $stay_days = $stay_info['days'];
+        $stay_duration = $stay_info['formatted_duration'];
+        $start_date = $stay_info['start_date'];
+      }
+
+      // Find active or linked contract for this room/guest
+      $room_contract = null;
+      if (!empty($all_contracts)) {
+        foreach ($all_contracts as $cid) {
+          $c_room = get_post_meta($cid, 'hostpn_contract_room_id', true);
+          $c_guest = get_post_meta($cid, 'hostpn_contract_guest_id', true);
+          if (intval($c_room) === intval($room_id) || ($is_occupied && intval($c_guest) === intval($guest_id))) {
+            $room_contract = $cid;
+            break;
+          }
+        }
+      }
+
+      $rent_amount = 0.0;
+      $deposit_amount = 0.0;
+      $payment_day = '';
+      $contract_status = 'available';
+
+      if ($room_contract) {
+        $rent_val = get_post_meta($room_contract, 'hostpn_contract_rent_amount', true);
+        $dep_val  = get_post_meta($room_contract, 'hostpn_contract_deposit_amount', true);
+        $rent_amount = is_numeric($rent_val) ? floatval($rent_val) : 0.0;
+        $deposit_amount = is_numeric($dep_val) ? floatval($dep_val) : 0.0;
+        $payment_day = get_post_meta($room_contract, 'hostpn_contract_payment_day', true);
+        $contract_status = get_post_meta($room_contract, 'hostpn_contract_status', true);
+        $c_end = get_post_meta($room_contract, 'hostpn_contract_end_date', true);
+        if (!empty($c_end)) {
+          $end_date = $c_end;
+        }
+      }
+
+      // Check room metadata if contract value is empty or 0
+      if ($rent_amount <= 0) {
+        $r_rent = get_post_meta($room_id, 'hostpn_room_contract_rent_amount', true);
+        if (empty($r_rent) || !is_numeric($r_rent)) $r_rent = get_post_meta($room_id, 'hostpn_room_rent', true);
+        if (empty($r_rent) || !is_numeric($r_rent)) $r_rent = get_post_meta($room_id, 'hostpn_room_price', true);
+        if (is_numeric($r_rent)) $rent_amount = floatval($r_rent);
+      }
+
+      if ($deposit_amount <= 0) {
+        $r_dep = get_post_meta($room_id, 'hostpn_room_contract_deposit_amount', true);
+        if (empty($r_dep) || !is_numeric($r_dep)) $r_dep = get_post_meta($room_id, 'hostpn_room_deposit', true);
+        if (is_numeric($r_dep)) $deposit_amount = floatval($r_dep);
+      }
+
+      if (empty($payment_day)) {
+        $r_pday = get_post_meta($room_id, 'hostpn_room_contract_payment_day', true);
+        if (empty($r_pday)) $r_pday = get_post_meta($room_id, 'hostpn_room_payment_day', true);
+        if (!empty($r_pday)) $payment_day = $r_pday;
+      }
+
+      // Fetch payment history logs
+      $room_payments_history = get_post_meta($room_id, 'hostpn_room_payment_history', true);
+      if (!is_array($room_payments_history) || empty($room_payments_history)) {
+        $room_payments_history = get_post_meta($room_id, 'hostpn_room_payments_log', true);
+      }
+      if (!is_array($room_payments_history)) {
+        $room_payments_history = [];
+      }
+
+      $dep_paid_amount = 0.0;
+      $rent_paid_amount = 0.0;
+      foreach ($room_payments_history as $rec) {
+        $p_type = isset($rec['payment_type']) ? $rec['payment_type'] : 'rent';
+        $p_mkey = isset($rec['month_key']) ? $rec['month_key'] : (isset($rec['payment_date']) ? date('Y_m', strtotime($rec['payment_date'])) : '');
+        $p_amt  = floatval(isset($rec['amount']) ? $rec['amount'] : 0);
+        if ($p_type === 'deposit') {
+          $dep_paid_amount += $p_amt;
+        } elseif ($p_type === 'rent' && $p_mkey === $curr_month_key) {
+          $rent_paid_amount += $p_amt;
+        }
+      }
+
+      $deposit_paid = ($deposit_amount > 0 && $dep_paid_amount >= $deposit_amount);
+      $rent_paid_current = ($rent_amount > 0 && $rent_paid_amount >= $rent_amount);
+
+      if ($is_occupied) {
+        $total_monthly_rent_expected  += $rent_amount;
+        $total_monthly_rent_collected += $rent_paid_amount;
+
+        $total_deposits_expected  += $deposit_amount;
+        $total_deposits_collected += $dep_paid_amount;
+      }
+
+      $rooms_financial[] = [
+        'room_id'             => $room_id,
+        'room_number'         => $room_number,
+        'is_occupied'         => $is_occupied,
+        'guest_id'            => $guest_id,
+        'guest_name'          => $guest_name,
+        'guest_email'         => $guest_email,
+        'guest_phone'         => $guest_phone,
+        'guest_dni'           => $guest_dni,
+        'stay_days'           => $stay_days,
+        'stay_duration'       => $stay_duration,
+        'start_date'          => $start_date,
+        'end_date'            => $end_date,
+        'rent_amount'         => $rent_amount,
+        'deposit_amount'      => $deposit_amount,
+        'deposit_paid_amount' => $dep_paid_amount,
+        'rent_paid_amount'    => $rent_paid_amount,
+        'deposit_paid'        => $deposit_paid,
+        'rent_paid_current'   => $rent_paid_current,
+        'payment_day'         => $payment_day,
+        'contract_status'     => $contract_status,
+        'contract_id'         => $room_contract ? $room_contract : 0,
+        'payments_log'        => $room_payments_history,
+      ];
+    }
+
+    $occupancy_rate = $total_rooms > 0 ? round(($occupied_count / $total_rooms) * 100) : 0;
+
+    // Expenses calculation
+    $expenses = self::hostpn_get_accommodation_expenses($accommodation_id);
+    $total_expenses = 0.0;
+    foreach ($expenses as $exp) {
+      $total_expenses += floatval(isset($exp['amount']) ? $exp['amount'] : 0);
+    }
+    $net_income = $total_monthly_rent_collected - $total_expenses;
+
+    // Build 6-month historical chart dataset with REAL logged payments
+    $chart_months = [];
+    for ($i = 5; $i >= 0; $i--) {
+      $ts = strtotime("-$i months");
+      $m_key = date('Y_m', $ts);
+      $m_start = date('Y-m-01', $ts);
+      $m_end = date('Y-m-t', $ts);
+      $m_label = date_i18n('M Y', $ts);
+      
+      $m_expected = 0.0;
+      $m_collected = 0.0;
+      
+      foreach ($rooms_financial as $r) {
+        if ($r['is_occupied']) {
+          $m_expected += $r['rent_amount'];
+        }
+
+        // Real collected amounts for this month from payments log
+        $payments_log = isset($r['payments_log']) ? $r['payments_log'] : [];
+        if (is_array($payments_log) && !empty($payments_log)) {
+          foreach ($payments_log as $rec) {
+            $p_date = isset($rec['payment_date']) ? $rec['payment_date'] : (isset($rec['date']) ? $rec['date'] : '');
+            if (!empty($p_date) && $p_date >= $m_start && $p_date <= $m_end) {
+              $m_collected += floatval(isset($rec['amount']) ? $rec['amount'] : 0);
+            }
+          }
+        } else {
+          // Fallback if no payment log records exist yet
+          $paid_m = get_post_meta($r['room_id'], 'hostpn_room_rent_paid_' . $m_key, true);
+          if ($paid_m === '1') {
+            $m_collected += $r['rent_amount'];
+          }
+        }
+      }
+      
+      $chart_months[] = [
+        'month_key' => $m_key,
+        'label'     => ucfirst($m_label),
+        'expected'  => $m_expected,
+        'collected' => $m_collected,
+      ];
+    }
+
+    return [
+      'total_rooms'                   => $total_rooms,
+      'occupied_rooms'                => $occupied_count,
+      'occupancy_rate'                => $occupancy_rate,
+      'total_monthly_rent_expected'   => $total_monthly_rent_expected,
+      'total_monthly_rent_collected'  => $total_monthly_rent_collected,
+      'total_deposits_expected'      => $total_deposits_expected,
+      'total_deposits_collected'     => $total_deposits_collected,
+      'total_expenses'                => $total_expenses,
+      'net_income'                    => $net_income,
+      'current_month_label'           => ucfirst($curr_month_label),
+      'rooms'                         => $rooms_financial,
+      'expenses'                      => $expenses,
+      'chart_months'                  => $chart_months,
+    ];
+  }
+
+  /**
+   * Edit an existing payment record in a room's history.
+   */
+  public static function hostpn_edit_room_payment_record($room_id, $payment_id, $data) {
+    if (!$room_id || empty($payment_id)) {
+      return ['success' => false, 'message' => __('Invalid parameters', 'hostpn')];
+    }
+    $history = get_post_meta($room_id, 'hostpn_room_payment_history', true);
+    if (!is_array($history)) {
+      $history = [];
+    }
+
+    $found = false;
+    foreach ($history as $idx => $rec) {
+      if (isset($rec['id']) && $rec['id'] === $payment_id) {
+        $found = true;
+        if (isset($data['amount'])) $history[$idx]['amount'] = floatval($data['amount']);
+        if (isset($data['payment_type'])) $history[$idx]['payment_type'] = sanitize_key($data['payment_type']);
+        if (isset($data['payment_date'])) {
+          $history[$idx]['payment_date'] = sanitize_text_field($data['payment_date']);
+          $history[$idx]['month_key'] = date('Y_m', strtotime($data['payment_date']));
+        }
+        if (isset($data['notes'])) $history[$idx]['notes'] = sanitize_textarea_field($data['notes']);
+        break;
+      }
+    }
+
+    if (!$found) {
+      return ['success' => false, 'message' => __('Payment record not found', 'hostpn')];
+    }
+
+    update_post_meta($room_id, 'hostpn_room_payment_history', $history);
+    self::hostpn_recalculate_room_payment_status($room_id, 'rent');
+    self::hostpn_recalculate_room_payment_status($room_id, 'deposit');
+    return ['success' => true];
+  }
+
+  /**
+   * Delete a payment record from a room's history.
+   */
+  public static function hostpn_delete_room_payment_record($room_id, $payment_id) {
+    if (!$room_id || empty($payment_id)) {
+      return ['success' => false, 'message' => __('Invalid parameters', 'hostpn')];
+    }
+    $history = get_post_meta($room_id, 'hostpn_room_payment_history', true);
+    if (!is_array($history)) {
+      return ['success' => false, 'message' => __('No payments history found', 'hostpn')];
+    }
+
+    $new_history = [];
+    $removed = false;
+    foreach ($history as $rec) {
+      if (isset($rec['id']) && $rec['id'] === $payment_id) {
+        $removed = true;
+        continue;
+      }
+      $new_history[] = $rec;
+    }
+
+    if (!$removed) {
+      return ['success' => false, 'message' => __('Payment record not found', 'hostpn')];
+    }
+
+    update_post_meta($room_id, 'hostpn_room_payment_history', $new_history);
+    self::hostpn_recalculate_room_payment_status($room_id, 'rent');
+    self::hostpn_recalculate_room_payment_status($room_id, 'deposit');
+    return ['success' => true];
+  }
+
+  /**
+   * Get list of accommodation expenses.
+   */
+  public static function hostpn_get_accommodation_expenses($accommodation_id) {
+    $expenses = get_post_meta($accommodation_id, 'hostpn_accommodation_expenses', true);
+    return is_array($expenses) ? $expenses : [];
+  }
+
+  /**
+   * Save (add or update) an accommodation expense.
+   */
+  public static function hostpn_save_accommodation_expense($accommodation_id, $expense_data) {
+    if (!$accommodation_id) {
+      return ['success' => false, 'message' => __('Invalid accommodation', 'hostpn')];
+    }
+
+    $expenses = self::hostpn_get_accommodation_expenses($accommodation_id);
+    $expense_id = !empty($expense_data['id']) ? sanitize_text_field($expense_data['id']) : uniqid('exp_');
+
+    $amount = isset($expense_data['amount']) ? floatval($expense_data['amount']) : 0.0;
+    $date = !empty($expense_data['date']) ? sanitize_text_field($expense_data['date']) : current_time('Y-m-d');
+    $provider = !empty($expense_data['provider']) ? sanitize_text_field($expense_data['provider']) : '';
+    $category = !empty($expense_data['category']) ? sanitize_text_field($expense_data['category']) : '';
+    $notes = !empty($expense_data['notes']) ? sanitize_textarea_field($expense_data['notes']) : '';
+
+    $record = [
+      'id'                      => $expense_id,
+      'amount'                  => $amount,
+      'date'                    => $date,
+      'provider'                => $provider,
+      'category'                => $category,
+      'notes'                   => $notes,
+      'attachment_filename'     => !empty($expense_data['attachment_filename']) ? sanitize_text_field($expense_data['attachment_filename']) : '',
+      'attachment_original_name' => !empty($expense_data['attachment_original_name']) ? sanitize_text_field($expense_data['attachment_original_name']) : '',
+      'created_at'              => current_time('mysql'),
+    ];
+
+    $updated = false;
+    foreach ($expenses as $idx => $exp) {
+      if (isset($exp['id']) && $exp['id'] === $expense_id) {
+        if (empty($record['attachment_filename']) && !empty($exp['attachment_filename'])) {
+          $record['attachment_filename'] = $exp['attachment_filename'];
+          $record['attachment_original_name'] = isset($exp['attachment_original_name']) ? $exp['attachment_original_name'] : '';
+        }
+        $expenses[$idx] = array_merge($exp, $record);
+        $updated = true;
+        break;
+      }
+    }
+
+    if (!$updated) {
+      array_unshift($expenses, $record);
+    }
+
+    update_post_meta($accommodation_id, 'hostpn_accommodation_expenses', $expenses);
+    return ['success' => true, 'expense' => $record];
+  }
+
+  /**
+   * Delete an accommodation expense.
+   */
+  public static function hostpn_delete_accommodation_expense($accommodation_id, $expense_id) {
+    if (!$accommodation_id || empty($expense_id)) {
+      return ['success' => false, 'message' => __('Invalid parameters', 'hostpn')];
+    }
+    $expenses = self::hostpn_get_accommodation_expenses($accommodation_id);
+    $new_expenses = [];
+    $found = false;
+
+    foreach ($expenses as $exp) {
+      if (isset($exp['id']) && $exp['id'] === $expense_id) {
+        $found = true;
+        if (!empty($exp['attachment_filename'])) {
+          $dir = HOSTPN_Private_Storage::hostpn_get_expense_dir($accommodation_id);
+          $file_path = $dir . DIRECTORY_SEPARATOR . $exp['attachment_filename'];
+          if (file_exists($file_path)) {
+            @unlink($file_path);
+          }
+        }
+        continue;
+      }
+      $new_expenses[] = $exp;
+    }
+
+    if (!$found) {
+      return ['success' => false, 'message' => __('Expense not found', 'hostpn')];
+    }
+
+    update_post_meta($accommodation_id, 'hostpn_accommodation_expenses', $new_expenses);
+    return ['success' => true];
+  }
+
+  /**
+   * Render top summary block in admin accommodation details metabox.
+   *
+   * @param int $accommodation_id
+   */
+  public static function hostpn_render_accommodation_rooms_summary_block($accommodation_id) {
+    $data = self::hostpn_get_financial_summary($accommodation_id);
+    if (empty($data['rooms'])) {
+      return;
+    }
+    ?>
+    <div class="hostpn-admin-rooms-summary-box" style="margin-bottom:20px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:16px; color:#0f172a;">
+      <h3 style="margin:0 0 12px; font-size:15px; font-weight:700; color:#0f172a;">
+        <?php esc_html_e('Rooms, Guests & Financial Summary', 'hostpn'); ?>
+      </h3>
+      <div style="display:flex; gap:16px; margin-bottom:14px; flex-wrap:wrap;">
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:6px; padding:10px 14px; min-width:140px;">
+          <span style="display:block; font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600;"><?php esc_html_e('Occupancy', 'hostpn'); ?></span>
+          <strong style="font-size:16px; color:#0f172a;"><?php echo esc_html($data['occupied_rooms']); ?> / <?php echo esc_html($data['total_rooms']); ?> (<?php echo esc_html($data['occupancy_rate']); ?>%)</strong>
+        </div>
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:6px; padding:10px 14px; min-width:140px;">
+          <span style="display:block; font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600;"><?php esc_html_e('Monthly Rent (Collected / Expected)', 'hostpn'); ?></span>
+          <strong style="font-size:16px; color:#0f172a;">€ <?php echo esc_html(number_format($data['total_monthly_rent_collected'], 2, ',', '.')); ?> / € <?php echo esc_html(number_format($data['total_monthly_rent_expected'], 2, ',', '.')); ?></strong>
+        </div>
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:6px; padding:10px 14px; min-width:140px;">
+          <span style="display:block; font-size:11px; text-transform:uppercase; color:#64748b; font-weight:600;"><?php esc_html_e('Total Deposits Held', 'hostpn'); ?></span>
+          <strong style="font-size:16px; color:#0f172a;">€ <?php echo esc_html(number_format($data['total_deposits_collected'], 2, ',', '.')); ?> / € <?php echo esc_html(number_format($data['total_deposits_expected'], 2, ',', '.')); ?></strong>
+        </div>
+      </div>
+    </div>
+    <?php
   }
 }

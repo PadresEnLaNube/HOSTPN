@@ -52,9 +52,10 @@ class HOSTPN_Ajax_Nopriv {
 
       if (!empty($hostpn_ajax_keys)) {
         foreach ($hostpn_ajax_keys as $hostpn_key) {
-          if ($hostpn_key['multiple'] == 'true') {
+          $field_config = !empty($hostpn_key['field_config']) ? $hostpn_key['field_config'] : [];
+          if ((isset($hostpn_key['multiple']) && ($hostpn_key['multiple'] == 'true' || $hostpn_key['multiple'] === true)) || strpos($hostpn_key['id'], '[]') !== false) {
             $hostpn_clear_key = str_replace('[]', '', $hostpn_key['id']);
-            ${$hostpn_clear_key} = $hostpn_key_value[$hostpn_clear_key] = [];
+            $hostpn_key_value[$hostpn_clear_key] = [];
 
             if (!empty($_POST[$hostpn_clear_key])) {
               $unslashed_array = wp_unslash($_POST[$hostpn_clear_key]);
@@ -63,22 +64,21 @@ class HOSTPN_Ajax_Nopriv {
                 $unslashed_array = array($unslashed_array);
               }
 
-              $sanitized_array = array_map(function($value) use ($hostpn_key) {
+              $sanitized_array = array_map(function($value) use ($hostpn_key, $field_config) {
                 return HOSTPN_Forms::hostpn_sanitizer(
                   $value,
                   $hostpn_key['node'],
                   $hostpn_key['type'],
-                  $hostpn_key['field_config']
+                  $field_config
                 );
               }, $unslashed_array);
               
               foreach ($sanitized_array as $multi_key => $multi_value) {
                 $final_value = !empty($multi_value) ? $multi_value : '';
-                ${$hostpn_clear_key}[$multi_key] = $hostpn_key_value[$hostpn_clear_key][$multi_key] = $final_value;
+                $hostpn_key_value[$hostpn_clear_key][$multi_key] = $final_value;
               }
             } else {
-              ${$hostpn_clear_key} = '';
-              $hostpn_key_value[$hostpn_clear_key][$multi_key] = '';
+              $hostpn_key_value[$hostpn_clear_key] = [];
             }
           } else {
             $sanitized_key = sanitize_key($hostpn_key['id']);
@@ -89,10 +89,10 @@ class HOSTPN_Ajax_Nopriv {
                 $unslashed_value, 
                 $hostpn_key['node'], 
                 $hostpn_key['type'],
-                isset($hostpn_key['field_config']) ? $hostpn_key['field_config'] : ''
+                $field_config
               ) : '';
             
-              ${$hostpn_key['id']} = $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;
+            $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;
           }
         }
       }
@@ -247,6 +247,35 @@ class HOSTPN_Ajax_Nopriv {
                       if (in_array($hostpn_key, $hostpn_allowed_options)) {
                         update_option($hostpn_key, $hostpn_value);
                       }
+                    }
+
+                    // Process promotions data array if present
+                    if (isset($_POST['hostpn_promo_title']) && is_array($_POST['hostpn_promo_title'])) {
+                      $titles = array_map('sanitize_text_field', wp_unslash($_POST['hostpn_promo_title']));
+                      $sources = isset($_POST['hostpn_promo_source']) ? array_map('intval', wp_unslash($_POST['hostpn_promo_source'])) : [];
+                      $days = isset($_POST['hostpn_promo_days']) ? array_map('intval', wp_unslash($_POST['hostpn_promo_days'])) : [];
+                      $targets = isset($_POST['hostpn_promo_target']) ? array_map('sanitize_text_field', wp_unslash($_POST['hostpn_promo_target'])) : [];
+                      $rewards = isset($_POST['hostpn_promo_reward']) ? array_map('sanitize_text_field', wp_unslash($_POST['hostpn_promo_reward'])) : [];
+                      $conditions = isset($_POST['hostpn_promo_conditions']) ? array_map('sanitize_textarea_field', wp_unslash($_POST['hostpn_promo_conditions'])) : [];
+                      $actives = isset($_POST['hostpn_promo_active']) ? array_map('sanitize_text_field', wp_unslash($_POST['hostpn_promo_active'])) : [];
+
+                      $promotions_list = [];
+                      foreach ($titles as $idx => $title) {
+                        if (trim($title) === '') {
+                          continue;
+                        }
+                        $promotions_list[] = [
+                          'id'                       => 'promo_' . ($idx + 1),
+                          'title'                    => $title,
+                          'source_accommodation_id'  => isset($sources[$idx]) ? $sources[$idx] : 0,
+                          'required_days'            => isset($days[$idx]) ? max(1, $days[$idx]) : 730,
+                          'target_accommodation_name' => isset($targets[$idx]) ? $targets[$idx] : '',
+                          'reward_desc'              => isset($rewards[$idx]) ? $rewards[$idx] : '',
+                          'conditions'               => isset($conditions[$idx]) ? $conditions[$idx] : '',
+                          'active'                   => isset($actives[$idx]) ? $actives[$idx] : '1',
+                        ];
+                      }
+                      update_option('hostpn_promotions_data', $promotions_list);
                     }
                   }
 

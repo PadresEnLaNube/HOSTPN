@@ -31,9 +31,29 @@ class HOSTPN_Notifications {
       return;
     }
 
-    // Schedule the notification to be sent after a delay to ensure data is fully saved
-    // Set to 60 seconds (1 minute) to allow all guest data to be updated in the database
-    wp_schedule_single_event( time() + 60, 'hostpn_send_delayed_guest_notification', [ $element_id ] );
+    // Resolve element_id if 0 or empty (pick up created guest ID from form handler)
+    if ( empty( $element_id ) && isset( $GLOBALS['hostpn_last_created_guest_id'] ) ) {
+      $element_id = $GLOBALS['hostpn_last_created_guest_id'];
+    }
+
+    if ( empty( $element_id ) ) {
+      error_log( 'HOSTPN Notification: skipped — no valid guest post ID found' );
+      return;
+    }
+
+    // Ensure submitted form values are saved to post meta if passed
+    if ( ! empty( $key_value ) && is_array( $key_value ) ) {
+      foreach ( $key_value as $k => $v ) {
+        if ( ! empty( $v ) ) {
+          $meta_k = ( strpos( $k, 'hostpn_' ) === 0 ) ? $k : 'hostpn_' . $k;
+          update_post_meta( $element_id, $meta_k, $v );
+          update_post_meta( $element_id, $k, $v );
+        }
+      }
+    }
+
+    // Send notification directly now that all meta is saved
+    self::send_guest_notification_by_post_id( $element_id );
   }
 
   /**
@@ -87,8 +107,19 @@ class HOSTPN_Notifications {
     // Get all post meta - this is the primary source for guest data
     $post_meta = get_post_meta( $guest_post_id );
     foreach ( $post_meta as $key => $values ) {
-      if ( strpos( $key, 'hostpn_' ) === 0 && ! empty( $values[0] ) ) {
+      if ( ! empty( $values[0] ) ) {
         $key_value[ $key ] = $values[0];
+        if ( strpos( $key, 'hostpn_' ) === 0 ) {
+          $clean_key = substr( $key, 7 );
+          if ( ! isset( $key_value[ $clean_key ] ) ) {
+            $key_value[ $clean_key ] = $values[0];
+          }
+        } else {
+          $prefixed_key = 'hostpn_' . $key;
+          if ( ! isset( $key_value[ $prefixed_key ] ) ) {
+            $key_value[ $prefixed_key ] = $values[0];
+          }
+        }
       }
     }
 
@@ -97,18 +128,43 @@ class HOSTPN_Notifications {
     if ( ! empty( $guest_wp_user_id ) ) {
       $guest_user_meta = get_user_meta( $guest_wp_user_id );
       foreach ( $guest_user_meta as $key => $values ) {
-        if ( strpos( $key, 'hostpn_' ) === 0 && ! isset( $key_value[ $key ] ) && ! empty( $values[0] ) ) {
-          $key_value[ $key ] = $values[0];
+        if ( ! empty( $values[0] ) ) {
+          if ( ! isset( $key_value[ $key ] ) ) {
+            $key_value[ $key ] = $values[0];
+          }
+          if ( strpos( $key, 'hostpn_' ) === 0 ) {
+            $clean_key = substr( $key, 7 );
+            if ( ! isset( $key_value[ $clean_key ] ) ) {
+              $key_value[ $clean_key ] = $values[0];
+            }
+          } else {
+            $prefixed_key = 'hostpn_' . $key;
+            if ( ! isset( $key_value[ $prefixed_key ] ) ) {
+              $key_value[ $prefixed_key ] = $values[0];
+            }
+          }
         }
       }
     }
 
     // Also check post author's user meta for fields that might not be in post meta yet
-    // This is a fallback for cases where the post author is the guest themselves
     $user_meta = get_user_meta( $user_id );
     foreach ( $user_meta as $key => $values ) {
-      if ( strpos( $key, 'hostpn_' ) === 0 && ! isset( $key_value[ $key ] ) && ! empty( $values[0] ) ) {
-        $key_value[ $key ] = $values[0];
+      if ( ! empty( $values[0] ) ) {
+        if ( ! isset( $key_value[ $key ] ) ) {
+          $key_value[ $key ] = $values[0];
+        }
+        if ( strpos( $key, 'hostpn_' ) === 0 ) {
+          $clean_key = substr( $key, 7 );
+          if ( ! isset( $key_value[ $clean_key ] ) ) {
+            $key_value[ $clean_key ] = $values[0];
+          }
+        } else {
+          $prefixed_key = 'hostpn_' . $key;
+          if ( ! isset( $key_value[ $prefixed_key ] ) ) {
+            $key_value[ $prefixed_key ] = $values[0];
+          }
+        }
       }
     }
 

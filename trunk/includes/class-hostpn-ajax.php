@@ -58,28 +58,31 @@ class HOSTPN_Ajax {
 
       if (!empty($hostpn_ajax_keys)) {
         foreach ($hostpn_ajax_keys as $hostpn_key) {
-          if (strpos($hostpn_key['id'], '[]') !== false) {
+          $field_config = !empty($hostpn_key['field_config']) ? $hostpn_key['field_config'] : [];
+          if (strpos($hostpn_key['id'], '[]') !== false || (isset($hostpn_key['multiple']) && ($hostpn_key['multiple'] == 'true' || $hostpn_key['multiple'] === true))) {
             $hostpn_clear_key = str_replace('[]', '', $hostpn_key['id']);
-            ${$hostpn_clear_key} = $hostpn_key_value[$hostpn_clear_key] = [];
+            $hostpn_key_value[$hostpn_clear_key] = [];
 
             if (!empty($_POST[$hostpn_clear_key])) {
               $unslashed_array = wp_unslash($_POST[$hostpn_clear_key]);
-              $sanitized_array = array_map(function($value) use ($hostpn_key) {
+              if (!is_array($unslashed_array)) {
+                $unslashed_array = array($unslashed_array);
+              }
+              $sanitized_array = array_map(function($value) use ($hostpn_key, $field_config) {
                 return HOSTPN_Forms::hostpn_sanitizer(
                   $value,
                   $hostpn_key['node'],
                   $hostpn_key['type'],
-                  $hostpn_key['field_config']
+                  $field_config
                 );
               }, $unslashed_array);
               
               foreach ($sanitized_array as $multi_key => $multi_value) {
                 $final_value = !empty($multi_value) ? $multi_value : '';
-                ${$hostpn_clear_key}[$multi_key] = $hostpn_key_value[$hostpn_clear_key][$multi_key] = $final_value;
+                $hostpn_key_value[$hostpn_clear_key][$multi_key] = $final_value;
               }
             } else {
-              ${$hostpn_clear_key} = '';
-              $hostpn_key_value[$hostpn_clear_key][$multi_key] = '';
+              $hostpn_key_value[$hostpn_clear_key] = [];
             }
           } else {
             $sanitized_key = sanitize_key($hostpn_key['id']);
@@ -88,14 +91,70 @@ class HOSTPN_Ajax {
                 wp_unslash($_POST[$sanitized_key]), 
                 $hostpn_key['node'], 
                 $hostpn_key['type'],
-                $hostpn_key['field_config']
+                $field_config
               ) : '';
-            ${$hostpn_key['id']} = $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;
+            $hostpn_key_value[$hostpn_key['id']] = $hostpn_key_id;
           }
         }
       }
 
       switch ($hostpn_ajax_type) {
+        case 'hostpn_get_financial_data':
+          $accommodation_id = !empty($_POST['accommodation_id']) ? intval($_POST['accommodation_id']) : $hostpn_accommodation_id;
+          if (!empty($accommodation_id)) {
+            $data = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accommodation_id);
+            $data['html'] = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accommodation_id);
+            echo wp_json_encode([
+              'success' => true,
+              'data'    => $data,
+              'html'    => $data['html'],
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode([
+              'success' => false,
+              'error'   => esc_html(__('Invalid accommodation ID.', 'hostpn')),
+            ]);
+            exit;
+          }
+          break;
+
+        case 'hostpn_save_financial_room_status':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['success' => false, 'error' => __('Permission denied.', 'hostpn')]);
+            exit;
+          }
+          $accommodation_id = !empty($_POST['accommodation_id']) ? intval($_POST['accommodation_id']) : $hostpn_accommodation_id;
+          $room_id = !empty($_POST['room_id']) ? intval($_POST['room_id']) : $hostpn_room_id;
+          $field = !empty($_POST['field']) ? sanitize_key($_POST['field']) : '';
+          $value = isset($_POST['value']) ? sanitize_text_field($_POST['value']) : '0';
+
+          if (!empty($accommodation_id) && !empty($room_id) && !empty($field)) {
+            if ($field === 'deposit_paid') {
+              update_post_meta($room_id, 'hostpn_room_deposit_paid', ($value === '1' || $value === 'true') ? '1' : '0');
+            } elseif ($field === 'rent_paid_current') {
+              $curr_month_key = date('Y_m');
+              update_post_meta($room_id, 'hostpn_room_rent_paid_' . $curr_month_key, ($value === '1' || $value === 'true') ? '1' : '0');
+            } elseif ($field === 'rent_amount') {
+              update_post_meta($room_id, 'hostpn_room_rent', floatval($value));
+            } elseif ($field === 'deposit_amount') {
+              update_post_meta($room_id, 'hostpn_room_deposit', floatval($value));
+            }
+
+            $data = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accommodation_id);
+            $html = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accommodation_id);
+            echo wp_json_encode([
+              'success' => true,
+              'data'    => $data,
+              'html'    => $html,
+            ]);
+            exit;
+          } else {
+            echo wp_json_encode(['success' => false, 'error' => __('Invalid parameters.', 'hostpn')]);
+            exit;
+          }
+          break;
+
         case 'hostpn_accommodation_view':
           if (!empty($hostpn_accommodation_id)) {
             $plugin_post_type_accommodation = new HOSTPN_Post_Type_Accommodation();
@@ -1121,6 +1180,128 @@ class HOSTPN_Ajax {
           exit;
           break;
 
+        case 'hostpn_cleaning_system_save':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_accommodation_id)) {
+            $system = !empty($_POST['cleaning_system']) && $_POST['cleaning_system'] === 'shared' ? 'shared' : 'punctual';
+            update_post_meta($hostpn_accommodation_id, 'hostpn_cleaning_system', $system);
+            echo wp_json_encode(['error_key' => '', 'system' => $system]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_accommodation']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_shared_cleaning_load':
+          if (!is_user_logged_in()) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_accommodation_id)) {
+            $info = HOSTPN_Post_Type_Accommodation::hostpn_get_shared_cleaning_info($hostpn_accommodation_id);
+            echo wp_json_encode(['error_key' => '', 'info' => $info]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_accommodation']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_shared_cleaning_save_config':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_accommodation_id)) {
+            $frequency = !empty($_POST['frequency_days']) ? max(1, intval($_POST['frequency_days'])) : 7;
+            $notice = !empty($_POST['notice_days']) ? max(1, intval($_POST['notice_days'])) : 2;
+            $stays = !empty($_POST['stays']) ? sanitize_textarea_field(wp_unslash($_POST['stays'])) : '';
+            $next_date = !empty($_POST['next_date']) ? sanitize_text_field(wp_unslash($_POST['next_date'])) : date('Y-m-d', strtotime('+' . $frequency . ' days'));
+            $instructions = !empty($_POST['instructions']) ? sanitize_textarea_field(wp_unslash($_POST['instructions'])) : '';
+
+            update_post_meta($hostpn_accommodation_id, 'hostpn_shared_cleaning_frequency_days', $frequency);
+            update_post_meta($hostpn_accommodation_id, 'hostpn_shared_cleaning_notice_days', $notice);
+            update_post_meta($hostpn_accommodation_id, 'hostpn_shared_cleaning_stays', $stays);
+            update_post_meta($hostpn_accommodation_id, 'hostpn_shared_cleaning_next_date', $next_date);
+            update_post_meta($hostpn_accommodation_id, 'hostpn_shared_cleaning_instructions', $instructions);
+
+            echo wp_json_encode(['error_key' => '']);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_accommodation']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_shared_cleaning_complete':
+          if (!is_user_logged_in()) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_accommodation_id)) {
+            $notes = !empty($_POST['notes']) ? sanitize_textarea_field(wp_unslash($_POST['notes'])) : '';
+            $user_id = get_current_user_id();
+            $res = HOSTPN_Post_Type_Accommodation::hostpn_complete_shared_cleaning_turn($hostpn_accommodation_id, $notes, $user_id);
+            echo wp_json_encode(['error_key' => '', 'result' => $res]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_accommodation']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_shared_cleaning_add_comment':
+          if (!is_user_logged_in()) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_accommodation_id)) {
+            $comment_text = !empty($_POST['comment']) ? sanitize_textarea_field(wp_unslash($_POST['comment'])) : '';
+            $user_id = get_current_user_id();
+            $comment = HOSTPN_Post_Type_Accommodation::hostpn_add_shared_cleaning_comment($hostpn_accommodation_id, $user_id, $comment_text);
+            if ($comment) {
+              echo wp_json_encode(['error_key' => '', 'comment' => $comment]);
+            } else {
+              echo wp_json_encode(['error_key' => 'empty_comment']);
+            }
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_accommodation']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_shared_cleaning_send_reminder':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_accommodation_id)) {
+            $sent = HOSTPN_Post_Type_Accommodation::hostpn_send_shared_cleaning_reminder($hostpn_accommodation_id);
+            if ($sent) {
+              echo wp_json_encode(['error_key' => '']);
+            } else {
+              echo wp_json_encode(['error_key' => 'send_failed', 'error_content' => __('Could not send reminder email. Make sure a guest is assigned to the current room.', 'hostpn')]);
+            }
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_accommodation']);
+          }
+        case 'hostpn_shared_cleaning_reorder_queue':
+          if (!current_user_can('manage_options')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (!empty($hostpn_accommodation_id)) {
+            $room_order = !empty($_POST['room_order']) ? array_map('intval', wp_unslash($_POST['room_order'])) : [];
+            HOSTPN_Post_Type_Accommodation::hostpn_save_shared_cleaning_queue_order($hostpn_accommodation_id, $room_order);
+            $info = HOSTPN_Post_Type_Accommodation::hostpn_get_shared_cleaning_info($hostpn_accommodation_id);
+            echo wp_json_encode(['error_key' => '', 'info' => $info]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_accommodation']);
+          }
+          exit;
+          break;
+
+
         case 'hostpn_inventory_checklist_load':
           if (!current_user_can('manage_options')) {
             echo wp_json_encode(['error_key' => 'permission_denied']);
@@ -1276,14 +1457,237 @@ class HOSTPN_Ajax {
             exit;
           }
 
-          if (class_exists('HOSTPN_Financial') && !empty($hostpn_accommodation_id)) {
-            ob_start();
-            $read_only = true;
-            include HOSTPN_DIR . 'templates/admin/financial/hostpn-financial-dashboard.php';
-            $html = ob_get_clean();
+          if (!empty($hostpn_accommodation_id)) {
+            $html = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($hostpn_accommodation_id);
             echo wp_json_encode(['error_key' => '', 'html' => $html]);
           } else {
             echo wp_json_encode(['error_key' => 'unavailable', 'html' => '']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_add_room_payment':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          $room_id      = isset($_POST['room_id']) ? intval($_POST['room_id']) : 0;
+          $amount       = isset($_POST['amount']) ? floatval($_POST['amount']) : 0.0;
+          $payment_type = isset($_POST['payment_type']) ? sanitize_key($_POST['payment_type']) : 'rent';
+          $month_key    = isset($_POST['month_key']) ? sanitize_key($_POST['month_key']) : '';
+          $payment_date = isset($_POST['payment_date']) ? sanitize_text_field($_POST['payment_date']) : '';
+          $notes        = isset($_POST['notes']) ? sanitize_textarea_field($_POST['notes']) : '';
+
+          $result = HOSTPN_Post_Type_Accommodation::hostpn_record_room_payment($room_id, $amount, $payment_type, $month_key, $payment_date, 'manual', $notes);
+          if ($result['success']) {
+            $accom_id = get_post_meta($room_id, 'hostpn_room_accommodation_id', true);
+            if (!$accom_id) {
+              $accom_id = isset($_POST['accommodation_id']) ? intval($_POST['accommodation_id']) : 0;
+            }
+            $summary = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accom_id);
+            $html    = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accom_id);
+            $summary['html'] = $html;
+            echo wp_json_encode(['error_key' => '', 'summary' => $summary, 'html' => $html, 'record' => $result['record']]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_data', 'error_content' => $result['message']]);
+          }
+          exit;
+          break;
+
+        case 'hostpn_financial_upload_csv':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          if (empty($_FILES['hostpn_financial_csv_file']['tmp_name'])) {
+            echo wp_json_encode(['error_key' => 'no_file', 'error_content' => esc_html__('No CSV file uploaded.', 'hostpn')]);
+            exit;
+          }
+          $accom_id = isset($_POST['hostpn_accommodation_id']) ? intval($_POST['hostpn_accommodation_id']) : 0;
+          $tmp_path = $_FILES['hostpn_financial_csv_file']['tmp_name'];
+
+          $parsed = HOSTPN_Financial_Importer::parse_file($tmp_path, $accom_id);
+          if ($parsed['success']) {
+            echo wp_json_encode([
+              'error_key'       => '',
+              'detected_format' => $parsed['detected_format'],
+              'total_records'   => $parsed['total_records'],
+              'records'         => $parsed['records'],
+            ]);
+          } else {
+            echo wp_json_encode(['error_key' => 'parse_error', 'error_content' => $parsed['error']]);
+          }
+          exit;
+          break;
+
+        case 'hostpn_financial_process_import':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          $accom_id = isset($_POST['accommodation_id']) ? intval($_POST['accommodation_id']) : 0;
+          $records_json = isset($_POST['records']) ? wp_unslash($_POST['records']) : '';
+          $records = json_decode($records_json, true);
+
+          $res = HOSTPN_Financial_Importer::execute_import($accom_id, $records);
+          if ($res['success']) {
+            $summary = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accom_id);
+            $html    = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accom_id);
+            $summary['html'] = $html;
+            echo wp_json_encode([
+              'error_key'      => '',
+              'imported_count' => $res['imported_count'],
+              'message'        => $res['message'],
+              'summary'        => $summary,
+              'html'           => $html,
+            ]);
+          } else {
+            echo wp_json_encode(['error_key' => 'import_failed', 'error_content' => $res['message']]);
+          }
+          exit;
+          break;
+
+        case 'hostpn_update_room_financial_amounts':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          $room_id  = isset($_POST['room_id']) ? intval($_POST['room_id']) : 0;
+          $rent     = isset($_POST['rent_amount']) ? floatval($_POST['rent_amount']) : null;
+          $deposit  = isset($_POST['deposit_amount']) ? floatval($_POST['deposit_amount']) : null;
+
+          if ($room_id > 0) {
+            if (!is_null($rent)) {
+              update_post_meta($room_id, 'hostpn_room_contract_rent_amount', $rent);
+            }
+            if (!is_null($deposit)) {
+              update_post_meta($room_id, 'hostpn_room_contract_deposit_amount', $deposit);
+            }
+            $accom_id = get_post_meta($room_id, 'hostpn_room_accommodation_id', true);
+            $summary  = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accom_id);
+            $html     = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accom_id);
+            $summary['html'] = $html;
+            echo wp_json_encode(['error_key' => '', 'summary' => $summary, 'html' => $html]);
+          } else {
+            echo wp_json_encode(['error_key' => 'invalid_room']);
+          }
+          exit;
+          break;
+
+        case 'hostpn_edit_room_payment':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          $room_id    = isset($_POST['room_id']) ? intval($_POST['room_id']) : 0;
+          $payment_id = isset($_POST['payment_id']) ? sanitize_text_field($_POST['payment_id']) : '';
+          $data_edit  = [];
+          if (isset($_POST['amount'])) $data_edit['amount'] = floatval($_POST['amount']);
+          if (isset($_POST['payment_type'])) $data_edit['payment_type'] = sanitize_key($_POST['payment_type']);
+          if (isset($_POST['payment_date'])) $data_edit['payment_date'] = sanitize_text_field($_POST['payment_date']);
+          if (isset($_POST['notes'])) $data_edit['notes'] = sanitize_textarea_field($_POST['notes']);
+
+          $res = HOSTPN_Post_Type_Accommodation::hostpn_edit_room_payment_record($room_id, $payment_id, $data_edit);
+          if ($res['success']) {
+            $accom_id = get_post_meta($room_id, 'hostpn_room_accommodation_id', true);
+            if (!$accom_id && isset($_POST['accommodation_id'])) {
+              $accom_id = intval($_POST['accommodation_id']);
+            }
+            $summary = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accom_id);
+            $html    = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accom_id);
+            $summary['html'] = $html;
+            echo wp_json_encode(['error_key' => '', 'summary' => $summary, 'html' => $html]);
+          } else {
+            echo wp_json_encode(['error_key' => 'edit_failed', 'error_content' => $res['message']]);
+          }
+          exit;
+          break;
+
+        case 'hostpn_delete_room_payment':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          $room_id    = isset($_POST['room_id']) ? intval($_POST['room_id']) : 0;
+          $payment_id = isset($_POST['payment_id']) ? sanitize_text_field($_POST['payment_id']) : '';
+
+          $res = HOSTPN_Post_Type_Accommodation::hostpn_delete_room_payment_record($room_id, $payment_id);
+          if ($res['success']) {
+            $accom_id = get_post_meta($room_id, 'hostpn_room_accommodation_id', true);
+            if (!$accom_id && isset($_POST['accommodation_id'])) {
+              $accom_id = intval($_POST['accommodation_id']);
+            }
+            $summary = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accom_id);
+            $html    = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accom_id);
+            $summary['html'] = $html;
+            echo wp_json_encode(['error_key' => '', 'summary' => $summary, 'html' => $html]);
+          } else {
+            echo wp_json_encode(['error_key' => 'delete_failed', 'error_content' => $res['message']]);
+          }
+          exit;
+          break;
+
+        case 'hostpn_save_expense':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          $accom_id   = isset($_POST['accommodation_id']) ? intval($_POST['accommodation_id']) : 0;
+          $expense_id = isset($_POST['expense_id']) ? sanitize_text_field($_POST['expense_id']) : '';
+          $amount     = isset($_POST['amount']) ? floatval($_POST['amount']) : 0.0;
+          $date       = isset($_POST['date']) ? sanitize_text_field($_POST['date']) : current_time('Y-m-d');
+          $provider   = isset($_POST['provider']) ? sanitize_text_field($_POST['provider']) : '';
+          $category   = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
+          $notes      = isset($_POST['notes']) ? sanitize_textarea_field($_POST['notes']) : '';
+
+          $expense_data = [
+            'id'       => $expense_id,
+            'amount'   => $amount,
+            'date'     => $date,
+            'provider' => $provider,
+            'category' => $category,
+            'notes'    => $notes,
+          ];
+
+          // Handle secure attachment upload if provided
+          if (!empty($_FILES['attachment']['tmp_name'])) {
+            $upload_res = HOSTPN_Private_Storage::hostpn_store_expense_attachment($accom_id, $_FILES['attachment']);
+            if (is_wp_error($upload_res)) {
+              echo wp_json_encode(['error_key' => 'upload_error', 'error_content' => $upload_res->get_error_message()]);
+              exit;
+            }
+            $expense_data['attachment_filename'] = $upload_res['filename'];
+            $expense_data['attachment_original_name'] = $upload_res['original_name'];
+          }
+
+          $res = HOSTPN_Post_Type_Accommodation::hostpn_save_accommodation_expense($accom_id, $expense_data);
+          if ($res['success']) {
+            $summary = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accom_id);
+            $html    = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accom_id);
+            $summary['html'] = $html;
+            echo wp_json_encode(['error_key' => '', 'summary' => $summary, 'html' => $html, 'expense' => $res['expense']]);
+          } else {
+            echo wp_json_encode(['error_key' => 'save_expense_failed', 'error_content' => $res['message']]);
+          }
+          exit;
+          break;
+
+        case 'hostpn_delete_expense':
+          if (!current_user_can('edit_posts')) {
+            echo wp_json_encode(['error_key' => 'permission_denied']);
+            exit;
+          }
+          $accom_id   = isset($_POST['accommodation_id']) ? intval($_POST['accommodation_id']) : 0;
+          $expense_id = isset($_POST['expense_id']) ? sanitize_text_field($_POST['expense_id']) : '';
+
+          $res = HOSTPN_Post_Type_Accommodation::hostpn_delete_accommodation_expense($accom_id, $expense_id);
+          if ($res['success']) {
+            $summary = HOSTPN_Post_Type_Accommodation::hostpn_get_financial_summary($accom_id);
+            $html    = HOSTPN_Post_Type_Accommodation::hostpn_render_admin_financial_dashboard_content($accom_id);
+            $summary['html'] = $html;
+            echo wp_json_encode(['error_key' => '', 'summary' => $summary, 'html' => $html]);
+          } else {
+            echo wp_json_encode(['error_key' => 'delete_expense_failed', 'error_content' => $res['message']]);
           }
           exit;
           break;

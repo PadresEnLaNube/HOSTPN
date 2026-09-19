@@ -13,13 +13,12 @@
  * Plugin Name:       Hospedajes España - HOSTPN
  * Plugin URI:        https://padresenlanube.com/plugins/hostpn/
  * Description:       Accommodation management for Spanish Royal Decree 933/2021 compliance: guest registration, room & contract management, cleaning tracker, inventory inspection, financial management, and frontend management panel.
- * Version:           1.0.130
+ * Version:           1.0.145
  * Requires at least: 3.5
  * Tested up to:      7.0
  * Requires PHP:      7.2
  * Author:            Padres en la Nube
  * Author URI:        https://padresenlanube.com/
- * Author UNotificationsRI:        https://padresenlanube.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       hostpn
@@ -36,7 +35,7 @@ if (!defined('WPINC')) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define('HOSTPN_VERSION', '1.0.130');
+define('HOSTPN_VERSION', '1.0.145');
 define('HOSTPN_DIR', plugin_dir_path(__FILE__));
 define('HOSTPN_URL', plugin_dir_url(__FILE__));
 define('HOSTPN_CPTS', [
@@ -500,6 +499,9 @@ $hostpn_kses = [
 		'disabled' => [],
 		'value' => [],
 		'placeholder' => [],
+		'style' => [],
+		'data-room-id' => [],
+		'data-field' => [],
 		'data-hostpn-parent' => [],
 		'data-hostpn-parent-option' => [],
 		'data-hostpn-type' => [],
@@ -547,12 +549,14 @@ $hostpn_kses = [
 		'id' => [],
 		'class' => [],
 		'for' => [],
+		'style' => [],
 	],
 	'button' => [
 		'id' => [],
 		'class' => [],
 		'type' => [],
 		'disabled' => [],
+		'style' => [],
 		'data-accommodation-id' => [],
 		'data-contract-token' => [],
 	],
@@ -562,6 +566,20 @@ $hostpn_kses = [
 		'width' => [],
 		'height' => [],
 	],
+	'table' => ['id' => [], 'class' => [], 'style' => []],
+	'thead' => ['id' => [], 'class' => [], 'style' => []],
+	'tbody' => ['id' => [], 'class' => [], 'style' => []],
+	'tfoot' => ['id' => [], 'class' => [], 'style' => []],
+	'tr'    => ['id' => [], 'class' => [], 'style' => []],
+	'th'    => ['id' => [], 'class' => [], 'style' => [], 'colspan' => [], 'rowspan' => [], 'align' => []],
+	'td'    => ['id' => [], 'class' => [], 'style' => [], 'colspan' => [], 'rowspan' => [], 'align' => []],
+	'svg'   => ['id' => [], 'class' => [], 'style' => [], 'width' => [], 'height' => [], 'viewbox' => [], 'xmlns' => []],
+	'g'     => ['id' => [], 'class' => [], 'style' => [], 'fill' => [], 'stroke' => []],
+	'path'  => ['id' => [], 'class' => [], 'style' => [], 'd' => [], 'fill' => [], 'stroke' => [], 'stroke-width' => []],
+	'rect'  => ['id' => [], 'class' => [], 'style' => [], 'x' => [], 'y' => [], 'width' => [], 'height' => [], 'fill' => [], 'rx' => [], 'ry' => []],
+	'circle'=> ['id' => [], 'class' => [], 'style' => [], 'cx' => [], 'cy' => [], 'r' => [], 'fill' => [], 'stroke' => []],
+	'line'  => ['id' => [], 'class' => [], 'style' => [], 'x1' => [], 'y1' => [], 'x2' => [], 'y2' => [], 'stroke' => [], 'stroke-dasharray' => []],
+	'text'  => ['id' => [], 'class' => [], 'style' => [], 'x' => [], 'y' => [], 'fill' => [], 'font-size' => [], 'text-anchor' => [], 'font-weight' => []],
 ];
 
 // Add custom data attributes for each CPT
