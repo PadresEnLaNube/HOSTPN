@@ -1093,3 +1093,368 @@
   background: #1e293b;
 }
 
+/* Financial Status Icons */
+.hostpn-fin-deposit-cell,
+.hostpn-fin-rent-cell {
+  padding: 12px 14px;
+  vertical-align: top;
+  color: #0f172a;
+}
+
+.hostpn-fin-status-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.hostpn-fin-amount {
+  color: #0f172a;
+}
+
+.hostpn-fin-icon-paid {
+  font-size: 18px;
+  color: #15803d;
+  cursor: pointer;
+}
+
+.hostpn-fin-icon-partial {
+  font-size: 18px;
+  color: #a16207;
+  cursor: pointer;
+}
+
+.hostpn-fin-icon-pending {
+  font-size: 18px;
+  color: #b91c1c;
+  cursor: pointer;
+}
+
+/* Financial Dashboard - Metric Cards Grid */
+.hostpn-fin-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.hostpn-fin-metric-card {
+  background: #0f172a;
+  color: #f8fafc;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 14px;
+}
+
+.hostpn-fin-metric-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.hostpn-fin-metric-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-top: 2px;
+}
+
+.hostpn-fin-metric-value-blue {
+  color: #38bdf8;
+}
+
+.hostpn-fin-metric-value-red {
+  color: #f87171;
+}
+
+.hostpn-fin-metric-value-green {
+  color: #4ade80;
+}
+
+.hostpn-fin-metric-sub {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Financial Dashboard - Room Table Section */
+.hostpn-fin-rooms-section {
+  margin-bottom: 28px;
+}
+
+.hostpn-fin-section-title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f8fafc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hostpn-fin-table-cell {
+  padding: 10px 12px;
+  vertical-align: top;
+}
+
+.hostpn-fin-table-cell-bold {
+  font-weight: 600;
+}
+
+.hostpn-fin-table-cell-center {
+  padding: 12px 14px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.hostpn-fin-actions-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.hostpn-fin-action-link {
+  color: #0284c7;
+  font-weight: 600;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.hostpn-fin-action-link-blue {
+  color: #2563eb;
+}
+
+.hostpn-fin-action-link-gray {
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.hostpn-fin-available {
+  color: #64748b;
+  font-style: italic;
+}
+
+.hostpn-fin-payment-day {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Payment History Subrow */
+.hostpn-payments-subrow-content {
+  padding: 14px 18px;
+}
+
+.hostpn-payments-subrow-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hostpn-payments-empty {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.hostpn-payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.hostpn-payments-table thead tr {
+  border-bottom: 1px solid #e2e8f0;
+  background: #f1f5f9;
+  color: #475569;
+  text-align: left;
+}
+
+.hostpn-payments-table th {
+  padding: 8px 10px;
+  font-weight: 600;
+}
+
+.hostpn-payments-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.hostpn-payments-table td {
+  padding: 8px 10px;
+}
+
+/* Expenses Section */
+.hostpn-expenses-section {
+  margin-top: 28px;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 18px;
+  color: #f8fafc;
+}
+
+.hostpn-expenses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hostpn-expenses-subtitle {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.hostpn-expenses-empty {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+  padding: 10px 0;
+}
+
+.hostpn-expenses-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  color: #cbd5e1;
+}
+
+.hostpn-expenses-table thead tr {
+  background: #1e293b;
+  color: #94a3b8;
+  text-align: left;
+}
+
+.hostpn-expenses-table th {
+  padding: 8px 10px;
+}
+
+.hostpn-expenses-table tbody tr {
+  border-bottom: 1px solid #1e293b;
+}
+
+.hostpn-expenses-table td {
+  padding: 8px 10px;
+}
+
+.hostpn-expense-category {
+  background: #1e293b;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+}
+
+.hostpn-expense-amount {
+  color: #f87171;
+  font-weight: 700;
+}
+
+.hostpn-expense-attachment {
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hostpn-expense-no-attachment {
+  color: #64748b;
+  font-style: italic;
+}
+
+/* CSV Import Section */
+.hostpn-csv-import-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #1e293b;
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.hostpn-csv-import-title {
+  display: block;
+  font-size: 13px;
+  color: #f8fafc;
+}
+
+.hostpn-csv-import-subtitle {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* Chart Wrapper */
+.hostpn-fin-chart-container {
+  margin-bottom: 20px;
+  padding: 18px;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  color: #f8fafc;
+}
+
+.hostpn-fin-chart-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hostpn-fin-chart-canvas-wrapper {
+  position: relative;
+  height: 200px;
+  width: 100%;
+}
+
+/* Shared Cleaning */
+.hostpn-shared-detail-item-full {
+  grid-column: 1 / -1;
+}
+
+.hostpn-shared-instructions-box {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+
+.hostpn-shared-instructions-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.hostpn-shared-instructions-content {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+

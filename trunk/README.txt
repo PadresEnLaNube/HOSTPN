@@ -108,6 +108,25 @@ To uninstall the plugin, go to the 'Plugins' screen in WordPress, find the Hospe
 
 == Changelog ==
 
+= 1.0.145 =
+
+- Replace payment status badge indicators (paid/partial/pending) with icon-only display positioned inline next to amounts in financial management table
+- Display status icons (check_circle, timelapse, error_outline) at 18px size directly adjacent to deposit and rent payment amounts using flexbox layout
+- Add payment date display in tooltips showing actual payment date for completed payments
+- Add last payment date display in tooltips for partial payments
+- Add pending amount calculation and display in tooltips for both partial and pending payments
+- Add overdue months detection logic that checks all months since contract start date against payment history
+- Display overdue months list in rent payment tooltips with month identifier and pending amount per month
+- Remove "usual payment day" reference from all payment status tooltips
+- Extract deposit payment dates from payment history by filtering payment_type === 'deposit'
+- Extract rent payment dates from payment history by filtering payment_type === 'rent' and matching month_key
+- Use max() function to find most recent payment date from filtered payment history
+- Iterate through all months from contract start date to current month checking for unpaid or partially paid rent
+- Replace echo-based HTML output with output buffering (ob_start/ob_get_clean) for cleaner code structure
+- Move all inline styles from payment status indicators to dedicated CSS classes in hostpn-management-tabs.css
+- Add CSS classes for financial status cells, wrappers, amounts and icon states (paid/partial/pending)
+- Update notification email templates from English to Spanish for shared cleaning reminders
+
 = 1.0.130 =
 
 - Add frontend management panel with tabbed interface (Contracts, Financial management, Cleaning, Inventory) for logged-in admins and guests on single accommodation pages

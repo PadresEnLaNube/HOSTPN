@@ -713,9 +713,9 @@ class HOSTPN_Post_Type_Accommodation {
 
                       ob_start();
                       if ($dep_exp > 0 && $dep_paid >= $dep_exp) {
-                        $dep_title = sprintf(__('Fianza custodiada completada: € %s', 'hostpn'), number_format($dep_paid, 2, ',', '.'));
+                        $dep_title = sprintf('Fianza custodiada completada: € %s', number_format($dep_paid, 2, ',', '.'));
                         if (!empty($dep_last_payment_date)) {
-                          $dep_title .= sprintf(__(' | Fecha de pago: %s', 'hostpn'), $dep_last_payment_date);
+                          $dep_title .= sprintf(' | Fecha de pago: %s', $dep_last_payment_date);
                         }
                         ?>
                         <div class="hostpn-fin-status-wrapper">
@@ -724,10 +724,10 @@ class HOSTPN_Post_Type_Accommodation {
                         </div>
                         <?php
                       } elseif ($dep_paid > 0) {
-                        $dep_title = sprintf(__('Fianza parcial: € %s de € %s', 'hostpn'), number_format($dep_paid, 2, ',', '.'), number_format($dep_exp, 2, ',', '.'));
-                        $dep_title .= sprintf(__(' | Pendiente: € %s', 'hostpn'), number_format($dep_pending, 2, ',', '.'));
+                        $dep_title = sprintf('Fianza parcial: € %s de € %s', number_format($dep_paid, 2, ',', '.'), number_format($dep_exp, 2, ',', '.'));
+                        $dep_title .= sprintf(' | Pendiente: € %s', number_format($dep_pending, 2, ',', '.'));
                         if (!empty($dep_last_payment_date)) {
-                          $dep_title .= sprintf(__(' | Último pago: %s', 'hostpn'), $dep_last_payment_date);
+                          $dep_title .= sprintf(' | Último pago: %s', $dep_last_payment_date);
                         }
                         ?>
                         <div class="hostpn-fin-status-wrapper">
@@ -736,7 +736,7 @@ class HOSTPN_Post_Type_Accommodation {
                         </div>
                         <?php
                       } else {
-                        $dep_title = sprintf(__('Fianza pendiente: € %s', 'hostpn'), number_format($dep_pending, 2, ',', '.'));
+                        $dep_title = sprintf('Fianza pendiente: € %s', number_format($dep_pending, 2, ',', '.'));
                         ?>
                         <div class="hostpn-fin-status-wrapper">
                           <strong class="hostpn-fin-amount">€ <?php echo esc_html(number_format($dep_exp, 2, ',', '.')); ?></strong>
@@ -795,12 +795,12 @@ class HOSTPN_Post_Type_Accommodation {
 
                       ob_start();
                       if ($rent_exp > 0 && $rent_paid >= $rent_exp) {
-                        $rent_title = sprintf(__('Cobrado este mes: € %s', 'hostpn'), number_format($rent_paid, 2, ',', '.'));
+                        $rent_title = sprintf('Cobrado este mes: € %s', number_format($rent_paid, 2, ',', '.'));
                         if (!empty($rent_last_payment_date)) {
-                          $rent_title .= sprintf(__(' | Fecha de pago: %s', 'hostpn'), $rent_last_payment_date);
+                          $rent_title .= sprintf(' | Fecha de pago: %s', $rent_last_payment_date);
                         }
                         if (!empty($overdue_months)) {
-                          $rent_title .= __(' | Meses atrasados: ', 'hostpn');
+                          $rent_title .= ' | Meses atrasados: ';
                           $overdue_list = [];
                           foreach ($overdue_months as $om) {
                             $overdue_list[] = sprintf('%s (€ %s)', $om['month'], number_format($om['pending'], 2, ',', '.'));
@@ -814,13 +814,13 @@ class HOSTPN_Post_Type_Accommodation {
                         </div>
                         <?php
                       } elseif ($rent_paid > 0) {
-                        $rent_title = sprintf(__('Pago parcial este mes: € %s de € %s', 'hostpn'), number_format($rent_paid, 2, ',', '.'), number_format($rent_exp, 2, ',', '.'));
-                        $rent_title .= sprintf(__(' | Pendiente: € %s', 'hostpn'), number_format($rent_pending, 2, ',', '.'));
+                        $rent_title = sprintf('Pago parcial este mes: € %s de € %s', number_format($rent_paid, 2, ',', '.'), number_format($rent_exp, 2, ',', '.'));
+                        $rent_title .= sprintf(' | Pendiente: € %s', number_format($rent_pending, 2, ',', '.'));
                         if (!empty($rent_last_payment_date)) {
-                          $rent_title .= sprintf(__(' | Último pago: %s', 'hostpn'), $rent_last_payment_date);
+                          $rent_title .= sprintf(' | Último pago: %s', $rent_last_payment_date);
                         }
                         if (!empty($overdue_months)) {
-                          $rent_title .= __(' | Meses atrasados: ', 'hostpn');
+                          $rent_title .= ' | Meses atrasados: ';
                           $overdue_list = [];
                           foreach ($overdue_months as $om) {
                             $overdue_list[] = sprintf('%s (€ %s)', $om['month'], number_format($om['pending'], 2, ',', '.'));
@@ -834,9 +834,9 @@ class HOSTPN_Post_Type_Accommodation {
                         </div>
                         <?php
                       } else {
-                        $rent_title = sprintf(__('Pendiente este mes: € %s', 'hostpn'), number_format($rent_pending, 2, ',', '.'));
+                        $rent_title = sprintf('Pendiente este mes: € %s', number_format($rent_pending, 2, ',', '.'));
                         if (!empty($overdue_months)) {
-                          $rent_title .= __(' | Meses atrasados: ', 'hostpn');
+                          $rent_title .= ' | Meses atrasados: ';
                           $overdue_list = [];
                           foreach ($overdue_months as $om) {
                             $overdue_list[] = sprintf('%s (€ %s)', $om['month'], number_format($om['pending'], 2, ',', '.'));
@@ -2960,8 +2960,8 @@ class HOSTPN_Post_Type_Accommodation {
     $content .= '<div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin: 15px 0;">';
     $content .= '<strong>' . __('Stays to clean:', 'hostpn') . '</strong><br>' . esc_html($stays);
     $content .= '</div>';
-    $content .= '<p>' . __('Please remember to mark the cleaning as completed in the accommodation management portal once finished.', 'hostpn') . '</p>';
-    $content .= '<p style="color: #7f8c8d; font-size: 13px; margin-top: 30px;">' . __('Automated message from accommodation management platform.', 'hostpn') . '</p>';
+    $content .= '<p>' . __('Por favor, recuerda marcar la limpieza como completada en el panel de gestión del alojamiento una vez finalizada.', 'hostpn') . '</p>';
+    $content .= '<p style="color: #7f8c8d; font-size: 13px; margin-top: 30px;">' . __('Mensaje automatizado desde la plataforma de gestión de alojamientos.', 'hostpn') . '</p>';
     $content .= '</div>';
 
     $sent = HOSTPN_Notifications::send_notification_to_user($guest_user_id, $subject, $content);

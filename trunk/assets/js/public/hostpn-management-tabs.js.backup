@@ -156,33 +156,33 @@
     var netIncome = (typeof data.net_income !== 'undefined') ? data.net_income : (collectedRent - totalExpenses);
 
     // Minimalist Metric Cards (5 Cards Grid)
-    html += '<div class="hostpn-fin-metrics-grid">';
-
-    html += '<div class="hostpn-fin-metric-card">';
-    html += '<div class="hostpn-fin-metric-label">' + (i18n.occupancy || 'Tasa de Ocupación') + '</div>';
-    html += '<div class="hostpn-fin-metric-value">' + data.occupied_rooms + ' / ' + data.total_rooms + ' (' + data.occupancy_rate + '%)</div>';
+    html += '<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:12px; margin-bottom:20px;">';
+    
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">' + (i18n.occupancy || 'Tasa de Ocupación') + '</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#f8fafc; margin-top:2px;">' + data.occupied_rooms + ' / ' + data.total_rooms + ' (' + data.occupancy_rate + '%)</div>';
     html += '</div>';
 
-    html += '<div class="hostpn-fin-metric-card">';
-    html += '<div class="hostpn-fin-metric-label">Cobrado este Mes</div>';
-    html += '<div class="hostpn-fin-metric-value hostpn-fin-metric-value-blue">€ ' + formatMoney(collectedRent) + '</div>';
-    html += '<div class="hostpn-fin-metric-sub">Previsto: € ' + formatMoney(expectedRent) + '</div>';
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Cobrado este Mes</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#38bdf8; margin-top:2px;">€ ' + formatMoney(collectedRent) + '</div>';
+    html += '<div style="font-size:11px; color:#64748b; margin-top:2px;">Previsto: € ' + formatMoney(expectedRent) + '</div>';
     html += '</div>';
 
-    html += '<div class="hostpn-fin-metric-card">';
-    html += '<div class="hostpn-fin-metric-label">Fianzas Custodiadas</div>';
-    html += '<div class="hostpn-fin-metric-value">€ ' + formatMoney(collectedDep) + '</div>';
-    html += '<div class="hostpn-fin-metric-sub">Previsto: € ' + formatMoney(expectedDep) + '</div>';
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Fianzas Custodiadas</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#f8fafc; margin-top:2px;">€ ' + formatMoney(collectedDep) + '</div>';
+    html += '<div style="font-size:11px; color:#64748b; margin-top:2px;">Previsto: € ' + formatMoney(expectedDep) + '</div>';
     html += '</div>';
 
-    html += '<div class="hostpn-fin-metric-card">';
-    html += '<div class="hostpn-fin-metric-label">Gastos Totales</div>';
-    html += '<div class="hostpn-fin-metric-value hostpn-fin-metric-value-red">€ ' + formatMoney(totalExpenses) + '</div>';
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Gastos Totales</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:#f87171; margin-top:2px;">€ ' + formatMoney(totalExpenses) + '</div>';
     html += '</div>';
 
-    html += '<div class="hostpn-fin-metric-card">';
-    html += '<div class="hostpn-fin-metric-label">Beneficio Neto</div>';
-    html += '<div class="hostpn-fin-metric-value ' + (netIncome >= 0 ? 'hostpn-fin-metric-value-green' : 'hostpn-fin-metric-value-red') + '">€ ' + formatMoney(netIncome) + '</div>';
+    html += '<div style="background:#0f172a; color:#f8fafc; border:1px solid #1e293b; border-radius:6px; padding:14px;">';
+    html += '<div style="font-size:11px; text-transform:uppercase; color:#94a3b8; font-weight:600;">Beneficio Neto</div>';
+    html += '<div style="font-size:18px; font-weight:700; color:' + (netIncome >= 0 ? '#4ade80' : '#f87171') + '; margin-top:2px;">€ ' + formatMoney(netIncome) + '</div>';
     html += '</div>';
 
     html += '</div>'; // metric cards end
@@ -193,18 +193,18 @@
     }
 
     // Room table
-    html += '<div class="hostpn-fin-rooms-section">';
-    html += '<h4 class="hostpn-fin-section-title">Estado Financiero de Habitaciones</h4>';
+    html += '<div style="margin-bottom:28px;">';
+    html += '<h4 style="margin:0 0 12px; font-size:14px; font-weight:700; color:#f8fafc; text-transform:uppercase; letter-spacing:0.5px;">Estado Financiero de Habitaciones</h4>';
     if (rooms.length === 0) {
       html += '<p class="hostpn-mgmt-empty">' + (i18n.noFinancialData || 'No financial data available.') + '</p>';
     } else {
       html += '<table class="hostpn-mgmt-inv-table" style="width:100%; border-collapse:collapse; font-size:13px; background:#0f172a; color:#f8fafc; border-radius:6px; overflow:hidden;">';
       html += '<thead><tr style="background:#1e293b; color:#cbd5e1;">';
-      html += '<th class="hostpn-fin-table-cell">' + (i18n.roomLabel || 'Habitación') + '</th>';
-      html += '<th class="hostpn-fin-table-cell">' + (i18n.guestName || 'Huésped Actual') + '</th>';
-      html += '<th class="hostpn-fin-table-cell">Fianza</th>';
-      html += '<th class="hostpn-fin-table-cell">' + (i18n.monthlyRent || 'Renta Mensual') + '</th>';
-      html += '<th class="hostpn-fin-table-cell hostpn-fin-table-cell-center">Acciones / Historial</th>';
+      html += '<th style="padding:10px 12px; text-align:left;">' + (i18n.roomLabel || 'Habitación') + '</th>';
+      html += '<th style="padding:10px 12px; text-align:left;">' + (i18n.guestName || 'Huésped Actual') + '</th>';
+      html += '<th style="padding:10px 12px; text-align:left;">Fianza</th>';
+      html += '<th style="padding:10px 12px; text-align:left;">' + (i18n.monthlyRent || 'Renta Mensual') + '</th>';
+      html += '<th style="padding:10px 12px; text-align:center;">Acciones / Historial</th>';
       html += '</tr></thead><tbody>';
 
       for (var i = 0; i < rooms.length; i++) {
@@ -217,11 +217,11 @@
         var depExpected = r.deposit_amount || 0;
         var depBadgeHtml = '';
         if (depExpected > 0 && depPaidAmount >= depExpected) {
-          depBadgeHtml = '<span class="hostpn-badge-paid">Pagado (€ ' + formatMoney(depPaidAmount) + ')</span>';
+          depBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#166534; color:#4ade80; border:1px solid #15803d; margin-top:2px;">Pagado (€ ' + formatMoney(depPaidAmount) + ')</span>';
         } else if (depPaidAmount > 0) {
-          depBadgeHtml = '<span class="hostpn-badge-partial">Parcial (€ ' + formatMoney(depPaidAmount) + ' / € ' + formatMoney(depExpected) + ')</span>';
+          depBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#854d0e; color:#fde047; border:1px solid #a16207; margin-top:2px;">Parcial (€ ' + formatMoney(depPaidAmount) + ' / € ' + formatMoney(depExpected) + ')</span>';
         } else {
-          depBadgeHtml = '<span class="hostpn-badge-pending">Pendiente</span>';
+          depBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#1e293b; color:#94a3b8; border:1px solid #334155; margin-top:2px;">Pendiente</span>';
         }
 
         // Determine Rent Badge & Text
@@ -229,58 +229,58 @@
         var rentExpected = r.rent_amount || 0;
         var rentBadgeHtml = '';
         if (rentExpected > 0 && rentPaidAmount >= rentExpected) {
-          rentBadgeHtml = '<span class="hostpn-badge-paid">Pagado (€ ' + formatMoney(rentPaidAmount) + ')</span>';
+          rentBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#166534; color:#4ade80; border:1px solid #15803d; margin-top:2px;">Pagado (€ ' + formatMoney(rentPaidAmount) + ')</span>';
         } else if (rentPaidAmount > 0) {
-          rentBadgeHtml = '<span class="hostpn-badge-partial">Parcial (€ ' + formatMoney(rentPaidAmount) + ' / € ' + formatMoney(rentExpected) + ')</span>';
+          rentBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#854d0e; color:#fde047; border:1px solid #a16207; margin-top:2px;">Parcial (€ ' + formatMoney(rentPaidAmount) + ' / € ' + formatMoney(rentExpected) + ')</span>';
         } else {
-          rentBadgeHtml = '<span class="hostpn-badge-pending">Pendiente</span>';
+          rentBadgeHtml = '<span style="display:inline-block; font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; background:#1e293b; color:#94a3b8; border:1px solid #334155; margin-top:2px;">Pendiente</span>';
         }
 
         html += '<tr style="border-bottom:1px solid #1e293b;">';
-        html += '<td class="hostpn-fin-table-cell hostpn-fin-table-cell-bold">' + rName + '</td>';
-        html += '<td class="hostpn-fin-table-cell">' + (r.is_occupied ? ('<strong>' + escHtml(r.guest_name) + '</strong>') : '<span class="hostpn-fin-available">Disponible</span>') + '</td>';
-
+        html += '<td style="padding:10px 12px; font-weight:600; vertical-align:top;">' + rName + '</td>';
+        html += '<td style="padding:10px 12px; vertical-align:top;">' + (r.is_occupied ? ('<strong>' + escHtml(r.guest_name) + '</strong>') : '<span style="color:#64748b; font-style:italic;">Disponible</span>') + '</td>';
+        
         // Fianza
-        html += '<td class="hostpn-fin-table-cell">';
+        html += '<td style="padding:10px 12px; vertical-align:top;">';
         html += '<div><strong>€ ' + formatMoney(r.deposit_amount) + '</strong></div>';
         html += depBadgeHtml;
         html += '</td>';
 
         // Renta Mensual
-        html += '<td class="hostpn-fin-table-cell">';
+        html += '<td style="padding:10px 12px; vertical-align:top;">';
         html += '<div><strong>€ ' + formatMoney(r.rent_amount) + '</strong></div>';
         if (r.payment_day) {
-          html += '<div class="hostpn-fin-payment-day">Payment day: ' + escHtml(r.payment_day) + '</div>';
+          html += '<div style="font-size:11px; color:#94a3b8;">Payment day: ' + escHtml(r.payment_day) + '</div>';
         }
         html += rentBadgeHtml;
         html += '</td>';
 
         // Actions / Toggle Button
-        html += '<td class="hostpn-fin-table-cell hostpn-fin-table-cell-center">';
+        html += '<td style="padding:12px 14px; text-align:center; vertical-align:top;">';
         if (r.is_occupied && isAdmin) {
-          html += '<div class="hostpn-fin-actions-group">';
-          html += '<a href="#" class="hostpn-add-rent-btn hostpn-fin-action-link hostpn-fin-action-link-blue" data-room-id="' + r.room_id + '" data-rent="' + r.rent_amount + '">+ Pago Mensual</a>';
-          html += '<a href="#" class="hostpn-add-deposit-btn hostpn-fin-action-link hostpn-fin-action-link-blue" data-room-id="' + r.room_id + '" data-deposit="' + r.deposit_amount + '">+ Pago Fianza</a>';
+          html += '<div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:center; margin-bottom:6px;">';
+          html += '<a href="#" class="hostpn-add-rent-btn" data-room-id="' + r.room_id + '" data-rent="' + r.rent_amount + '" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none;">+ Pago Mensual</a>';
+          html += '<a href="#" class="hostpn-add-deposit-btn" data-room-id="' + r.room_id + '" data-deposit="' + r.deposit_amount + '" style="color:#2563eb; font-weight:600; font-size:12px; text-decoration:none;">+ Pago Fianza</a>';
           html += '</div>';
         }
-        html += '<a href="#" class="hostpn-toggle-payments-btn hostpn-fin-action-link hostpn-fin-action-link-gray" data-room-id="' + r.room_id + '"><i class="material-icons-outlined" style="font-size:16px; vertical-align:middle;">expand_more</i> Historial (' + payments.length + ')</a>';
+        html += '<a href="#" class="hostpn-toggle-payments-btn" data-room-id="' + r.room_id + '" style="color:#475569; font-weight:600; font-size:12px; text-decoration:none; display:inline-flex; align-items:center; gap:2px;"><i class="material-icons-outlined" style="font-size:16px; vertical-align:middle;">expand_more</i> Historial (' + payments.length + ')</a>';
         html += '</td>';
         html += '</tr>';
 
         // Collapsible subrow for payment history
         html += '<tr id="hostpn-payments-subrow-' + r.room_id + '" class="hostpn-payments-subrow" style="display:none; background:#f8fafc; border-bottom:1px solid #e2e8f0;">';
-        html += '<td colspan="5" class="hostpn-payments-subrow-content">';
-        html += '<div class="hostpn-payments-subrow-header">';
+        html += '<td colspan="5" style="padding:14px 18px;">';
+        html += '<div style="font-size:12px; font-weight:700; color:#334155; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">';
         html += '<span>Historial de Pagos Registrados - ' + rName + '</span>';
         if (r.is_occupied && isAdmin) {
-          html += '<a href="#" class="hostpn-add-payment-btn hostpn-fin-action-link hostpn-fin-action-link-blue" data-room-id="' + r.room_id + '">+ Añadir Otro Pago</a>';
+          html += '<a href="#" class="hostpn-add-payment-btn" data-room-id="' + r.room_id + '" style="color:#0284c7; font-weight:600; font-size:12px; text-decoration:none;">+ Añadir Otro Pago</a>';
         }
         html += '</div>';
 
         if (payments.length === 0) {
-          html += '<div class="hostpn-payments-empty">No hay pagos registrados para esta habitación.</div>';
+          html += '<div style="font-size:12px; color:#64748b; font-style:italic;">No hay pagos registrados para esta habitación.</div>';
         } else {
-          html += '<table class="hostpn-payments-table">';
+          html += '<table style="width:100%; border-collapse:collapse; font-size:12px; color:#334155; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">';
           html += '<thead><tr style="border-bottom:1px solid #e2e8f0; background:#f1f5f9; color:#475569; text-align:left;">';
           html += '<th style="padding:8px 10px; font-weight:600;">Fecha</th>';
           html += '<th style="padding:8px 10px; font-weight:600;">Tipo</th>';
@@ -321,11 +321,11 @@
     html += '</div>';
 
     // Expenses ("Gastos del Alojamiento") Section
-    html += '<div class="hostpn-expenses-section">';
-    html += '<div class="hostpn-expenses-header">';
+    html += '<div style="margin-top:28px; background:#0f172a; border:1px solid #1e293b; border-radius:6px; padding:18px; color:#f8fafc;">';
+    html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">';
     html += '<div>';
     html += '<h4 style="margin:0; font-size:14px; font-weight:700; color:#f8fafc; text-transform:uppercase; letter-spacing:0.5px;">Gastos del Alojamiento</h4>';
-    html += '<span class="hostpn-expenses-subtitle">Registro de suministros, mantenimientos, reparaciones y otros costes.</span>';
+    html += '<span style="font-size:11px; color:#94a3b8;">Registro de suministros, mantenimientos, reparaciones y otros costes.</span>';
     html += '</div>';
     if (isAdmin) {
       html += '<button type="button" class="hostpn-add-expense-btn" data-accom-id="' + accomId + '" style="background:#0284c7; color:#fff; border:none; padding:6px 14px; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer;">+ Añadir Gasto</button>';
@@ -333,9 +333,9 @@
     html += '</div>';
 
     if (expenses.length === 0) {
-      html += '<div class="hostpn-expenses-empty">No hay gastos registrados en este alojamiento.</div>';
+      html += '<div style="font-size:12px; color:#64748b; font-style:italic; padding:10px 0;">No hay gastos registrados en este alojamiento.</div>';
     } else {
-      html += '<table class="hostpn-expenses-table">';
+      html += '<table style="width:100%; border-collapse:collapse; font-size:12px; color:#cbd5e1;">';
       html += '<thead><tr style="background:#1e293b; color:#94a3b8; text-align:left;">';
       html += '<th style="padding:8px 10px;">Fecha</th>';
       html += '<th style="padding:8px 10px;">Proveedor</th>';
@@ -353,16 +353,16 @@
         html += '<tr style="border-bottom:1px solid #1e293b;">';
         html += '<td style="padding:8px 10px; font-weight:600;">' + escHtml(exp.date || '--') + '</td>';
         html += '<td style="padding:8px 10px;">' + escHtml(exp.provider || '--') + '</td>';
-        html += '<td style="padding:8px 10px;"><span class="hostpn-expense-category">' + escHtml(exp.category || 'General') + '</span></td>';
-        html += '<td style="padding:8px 10px;"><span class="hostpn-expense-amount">€ ' + formatMoney(exp.amount) + '</span></td>';
+        html += '<td style="padding:8px 10px;"><span style="background:#1e293b; padding:2px 6px; border-radius:3px; font-size:11px;">' + escHtml(exp.category || 'General') + '</span></td>';
+        html += '<td style="padding:8px 10px; color:#f87171; font-weight:700;">€ ' + formatMoney(exp.amount) + '</td>';
 
         // Protected Attachment Link
         html += '<td style="padding:8px 10px;">';
         if (exp.attachment_filename) {
           var fileUrl = ajaxUrl + '?action=hostpn_expense_download_attachment&accommodation_id=' + accomId + '&filename=' + encodeURIComponent(exp.attachment_filename) + '&hostpn_ajax_nonce=' + nonce;
-          html += '<a href="' + fileUrl + '" target="_blank" class="hostpn-expense-attachment"><i class="material-icons-outlined" style="font-size:13px; vertical-align:middle;">attach_file</i> ' + escHtml(exp.attachment_original_name || exp.attachment_filename) + '</a>';
+          html += '<a href="' + fileUrl + '" target="_blank" style="color:#38bdf8; text-decoration:none; font-weight:600;"><i class="material-icons-outlined" style="font-size:13px; vertical-align:middle;">attach_file</i> ' + escHtml(exp.attachment_original_name || exp.attachment_filename) + '</a>';
         } else {
-          html += '<span class="hostpn-expense-no-attachment">Sin adjunto</span>';
+          html += '<span style="color:#64748b; font-style:italic;">Sin adjunto</span>';
         }
         html += '</td>';
 
@@ -383,10 +383,10 @@
 
     // Bottom CSV Import Section
     if (isAdmin) {
-      html += '<div class="hostpn-csv-import-section">';
+      html += '<div style="margin-top:24px; padding-top:16px; border-top:1px solid #334155; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; background:#1e293b; border-radius:6px; padding:16px;">';
       html += '<div>';
-      html += '<strong class="hostpn-csv-import-title">Importación masiva desde CSV (Booking.com / Airbnb)</strong>';
-      html += '<span class="hostpn-csv-import-subtitle">Sube extractos o facturas de Booking o Airbnb para automatizar el registro de cobranzas.</span>';
+      html += '<strong style="display:block; font-size:13px; color:#f8fafc;">Importación masiva desde CSV (Booking.com / Airbnb)</strong>';
+      html += '<span style="font-size:11px; color:#94a3b8;">Sube extractos o facturas de Booking o Airbnb para automatizar el registro de cobranzas.</span>';
       html += '</div>';
       html += '<button type="button" class="hostpn-btn hostpn-financial-import-btn" data-accommodation-id="' + accomId + '" style="background:#334155; color:#ffffff; border:1px solid #475569; padding:8px 16px; border-radius:4px; font-size:12px; font-weight:600; cursor:pointer;">';
       html += '<i class="material-icons-outlined hostpn-vertical-align-middle">upload_file</i> ';
@@ -411,11 +411,11 @@
       collectedData.push(months[i].collected || 0);
     }
 
-    var html = '<div class="hostpn-fin-chart-container">';
-    html += '<div class="hostpn-fin-chart-header">';
+    var html = '<div class="hostpn-fin-chart-wrapper" style="margin-bottom:20px; padding:18px; background:#0f172a; border:1px solid #1e293b; border-radius:6px; color:#f8fafc;">';
+    html += '<div style="font-size:12px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">';
     html += '<span>Evolución de Ingresos Mensuales</span>';
     html += '</div>';
-    html += '<div class="hostpn-fin-chart-canvas-wrapper">';
+    html += '<div style="position:relative; height:200px; width:100%;">';
     html += '<canvas id="' + chartContainerId + '"></canvas>';
     html += '</div></div>';
 
@@ -748,7 +748,7 @@
     html += '<div class="hostpn-shared-detail-val">' + info.notice_days + ' ' + (i18n.daysUnit || 'días') + '</div>';
     html += '</div>';
 
-    html += '<div class="hostpn-shared-detail-item-full">';
+    html += '<div class="hostpn-shared-detail-item" style="grid-column: 1 / -1;">';
     html += '<div class="hostpn-shared-detail-label">' + (i18n.staysToClean || 'Stays to clean') + '</div>';
     html += '<div class="hostpn-shared-stays-list">';
     var staysArr = info.stays ? info.stays.split(',') : [];
@@ -761,9 +761,9 @@
     html += '</div>'; // grid end
 
     if (info.instructions && info.instructions.trim()) {
-      html += '<div class="hostpn-shared-instructions-box">';
-      html += '<div class="hostpn-shared-instructions-title">' + (i18n.cleaningInstructions || 'Instrucciones y pasos para la limpieza') + '</div>';
-      html += '<div class="hostpn-shared-instructions-content">' + escHtml(info.instructions) + '</div>';
+      html += '<div class="hostpn-shared-instructions-box" style="margin-top:14px; padding:12px 14px; background:#f8fafc; border:1px solid #cbd5e1; border-radius:6px;">';
+      html += '<div style="font-size:12px; font-weight:700; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">' + (i18n.cleaningInstructions || 'Instrucciones y pasos para la limpieza') + '</div>';
+      html += '<div style="font-size:13px; color:#334155; line-height:1.5; white-space:pre-wrap;">' + escHtml(info.instructions) + '</div>';
       html += '</div>';
     }
 
